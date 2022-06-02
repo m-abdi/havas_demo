@@ -1,9 +1,4 @@
 const typeDefs = /* GraphQL */ `
-  type User {
-    id: ID!
-    name: String!
-    status: String!
-  }
   # Users of the app
   type Person {
     id: ID!
@@ -18,7 +13,7 @@ const typeDefs = /* GraphQL */ `
     address: String
     telephone: String
     phoneNumber: String
-    permissions: Permission!
+    role: Role!
     createdAt: String
     editedAt: String
     email: String!
@@ -43,11 +38,6 @@ const typeDefs = /* GraphQL */ `
     description: String
     createdAt: String
     editedAt: String
-  }
-
-  type Query {
-    viewer: User!
-    person(id: ID!): Person!
   }
 
   type Equipment {
@@ -87,9 +77,37 @@ const typeDefs = /* GraphQL */ `
     confirmedAt: String
   }
 
-  type Mutation {
-    updateName(name: String!): User!
+  type Role {
+    id: ID!
+    name: String!
+    createPerson: Boolean
+    editPerson: Boolean
+    deletePerson: Boolean
+    createPlace: Boolean
+    editPlace: Boolean
+    deletePlace: Boolean
+    createEquipment: Boolean
+    editEquipment: Boolean
+    deleteEquipment: Boolean
+    createAsset: Boolean
+    editAsset: Boolean
+    deleteAsset: Boolean
+    createLicense: Boolean
+    editLicense: Boolean
+    deleteLicense: Boolean
+    createTag: Boolean
+    editTag: Boolean
+    deleteTag: Boolean
+    createRole: Boolean
+    editRole: Boolean
+    deleteRole: Boolean
   }
+
+  type Query {
+    person(id: ID!): Person
+  }
+
+
 `;
 
 export default typeDefs;

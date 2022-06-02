@@ -1,0 +1,138 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Person {
+  id             String    @id @default(uuid())
+  firstName      String?   @db.VarChar(255)
+  lastName       String?   @db.VarChar(255)
+  place          Place?    @relation(fields: [placeId], references: [id])
+  placeId        String?   @unique
+  title          String?   @db.VarChar(255)
+  responsibility String?   @db.VarChar(255)
+  state          String?   @db.VarChar(255)
+  city           String?   @db.VarChar(255)
+  postalCode     String?   @db.VarChar(255)
+  address        String?   @db.VarChar(255)
+  telephone      String?   @db.VarChar(255)
+  phoneNumber    String?   @db.VarChar(255)
+  role           Role      @relation(fields: [roleId], references: [id])
+  roleId         String
+  createdAt      DateTime  @default(now())
+  editedAt       DateTime  @updatedAt
+  email          String    @unique
+  fromLicenses   License[] @relation("fromLicenses")
+  toLicenses     License[] @relation("toLicenses")
+
+}
+
+model Place {
+  id               String    @id @default(uuid())
+  name             String    @db.VarChar(255)
+  subPlace         Place?    @relation("SUB_PLACE", fields: [subPlaceId], references: [id])
+  subPlaceId       String?   @unique
+  superPlace       Place?    @relation("SUB_PLACE")
+  representative   Person?
+  typeOfWork       String?
+  state            String?
+  city             String?
+  postalCode       String?
+  address          String?
+  telephone        String?
+  phoneNumber      String?
+  website          String?
+  nationalId       String?
+  economicCode     String?
+  registeredNumber String?
+  description      String?
+  createdAt        String?
+  editedAt         String?
+  fromLicenses     License[] @relation("fromLicensesPlace")
+  toLicenses       License[] @relation("toLicensesPlace")
+}
+
+model Equipment {
+  id                     String   @id @default(uuid())
+  name                   String   @db.VarChar(255)
+  technicalSpecification String   @db.VarChar(1000)
+  createdAt              DateTime @default(now())
+  editedAt               DateTime @updatedAt
+  assets                 Asset[]
+}
+
+model Asset {
+  id             String    @id @default(uuid())
+  equipment      Equipment @relation(fields: [equipmentId], references: [id])
+  equipmentId    String
+  numberOfAssets Int
+  createdAt      DateTime  @default(now())
+  editedAt       DateTime  @updatedAt
+  tag            Tag?
+}
+
+model Tag {
+  id        String   @id @default(uuid())
+  asset     Asset    @relation(fields: [assetId], references: [id])
+  assetId   String   @unique
+  createdAt DateTime @default(now())
+  editedAt  DateTime @updatedAt
+}
+
+model License {
+  id           String   @id @default(uuid())
+  fromPerson   Person   @relation(name: "fromLicenses", fields: [fromPersonId], references: [id])
+  fromPersonId String
+  toPerson     Person   @relation(name: "toLicenses", fields: [toPersonId], references: [id])
+  toPersonId   String
+  fromPlace    Place    @relation(name: "fromLicensesPlace", fields: [fromPlaceId], references: [id])
+  fromPlaceId  String
+  toPlace      Place    @relation(name: "toLicensesPlace", fields: [toPlaceId], references: [id])
+  toPlaceId    String
+  type         String
+  numbers      Int
+  date         String
+  description  String
+  createdAt    DateTime @default(now())
+  editedAt     DateTime @updatedAt
+  confirmedAt  DateTime
+}
+
+model Role {
+  id              String   @id @default(uuid())
+  name            String?
+  createPerson    Boolean
+  editPerson      Boolean
+  deletePerson    Boolean
+  createPlace     Boolean
+  editPlace       Boolean
+  deletePlace     Boolean
+  createEquipment Boolean
+  editEquipment   Boolean
+  deleteEquipment Boolean
+  createAsset     Boolean
+  editAsset       Boolean
+  deleteAsset     Boolean
+  createLicense   Boolean
+  editLicense     Boolean
+  deleteLicense   Boolean
+  createTag       Boolean
+  editTag         Boolean
+  deleteTag       Boolean
+  createRole      Boolean
+  editRole        Boolean
+  deleteRole      Boolean
+  Person          Person[]
+}
+
+enum LicenseType {
+  ENTER
+  EXIT
+}

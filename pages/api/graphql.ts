@@ -6,8 +6,9 @@ import typeDefs from 'lib/schema'
 
 const server = createServer({
   schema: {
-    typeDefs: gql(typeDefs),
+    typeDefs: gql(typeDefs),  
     resolvers,
+
   },
   endpoint: '/api/graphql',
   

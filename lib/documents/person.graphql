@@ -1,9 +1,7 @@
-query person($id: ID!) {
-  person {
-    id
-    firstName
-    lastName
-    email
-    title
-  }
+query specificPerson {
+    person {
+        id
+        firstName
+        lastName
+    }
 }
