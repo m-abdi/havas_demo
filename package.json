@@ -1,0 +1,51 @@
+{
+  "name": "nextjs-with-typescript",
+  "version": "5.0.0",
+  "private": true,
+  "scripts": {
+    "codegen": "graphql-codegen -r ts-node/register",
+    "dev": "yarn codegen && next",
+    "build": "yarn codegen && next build",
+    "test": "yarn codegen && jest",
+    "start": "next start",
+    "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.5.10",
+    "@emotion/cache": "latest",
+    "@emotion/react": "latest",
+    "@emotion/server": "latest",
+    "@emotion/styled": "latest",
+    "@graphql-tools/load-files": "6.0.18",
+    "@graphql-tools/merge": "6.0.18",
+    "@graphql-tools/schema": "6.0.18",
+    "@graphql-yoga/node": "^2.2.1",
+    "@mui/icons-material": "latest",
+    "@mui/material": "latest",
+    "graphql": "15.6.0",
+    "graphql-tag": "^2.12.6",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^2.6.2",
+    "@graphql-codegen/typed-document-node": "^2.2.8",
+    "@graphql-codegen/typescript": "^2.4.8",
+    "@graphql-codegen/typescript-operations": "^2.3.5",
+    "@graphql-codegen/typescript-resolvers": "^2.6.1",
+    "@types/jest": "^27.0.2",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "latest",
+    "@types/react": "^16.9.46",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-test-renderer": "^17.0.1",
+    "babel-jest": "27.2.5",
+    "eslint": "latest",
+    "eslint-config-next": "latest",
+    "jest": "^27.2.5",
+    "ts-node": "10.8.0",
+    "typescript": "latest",
+    "yaml-loader": "0.6.0"
+  }
+}

@@ -1,0 +1,9 @@
+query person($id: ID!) {
+  person {
+    id
+    firstName
+    lastName
+    email
+    title
+  }
+}
