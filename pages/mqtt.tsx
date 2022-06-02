@@ -5,12 +5,13 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 import { Client as MqttClient } from 'src/paho-mqtt';
-// Create a client instance
 function PahoClient(setMessage: any, setConnectionStatus: any) {
+  // Create a client instance
   const client = new MqttClient(
     process.env.NEXT_PUBLIC_MQTT_BROKER_URL as string,
     Number(process.env.NEXT_PUBLIC_MQTT_BROKER_PORT),
-    '/mqtt'
+    '/mqtt',
+    ''
   );
 
   // set callback handlers
@@ -23,7 +24,7 @@ function PahoClient(setMessage: any, setConnectionStatus: any) {
     useSSL: true,
     userName: process.env.NEXT_PUBLIC_MQTT_BROKER_USERNAME as string,
     password: process.env.NEXT_PUBLIC_MQTT_BROKER_PASSWORD as string,
-  });
+  } as any);
 
   // called when the client connects
   function onConnect() {

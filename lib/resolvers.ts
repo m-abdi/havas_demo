@@ -5,8 +5,7 @@ import { Resolvers } from './resolvers-types';
 const resolvers: Resolvers = {
   Query: {
 
-    person(_parent, _args, _context, _info) {
-      console.log(_args);
+    person(_parent, _args, _context, _info): any {
       
       return {
         id: "1",
