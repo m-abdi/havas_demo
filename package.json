@@ -27,7 +27,9 @@
     "graphql-tag": "^2.12.6",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "stylis": "^4.1.1",
+    "stylis-plugin-rtl": "^2.1.1"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^2.6.2",
