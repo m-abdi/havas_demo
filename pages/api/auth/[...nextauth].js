@@ -1,12 +1,43 @@
+import 'dotenv/config';
+import { PrismaClient } from '@prisma/client';
+/* eslint-disable no-undef */
+import CredentialsProvider from 'next-auth/providers/credentials';
+import GoogleProvider from 'next-auth/providers/google';
 import NextAuth from 'next-auth';
-import GithubProvider from 'next-auth/providers/github';
+
+const prisma = new PrismaClient();
 export default NextAuth({
-  // Configure one or more authentication providers
+  pages: {
+    signIn: '/users/login',
+  },
+  callbacks: {
+    async session({ session, token, user }) {
+      try {
+        const userData = await prisma.person.findFirst({
+          where: {
+            email: session.user.email,
+          },
+        });
+        session.user = {...session.user, ...userData, password: undefined};
+        return session;
+      } catch (e) {
+        console.log(e.message);
+        return session;
+      }
+    },
+  },
   providers: [
-    GithubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
+    CredentialsProvider({
+      name: 'Credentials',
+      async authorize(credentials, req) {
+        const potentialUser = await prisma.person.findFirst({
+          where: { email: credentials.email, password: credentials.password },
+        });
+        if (potentialUser) {
+          return potentialUser;
+        }
+        return null;
+      },
     }),
-    // ...add more providers here
   ],
 });

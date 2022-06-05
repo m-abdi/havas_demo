@@ -28,10 +28,10 @@ model Person {
   roleId         String
   createdAt      DateTime  @default(now())
   editedAt       DateTime  @updatedAt
-  email          String    @unique
+  email          String?    @unique
   fromLicenses   License[] @relation("fromLicenses")
   toLicenses     License[] @relation("toLicenses")
-
+  password       String
 }
 
 model Place {

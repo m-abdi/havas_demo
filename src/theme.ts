@@ -4,16 +4,19 @@ import { red } from '@mui/material/colors';
 // Create a theme instance.
 const theme = createTheme({
   direction: 'rtl',
+  typography: {
+    fontFamily: 'Vazir',
+  },
   palette: {
     primary: {
-      main: '#304967',
+      main: '#365d8c',
     },
     secondary: {
-      main: '#674e30',
+      main: '#fcde67',
     },
     info: {
-      main: "#306467",
-    }, 
+      main: '#68c5db',
+    },
     error: {
       main: red.A400,
     },
