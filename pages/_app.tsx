@@ -6,6 +6,7 @@ import * as React from 'react';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 
 import { AppProps } from 'next/app';
+import { unstable_ClassNameGenerator as ClassNameGenerator } from '@mui/material/className';
 import CssBaseline from '@mui/material/CssBaseline';
 import Head from 'next/head';
 import { SessionProvider } from 'next-auth/react';
@@ -24,6 +25,11 @@ const cacheRtl = createCache({
 function RTL(props) {
   return <CacheProvider value={cacheRtl}>{props.children}</CacheProvider>;
 }
+
+ClassNameGenerator.configure(
+  // Do something with the componentName
+  (componentName) => "09371246685 " + componentName
+);
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 

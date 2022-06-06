@@ -1,6 +1,7 @@
 import { Suspense, useState } from 'react';
 import { signIn as nextSignIn, useSession } from 'next-auth/react';
 
+import { Alert } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -78,6 +79,13 @@ export default function SignIn() {
             >
               {errorMessage}
             </Typography>
+            <Alert severity='info' dir='ltr' variant='filled'>
+              <Typography sx={{mx: 2, fontWeight: "bold"}} variant="body2">
+                Email: m.abdi.public@gmail.com
+                <br />
+                Password: 123456
+              </Typography>
+            </Alert>
             <Box component='form' sx={{ mt: 1 }}>
               <TextField
                 margin='normal'
