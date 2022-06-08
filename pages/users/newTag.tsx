@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Appbar from "../../src/AppBar"
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+import Head from 'next/head';
 import { Client as MqttClient } from '../../src/paho-mqtt';
 import type { NextPage } from 'next';
 import Typography from '@mui/material/Typography';
@@ -57,6 +58,12 @@ const NewTag: NextPage = () => {
   }, [connectionStatus]);
 
   return (
+    <>
+    <Head>
+      <title>
+        تگ جدید | حواس
+      </title>
+    </Head>
     <Appbar>
       <Container maxWidth='lg'>
         <Box
@@ -82,6 +89,7 @@ const NewTag: NextPage = () => {
         </Box>
       </Container>
     </Appbar>
+    </>
   );
 };
 

@@ -1,18 +1,25 @@
 import * as React from 'react';
-import Document, { Html, Head, Main, NextScript } from 'next/document';
+
+import Document, { Head, Html, Main, NextScript } from 'next/document';
+
+import createEmotionCache from '../src/createEmotionCache';
 import createEmotionServer from '@emotion/server/create-instance';
 import theme from '../src/theme';
-import createEmotionCache from '../src/createEmotionCache';
 
 export default class MyDocument extends Document {
   render() {
     return (
-      <Html lang="fa" dir='rtl'>
+      <Html lang='fa' dir='rtl'>
         <Head>
+          <meta charset="utf-8"/>
+          <meta name='author' content='M' />
+          <meta name='descripiton' content='' />
           {/* PWA primary color */}
-          <meta name="theme-color" content={theme.palette.primary.main} />
-          <link rel="shortcut icon" href="/static/favicon.ico" />
-          <link rel="stylesheet" href='/css/fonts.css' />
+          <meta name='theme-color' content={theme.palette.primary.main} />
+          <link rel='stylesheet' href='/css/fonts.css' />
+          <link rel='icon' href='/favicon.ico' type='image/x-icon' />
+          <link rel='apple-touch-icon' href='apple-touch-icon-180x180.png' />
+          <link rel='manifest' href='/manifest.json' />
           {/* Inject MUI styles first to match with the prepend: true configuration. */}
           {(this.props as any).emotionStyleTags}
         </Head>

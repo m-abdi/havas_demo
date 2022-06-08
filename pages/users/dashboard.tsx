@@ -1,3 +1,4 @@
+import  Head  from 'next/head';
 import Layout from '../../src/AppBar';
 import React from 'react';
 import { useRouter } from 'next/router';
@@ -10,5 +11,14 @@ export default function dashboard() {
       router.push('/users/login');
     },
   });
-  return <Layout>داشبورد</Layout>;
+  return (
+    <>
+    <Head>
+      <title>
+        داشبورد | حواس
+      </title>
+    </Head>
+      <Layout>داشبورد</Layout>
+    </>
+  );
 }

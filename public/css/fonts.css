@@ -6,22 +6,13 @@
   font-style: normal;
   font-weight: normal;
 }
-
 @font-face {
-  font-family: 'Siavash';
-  src: url('/fonts/Siavash/Si47ash Hezareh Bold.woff2') format('woff2'),
-    url('/fonts/Siavash/Si47ash Hezareh Bold.woff') format('woff'),
-    url('/fonts/Siavash/Si47ash Hezareh Bold.ttf') format('truetype'),
-    url('/fonts/Siavash/Si47ash Hezareh Bold.otf') format('opentype');
+  font-family: 'Vazir';
+  src: url('/fonts/Vazir-Bold.woff2') format('woff2'),
+    url('/fonts/Vazir-Bold.woff') format('woff'),
+    url('/fonts/Vazir-Bold.ttf') format('truetype');
   font-style: normal;
   font-weight: bold;
 }
-@font-face {
-  font-family: 'Siavash';
-  src: url('/fonts/Siavash/Si47ash Hezareh.woff2') format('woff2'),
-    url('/fonts/Siavash/Si47ash Hezareh.woff') format('woff'),
-    url('/fonts/Siavash/Si47ash Hezareh.ttf') format('truetype'),
-    url('/fonts/Siavash/Si47ash Hezareh.otf') format('opentype');
-  font-style: normal;
-  font-weight: normal;
-}
+
+
