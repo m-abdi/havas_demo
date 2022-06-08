@@ -18,19 +18,29 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router';
 
+function toEnglishDigit(oldString: string) {
+  const find = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+  const replace = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  let tempString = oldString
+  for (var i = 0; i < find.length; i++) {
+    let regex = new RegExp(find[i], 'g');
+    tempString = tempString.replace(regex, replace[i]);
+  }
+  return tempString;
+}
 export default function SignIn() {
   // states
-  const [email, setEmail] = useState('');
+  const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   //
   const router = useRouter();
-  const {data: session} = useSession()
+  const { data: session } = useSession();
   //
   // redirect to user panel if already loged in -->
   if (session) {
-    router.push("/users/dashboard")
+    router.push('/users/dashboard');
   }
   return (
     <Box
@@ -79,11 +89,11 @@ export default function SignIn() {
             >
               {errorMessage}
             </Typography>
-            <Alert severity='info' dir='ltr' variant='filled'>
-              <Typography sx={{mx: 2, fontWeight: "bold"}} variant="body2">
-                Email: m.abdi.public@gmail.com
+            <Alert severity='info' variant='filled'>
+              <Typography sx={{ mx: 2, fontWeight: 'bold' }} variant='body2'>
+                کد ملی: ۰۵۲۰۹۲۶۴۵۸
                 <br />
-                Password: 123456
+                رمز عبور: ۱۲۳۴۵۶
               </Typography>
             </Alert>
             <Box component='form' sx={{ mt: 1 }}>
@@ -91,12 +101,13 @@ export default function SignIn() {
                 margin='normal'
                 required
                 fullWidth
-                id='email'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                label='ایمیل'
-                name='email'
-                autoComplete='email'
+                id='id'
+                value={id}
+                onChange={(e) => {
+                  setId(toEnglishDigit(e.target.value));
+                }}
+                label='کد ملی'
+                name='id'
                 autoFocus
               />
               <TextField
@@ -105,7 +116,7 @@ export default function SignIn() {
                 fullWidth
                 name='password'
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => setPassword(toEnglishDigit(e.target.value))}
                 label='رمز عبور'
                 type='password'
                 id='password'
@@ -124,11 +135,10 @@ export default function SignIn() {
                   e.preventDefault();
                   setLoading(true);
                   nextSignIn('credentials', {
-                    email: email,
+                    email: id,
                     password: password,
                     redirect: false,
                   }).then((resp) => {
-                    console.log(resp);
                     if (resp && resp.error) {
                       setErrorMessage(resp.error);
                       setLoading(false);

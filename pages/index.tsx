@@ -2,10 +2,8 @@ import * as React from 'react';
 
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Copyright from '../src/Copyright';
 import Link from '../src/Link';
 import type { NextPage } from 'next';
-import ProTip from '../src/ProTip';
 import Typography from '@mui/material/Typography';
 
 const Home: NextPage = () => {
@@ -27,8 +25,7 @@ const Home: NextPage = () => {
         <Link href="/about" color="secondary">
           Go to the about page
         </Link>
-        <ProTip />
-        <Copyright />
+
       </Box>
     </Container>
   );

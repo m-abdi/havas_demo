@@ -45,5 +45,3 @@ lib/graphql-operations.ts
 # typescript
 *.tsbuildinfo
 
-
-mqtt.tsx

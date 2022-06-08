@@ -22,6 +22,7 @@ import {
   createTheme,
   styled,
 } from '@mui/material';
+import React, { useContext } from 'react';
 import { signOut, useSession } from 'next-auth/react';
 
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
@@ -33,17 +34,17 @@ import { ClickAwayListener } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import { InfoContext } from '../pages/_app';
 import Inventory2RoundedIcon from '@mui/icons-material/Inventory2Rounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import MenuIcon from '@mui/icons-material/Menu';
 import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
-import React from 'react';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import StyleRoundedIcon from '@mui/icons-material/StyleRounded';
 import WorkspacePremiumRoundedIcon from '@mui/icons-material/WorkspacePremiumRounded';
 import { red } from '@mui/material/colors';
-import {useRouter} from "next/router"
+import { useRouter } from 'next/router';
 
 const drawerWidth = 240;
 const secAppbarHeight = 64;
@@ -53,11 +54,11 @@ const ToolbarOffest = styled('div', { name: 'ToolbarOffest' })(({ theme }) => ({
   backgroundColor: 'inherit',
 }));
 
-const AppBar2 = styled('div', { name: 'AppBar2' })(({ theme }) => ({
+const AppBar2 = styled('div')(({ theme, drawOpen }) => ({
   display: 'flex',
   minHeight: secAppbarHeight,
   alignItems: 'center',
-  paddingRight: '1.2rem',
+
 }));
 
 const MainContent = styled('div', {
@@ -66,7 +67,6 @@ const MainContent = styled('div', {
 })(({ theme, drawOpen }) => ({
   zIndex: '3',
   width: '100%',
-  marginRight: drawerWidth,
   transition: theme.transitions.create(['margin', 'width'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -81,18 +81,18 @@ const MainContent = styled('div', {
   }),
 }));
 
-const PageContent = styled('div', { name: 'PageContent' })(({ theme }) => ({
+const PageContent = styled('main', { name: 'PageContent' })(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   height: 'fit-content',
 }));
 
-export function Layout2({ children }) {
+export function Navbar({ children }) {
   // states
   const [drawOpen, setDrawOpen] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  // 
-  const router = useRouter()
+  //
+  const router = useRouter();
   let navigate = () => {};
   const location = () => {};
   const [drawListOpen, setDrawListOpen] = React.useState({
@@ -104,6 +104,9 @@ export function Layout2({ children }) {
   });
   //
   const { data: session } = useSession();
+  const infoContext = useContext(InfoContext);
+
+  //
   const handleDrawer = () => {
     setDrawOpen(!drawOpen);
   };
@@ -293,9 +296,28 @@ export function Layout2({ children }) {
         </Toolbar>
       </AppBar>
       <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
-        <MainContent drawOpen={drawOpen}>
+        <MainContent drawOpen={drawOpen} id='mmm'>
           <ToolbarOffest />
-
+          {/*Secend Appbar */}
+          <AppBar2
+            drawOpen={drawOpen}
+            sx={{
+              position: 'sticky',
+              background: '#bbc6d4',
+              inlineSize: drawOpen ? 'auto' : '100vw',
+              transitionProperty: "width",
+              transitionTimingFunction: "ease-out",
+              transitionDuration: ".3s"
+            }}
+          >
+            <IconButton color='primary'>
+              <ArrowForwardIcon sx={{ ml: '1rem', fontSize: '1.2rem' }} />
+            </IconButton>
+            <Typography sx={{ fontSize: '1.2rem' }}>
+              {' '}
+              {infoContext?.data?.pageName}
+            </Typography>
+          </AppBar2>
           {/* اطلاعات صفحه */}
           <PageContent>{children}</PageContent>
         </MainContent>
@@ -322,7 +344,10 @@ export function Layout2({ children }) {
           }}
         >
           <ListItemButton
-            onClick={() => router.push('/users/dashboard')}
+            onClick={() => {
+              infoContext.changePageName('داشبورد');
+              router.push('/users/dashboard');
+            }}
             sx={{
               ...(location.pathname == '/' && {
                 backgroundColor: 'blue',
@@ -336,13 +361,13 @@ export function Layout2({ children }) {
           </ListItemButton>
           {/* نشان دادن List */}
           {menuItems.map((item) => (
-            <>
+            <Box key={item.text}>
               <ListItemButton
-                key={item.text}
                 onClick={(event) => {
-                  handleDrawList(event, item.id)
+                  handleDrawList(event, item.id);
                   if (item?.path) {
-                    router.push(item.path)
+                    infoContext.changePageName(item.text);
+                    router.push(item.path);
                   }
                 }}
               >
@@ -359,24 +384,28 @@ export function Layout2({ children }) {
               <Collapse in={drawListOpen[item.id]} timeout='auto' unmountOnExit>
                 <List component='div' disablePadding>
                   {item.sublists.map((sublist) => (
-                      <ListItemButton
-                        onClick={() => router.push(sublist.path)}
-                        sx={{
-                          pl: 6,
-                          ...(location.pathname == sublist.path && {
-                            backgroundColor: 'blue',
-                          }),
-                        }}
-                      >
-                        <ListItemIcon sx={{ minWidth: '32px' }}>
-                          {sublist.icon}
-                        </ListItemIcon>
-                        <ListItemText primary={sublist.text} />
-                      </ListItemButton>
+                    <ListItemButton
+                      key={sublist.text}
+                      onClick={() => {
+                        infoContext.changePageName(sublist.text);
+                        router.push(sublist.path);
+                      }}
+                      sx={{
+                        pl: 6,
+                        ...(location.pathname == sublist.path && {
+                          backgroundColor: 'blue',
+                        }),
+                      }}
+                    >
+                      <ListItemIcon sx={{ minWidth: '32px' }}>
+                        {sublist.icon}
+                      </ListItemIcon>
+                      <ListItemText primary={sublist.text} />
+                    </ListItemButton>
                   ))}
                 </List>
               </Collapse>
-            </>
+            </Box>
           ))}
         </List>
       </Drawer>
@@ -392,7 +421,7 @@ export function Layout2({ children }) {
           zIndex: 10,
           border: 1,
           backgroundColor: 'secondary.main',
-          boxShadow: 10,
+          boxShadow: 1,
         }}
         size='large'
         color='inherit'
@@ -409,4 +438,4 @@ export function Layout2({ children }) {
   );
 }
 
-export default Layout2;
+export default Navbar;

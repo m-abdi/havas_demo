@@ -10,6 +10,5 @@ export default function dashboard() {
       router.push('/users/login');
     },
   });
-  console.log(session);
   return <Layout>داشبورد</Layout>;
 }
