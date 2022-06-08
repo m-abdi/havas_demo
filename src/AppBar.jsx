@@ -22,7 +22,7 @@ import {
   createTheme,
   styled,
 } from '@mui/material';
-import React, { useContext } from 'react';
+import React, { memo, useContext } from 'react';
 import { signOut, useSession } from 'next-auth/react';
 
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
@@ -58,7 +58,6 @@ const AppBar2 = styled('div')(({ theme, drawOpen }) => ({
   display: 'flex',
   minHeight: secAppbarHeight,
   alignItems: 'center',
-
 }));
 
 const MainContent = styled('div', {
@@ -67,13 +66,13 @@ const MainContent = styled('div', {
 })(({ theme, drawOpen }) => ({
   zIndex: '3',
   width: '100%',
-  transition: theme.transitions.create(['margin', 'width'], {
+  transition: theme.transitions.create(['width'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(drawOpen && {
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['margin', 'width'], {
+    transition: theme.transitions.create(['width'], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -296,7 +295,13 @@ export function Navbar({ children }) {
         </Toolbar>
       </AppBar>
       <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
-        <MainContent drawOpen={drawOpen} id='mmm'>
+        <MainContent
+          drawOpen={drawOpen}
+          sx={{
+            inlineSize: drawOpen ? 'auto' : '100vw',
+
+          }}
+        >
           <ToolbarOffest />
           {/*Secend Appbar */}
           <AppBar2
@@ -304,10 +309,7 @@ export function Navbar({ children }) {
             sx={{
               position: 'sticky',
               background: '#bbc6d4',
-              inlineSize: drawOpen ? 'auto' : '100vw',
-              transitionProperty: "width",
-              transitionTimingFunction: "ease-out",
-              transitionDuration: ".3s"
+              inlineSize: 'inherit',
             }}
           >
             <IconButton color='primary'>
@@ -319,7 +321,7 @@ export function Navbar({ children }) {
             </Typography>
           </AppBar2>
           {/* اطلاعات صفحه */}
-          <PageContent>{children}</PageContent>
+          <PageContent sx={{ inlineSize: 'inherit' }}>{children}</PageContent>
         </MainContent>
       </ClickAwayListener>
       {/* Drawer */}
@@ -438,4 +440,4 @@ export function Navbar({ children }) {
   );
 }
 
-export default Navbar;
+export default memo(Navbar);
