@@ -54,10 +54,12 @@ const ToolbarOffest = styled('div', { name: 'ToolbarOffest' })(({ theme }) => ({
   backgroundColor: 'inherit',
 }));
 
-const AppBar2 = styled('div')(({ theme, drawOpen }) => ({
+const AppBar2 = styled('nav')(({ theme, drawOpen }) => ({
   display: 'flex',
   minHeight: secAppbarHeight,
   alignItems: 'center',
+  position: 'sticky',
+  background: '#bbc6d4',
 }));
 
 const MainContent = styled('div', {
@@ -65,25 +67,15 @@ const MainContent = styled('div', {
   name: 'MainContent',
 })(({ theme, drawOpen }) => ({
   zIndex: '3',
-  width: '100%',
-  transition: theme.transitions.create(['width'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(drawOpen && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginRight: 0,
-  }),
+  width: drawOpen ? '100%' : '100vw',
+
 }));
 
 const PageContent = styled('main', { name: 'PageContent' })(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   height: 'fit-content',
+  
 }));
 
 export function Navbar({ children }) {
@@ -219,7 +211,7 @@ export function Navbar({ children }) {
       {/*First Appbar */}
       <AppBar
         elevation={2}
-        sx={{ '&.MuiAppBar-root': { backgroundColor: '#304967', zIndex: '4' } }}
+        sx={{ '&.MuiAppBar-root': { backgroundColor: '#304967', zIndex: 30 } }}
       >
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Typography sx={{ display: 'inline-block', margin: 1 }}>
@@ -295,23 +287,10 @@ export function Navbar({ children }) {
         </Toolbar>
       </AppBar>
       <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
-        <MainContent
-          drawOpen={drawOpen}
-          sx={{
-            inlineSize: drawOpen ? 'auto' : '100vw',
-
-          }}
-        >
+        <MainContent drawOpen={drawOpen}>
           <ToolbarOffest />
           {/*Secend Appbar */}
-          <AppBar2
-            drawOpen={drawOpen}
-            sx={{
-              position: 'sticky',
-              background: '#bbc6d4',
-              inlineSize: 'inherit',
-            }}
-          >
+          <AppBar2 drawOpen={drawOpen}>
             <IconButton color='primary'>
               <ArrowForwardIcon sx={{ ml: '1rem', fontSize: '1.2rem' }} />
             </IconButton>
@@ -332,7 +311,7 @@ export function Navbar({ children }) {
           width: drawerWidth,
           flexShrink: 0,
           '& .MuiDrawer-paper': { width: drawerWidth },
-          zIndex: 2,
+          zIndex: 20,
         }}
         open={drawOpen}
       >
@@ -420,7 +399,7 @@ export function Navbar({ children }) {
           transitionDuration: '0.2s',
           transitionTimingFunction: 'ease-out',
           top: '50%',
-          zIndex: 10,
+          zIndex: 50,
           border: 1,
           backgroundColor: 'secondary.main',
           boxShadow: 1,

@@ -19,11 +19,13 @@ export default NextAuth({
             id: session.user.id,
           },
         });
-        session.user = {...session.user, ...userData, password: undefined};
+        session.user = { ...session.user, ...userData, password: undefined };
         return session;
       } catch (e) {
         console.log(e.message);
         return session;
+      } finally {
+        await prisma.$disconnect();
       }
     },
   },
@@ -31,13 +33,19 @@ export default NextAuth({
     CredentialsProvider({
       name: 'Credentials',
       async authorize(credentials, req) {
-        const potentialUser = await prisma.person.findFirst({
-          where: { id: credentials.id, password: credentials.password },
-        });
-        if (potentialUser) {
-          return potentialUser;
+        try {
+          const potentialUser = await prisma.person.findFirst({
+            where: { id: credentials.id, password: credentials.password },
+          });
+          if (potentialUser) {
+            return potentialUser;
+          }
+          return null;
+        } catch (e) {
+          console.log(e.message);
+        } finally {
+          await prisma.$disconnect();
         }
-        return null;
       },
     }),
   ],

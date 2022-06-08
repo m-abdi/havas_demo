@@ -83,7 +83,7 @@ const NewTag: NextPage = () => {
           >
             Status : {connectionStatus}
           </Typography>
-          <Typography variant='h1' component='h1' gutterBottom>
+          <Typography variant='h2' component='h4' dir='ltr' gutterBottom>
             {message}
           </Typography>
         </Box>
