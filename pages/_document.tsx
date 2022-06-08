@@ -11,9 +11,9 @@ export default class MyDocument extends Document {
     return (
       <Html lang='fa' dir='rtl'>
         <Head>
-          <meta charset="utf-8"/>
-          <meta name='author' content='M' />
-          <meta name='descripiton' content='' />
+          <meta charSet="utf-8"/>
+          <meta name='author' content='Mehdi Abdi' />
+          <meta name='descripiton' content='سامانه انبارداری هوشمند و مدیریت درخواست ها | حواس' />
           {/* PWA primary color */}
           <meta name='theme-color' content={theme.palette.primary.main} />
           <link rel='stylesheet' href='/css/fonts.css' />

@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 export default function dashboard() {
   const router = useRouter();
+  // check for expired sessions or not loged-in users ---> redirect to login page
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {

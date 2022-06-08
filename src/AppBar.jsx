@@ -54,13 +54,13 @@ const ToolbarOffest = styled('div', { name: 'ToolbarOffest' })(({ theme }) => ({
   backgroundColor: 'inherit',
 }));
 
-const AppBar2 = styled('nav')(({ theme, drawOpen }) => ({
+const AppBar2 = styled('nav')({
   display: 'flex',
   minHeight: secAppbarHeight,
   alignItems: 'center',
   position: 'sticky',
   background: '#bbc6d4',
-}));
+})
 
 const MainContent = styled('div', {
   shouldForwardProp: (prop) => prop !== 'drawOpen',

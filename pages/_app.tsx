@@ -1,6 +1,6 @@
 import '../public/css/fonts.css';
 import 'react-spinner-animated/dist/index.css';
-import '../src/MuiClassNameSetup';
+import '../src/NextJsServerSecurityToken';
 
 import * as React from 'react';
 

@@ -7,6 +7,8 @@ import Head from 'next/head';
 import { Client as MqttClient } from '../../src/paho-mqtt';
 import type { NextPage } from 'next';
 import Typography from '@mui/material/Typography';
+import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 
 function PahoClient(setMessage: any, setConnectionStatus: any) {
   // Create a client instance
@@ -48,6 +50,15 @@ function PahoClient(setMessage: any, setConnectionStatus: any) {
   }
 }
 const NewTag: NextPage = () => {
+  const router = useRouter();
+  // check for expired sessions or not loged-in users ---> redirect to login page
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push('/users/login');
+    },
+  });
+  // states
   const [message, setMessage] = useState('');
   const [connectionStatus, setConnectionStatus] = useState('Disconnected');
 

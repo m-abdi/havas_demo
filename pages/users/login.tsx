@@ -1,5 +1,5 @@
 import { Suspense, useState } from 'react';
-import { signIn as nextSignIn, useSession } from 'next-auth/react';
+import { getSession, signIn as nextSignIn, useSession } from 'next-auth/react';
 
 import { Alert } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
@@ -9,11 +9,13 @@ import Checkbox from '@mui/material/Checkbox';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import { GetServerSideProps } from 'next';
 import Grid from '@mui/material/Grid';
 import { HalfMalf } from 'react-spinner-animated';
 import Link from '@mui/material/Link';
 import LoaderSpinner from '../../src/components/LoaderSpinner';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import type { Session } from 'next-auth';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router';
@@ -21,7 +23,7 @@ import { useRouter } from 'next/router';
 function toEnglishDigit(oldString: string) {
   const find = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
   const replace = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-  let tempString = oldString
+  let tempString = oldString;
   for (var i = 0; i < find.length; i++) {
     let regex = new RegExp(find[i], 'g');
     tempString = tempString.replace(regex, replace[i]);
@@ -36,10 +38,12 @@ export default function SignIn() {
   const [errorMessage, setErrorMessage] = useState('');
   //
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   //
   // redirect to user panel if already loged in -->
-  if (session) {
+  console.log(status);
+  
+  if (status=== "authenticated") {
     router.push('/users/dashboard');
   }
   return (
@@ -72,7 +76,7 @@ export default function SignIn() {
           justifyContent: 'center',
         }}
       >
-        {loading ? (
+        {loading || status === "loading" ? (
           <LoaderSpinner center={false} />
         ) : (
           <>
@@ -169,3 +173,14 @@ export default function SignIn() {
     </Box>
   );
 }
+
+export const getServerSideProps: GetServerSideProps<{
+  session: Session | null;
+}> = async (context) => {
+  const session = await getSession(context);
+  return {
+    props: {
+      session,
+    },
+  };
+};
