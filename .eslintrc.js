@@ -1,28 +1,25 @@
 module.exports = {
   env: {
     browser: true,
-    es2021: true,
+    node: true,
+    es2021: true
   },
-  extends: [
-    'plugin:@next/next/recommended',
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:@typescript-eslint/recommended',
-    "prettier"
-  ],
+  extends: ['plugin:@next/next/recommended', 'eslint:recommended', 'plugin:react/recommended', 'plugin:@typescript-eslint/recommended', 'prettier', 'plugin:storybook/recommended'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
-      jsx: true,
+      jsx: true
     },
     ecmaVersion: 'latest',
-    sourceType: 'module',
+    sourceType: 'module'
   },
   plugins: ['react', '@typescript-eslint'],
   rules: {
     '@typescript-eslint/no-unused-vars': 'off',
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/no-explicit-any": "off",
-    'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.ts'] }],
-  },
+    'react/jsx-filename-extension': [1, {
+      extensions: ['.tsx', '.ts']
+    }]
+  }
 };
