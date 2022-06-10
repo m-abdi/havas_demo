@@ -1,9 +1,14 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable react/prop-types */
+/* eslint-disable import/order */
+/* eslint-disable no-unused-vars */
 import { AddCircleOutlineOutlined, SubjectOutlined } from '@mui/icons-material';
 import {
   AppBar,
   Avatar,
   Box,
   Button,
+  ClickAwayListener,
   Collapse,
   Drawer,
   IconButton,
@@ -30,11 +35,10 @@ import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRound
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
 import CircleIcon from '@mui/icons-material/Circle';
-import { ClickAwayListener } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import { InfoContext } from '../pages/_app';
+import { InfoContext } from '../pages/_app.tsx';
 import Inventory2RoundedIcon from '@mui/icons-material/Inventory2Rounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -60,7 +64,7 @@ const AppBar2 = styled('nav')({
   alignItems: 'center',
   position: 'sticky',
   background: '#bbc6d4',
-})
+});
 
 const MainContent = styled('div', {
   shouldForwardProp: (prop) => prop !== 'drawOpen',
@@ -75,7 +79,7 @@ const PageContent = styled('main', { name: 'PageContent' })(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   height: 'fit-content',
-  
+
 }));
 
 export function Navbar({ children }) {
@@ -84,7 +88,6 @@ export function Navbar({ children }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   //
   const router = useRouter();
-  let navigate = () => {};
   const location = () => {};
   const [drawListOpen, setDrawListOpen] = React.useState({
     1: false,
@@ -109,8 +112,8 @@ export function Navbar({ children }) {
   const accountOptionsOpen = Boolean(anchorEl);
   const accountOptionsId = accountOptionsOpen ? 'accountOptions' : undefined;
 
-  const handleDrawList = (event, id) =>
-    setDrawListOpen((prevState) => ({ ...prevState, [id]: !prevState[id] }));
+  const handleDrawList = (event, id) => (
+    setDrawListOpen((prevState) => ({ ...prevState, [id]: !prevState[id] })));
 
   const menuItems = [
     {
@@ -206,9 +209,9 @@ export function Navbar({ children }) {
   return (
     <Box
       sx={{ display: 'flex', flexDirection: 'row-reverse', height: '100%' }}
-      component='div'
+      component="div"
     >
-      {/*First Appbar */}
+      {/* First Appbar */}
       <AppBar
         elevation={2}
         sx={{ '&.MuiAppBar-root': { backgroundColor: '#304967', zIndex: 30 } }}
@@ -217,21 +220,21 @@ export function Navbar({ children }) {
           <Typography sx={{ display: 'inline-block', margin: 1 }}>
             سامانه هوشمند حواس
           </Typography>
-          <Stack direction={'row'} spacing={2} alignItems='center'>
-            <Typography component={'p'} variant='body1'>
-              {(session?.user?.firstName ?? '') +
-                ' ' +
-                (session?.user?.lastName ?? '')}
+          <Stack direction="row" spacing={2} alignItems="center">
+            <Typography component="p" variant="body1">
+              {`${session?.user?.firstName ?? ''
+              } ${
+                session?.user?.lastName ?? ''}`}
             </Typography>
             <Typography
-              component={'p'}
-              variant='body1'
+              component="p"
+              variant="body1"
               sx={{ backgroundColor: 'info.main', p: 1, borderRadius: 1 }}
             >
               {session?.user?.title ?? ''}
             </Typography>
             <IconButton
-              id='accountOptionsButton'
+              id="accountOptionsButton"
               aria-describedby={accountOptionsId}
               onClick={(e) => {
                 e.stopPropagation();
@@ -289,9 +292,9 @@ export function Navbar({ children }) {
       <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
         <MainContent drawOpen={drawOpen}>
           <ToolbarOffest />
-          {/*Secend Appbar */}
+          {/* Secend Appbar */}
           <AppBar2 drawOpen={drawOpen}>
-            <IconButton color='primary'>
+            <IconButton color="primary">
               <ArrowForwardIcon sx={{ ml: '1rem', fontSize: '1.2rem' }} />
             </IconButton>
             <Typography sx={{ fontSize: '1.2rem' }}>
@@ -305,8 +308,8 @@ export function Navbar({ children }) {
       </ClickAwayListener>
       {/* Drawer */}
       <Drawer
-        variant='persistent'
-        anchor='left'
+        variant="persistent"
+        anchor="left"
         sx={{
           width: drawerWidth,
           flexShrink: 0,
@@ -317,7 +320,7 @@ export function Navbar({ children }) {
       >
         <ToolbarOffest />
         <List
-          component='nav'
+          component="nav"
           sx={{
             '& .MuiListItemButton-root': {
               textAlign: 'left',
@@ -330,7 +333,7 @@ export function Navbar({ children }) {
               router.push('/users/dashboard');
             }}
             sx={{
-              ...(location.pathname == '/' && {
+              ...(location.pathname === '/' && {
                 backgroundColor: 'blue',
               }),
             }}
@@ -338,7 +341,7 @@ export function Navbar({ children }) {
             <ListItemIcon sx={{ minWidth: '32px' }}>
               <DashboardIcon />
             </ListItemIcon>
-            <ListItemText primary='داشبورد' />
+            <ListItemText primary="داشبورد" />
           </ListItemButton>
           {/* نشان دادن List */}
           {menuItems.map((item) => (
@@ -357,13 +360,13 @@ export function Navbar({ children }) {
                 </ListItemIcon>
                 <ListItemText primary={`${item.text}`} />
                 <ListItemIcon sx={{ minWidth: '32px' }}>
-                  {item.sublists &&
-                    (drawListOpen[item.id] ? <ExpandLess /> : <ExpandMore />)}
+                  {item.sublists
+                    && (drawListOpen[item.id] ? <ExpandLess /> : <ExpandMore />)}
                 </ListItemIcon>
               </ListItemButton>
               {/* نشان دادن SubList */}
-              <Collapse in={drawListOpen[item.id]} timeout='auto' unmountOnExit>
-                <List component='div' disablePadding>
+              <Collapse in={drawListOpen[item.id]} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
                   {item.sublists.map((sublist) => (
                     <ListItemButton
                       key={sublist.text}
@@ -373,7 +376,7 @@ export function Navbar({ children }) {
                       }}
                       sx={{
                         pl: 6,
-                        ...(location.pathname == sublist.path && {
+                        ...(location.pathname === sublist.path && {
                           backgroundColor: 'blue',
                         }),
                       }}
@@ -404,9 +407,9 @@ export function Navbar({ children }) {
           backgroundColor: 'secondary.main',
           boxShadow: 1,
         }}
-        size='large'
-        color='inherit'
-        aria-label='drawOpen drawer'
+        size="large"
+        color="inherit"
+        aria-label="drawOpen drawer"
         onClick={handleDrawer}
       >
         {drawOpen ? (

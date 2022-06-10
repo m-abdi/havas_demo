@@ -7,9 +7,8 @@ import type { NextPage } from 'next';
 import Typography from '@mui/material/Typography';
 
 const Home: NextPage = () => {
-
- return (
-   <Container maxWidth="lg">
+  return (
+    <Container maxWidth="lg">
       <Box
         sx={{
           my: 4,

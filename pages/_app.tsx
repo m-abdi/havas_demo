@@ -23,7 +23,7 @@ const cacheRtl = createCache({
   key: 'muirtl',
   stylisPlugins: [prefixer, rtlPlugin],
 });
-function RTL(props) {
+function RTL(props: any) {
   return <CacheProvider value={cacheRtl}>{props.children}</CacheProvider>;
 }
 

@@ -1740,7 +1740,6 @@ function onMessageArrived(message) {
 		var Client = function (host, port, path, clientId) {
 
 			var uri;
-
 			if (typeof host !== "string")
 				throw new Error(format(ERROR.INVALID_TYPE, [typeof host, "host"]));
 

@@ -5,14 +5,8 @@ import { Alert } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
 import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import { GetServerSideProps } from 'next';
-import Grid from '@mui/material/Grid';
-import { HalfMalf } from 'react-spinner-animated';
-import Link from '@mui/material/Link';
 import LoaderSpinner from '../../src/components/LoaderSpinner';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import type { Session } from 'next-auth';
@@ -24,8 +18,8 @@ function toEnglishDigit(oldString: string) {
   const find = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
   const replace = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
   let tempString = oldString;
-  for (var i = 0; i < find.length; i++) {
-    let regex = new RegExp(find[i], 'g');
+  for (let i = 0; i < find.length; i++) {
+    const regex = new RegExp(find[i], 'g');
     tempString = tempString.replace(regex, replace[i]);
   }
   return tempString;
@@ -111,6 +105,7 @@ export default function SignIn() {
                   setId(toEnglishDigit(e.target.value));
                 }}
                 label='کد ملی'
+                type="text"
                 name='id'
                 autoFocus
               />
@@ -142,7 +137,7 @@ export default function SignIn() {
                     email: id,
                     password: password,
                     redirect: false,
-                  }).then((resp) => {
+                  }).then((resp: any) => {
                     if (resp && resp.error) {
                       setErrorMessage(resp.error);
                       setLoading(false);

@@ -38,14 +38,15 @@ export default NextAuth({
             where: { id: credentials.id, password: credentials.password },
           });
           if (potentialUser) {
+            await prisma.$disconnect();
             return potentialUser;
           }
+          await prisma.$disconnect();
           return null;
         } catch (e) {
           console.log(e.message);
-        } finally {
-          await prisma.$disconnect();
         }
+        await prisma.$disconnect();
       },
     }),
   ],
