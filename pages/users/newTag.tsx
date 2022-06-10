@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Head from "next/head";
-import Layout from '../../src/Layout';
+import Layout from '../../src/Components/Layout/Layout';
 import type { NextPage } from 'next';
 import { PahoClient } from 'src/PahoClient';
 import Typography from '@mui/material/Typography';

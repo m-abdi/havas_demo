@@ -1,5 +1,3 @@
-import './button.css';
-
 import MuiButton from '@mui/material/Button';
 import React from 'react';
 
@@ -33,7 +31,7 @@ export default function Button({
   variant = 'contained',
   size = 'medium',
   color = 'primary',
-  label = 'Click',
+  label = 'ارسال',
   ...props
 }: ButtonProps) {
   return (

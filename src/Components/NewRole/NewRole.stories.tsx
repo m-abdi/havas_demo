@@ -1,13 +1,13 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import Button from './Button';
+import NewRole from './NewRole';
 import React from 'react';
 import StoriesDecorator from '../StoriesDecorator';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'Web App/Button',
-  component: Button,
+  title: 'Web App/NewRole',
+  component: NewRole,
   decorators: [
     (Story) => (
       <StoriesDecorator>
@@ -15,25 +15,14 @@ export default {
       </StoriesDecorator>
     ),
   ],
-} as ComponentMeta<typeof Button>;
+} as ComponentMeta<typeof NewRole>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
+const Template: ComponentStory<typeof NewRole> = (args) => (
+  <NewRole {...args} />
+);
 
 export const Contained = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-Contained.args = {
-  variant: 'contained',
-};
 
-export const Secondary = Template.bind({});
-Secondary.args = {
-  ...Contained.args,
-  color: 'secondary',
-};
 
-export const Large = Template.bind({});
-Large.args = {
-  ...Contained.args,
-  size: 'large',
-};

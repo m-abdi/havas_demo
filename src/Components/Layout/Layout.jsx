@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable react/prop-types */
-/* eslint-disable import/order */
 /* eslint-disable no-unused-vars */
 import { AddCircleOutlineOutlined, SubjectOutlined } from '@mui/icons-material';
 import {
@@ -38,7 +37,7 @@ import CircleIcon from '@mui/icons-material/Circle';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import { InfoContext } from '../pages/_app.tsx';
+import { InfoContext } from '../../../pages/_app';
 import Inventory2RoundedIcon from '@mui/icons-material/Inventory2Rounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -82,7 +81,7 @@ const PageContent = styled('main', { name: 'PageContent' })(({ theme }) => ({
 
 }));
 
-export function Navbar({ children }) {
+function Navbar({ children }) {
   // states
   const [drawOpen, setDrawOpen] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
