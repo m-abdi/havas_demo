@@ -71,14 +71,12 @@ const MainContent = styled('div', {
 })(({ theme, drawOpen }) => ({
   zIndex: '3',
   width: drawOpen ? '100%' : '100vw',
-
 }));
 
 const PageContent = styled('main', { name: 'PageContent' })(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   height: 'fit-content',
-
 }));
 
 function Navbar({ children }) {
@@ -111,8 +109,8 @@ function Navbar({ children }) {
   const accountOptionsOpen = Boolean(anchorEl);
   const accountOptionsId = accountOptionsOpen ? 'accountOptions' : undefined;
 
-  const handleDrawList = (event, id) => (
-    setDrawListOpen((prevState) => ({ ...prevState, [id]: !prevState[id] })));
+  const handleDrawList = (event, id) =>
+    setDrawListOpen((prevState) => ({ ...prevState, [id]: !prevState[id] }));
 
   const menuItems = [
     {
@@ -208,7 +206,7 @@ function Navbar({ children }) {
   return (
     <Box
       sx={{ display: 'flex', flexDirection: 'row-reverse', height: '100%' }}
-      component="div"
+      component='div'
     >
       {/* First Appbar */}
       <AppBar
@@ -219,21 +217,21 @@ function Navbar({ children }) {
           <Typography sx={{ display: 'inline-block', margin: 1 }}>
             سامانه هوشمند حواس
           </Typography>
-          <Stack direction="row" spacing={2} alignItems="center">
-            <Typography component="p" variant="body1">
-              {`${session?.user?.firstName ?? ''
-              } ${
-                session?.user?.lastName ?? ''}`}
+          <Stack direction='row' spacing={2} alignItems='center'>
+            <Typography component='p' variant='body1'>
+              {`${session?.user?.firstName ?? ''} ${
+                session?.user?.lastName ?? ''
+              }`}
             </Typography>
             <Typography
-              component="p"
-              variant="body1"
+              component='p'
+              variant='body1'
               sx={{ backgroundColor: 'info.main', p: 1, borderRadius: 1 }}
             >
               {session?.user?.title ?? ''}
             </Typography>
             <IconButton
-              id="accountOptionsButton"
+              id='accountOptionsButton'
               aria-describedby={accountOptionsId}
               onClick={(e) => {
                 e.stopPropagation();
@@ -277,6 +275,7 @@ function Navbar({ children }) {
               anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
               <MenuItem
+                id='logoutButton'
                 onClick={() => signOut({ callbackUrl: '/users/login' })}
               >
                 <ListItemIcon>
@@ -293,10 +292,10 @@ function Navbar({ children }) {
           <ToolbarOffest />
           {/* Secend Appbar */}
           <AppBar2 drawOpen={drawOpen}>
-            <IconButton color="primary">
+            <IconButton color='primary'>
               <ArrowForwardIcon sx={{ ml: '1rem', fontSize: '1.2rem' }} />
             </IconButton>
-            <Typography sx={{ fontSize: '1.2rem' }}>
+            <Typography component='h1' variant='h5' sx={{ fontSize: '1.2rem' }}>
               {' '}
               {infoContext?.data?.pageName}
             </Typography>
@@ -307,8 +306,8 @@ function Navbar({ children }) {
       </ClickAwayListener>
       {/* Drawer */}
       <Drawer
-        variant="persistent"
-        anchor="left"
+        variant='persistent'
+        anchor='left'
         sx={{
           width: drawerWidth,
           flexShrink: 0,
@@ -319,7 +318,7 @@ function Navbar({ children }) {
       >
         <ToolbarOffest />
         <List
-          component="nav"
+          component='nav'
           sx={{
             '& .MuiListItemButton-root': {
               textAlign: 'left',
@@ -340,7 +339,7 @@ function Navbar({ children }) {
             <ListItemIcon sx={{ minWidth: '32px' }}>
               <DashboardIcon />
             </ListItemIcon>
-            <ListItemText primary="داشبورد" />
+            <ListItemText primary='داشبورد' />
           </ListItemButton>
           {/* نشان دادن List */}
           {menuItems.map((item) => (
@@ -359,13 +358,13 @@ function Navbar({ children }) {
                 </ListItemIcon>
                 <ListItemText primary={`${item.text}`} />
                 <ListItemIcon sx={{ minWidth: '32px' }}>
-                  {item.sublists
-                    && (drawListOpen[item.id] ? <ExpandLess /> : <ExpandMore />)}
+                  {item.sublists &&
+                    (drawListOpen[item.id] ? <ExpandLess /> : <ExpandMore />)}
                 </ListItemIcon>
               </ListItemButton>
               {/* نشان دادن SubList */}
-              <Collapse in={drawListOpen[item.id]} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
+              <Collapse in={drawListOpen[item.id]} timeout='auto' unmountOnExit>
+                <List component='div' disablePadding>
                   {item.sublists.map((sublist) => (
                     <ListItemButton
                       key={sublist.text}
@@ -406,9 +405,9 @@ function Navbar({ children }) {
           backgroundColor: 'secondary.main',
           boxShadow: 1,
         }}
-        size="large"
-        color="inherit"
-        aria-label="drawOpen drawer"
+        size='large'
+        color='inherit'
+        aria-label='drawOpen drawer'
         onClick={handleDrawer}
       >
         {drawOpen ? (
