@@ -35,7 +35,7 @@ export default function Button({
   ...props
 }: ButtonProps) {
   return (
-    <MuiButton variant={variant} size={size} color={color} {...props} sx={{borderRadius: "12px"}}>
+    <MuiButton variant={variant} size={size} color={color} {...props} sx={{borderRadius: "11px"}}>
       {label}
     </MuiButton>
   );
