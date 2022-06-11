@@ -16,8 +16,17 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "baseUrl": ".",
-    "incremental": true
+    "incremental": true,
+    "types": ["axe-playwright"]
   },
-  "include": ["next-env.d.ts", "graphql.d.ts","types/**/*.ts", "**/*.ts", "**/*.tsx", "src/PahoClient.js", "src/Components/Layout/Layout.jsx"],
-  "exclude": ["node_modules", ".cache", "lib"],
+  "include": [
+    "next-env.d.ts",
+    "graphql.d.ts",
+    "types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/PahoClient.js",
+    "src/Components/Layout/Layout.jsx"
+  ],
+  "exclude": ["node_modules", ".cache", "lib"]
 }

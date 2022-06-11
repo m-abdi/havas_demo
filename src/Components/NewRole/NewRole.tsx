@@ -225,7 +225,6 @@ export default function NewRole() {
                 control={
                   <Checkbox
                     color='error'
-                    aria-label='حذف مجوز'
                     checked={deletePerson}
                     onChange={() => setDeletePerson(!deletePerson)}
                   />

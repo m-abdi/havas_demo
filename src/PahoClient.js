@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { Client as MqttClient } from './paho-mqtt';
 
 export function PahoClient(setMessage, setConnectionStatus) {
