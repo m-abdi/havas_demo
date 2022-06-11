@@ -11,7 +11,7 @@
     "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "cypress": "cypress run"
+    "cypress": "cypress run --config-file=cypress.config.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.5.10",
