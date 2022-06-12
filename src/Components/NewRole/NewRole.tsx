@@ -13,34 +13,36 @@ import {
 import React, { useState } from 'react';
 
 import { Button as MyButton } from '../Button';
-import {styled} from "@mui/material/styles"
+import { styled } from '@mui/material/styles';
 
-const Button = styled(MyButton)({
-  
-})
-export default function NewRole() {
+const Button = styled(MyButton)({});
+export default function NewRole({
+  onSubmit,
+}: {
+  onSubmit:  (name: string, permissions: any) => boolean;
+}) {
   // states
-  const [name, setName] = useState("")
-  const [viewPerson, setViewPerson] = useState(false)
+  const [name, setName] = useState('');
+  const [viewPerson, setViewPerson] = useState(false);
   const [createPerson, setCreatePerson] = useState(false);
   const [editPerson, setEditPerson] = useState(false);
   const [deletePerson, setDeletePerson] = useState(false);
-  const [viewPlace, setViewPlace] = useState(false)
+  const [viewPlace, setViewPlace] = useState(false);
   const [createPlace, setCreatePlace] = useState(false);
   const [editPlace, setEditPlace] = useState(false);
   const [deletePlace, setDeletePlace] = useState(false);
-  const [viewLicense, setViewLicense] = useState(false)
-  const [createLicense, setCreateLicense] = useState(false)
-  const [editLicense, setEditLicense] = useState(false)
-  const [deleteLicense, setDeleteLicense] = useState(false)
-  const [viewEquipmentAndAsset, setViewEquipmentAndAsset] = useState(false)
-  const [createEquipmentAndAsset, setCreateEquipmentAndAsset] = useState(false)
-  const [editEquipmentAndAsset, setEditEquipmentAndAsset] = useState(false)
-  const [deleteEquipmentAndAsset, setDeleteEquipmentAndAsset] = useState(false)
-  const [viweTag, setViweTag] = useState(false)
-  const [createTag, setCreateTag] = useState(false)
-  const [editTag, setEditTag] = useState(false)
-  const [deleteTag, setDeleteTag] = useState(false)
+  const [viewLicense, setViewLicense] = useState(false);
+  const [createLicense, setCreateLicense] = useState(false);
+  const [editLicense, setEditLicense] = useState(false);
+  const [deleteLicense, setDeleteLicense] = useState(false);
+  const [viewEquipmentAndAsset, setViewEquipmentAndAsset] = useState(false);
+  const [createEquipmentAndAsset, setCreateEquipmentAndAsset] = useState(false);
+  const [editEquipmentAndAsset, setEditEquipmentAndAsset] = useState(false);
+  const [deleteEquipmentAndAsset, setDeleteEquipmentAndAsset] = useState(false);
+  const [viweTag, setViweTag] = useState(false);
+  const [createTag, setCreateTag] = useState(false);
+  const [editTag, setEditTag] = useState(false);
+  const [deleteTag, setDeleteTag] = useState(false);
   return (
     <Stack spacing={2} divider={<Divider flexItem />} alignItems='center'>
       <TextField
@@ -326,6 +328,7 @@ export default function NewRole() {
         color='success'
         size='large'
         sx={{ alignSelf: 'flex-end' }}
+        onClick={()=>onSubmit(name, {viweTag, viewLicense, viewEquipmentAndAsset, viewPerson, viewPlace})}
       />
     </Stack>
   );

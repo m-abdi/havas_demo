@@ -2,9 +2,8 @@ import '../public/css/fonts.css';
 import 'react-spinner-animated/dist/index.css';
 import '../src/NextJsServerSecurityToken';
 
-import * as React from 'react';
-
 import { CacheProvider, EmotionCache } from '@emotion/react';
+import React, { useState } from 'react';
 
 import { AppProps } from 'next/app';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -26,6 +25,15 @@ const cacheRtl = createCache({
 function RTL(props: any) {
   return <CacheProvider value={cacheRtl}>{props.children}</CacheProvider>;
 }
+//snackbar context for messages
+export const SnackbarContext = createContext({
+  snackbarOpen: false,
+  setSnackbarOpen: (status: boolean) => {},
+  snackbarMessage: '' as string,
+  setSnackbarMessage: (message: string) => {},
+  snackbarColor: 'success' as 'success' | 'error' | 'info',
+  setSnackbarColor: (color: 'success' | 'error' | 'info') => {},
+});
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -33,18 +41,40 @@ const clientSideEmotionCache = createEmotionCache();
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
-export const InfoContext = createContext({});
+export const InfoContext = createContext(undefined);
 
 export default function MyApp(props: MyAppProps) {
   // custom context
   const [info, setInfo] = React.useState({
-    data: {
-      pageName: 'داشبورد',
-    },
-    changePageName: (newName: string) => {
-      setInfo({ ...info, data: { pageName: newName } });
-    },
+    pageName: 'داشبورد',
   });
+  const infoContext:any = React.useMemo(
+    () => ({
+      pageName: info.pageName,
+      changePageName: (newName: string) => {
+        setInfo({ ...info, pageName: newName });
+      },
+    }),
+    [info]
+  );
+  // snackbar states
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarColor, setSnackbarColor] = useState(
+    'success' as 'success' | 'error' | 'info'
+  );
+  const snackbarData: any = React.useMemo(
+    () => ({
+      snackbarOpen,
+      setSnackbarOpen,
+      snackbarMessage,
+      setSnackbarMessage,
+      snackbarColor,
+      setSnackbarColor,
+    }),
+    [snackbarOpen, snackbarMessage, snackbarColor, snackbarOpen]
+  );
+  //
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   return (
     <CacheProvider value={emotionCache}>
@@ -53,13 +83,15 @@ export default function MyApp(props: MyAppProps) {
           <meta name='viewport' content='initial-scale=1, width=device-width' />
         </Head>
         <ThemeProvider theme={theme}>
-          <InfoContext.Provider  value={info}>
-            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-            <CssBaseline />
-            <SessionProvider session={props.pageProps.session}>
-              <Component {...pageProps} />
-            </SessionProvider>
-          </InfoContext.Provider>
+          <SnackbarContext.Provider value={snackbarData}>
+            <InfoContext.Provider value={infoContext}>
+              {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+              <CssBaseline />
+              <SessionProvider session={props.pageProps.session}>
+                <Component {...pageProps} />
+              </SessionProvider>
+            </InfoContext.Provider>
+          </SnackbarContext.Provider>
         </ThemeProvider>
       </RTL>
     </CacheProvider>
