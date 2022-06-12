@@ -1,10 +1,12 @@
-import { Box, Checkbox, FilledInput, FormControl, FormControlLabel, FormLabel, Input, InputBase, InputLabel, styled, Tab, TextField, Typography } from '@mui/material'
-import React from 'react'
-import ChatIcon from '@mui/icons-material/Chat';
-import CallIcon from '@mui/icons-material/Call';
-import HomeIcon from '@mui/icons-material/Home';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { Box, Checkbox, FilledInput, FormControl, FormControlLabel, FormLabel, Input, InputBase, InputLabel, Tab, TextField, Typography, styled } from '@mui/material'
 import { TabContext, TabList, TabPanel } from '@mui/lab';
+
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import CallIcon from '@mui/icons-material/Call';
+import ChatIcon from '@mui/icons-material/Chat';
+import HomeIcon from '@mui/icons-material/Home';
+import Layout from 'src/Components/Layout';
+import React from 'react'
 
 const Form1 = styled('form',{name:'form1'})(({ theme }) => ({
   flexBasis:'100%',
@@ -61,7 +63,7 @@ export default function newPerson() {
 
   function Person(){
     return(
-      <>
+      <Layout>
         <Section >
           <Titr>
             <ChatIcon/>
@@ -86,7 +88,7 @@ export default function newPerson() {
         </Section>
         <Address/>
         <Call/>
-      </>
+      </Layout>
     )
   };
 

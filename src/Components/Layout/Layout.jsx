@@ -42,6 +42,7 @@ import Inventory2RoundedIcon from '@mui/icons-material/Inventory2Rounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import MenuIcon from '@mui/icons-material/Menu';
 import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
+import PermIdentityRoundedIcon from '@mui/icons-material/PermIdentityRounded';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import StyleRoundedIcon from '@mui/icons-material/StyleRounded';
@@ -77,6 +78,7 @@ const PageContent = styled('main', { name: 'PageContent' })(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   height: 'fit-content',
+  padding: 20,
 }));
 
 function Navbar({ children }) {
@@ -92,6 +94,7 @@ function Navbar({ children }) {
     3: false,
     4: false,
     5: false,
+    6:false
   });
   //
   const { data: session } = useSession();
@@ -131,8 +134,26 @@ function Navbar({ children }) {
       ],
     },
     {
-      text: 'اشخاص/اماکن',
+      text: 'نقش ها',
       id: 2,
+      icon: <PermIdentityRoundedIcon />,
+      path: false,
+      sublists: [
+        {
+          text: 'نقش جدید',
+          icon: <AddCircleOutlineOutlined />,
+          path: '/users/newRole',
+        },
+        {
+          text: 'مشاهده نقش ها',
+          icon: <SearchRoundedIcon />,
+          path: '/users/roles',
+        },
+      ],
+    },
+    {
+      text: 'اشخاص/اماکن',
+      id: 3,
       icon: <PeopleAltRoundedIcon />,
       path: false,
       sublists: [
@@ -160,7 +181,7 @@ function Navbar({ children }) {
     },
     {
       text: 'تجهیزات / موجودی',
-      id: 3,
+      id: 4,
       icon: <Inventory2RoundedIcon />,
       sublists: [
         {
@@ -187,7 +208,7 @@ function Navbar({ children }) {
     },
     {
       text: 'مجوزها',
-      id: 4,
+      id: 5,
       icon: <WorkspacePremiumRoundedIcon />,
       sublists: [
         {

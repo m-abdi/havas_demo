@@ -12,8 +12,15 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 
+import { Button as MyButton } from '../Button';
+import {styled} from "@mui/material/styles"
+
+const Button = styled(MyButton)({
+  
+})
 export default function NewRole() {
   // states
+  const [name, setName] = useState("")
   const [createPerson, setCreatePerson] = useState(false);
   const [editPerson, setEditPerson] = useState(false);
   const [deletePerson, setDeletePerson] = useState(false);
@@ -36,8 +43,11 @@ export default function NewRole() {
         label='نام نقش مورد نظر را وارد کنید'
         type='text'
         size='small'
+        value={name}
         sx={{ inlineSize: 300 }}
+        onChange={(e)=>setName(e.target.value)}
       />
+      {/* Permissions دسترسی ها */}
       <Box
         sx={{
           display: 'flex',
@@ -248,11 +258,12 @@ export default function NewRole() {
                   />
                 }
                 label='حذف مجوز'
-              />
+              />  
             </FormGroup>
           </FormControl>
         </Stack>
       </Box>
+      <Button label="ثبت" color='success' size='large' sx={{alignSelf: "flex-end"}}  />
     </Stack>
   );
 }
