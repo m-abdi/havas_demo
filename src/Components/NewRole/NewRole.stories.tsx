@@ -18,7 +18,7 @@ export default {
 } as ComponentMeta<typeof NewRole>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof NewRole> = (args) => (
+const Template: ComponentStory<typeof NewRole> = (args:any) => (
   <NewRole {...args} />
 );
 
