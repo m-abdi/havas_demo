@@ -7,8 +7,9 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL_ELEPHANTSQL")
+  url      = env("DATABASE_URL")
 }
+
 // datasource db {
 //   provider = "sqlite"
 //   url      = "file:./dev.db"
@@ -32,7 +33,7 @@ model Person {
   roleId         String
   createdAt      DateTime  @default(now())
   editedAt       DateTime  @updatedAt
-  email          String?    @unique
+  email          String?   @unique
   fromLicenses   License[] @relation("fromLicenses")
   toLicenses     License[] @relation("toLicenses")
   password       String
@@ -112,24 +113,31 @@ model License {
 model Role {
   id              String   @id @default(uuid())
   name            String?
+  viewPerson      Boolean  @default(false)
   createPerson    Boolean
   editPerson      Boolean
   deletePerson    Boolean
+  viewPlace       Boolean  @default(false)
   createPlace     Boolean
   editPlace       Boolean
   deletePlace     Boolean
+  viewEquipment   Boolean  @default(false)
   createEquipment Boolean
   editEquipment   Boolean
   deleteEquipment Boolean
+  viewAsset       Boolean  @default(false)
   createAsset     Boolean
   editAsset       Boolean
   deleteAsset     Boolean
+  viewLicense     Boolean  @default(false)
   createLicense   Boolean
   editLicense     Boolean
   deleteLicense   Boolean
+  viewTag         Boolean  @default(false)
   createTag       Boolean
   editTag         Boolean
   deleteTag       Boolean
+  viewRole        Boolean  @default(false)
   createRole      Boolean
   editRole        Boolean
   deleteRole      Boolean

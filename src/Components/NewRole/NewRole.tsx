@@ -21,18 +21,23 @@ const Button = styled(MyButton)({
 export default function NewRole() {
   // states
   const [name, setName] = useState("")
+  const [viewPerson, setViewPerson] = useState(false)
   const [createPerson, setCreatePerson] = useState(false);
   const [editPerson, setEditPerson] = useState(false);
   const [deletePerson, setDeletePerson] = useState(false);
+  const [viewPlace, setViewPlace] = useState(false)
   const [createPlace, setCreatePlace] = useState(false);
   const [editPlace, setEditPlace] = useState(false);
   const [deletePlace, setDeletePlace] = useState(false);
+  const [viewLicense, setViewLicense] = useState(false)
   const [createLicense, setCreateLicense] = useState(false)
   const [editLicense, setEditLicense] = useState(false)
   const [deleteLicense, setDeleteLicense] = useState(false)
+  const [viewEquipmentAndAsset, setViewEquipmentAndAsset] = useState(false)
   const [createEquipmentAndAsset, setCreateEquipmentAndAsset] = useState(false)
   const [editEquipmentAndAsset, setEditEquipmentAndAsset] = useState(false)
   const [deleteEquipmentAndAsset, setDeleteEquipmentAndAsset] = useState(false)
+  const [viweTag, setViweTag] = useState(false)
   const [createTag, setCreateTag] = useState(false)
   const [editTag, setEditTag] = useState(false)
   const [deleteTag, setDeleteTag] = useState(false)
@@ -45,7 +50,7 @@ export default function NewRole() {
         size='small'
         value={name}
         sx={{ inlineSize: 300 }}
-        onChange={(e)=>setName(e.target.value)}
+        onChange={(e) => setName(e.target.value)}
       />
       {/* Permissions دسترسی ها */}
       <Box
@@ -79,6 +84,16 @@ export default function NewRole() {
           <FormControl>
             <FormLabel>اشخاص</FormLabel>
             <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    color='secondary'
+                    checked={viewPerson}
+                    onChange={() => setViewPerson(!viewPerson)}
+                  />
+                }
+                label='مشاهده اشخاص'
+              />
               <FormControlLabel
                 control={
                   <Checkbox
@@ -118,6 +133,16 @@ export default function NewRole() {
               <FormControlLabel
                 control={
                   <Checkbox
+                    color='secondary'
+                    checked={viewPlace}
+                    onChange={() => setViewPlace(!viewPlace)}
+                  />
+                }
+                label='مشاهده اماکن'
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
                     color='success'
                     checked={createPlace}
                     onChange={() => setCreatePlace(!createPlace)}
@@ -154,6 +179,18 @@ export default function NewRole() {
               <FormControlLabel
                 control={
                   <Checkbox
+                    color='secondary'
+                    checked={viewEquipmentAndAsset}
+                    onChange={() =>
+                      setViewEquipmentAndAsset(!viewEquipmentAndAsset)
+                    }
+                  />
+                }
+                label='مشاهده تجهیزات و موجودی'
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
                     color='success'
                     checked={createEquipmentAndAsset}
                     onChange={() =>
@@ -163,6 +200,7 @@ export default function NewRole() {
                 }
                 label='ایجاد تجهیزات و موجودی'
               />
+
               <FormControlLabel
                 control={
                   <Checkbox
@@ -193,6 +231,16 @@ export default function NewRole() {
           <FormControl>
             <FormLabel>تگ ها</FormLabel>
             <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    color='secondary'
+                    checked={viweTag}
+                    onChange={() => setViweTag(!viweTag)}
+                  />
+                }
+                label='مشاهده تگ'
+              />
               <FormControlLabel
                 control={
                   <Checkbox
@@ -232,6 +280,16 @@ export default function NewRole() {
               <FormControlLabel
                 control={
                   <Checkbox
+                    color='secondary'
+                    checked={viewLicense}
+                    onChange={() => setViewLicense(!viewLicense)}
+                  />
+                }
+                label='مشاهده مجوزها'
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
                     color='success'
                     checked={createLicense}
                     onChange={() => setCreateLicense(!createLicense)}
@@ -258,12 +316,17 @@ export default function NewRole() {
                   />
                 }
                 label='حذف مجوز'
-              />  
+              />
             </FormGroup>
           </FormControl>
         </Stack>
       </Box>
-      <Button label="ثبت" color='success' size='large' sx={{alignSelf: "flex-end"}}  />
+      <Button
+        label='ثبت'
+        color='success'
+        size='large'
+        sx={{ alignSelf: 'flex-end' }}
+      />
     </Stack>
   );
 }

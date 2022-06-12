@@ -80,24 +80,31 @@ const typeDefs = /* GraphQL */ `
   type Role {
     id: ID!
     name: String!
+    viewPerson: Boolean
     createPerson: Boolean
     editPerson: Boolean
     deletePerson: Boolean
+    viewPlace: Boolean
     createPlace: Boolean
     editPlace: Boolean
     deletePlace: Boolean
+    viewEquipment: Boolean
     createEquipment: Boolean
     editEquipment: Boolean
     deleteEquipment: Boolean
+    viewAsset: Boolean
     createAsset: Boolean
     editAsset: Boolean
     deleteAsset: Boolean
+    viewLicense: Boolean
     createLicense: Boolean
     editLicense: Boolean
     deleteLicense: Boolean
+    viewTag: Boolean
     createTag: Boolean
     editTag: Boolean
     deleteTag: Boolean
+    viewRole: Boolean
     createRole: Boolean
     editRole: Boolean
     deleteRole: Boolean
@@ -106,8 +113,6 @@ const typeDefs = /* GraphQL */ `
   type Query {
     person(id: ID!): Person
   }
-
-
 `;
 
 export default typeDefs;

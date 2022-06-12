@@ -1,0 +1,11 @@
+-- AlterTable
+ALTER TABLE "Person" ALTER COLUMN "email" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "Role" ADD COLUMN     "viewAsset" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "viewEquipment" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "viewLicense" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "viewPerson" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "viewPlace" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "viewRole" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "viewTag" BOOLEAN NOT NULL DEFAULT false;
