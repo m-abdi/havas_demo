@@ -1,5 +1,4 @@
 import { Box, Checkbox, FilledInput, FormControl, FormControlLabel, FormLabel, Input, InputBase, InputLabel, Tab, TextField, Typography, styled } from '@mui/material'
-import { TabContext, TabList, TabPanel } from '@mui/lab';
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CallIcon from '@mui/icons-material/Call';
@@ -62,12 +61,14 @@ const Label1 = styled('label',{name:'Label1'})(({theme}) => ({
 export default function newPerson() {
 
   function Person(){
-    return(
+    return (
       <Layout>
-        <Section >
+        <Section>
           <Titr>
-            <ChatIcon/>
-            <Typography sx={{paddingBottom:'5px', paddingRight:'5px'}}>عمومی</Typography>
+            <ChatIcon />
+            <Typography sx={{ paddingBottom: '5px', paddingRight: '5px' }}>
+              عمومی
+            </Typography>
           </Titr>
           <Row1>
             <Input1>
@@ -75,7 +76,7 @@ export default function newPerson() {
               <TextField />
             </Input1>
             <Input1>
-              <Label1 sx={{marginLeft:'0px !important'}}>مسولیت</Label1>
+              <Label1 sx={{ marginLeft: '0px !important' }}>مسولیت</Label1>
               <TextField />
             </Input1>
           </Row1>
@@ -86,10 +87,10 @@ export default function newPerson() {
             </Input1>
           </Row1>
         </Section>
-        <Address/>
-        <Call/>
+        <Address />
+        <Call />
       </Layout>
-    )
+    );
   };
 
   function Address(){
