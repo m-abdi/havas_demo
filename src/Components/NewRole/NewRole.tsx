@@ -17,6 +17,18 @@ export default function NewRole() {
   const [createPerson, setCreatePerson] = useState(false);
   const [editPerson, setEditPerson] = useState(false);
   const [deletePerson, setDeletePerson] = useState(false);
+  const [createPlace, setCreatePlace] = useState(false);
+  const [editPlace, setEditPlace] = useState(false);
+  const [deletePlace, setDeletePlace] = useState(false);
+  const [createLicense, setCreateLicense] = useState(false)
+  const [editLicense, setEditLicense] = useState(false)
+  const [deleteLicense, setDeleteLicense] = useState(false)
+  const [createEquipmentAndAsset, setCreateEquipmentAndAsset] = useState(false)
+  const [editEquipmentAndAsset, setEditEquipmentAndAsset] = useState(false)
+  const [deleteEquipmentAndAsset, setDeleteEquipmentAndAsset] = useState(false)
+  const [createTag, setCreateTag] = useState(false)
+  const [editTag, setEditTag] = useState(false)
+  const [deleteTag, setDeleteTag] = useState(false)
   return (
     <Stack spacing={2} divider={<Divider flexItem />} alignItems='center'>
       <TextField
@@ -41,7 +53,7 @@ export default function NewRole() {
             backgroundColor: 'info.main',
             p: 1,
             borderRadius: '10px',
-            transform: {md: "rotate(-90deg)"}
+            transform: { md: 'rotate(-90deg)' },
           }}
         >
           دسترسی ها
@@ -97,8 +109,8 @@ export default function NewRole() {
                 control={
                   <Checkbox
                     color='success'
-                    checked={createPerson}
-                    onChange={() => setCreatePerson(!createPerson)}
+                    checked={createPlace}
+                    onChange={() => setCreatePlace(!createPlace)}
                   />
                 }
                 label='ایجاد اماکن'
@@ -107,8 +119,8 @@ export default function NewRole() {
                 control={
                   <Checkbox
                     color='info'
-                    checked={editPerson}
-                    onChange={() => setEditPerson(!editPerson)}
+                    checked={editPlace}
+                    onChange={() => setEditPlace(!editPlace)}
                   />
                 }
                 label='ویرایش اماکن'
@@ -117,8 +129,8 @@ export default function NewRole() {
                 control={
                   <Checkbox
                     color='error'
-                    checked={deletePerson}
-                    onChange={() => setDeletePerson(!deletePerson)}
+                    checked={deletePlace}
+                    onChange={() => setDeletePlace(!deletePlace)}
                   />
                 }
                 label='حذف اماکن'
@@ -127,14 +139,16 @@ export default function NewRole() {
           </FormControl>
           {/* تجهیزات و موجودی */}
           <FormControl>
-            <FormLabel>اشخاص</FormLabel>
+            <FormLabel>تجهیزات و موجودی</FormLabel>
             <FormGroup>
               <FormControlLabel
                 control={
                   <Checkbox
                     color='success'
-                    checked={createPerson}
-                    onChange={() => setCreatePerson(!createPerson)}
+                    checked={createEquipmentAndAsset}
+                    onChange={() =>
+                      setCreateEquipmentAndAsset(!createEquipmentAndAsset)
+                    }
                   />
                 }
                 label='ایجاد تجهیزات و موجودی'
@@ -143,8 +157,10 @@ export default function NewRole() {
                 control={
                   <Checkbox
                     color='info'
-                    checked={editPerson}
-                    onChange={() => setEditPerson(!editPerson)}
+                    checked={editEquipmentAndAsset}
+                    onChange={() =>
+                      setEditEquipmentAndAsset(!editEquipmentAndAsset)
+                    }
                   />
                 }
                 label='ویرایش تجهیزات و موجودی'
@@ -153,8 +169,10 @@ export default function NewRole() {
                 control={
                   <Checkbox
                     color='error'
-                    checked={deletePerson}
-                    onChange={() => setDeletePerson(!deletePerson)}
+                    checked={deleteEquipmentAndAsset}
+                    onChange={() =>
+                      setDeleteEquipmentAndAsset(!deleteEquipmentAndAsset)
+                    }
                   />
                 }
                 label='حذف تجهیزات و موجودی'
@@ -169,8 +187,8 @@ export default function NewRole() {
                 control={
                   <Checkbox
                     color='success'
-                    checked={createPerson}
-                    onChange={() => setCreatePerson(!createPerson)}
+                    checked={createTag}
+                    onChange={() => setCreateTag(!createTag)}
                   />
                 }
                 label='ایجاد تگ'
@@ -179,8 +197,8 @@ export default function NewRole() {
                 control={
                   <Checkbox
                     color='info'
-                    checked={editPerson}
-                    onChange={() => setEditPerson(!editPerson)}
+                    checked={editTag}
+                    onChange={() => setEditTag(!editTag)}
                   />
                 }
                 label='ویرایش تگ'
@@ -189,8 +207,8 @@ export default function NewRole() {
                 control={
                   <Checkbox
                     color='error'
-                    checked={deletePerson}
-                    onChange={() => setDeletePerson(!deletePerson)}
+                    checked={deleteTag}
+                    onChange={() => setDeleteTag(!deleteTag)}
                   />
                 }
                 label='حذف تگ'
@@ -205,8 +223,8 @@ export default function NewRole() {
                 control={
                   <Checkbox
                     color='success'
-                    checked={createPerson}
-                    onChange={() => setCreatePerson(!createPerson)}
+                    checked={createLicense}
+                    onChange={() => setCreateLicense(!createLicense)}
                   />
                 }
                 label='درخواست مجوز'
@@ -215,8 +233,8 @@ export default function NewRole() {
                 control={
                   <Checkbox
                     color='info'
-                    checked={editPerson}
-                    onChange={() => setEditPerson(!editPerson)}
+                    checked={editLicense}
+                    onChange={() => setEditLicense(!editLicense)}
                   />
                 }
                 label='ویرایش مجوز'
@@ -225,8 +243,8 @@ export default function NewRole() {
                 control={
                   <Checkbox
                     color='error'
-                    checked={deletePerson}
-                    onChange={() => setDeletePerson(!deletePerson)}
+                    checked={deleteLicense}
+                    onChange={() => setDeleteLicense(!deleteLicense)}
                   />
                 }
                 label='حذف مجوز'

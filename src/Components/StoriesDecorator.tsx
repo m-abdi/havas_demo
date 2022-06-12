@@ -1,7 +1,6 @@
 import { CacheProvider, EmotionCache } from '@emotion/react';
 
 import React from 'react';
-import { SessionProvider } from 'next-auth/react';
 import { Stack } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import createCache from '@emotion/cache';
@@ -35,7 +34,6 @@ export default function StoriesDecorator({
   return (
     <RTL>
       <ThemeProvider theme={theme}>
-        <SessionProvider>
           <Stack
             alignItems={'center'}
             justifyContent='center'
@@ -43,7 +41,6 @@ export default function StoriesDecorator({
           >
             {children}
           </Stack>
-        </SessionProvider>
       </ThemeProvider>
     </RTL>
   );

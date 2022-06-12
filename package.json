@@ -11,7 +11,9 @@
     "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "cypress": "cypress run --config-file=cypress.config.ts"
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run --config-file=cypress.config.ts",
+    "chromatic": "chromatic --exit-zero-on-changes"
   },
   "dependencies": {
     "@apollo/client": "^3.5.10",
@@ -56,8 +58,10 @@
     "@storybook/addon-interactions": "^6.5.8",
     "@storybook/addon-links": "^6.5.8",
     "@storybook/builder-webpack5": "^6.5.8",
+    "@storybook/jest": "^0.0.10",
     "@storybook/manager-webpack5": "^6.5.8",
     "@storybook/react": "^6.5.8",
+    "@storybook/test-runner": "^0.1.1",
     "@storybook/testing-library": "^0.0.12",
     "@types/crypto-js": "^4.1.1",
     "@types/jest": "^27.0.2",
@@ -83,7 +87,7 @@
     "eslint-plugin-react": "^7.30.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-storybook": "^0.5.12",
-    "jest": "^27.2.5",
+    "jest": "^28.1.1",
     "prisma": "^3.14.0",
     "ts-node": "10.8.0",
     "typescript": "latest",
