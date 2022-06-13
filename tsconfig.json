@@ -28,5 +28,5 @@
     "src/PahoClient.js",
     "src/Components/Layout/Layout.jsx"
   ],
-  "exclude": ["node_modules", ".cache", "lib", "cypress"]
+  "exclude": ["node_modules", ".cache", "lib", "commands.ts"]
 }

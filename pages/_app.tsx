@@ -5,6 +5,7 @@ import '../src/NextJsServerSecurityToken';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import React, { useState } from 'react';
 
+import { ApolloProvider } from '@apollo/client';
 import { AppProps } from 'next/app';
 import CssBaseline from '@mui/material/CssBaseline';
 import Head from 'next/head';
@@ -16,6 +17,7 @@ import createEmotionCache from '../src/createEmotionCache';
 import { prefixer } from 'stylis';
 import rtlPlugin from 'stylis-plugin-rtl';
 import theme from '../src/theme';
+import { useApollo } from '../lib/apollo';
 
 // Create rtl cache
 const cacheRtl = createCache({
@@ -48,7 +50,7 @@ export default function MyApp(props: MyAppProps) {
   const [info, setInfo] = React.useState({
     pageName: 'داشبورد',
   });
-  const infoContext:any = React.useMemo(
+  const infoContext: any = React.useMemo(
     () => ({
       pageName: info.pageName,
       changePageName: (newName: string) => {
@@ -76,23 +78,28 @@ export default function MyApp(props: MyAppProps) {
   );
   //
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  //
+  const apolloClient = useApollo(pageProps.initialApolloState);
+
   return (
     <CacheProvider value={emotionCache}>
       <RTL>
         <Head>
           <meta name='viewport' content='initial-scale=1, width=device-width' />
         </Head>
-        <ThemeProvider theme={theme}>
-          <SnackbarContext.Provider value={snackbarData}>
-            <InfoContext.Provider value={infoContext}>
-              {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-              <CssBaseline />
-              <SessionProvider session={props.pageProps.session}>
-                <Component {...pageProps} />
-              </SessionProvider>
-            </InfoContext.Provider>
-          </SnackbarContext.Provider>
-        </ThemeProvider>
+        <ApolloProvider client={apolloClient}>
+          <ThemeProvider theme={theme}>
+            <SnackbarContext.Provider value={snackbarData}>
+              <InfoContext.Provider value={infoContext}>
+                {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                <CssBaseline />
+                <SessionProvider session={props.pageProps.session}>
+                  <Component {...pageProps} />
+                </SessionProvider>
+              </InfoContext.Provider>
+            </SnackbarContext.Provider>
+          </ThemeProvider>
+        </ApolloProvider>
       </RTL>
     </CacheProvider>
   );

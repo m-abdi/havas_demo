@@ -4,9 +4,8 @@ import 'dotenv/config';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import NextAuth from 'next-auth';
-import { PrismaClient } from '@prisma/client';
+import prisma from "../../../prisma/client"
 
-const prisma = new PrismaClient();
 export default NextAuth({
   pages: {
     signIn: '/users/login',

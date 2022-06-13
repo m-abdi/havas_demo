@@ -1,4 +1,4 @@
-import Button from "../../src/Components/Button"
+import {Button} from "../../src/Components/Button"
 import Providers from "../../src/Components/StoriesDecorator"
 describe('ComponentName.cy.ts', () => {
   it('playground', () => {

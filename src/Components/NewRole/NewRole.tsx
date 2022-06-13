@@ -10,16 +10,16 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 
 import { Button as MyButton } from '../Button';
 import { styled } from '@mui/material/styles';
 
 const Button = styled(MyButton)({});
-export default function NewRole({
+export default memo(function NewRole({
   onSubmit,
 }: {
-  onSubmit:  (name: string, permissions: any) => boolean;
+  onSubmit: (name: string, permissions: any) => Promise<boolean>;
 }) {
   // states
   const [name, setName] = useState('');
@@ -39,7 +39,7 @@ export default function NewRole({
   const [createEquipmentAndAsset, setCreateEquipmentAndAsset] = useState(false);
   const [editEquipmentAndAsset, setEditEquipmentAndAsset] = useState(false);
   const [deleteEquipmentAndAsset, setDeleteEquipmentAndAsset] = useState(false);
-  const [viweTag, setViweTag] = useState(false);
+  const [viewTag, setViewTag] = useState(false);
   const [createTag, setCreateTag] = useState(false);
   const [editTag, setEditTag] = useState(false);
   const [deleteTag, setDeleteTag] = useState(false);
@@ -237,8 +237,8 @@ export default function NewRole({
                 control={
                   <Checkbox
                     color='secondary'
-                    checked={viweTag}
-                    onChange={() => setViweTag(!viweTag)}
+                    checked={viewTag}
+                    onChange={() => setViewTag(!viewTag)}
                   />
                 }
                 label='مشاهده تگ'
@@ -324,12 +324,44 @@ export default function NewRole({
         </Stack>
       </Box>
       <Button
+        id='submit'
         label='ثبت'
         color='success'
         size='large'
         sx={{ alignSelf: 'flex-end' }}
-        onClick={()=>onSubmit(name, {viweTag, viewLicense, viewEquipmentAndAsset, viewPerson, viewPlace})}
+        onClick={() =>
+          onSubmit(name, {
+            viewPerson,
+            createPerson,
+            editPerson,
+            deletePerson,
+            viewPlace,
+            createPlace,
+            editPlace,
+            deletePlace,
+            viewEquipment: viewEquipmentAndAsset,
+            createEquipment: createEquipmentAndAsset,
+            editEquipment: editEquipmentAndAsset,
+            deleteEquipment: deleteEquipmentAndAsset,
+            viewAsset: viewEquipmentAndAsset,
+            createAsset: createEquipmentAndAsset,
+            editAsset: editEquipmentAndAsset,
+            deleteAsset: deleteEquipmentAndAsset,
+            viewLicense,
+            createLicense,
+            editLicense,
+            deleteLicense,
+            viewTag,
+            createTag,
+            editTag,
+            deleteTag,
+            viewRole: false,
+            createRole: false,
+            editRole: false,
+            deleteRole: false,
+          })
+        }
       />
     </Stack>
   );
-}
+});

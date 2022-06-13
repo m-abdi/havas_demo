@@ -6,14 +6,16 @@
     "codegen": "graphql-codegen -r ts-node/register",
     "dev": "yarn codegen && next",
     "build": "yarn codegen && next build",
-    "test": "yarn codegen && jest",
     "start": "next start",
     "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --config-file=cypress.config.ts",
-    "chromatic": "chromatic --exit-zero-on-changes"
+    "chromatic": "chromatic --project-token=8ff0f74c1ef0",
+    "cypress:run:c": "cypress run --component --browser chrome",
+    "cypress:run:e2e": "cypress run --e2e",
+    "test": "yarn codegen && yarn cypress:run:c && yarn cypress:run:e2e && yarn chromatic"
   },
   "dependencies": {
     "@apollo/client": "^3.5.10",
@@ -21,7 +23,7 @@
     "@emotion/react": "latest",
     "@emotion/server": "latest",
     "@emotion/styled": "latest",
-    "@graphql-tools/load-files": "6.0.18",
+    "@graphql-tools/load-files": "^6.5.4",
     "@graphql-tools/merge": "6.0.18",
     "@graphql-tools/schema": "6.0.18",
     "@graphql-yoga/node": "^2.2.1",
@@ -42,7 +44,8 @@
     "react-spinner-animated": "^3.1.1",
     "storybook": "^6.5.8",
     "stylis": "^4.1.1",
-    "stylis-plugin-rtl": "^2.1.1"
+    "stylis-plugin-rtl": "^2.1.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.18.2",
@@ -70,6 +73,7 @@
     "@types/react": "^18.0.12",
     "@types/react-dom": "^18.0.5",
     "@types/react-test-renderer": "^17.0.1",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
     "axe-playwright": "^1.1.11",
@@ -85,7 +89,7 @@
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.30.0",
-    "eslint-plugin-react-hooks": "^4.3.0",
+    "eslint-plugin-react-hooks": "^4.5.0",
     "eslint-plugin-storybook": "^0.5.12",
     "jest": "^28.1.1",
     "prisma": "^3.14.0",

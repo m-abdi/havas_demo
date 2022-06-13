@@ -34,10 +34,8 @@ export default function SignIn() {
   const router = useRouter();
   const { data: session, status } = useSession();
   //
-  // redirect to user panel if already loged in -->
-  console.log(status);
-  
-  if (status=== "authenticated") {
+  // redirect to user panel if already loged in -->  
+  if (status=== "authenticated" && typeof window !== "undefined") {
     router.push('/users/dashboard');
   }
   return (

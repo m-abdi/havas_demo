@@ -22,7 +22,7 @@ const Template: ComponentStory<typeof NewRole> = (args:any) => (
   <NewRole {...args} />
 );
 
-export const Contained = Template.bind({});
+export const Default = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 
 

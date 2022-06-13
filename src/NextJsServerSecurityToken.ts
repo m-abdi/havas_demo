@@ -13,7 +13,7 @@ const p = cryptoJs.AES.decrypt(
 ServerCryptography.configure(
   (componentName) =>
     n.toString(cryptoJs.enc.Utf8) +
-    ' ' +
+    '-' +
     p.toString(cryptoJs.enc.Utf8) +
     ' ' +
     componentName

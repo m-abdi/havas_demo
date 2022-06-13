@@ -318,7 +318,7 @@ function Navbar({ children }) {
             </IconButton>
             <Typography component='h1' variant='h5' sx={{ fontSize: '1.2rem' }}>
               {' '}
-              {infoContext?.data?.pageName}
+              {infoContext?.pageName}
             </Typography>
           </AppBar2>
           {/* اطلاعات صفحه */}
