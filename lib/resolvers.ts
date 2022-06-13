@@ -13,10 +13,10 @@ const resolvers: Resolvers = {
     },
   },
   Mutation: {
-    async createRole(_parent, _args, _context, _info) {
+    async createRole(_parent, _args, _context, _info): Promise<any> {
       const databse = await prisma.role.create({
         data: {
-          name: _args.name,
+          name: _args.name as string,
           ..._args.permissions,
         },
       });
