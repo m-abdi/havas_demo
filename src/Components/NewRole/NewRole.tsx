@@ -43,6 +43,12 @@ export default memo(function NewRole({
   const [createTag, setCreateTag] = useState(false);
   const [editTag, setEditTag] = useState(false);
   const [deleteTag, setDeleteTag] = useState(false);
+  const [viewRole, setViewRole] = useState(false);
+  const [createRole, setCreateRole] = useState(false);
+  const [editRole, setEditRole] = useState(false);
+  const [deleteRole, setDeleteRole] = useState(false);
+
+  //
   return (
     <Stack spacing={2} divider={<Divider flexItem />} alignItems='center'>
       <TextField
@@ -101,12 +107,15 @@ export default memo(function NewRole({
                   <Checkbox
                     color='success'
                     checked={createPerson}
-                    onChange={() => setCreatePerson(!createPerson)}
+                    onChange={() => {
+                      setCreatePerson(!createPerson);
+                      setEditPerson(!editPerson);
+                    }}
                   />
                 }
-                label='ایجاد اشخاص'
+                label='ایجاد/ویرایش اشخاص'
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={
                   <Checkbox
                     color='info'
@@ -115,7 +124,7 @@ export default memo(function NewRole({
                   />
                 }
                 label='ویرایش اشخاص'
-              />
+              /> */}
               <FormControlLabel
                 control={
                   <Checkbox
@@ -147,12 +156,15 @@ export default memo(function NewRole({
                   <Checkbox
                     color='success'
                     checked={createPlace}
-                    onChange={() => setCreatePlace(!createPlace)}
+                    onChange={() => {
+                      setCreatePlace(!createPlace);
+                      setEditPlace(!editPlace);
+                    }}
                   />
                 }
-                label='ایجاد اماکن'
+                label='ایجاد/ویرایش اماکن'
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={
                   <Checkbox
                     color='info'
@@ -161,7 +173,7 @@ export default memo(function NewRole({
                   />
                 }
                 label='ویرایش اماکن'
-              />
+              /> */}
               <FormControlLabel
                 control={
                   <Checkbox
@@ -195,15 +207,16 @@ export default memo(function NewRole({
                   <Checkbox
                     color='success'
                     checked={createEquipmentAndAsset}
-                    onChange={() =>
-                      setCreateEquipmentAndAsset(!createEquipmentAndAsset)
-                    }
+                    onChange={() => {
+                      setCreateEquipmentAndAsset(!createEquipmentAndAsset);
+                      setEditEquipmentAndAsset(!editEquipmentAndAsset);
+                    }}
                   />
                 }
-                label='ایجاد تجهیزات و موجودی'
+                label='ایجاد/ویرایش تجهیزات و موجودی'
               />
 
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={
                   <Checkbox
                     color='info'
@@ -214,7 +227,7 @@ export default memo(function NewRole({
                   />
                 }
                 label='ویرایش تجهیزات و موجودی'
-              />
+              /> */}
               <FormControlLabel
                 control={
                   <Checkbox
@@ -248,12 +261,15 @@ export default memo(function NewRole({
                   <Checkbox
                     color='success'
                     checked={createTag}
-                    onChange={() => setCreateTag(!createTag)}
+                    onChange={() => {
+                      setCreateTag(!createTag);
+                      setEditTag(!editTag);
+                    }}
                   />
                 }
-                label='ایجاد تگ'
+                label='ایجاد/ویرایش تگ'
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={
                   <Checkbox
                     color='info'
@@ -262,7 +278,7 @@ export default memo(function NewRole({
                   />
                 }
                 label='ویرایش تگ'
-              />
+              /> */}
               <FormControlLabel
                 control={
                   <Checkbox
@@ -294,12 +310,15 @@ export default memo(function NewRole({
                   <Checkbox
                     color='success'
                     checked={createLicense}
-                    onChange={() => setCreateLicense(!createLicense)}
+                    onChange={() => {
+                      setCreateLicense(!createLicense);
+                      setEditLicense(!editLicense);
+                    }}
                   />
                 }
-                label='درخواست مجوز'
+                label='درخواست/ویرایش مجوز'
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={
                   <Checkbox
                     color='info'
@@ -308,7 +327,7 @@ export default memo(function NewRole({
                   />
                 }
                 label='ویرایش مجوز'
-              />
+              /> */}
               <FormControlLabel
                 control={
                   <Checkbox
@@ -318,6 +337,55 @@ export default memo(function NewRole({
                   />
                 }
                 label='حذف مجوز'
+              />
+            </FormGroup>
+          </FormControl>
+          {/*  نقش ها */}
+          <FormControl>
+            <FormLabel>نقش ها</FormLabel>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    color='secondary'
+                    checked={viewRole}
+                    onChange={() => setViewRole(!viewRole)}
+                  />
+                }
+                label='مشاهده نقش ها'
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    color='success'
+                    checked={createRole}
+                    onChange={() => {
+                      setCreateRole(!createRole);
+                      setEditRole(!editRole);
+                    }}
+                  />
+                }
+                label='درخواست/ویرایش نقش ها'
+              />
+              {/* <FormControlLabel
+                control={
+                  <Checkbox
+                    color='info'
+                    checked={editLicense}
+                    onChange={() => setEditLicense(!editLicense)}
+                  />
+                }
+                label='ویرایش مجوز'
+              /> */}
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    color='error'
+                    checked={deleteRole}
+                    onChange={() => setDeleteRole(!deleteRole)}
+                  />
+                }
+                label='حذف نقش ها'
               />
             </FormGroup>
           </FormControl>
@@ -355,10 +423,10 @@ export default memo(function NewRole({
             createTag,
             editTag,
             deleteTag,
-            viewRole: false,
-            createRole: false,
-            editRole: false,
-            deleteRole: false,
+            viewRole,
+            createRole,
+            editRole,
+            deleteRole,
           })
         }
       />
