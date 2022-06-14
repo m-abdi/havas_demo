@@ -1,25 +1,27 @@
-import  Head  from 'next/head';
+import React, { useContext, useEffect } from 'react';
+
+import AuthenticationRequired from 'src/AuthenticationRequired';
+import Head from 'next/head';
+import { InfoContext } from 'pages/_app';
 import Layout from '../../src/Components/Layout/Layout';
-import React from 'react';
+import Loader from 'src/Components/Loader';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+
+const pageName = 'داشبورد';
 export default function dashboard() {
-  const router = useRouter();
-  // check for expired sessions or not loged-in users ---> redirect to login page
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated() {
-      router.push('/users/login');
-    },
-  });
+  // page info context
+  const infoContext: any = useContext(InfoContext);
+  useEffect(() => {
+    infoContext.changePageName(pageName);
+  }, []);
+
   return (
-    <>
-    <Head>
-      <title>
-        داشبورد | حواس
-      </title>
-    </Head>
+    <AuthenticationRequired>
+      <Head>
+        <title>{`${pageName}`} | حواس</title>
+      </Head>
       <Layout>داشبورد</Layout>
-    </>
+    </AuthenticationRequired>
   );
 }

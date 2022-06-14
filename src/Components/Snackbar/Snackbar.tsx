@@ -18,8 +18,8 @@ export default function Snackbar(props: any) {
     <MuiSnackbar
       open={snackbarOpen}
       anchorOrigin={{
-        horizontal: "left",
-        vertical: smallScreensMatch ? "bottom" : "top",
+        horizontal: smallScreensMatch? "right": "left",
+        vertical: "bottom"
       }}
       autoHideDuration={6000}
       onClose={() => setSnackbarOpen(false)}

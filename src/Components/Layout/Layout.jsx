@@ -214,7 +214,7 @@ function Navbar({ children }) {
         {
           text: 'درخواست مجوز جدید',
           icon: <AddCircleOutlineOutlined />,
-          path: '/newLicense',
+          path: '/users/newLicense',
         },
         {
           text: 'مجوزهای ثبت شده',
@@ -321,6 +321,8 @@ function Navbar({ children }) {
               {infoContext?.pageName}
             </Typography>
           </AppBar2>
+          <ToolbarOffest />
+
           {/* اطلاعات صفحه */}
           <PageContent sx={{ inlineSize: 'inherit' }}>{children}</PageContent>
         </MainContent>
@@ -348,7 +350,6 @@ function Navbar({ children }) {
         >
           <ListItemButton
             onClick={() => {
-              infoContext.changePageName('داشبورد');
               router.push('/users/dashboard');
             }}
             sx={{
@@ -369,7 +370,6 @@ function Navbar({ children }) {
                 onClick={(event) => {
                   handleDrawList(event, item.id);
                   if (item?.path) {
-                    infoContext.changePageName(item.text);
                     router.push(item.path);
                   }
                 }}
@@ -390,7 +390,6 @@ function Navbar({ children }) {
                     <ListItemButton
                       key={sublist.text}
                       onClick={() => {
-                        infoContext.changePageName(sublist.text);
                         router.push(sublist.path);
                       }}
                       sx={{

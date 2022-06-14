@@ -43,14 +43,17 @@ const clientSideEmotionCache = createEmotionCache();
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
-export const InfoContext = createContext(undefined);
+export const InfoContext = createContext({
+  pageName: "داشبورد", 
+  changePageName: (newName: string)=>{}
+});
 
 export default function MyApp(props: MyAppProps) {
   // custom context
   const [info, setInfo] = React.useState({
     pageName: 'داشبورد',
   });
-  const infoContext: any = React.useMemo(
+  const infoContext: {pageName: string, changePageName: (newName: string)=>void} = React.useMemo(
     () => ({
       pageName: info.pageName,
       changePageName: (newName: string) => {
@@ -74,7 +77,7 @@ export default function MyApp(props: MyAppProps) {
       snackbarColor,
       setSnackbarColor,
     }),
-    [snackbarOpen, snackbarMessage, snackbarColor, snackbarOpen]
+    [snackbarOpen, snackbarMessage, snackbarColor]
   );
   //
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;

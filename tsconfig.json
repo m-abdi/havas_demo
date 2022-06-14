@@ -26,7 +26,6 @@
     "types/**/*.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/PahoClient.js",
-    "src/Components/Layout/Layout.jsx",
+    "src/Components/Layout/Layout.tsx"
   ]
 }

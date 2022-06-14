@@ -62,6 +62,7 @@ export default function newPerson() {
 
   function Person(){
     return (
+      
       <Layout>
         <Section>
           <Titr>
