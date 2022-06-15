@@ -141,6 +141,7 @@ const typeDefs = /* GraphQL */ `
 
   type Query {
     person(id: ID!): Person
+    roles: [Role]
   }
   type Mutation {
     createRole(name: String!, permissions: Permissions!): Role!

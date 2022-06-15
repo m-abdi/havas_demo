@@ -30,6 +30,7 @@
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
     "@prisma/client": "3.14.0",
+    "@tanstack/react-table": "^0.0.1-alpha.0",
     "@types/paho-mqtt": "^1.0.6",
     "@types/stylis": "^4.0.2",
     "crypto-js": "^4.1.1",

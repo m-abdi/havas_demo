@@ -1,2 +1,2 @@
 declare module 'react-spinner-animated';
-declare
+declare module "@tanstack/react-table"

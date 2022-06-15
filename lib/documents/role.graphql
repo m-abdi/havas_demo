@@ -1,7 +1,41 @@
-mutation createRole($name: String!, $permissions: Permissions!){
-    createRole(name: $name, permissions: $permissions) {
-        id
-        name
-    }
+mutation createRole($name: String!, $permissions: Permissions!) {
+  createRole(name: $name, permissions: $permissions) {
+    id
+    name
+  }
 }
 
+query roles {
+  roles {
+    id
+    name
+    viewPerson
+    createPerson
+    editPerson
+    deletePerson
+    viewPlace
+    createPlace
+    editPlace
+    deletePlace
+    viewEquipment
+    createEquipment
+    editEquipment
+    deleteEquipment
+    viewAsset
+    createAsset
+    editAsset
+    deleteAsset
+    viewLicense
+    createLicense
+    editLicense
+    deleteLicense
+    viewTag
+    createTag
+    editTag
+    deleteTag
+    viewRole
+    createRole
+    editRole
+    deleteRole
+  }
+}
