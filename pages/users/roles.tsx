@@ -1,7 +1,7 @@
 import Layout from 'src/Components/Layout';
 import Loader from 'src/Components/Loader';
 import React from 'react';
-import RoleTable from 'src/Components/RolesTable/RoleTable';
+import RoleTable from 'src/Components/RolesTable/RolesTable';
 import { RolesDocument } from 'lib/graphql-operations';
 import Snackbar from 'src/Components/Snackbar';
 import { useQuery } from '@apollo/client';
