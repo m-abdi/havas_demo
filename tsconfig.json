@@ -19,11 +19,13 @@
     "incremental": true,
     "types": ["axe-playwright"]
   },
-  "exclude": ["node_modules", ".cache", "lib", "cypress", "lib"],
+  "exclude": ["node_modules", ".cache", "lib", "cypress"],
   "include": [
     "next-env.d.ts",
     "graphql.d.ts",
-
+    "types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx",
     "src/Components/Layout/Layout.tsx"
 , "src/Components/RolesTable/RolesTable.tsx", "src/Components/RolesTable/q.jsx"  ]
 }

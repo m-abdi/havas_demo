@@ -1,4 +1,4 @@
-type RoleTable = {
+type RoleType = {
   createAsset?: boolean;
   createEquipment?: boolean;
   createLicense?: boolean;

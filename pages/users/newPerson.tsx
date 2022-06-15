@@ -1,11 +1,12 @@
 import { Box, Checkbox, FilledInput, FormControl, FormControlLabel, FormLabel, Input, InputBase, InputLabel, Tab, TextField, Typography, styled } from '@mui/material'
+import React, { useContext, useEffect } from 'react'
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CallIcon from '@mui/icons-material/Call';
 import ChatIcon from '@mui/icons-material/Chat';
 import HomeIcon from '@mui/icons-material/Home';
+import { InfoContext } from 'pages/_app';
 import Layout from 'src/Components/Layout';
-import React from 'react'
 
 const pageName = "شخص جدید"
 const Form1 = styled('form',{name:'form1'})(({ theme }) => ({
@@ -60,10 +61,13 @@ const Label1 = styled('label',{name:'Label1'})(({theme}) => ({
   }));
 
 export default function newPerson() {
-
-  function Person(){
+  // page info context
+  const infoContext: any = useContext(InfoContext);
+  useEffect(() => {
+    infoContext.changePageName(pageName);
+  }, []);
+  function Person() {
     return (
-      
       <>
         <Section>
           <Titr>
@@ -75,17 +79,17 @@ export default function newPerson() {
           <Row1>
             <Input1>
               <Label1>عنوان</Label1>
-              <TextField />
+              <TextField size='small' />
             </Input1>
             <Input1>
               <Label1 sx={{ marginLeft: '0px !important' }}>مسولیت</Label1>
-              <TextField />
+              <TextField size='small' />
             </Input1>
           </Row1>
           <Row1>
             <Input1>
               <Label1>مکان فعالیت</Label1>
-              <TextField />
+              <TextField size='small' />
             </Input1>
           </Row1>
         </Section>
@@ -93,93 +97,93 @@ export default function newPerson() {
         <Call />
       </>
     );
-  };
+  }
 
-  function Address(){
-    return(
-      <Section >
-      <Titr>
-        <HomeIcon/>
-        <Typography sx={{paddingRight:'5px'}}> اطلاعات آدرس</Typography>
-      </Titr>
-      <Row1>
-        <Input1>
-          <Label1>استان</Label1>
-          <TextField />
-        </Input1>
-        <Input1>
-          <Label1>شهر</Label1>
-          <TextField />
-        </Input1>
-        <Input1>
-          <Label1>کد پستی</Label1>
-          <TextField />
-        </Input1>
-      </Row1>
-      <Row1>
-        <Input1>
-          <Label1>آدرس</Label1>
-          <TextField />
-        </Input1>
-      </Row1>
+  function Address() {
+    return (
+      <Section>
+        <Titr>
+          <HomeIcon />
+          <Typography sx={{ paddingRight: '5px' }}> اطلاعات آدرس</Typography>
+        </Titr>
+        <Row1>
+          <Input1>
+            <Label1>استان</Label1>
+            <TextField size='small' />
+          </Input1>
+          <Input1>
+            <Label1>شهر</Label1>
+            <TextField size='small' />
+          </Input1>
+          <Input1>
+            <Label1>کد پستی</Label1>
+            <TextField size='small' />
+          </Input1>
+        </Row1>
+        <Row1>
+          <Input1>
+            <Label1>آدرس</Label1>
+            <TextField size='small' />
+          </Input1>
+        </Row1>
       </Section>
-    )
-  };
+    );
+  }
 
-  function Call(){
-    return(
-      <Section >
-      <Titr>
-        <CallIcon/>
-        <Typography sx={{paddingRight:'5px'}}>تماس</Typography>
-      </Titr>
-      <Row1>
-        <Input1>
-          <Label1>تلفن</Label1>
-          <TextField />
-        </Input1>
-        <Input1>
-          <Label1>موبایل</Label1>
-          <TextField />
-        </Input1>
-        <Input1>
-          <Label1>وبسایت</Label1>
-          <TextField />
-        </Input1>
-      </Row1>
-    </Section>
-    )
-  };
+  function Call() {
+    return (
+      <Section>
+        <Titr>
+          <CallIcon />
+          <Typography sx={{ paddingRight: '5px' }}>تماس</Typography>
+        </Titr>
+        <Row1>
+          <Input1>
+            <Label1>تلفن</Label1>
+            <TextField size='small' />
+          </Input1>
+          <Input1>
+            <Label1>موبایل</Label1>
+            <TextField size='small' />
+          </Input1>
+          <Input1>
+            <Label1>وبسایت</Label1>
+            <TextField size='small' />
+          </Input1>
+        </Row1>
+      </Section>
+    );
+  }
 
-  function More(){
-    return(
-      <Section >
-      <Titr>
-        <AddCircleIcon/>
-        <Typography sx={{paddingRight:'5px'}}>بیشتر</Typography>
-      </Titr>
-      <Row1>
-        <Input1>
-          <Label1>شناسه ملی</Label1>
-          <TextField />
-        </Input1>
-        <Input1>
-          <Label1>کد اقتصادی</Label1>
-          <TextField />
-        </Input1>
-        <Input1>
-          <Label1>شماره ثبت</Label1>
-          <TextField />
-        </Input1>
-      </Row1>
-      <Row1>
-        <Input1>
-          <Label1>توضیحات</Label1>
-          <TextField />
-        </Input1>
-      </Row1>
-    </Section>
-    )
+  function More() {
+    return (
+      <Section>
+        <Titr>
+          <AddCircleIcon />
+          <Typography sx={{ paddingRight: '5px' }}>بیشتر</Typography>
+        </Titr>
+        <Row1>
+          <Input1>
+            <Label1>شناسه ملی</Label1>
+            <TextField size='small' />
+          </Input1>
+          <Input1>
+            <Label1>کد اقتصادی</Label1>
+            <TextField size='small' />
+          </Input1>
+          <Input1>
+            <Label1>شماره ثبت</Label1>
+            <TextField size='small' />
+          </Input1>
+        </Row1>
+        <Row1>
+          <Input1>
+            <Label1>توضیحات</Label1>
+            <TextField size='small' />
+          </Input1>
+        </Row1>
+      </Section>
+    );
   }
 
   return (
