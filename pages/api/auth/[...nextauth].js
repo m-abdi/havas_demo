@@ -17,6 +17,9 @@ export default NextAuth({
           where: {
             id: session.user.id,
           },
+          include: {
+            role: true
+          }
         });
         session.user = { ...session.user, ...userData, password: undefined };
         return session;

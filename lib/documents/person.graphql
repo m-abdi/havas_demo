@@ -1,7 +1,8 @@
-query specificPerson($id: ID!) {
-    person(id: $id) {
+query allPerson {
+    persons {
         id
         firstName
         lastName
+
     }
 }

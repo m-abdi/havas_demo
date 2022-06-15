@@ -9,7 +9,38 @@ declare module 'next-auth' {
       readonly id: string;
       readonly firstName: string;
       readonly lastName: string;
-      readonly title: string;
+      readonly role: {
+        readonly id: string;
+        readonly name: string;
+        readonly viewPerson: boolean;
+        readonly createPerson: boolean;
+        readonly editPerson: boolean;
+        readonly deletePerson: boolean;
+        readonly viewPlace: boolean;
+        readonly createPlace: boolean;
+        readonly editPlace: boolean;
+        readonly deletePlace: boolean;
+        readonly viewEquipment: boolean;
+        readonly createEquipment: boolean;
+        readonly editEquipment: boolean;
+        readonly deleteEquipment: boolean;
+        readonly viewAsset: boolean;
+        readonly createAsset: boolean;
+        readonly editAsset: boolean;
+        readonly deleteAsset: boolean;
+        readonly viewLicense: boolean;
+        readonly createLicense: boolean;
+        readonly editLicense: boolean;
+        readonly deleteLicense: boolean;
+        readonly viewTag: boolean;
+        readonly createTag: boolean;
+        readonly editTag: boolean;
+        readonly deleteTag: boolean;
+        readonly viewRole: boolean;
+        readonly createRole: boolean;
+        readonly editRole: boolean;
+        readonly deleteRole: boolean;
+      };
     };
   }
 }

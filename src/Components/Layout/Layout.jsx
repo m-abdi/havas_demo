@@ -249,7 +249,7 @@ function Navbar({ children }) {
               variant='body1'
               sx={{ backgroundColor: 'info.main', p: 1, borderRadius: 1 }}
             >
-              {session?.user?.title ?? ''}
+              {session?.user?.role?.name ?? ''}
             </Typography>
             <IconButton
               id='accountOptionsButton'
