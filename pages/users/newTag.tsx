@@ -37,7 +37,6 @@ function AssetField({
       fullWidth
       size='small'
       freeSolo
-      onChange={(e) => setAssetId(e.target.value)}
       options={['wer', '123']}
       renderInput={(params) => <TextField label='کد دارایی' {...params} />}
     />

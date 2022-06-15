@@ -14,6 +14,7 @@ const typeDefs = /* GraphQL */ `
     telephone: String
     phoneNumber: String
     role: Role!
+    roleId: ID
     createdAt: String
     editedAt: String
     email: String!
@@ -23,6 +24,7 @@ const typeDefs = /* GraphQL */ `
     id: ID!
     name: String!
     superPlace: Place
+    superPlaceId: ID
     subset: [Place!]
     representative: Person
     typeOfWork: String

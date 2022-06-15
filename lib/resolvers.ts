@@ -78,15 +78,13 @@ const resolvers: Resolvers = {
     },
   },
   Person: {
-    role: async ({ roleId }: { roleId: string }, _, __): Promise<Role> => {
-      return (await prisma.role.findFirst({ where: { id: roleId } })) as any;
+    role: async ({ roleId }, _, __): Promise<Role> => {
+      return (await prisma.role.findFirst({ where: { id: roleId as string } })) as any;
     },
   },
   Place: {
     superPlace: async ({
       superPlaceId,
-    }: {
-      superPlaceId: string | null;
     }): Promise<Place> => {
       return await prisma.place.findFirst({ where: { id: superPlaceId ?? "" } }) as any;
     },
