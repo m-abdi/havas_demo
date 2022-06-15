@@ -7,6 +7,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import Layout from 'src/Components/Layout';
 import React from 'react'
 
+const pageName = "شخص جدید"
 const Form1 = styled('form',{name:'form1'})(({ theme }) => ({
   flexBasis:'100%',
   maxWidth:'900px',
