@@ -10,6 +10,15 @@ export async function canViewRoles(session: Session) {
   });
   return user?.role.viewRole;
 }
+export async function canViewPlaces(session: Session) {
+  const user = await prisma.person.findFirst({
+    where: {
+      id: session.user.id,
+    },
+    include: { role: true },
+  });
+  return user?.role.viewPlace;
+}
 export async function canViewPerson(session: Session) {
   const user = await prisma.person.findFirst({
     where: {

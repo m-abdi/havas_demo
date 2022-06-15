@@ -22,7 +22,8 @@ const typeDefs = /* GraphQL */ `
   type Place {
     id: ID!
     name: String!
-    subPlace: Place
+    superPlace: Place
+    subset: [Place!]
     representative: Person
     typeOfWork: String
     state: String
@@ -141,6 +142,7 @@ const typeDefs = /* GraphQL */ `
 
   type Query {
     persons: [Person!]
+    places: [Place!]
     roles: [Role!]
   }
   type Mutation {

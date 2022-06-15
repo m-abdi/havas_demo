@@ -1,5 +1,11 @@
-import { Person, Resolvers, Role } from './resolvers-types';
-import { canCreatePerson, canCreateRole, canViewPerson, canViewRoles } from './permissions';
+import { Person, Place, Resolvers, Role } from './resolvers-types';
+import {
+  canCreatePerson,
+  canCreateRole,
+  canViewPerson,
+  canViewPlaces,
+  canViewRoles,
+} from './permissions';
 
 import { GraphQLYogaError } from '@graphql-yoga/node';
 import { getSession } from 'next-auth/react';
@@ -15,9 +21,19 @@ const resolvers: Resolvers = {
         throw new GraphQLYogaError('Unauthorized');
       }
       const personsDB = await prisma.person.findMany();
-      console.log(personsDB);
 
       return personsDB as any;
+    },
+    async places(_parent, _args, _context, _info): Promise<any> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canViewPlaces(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+      const placesDB = await prisma.place.findMany({include: {subset: true}});
+      
+      return placesDB;
     },
     async roles(_parent, _args, _context, _info): Promise<any> {
       // check authentication and permission
@@ -43,7 +59,6 @@ const resolvers: Resolvers = {
           name: _args.name as string,
           ..._args.permissions,
         },
- 
       });
       return createdRole as Role;
     },
@@ -56,7 +71,7 @@ const resolvers: Resolvers = {
       }
       const createdPerson = await prisma.person.create({
         data: {
-          ..._args as any,
+          ...(_args as any),
         },
       });
       return createdPerson as any;
@@ -65,6 +80,15 @@ const resolvers: Resolvers = {
   Person: {
     role: async ({ roleId }: { roleId: string }, _, __): Promise<Role> => {
       return (await prisma.role.findFirst({ where: { id: roleId } })) as any;
+    },
+  },
+  Place: {
+    superPlace: async ({
+      superPlaceId,
+    }: {
+      superPlaceId: string | null;
+    }): Promise<Place> => {
+      return await prisma.place.findFirst({ where: { id: superPlaceId ?? "" } }) as any;
     },
   },
 };

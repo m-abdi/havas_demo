@@ -42,9 +42,9 @@ model Person {
 model Place {
   id               String    @id @default(uuid())
   name             String    @db.VarChar(255)
-  subPlace         Place?    @relation("SUB_PLACE", fields: [subPlaceId], references: [id])
-  subPlaceId       String?   @unique
-  superPlace       Place?    @relation("SUB_PLACE")
+  superPlace       Place?    @relation("SuperPlaceSubset", fields: [superPlaceId], references: [id])
+  superPlaceId     String?
+  subset           Place[]   @relation("SuperPlaceSubset")
   representative   Person?
   typeOfWork       String?
   state            String?
