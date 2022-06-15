@@ -27,5 +27,5 @@
     "**/*.ts",
     "**/*.tsx",
     "src/Components/Layout/Layout.tsx"
-  ]
+, "src/Components/RolesTable/RolesTable.tsx", "src/Components/RolesTable/q.jsx"  ]
 }

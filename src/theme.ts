@@ -1,6 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
-
+import { responsiveFontSizes } from '@mui/material';
 // Create a theme instance.
 const theme = createTheme({
   direction: 'rtl',
@@ -23,4 +23,4 @@ const theme = createTheme({
   },
 });
 
-export default theme;
+export default responsiveFontSizes(theme);

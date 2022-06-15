@@ -5,6 +5,7 @@ module.exports = {
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
     '@storybook/addon-a11y',
+    'storybook-css-modules',
   ],
   framework: '@storybook/react',
   staticDirs: ['../public'],

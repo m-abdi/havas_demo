@@ -1,7 +1,7 @@
 import Layout from 'src/Components/Layout';
 import Loader from 'src/Components/Loader';
 import React from 'react';
-import RoleTable from 'src/Components/Table/RoleTable';
+import RoleTable from 'src/Components/RolesTable/RoleTable';
 import { RolesDocument } from 'lib/graphql-operations';
 import Snackbar from 'src/Components/Snackbar';
 import { useQuery } from '@apollo/client';
@@ -11,7 +11,7 @@ export default function roles() {
   
   return (
     <Layout>
-      {loading ? <Loader center /> : error ? null : data && null}
+      {loading ? <Loader center /> : error ? null : data && <RoleTable />}
       <Snackbar />
     </Layout>
   );

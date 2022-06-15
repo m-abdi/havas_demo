@@ -63,7 +63,7 @@ export default function newPerson() {
   function Person(){
     return (
       
-      <Layout>
+      <>
         <Section>
           <Titr>
             <ChatIcon />
@@ -90,7 +90,7 @@ export default function newPerson() {
         </Section>
         <Address />
         <Call />
-      </Layout>
+      </>
     );
   };
 
@@ -182,9 +182,11 @@ export default function newPerson() {
   }
 
   return (
-    <Form1 action="">
-        <Person/>
-    </Form1>
-  )
+    <Layout>
+      <Form1 action=''>
+        <Person />
+      </Form1>
+    </Layout>
+  );
 }
 
