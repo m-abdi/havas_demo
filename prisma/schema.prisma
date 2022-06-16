@@ -142,6 +142,7 @@ model Role {
   editRole        Boolean
   deleteRole      Boolean
   Person          Person[]
+  createdAt       DateTime @default(now())
 }
 
 enum LicenseType {

@@ -5,8 +5,8 @@ mutation createRole($name: String!, $permissions: Permissions!) {
   }
 }
 
-query roles {
-  roles {
+query roles($take: Int!, $cursor: String) {
+  roles(take: $take, cursor: $cursor) {
     id
     name
     viewPerson

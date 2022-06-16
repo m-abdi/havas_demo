@@ -1,4 +1,5 @@
 import {
+  Box,
   Paper,
   Table,
   TableBody,
@@ -7,23 +8,57 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import React, { memo, useEffect, useState } from 'react';
 
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import DoneOutlineRoundedIcon from '@mui/icons-material/DoneOutlineRounded';
-import React from 'react';
+import InfiniteScroll from 'react-infinite-scroller';
+import Loader from '../Loader';
 import { styled } from '@mui/material/styles';
 
 const PermissionColumnStyle = {
   transform: 'rotate(-90deg)',
   whiteSpace: 'nowrap',
-  blockSize: 150,
   py: 1,
   px: 1,
-  inlineSize: 40,
   textAlign: 'center',
 };
-export default function RolesTable({ rows }: { rows: RoleType[] }) {
+export default function RolesTable({
+  rows,
+  top = '0px',
+  fetchMore,
+  hasMoreRows,
+  setHasMoreRows,
+}: {
+  rows: RoleType[];
+  hasMoreRows: boolean;
+  setHasMoreRows: any;
+  fetchMore: any;
+  top: string;
+}) {
+  // states
+  const [bg, setBg] = useState('');
+  // change background with scroll
+  useEffect(() => {
+    window.onscroll = (e) => {
+      setBg('white');
+      if (window.scrollY === 0) {
+        setBg('');
+      }
+    };
+  }, []);
+
   return rows.length > 0 ? (
+    <InfiniteScroll
+      pageStart={0}
+      loadMore={(page: number) => {
+        fetchMore({ variables: { cursor: rows[rows.length - 1]?.id } });
+        setHasMoreRows(false);
+      }}
+      hasMore={hasMoreRows}
+      loader={<Loader center key={0} />}
+      useWindow={false}
+    >
       <Table
         size='small'
         sx={{
@@ -31,20 +66,24 @@ export default function RolesTable({ rows }: { rows: RoleType[] }) {
             fontFamily: 'Vazir',
           },
           border: '1px solid grey',
+          borderCollapse: 'collapse',
+          backgroundColor: 'white',
         }}
       >
         <caption>
           نقش های تعریف شده در اپلیکیشن حواس به همراه سطح دسترسی هر یک از آنها
         </caption>
+        <colgroup
+          style={{ borderLeft: '1px solid grey', backgroundColor: 'white' }}
+        ></colgroup>
         <colgroup style={{ borderLeft: '1px solid grey' }}></colgroup>
-        <colgroup style={{ borderLeft: '1px solid grey' }}></colgroup>
         <colgroup span={3} style={{ borderLeft: '1px solid grey' }}></colgroup>
         <colgroup span={3} style={{ borderLeft: '1px solid grey' }}></colgroup>
         <colgroup span={3} style={{ borderLeft: '1px solid grey' }}></colgroup>
         <colgroup span={3} style={{ borderLeft: '1px solid grey' }}></colgroup>
         <colgroup span={3} style={{ borderLeft: '1px solid grey' }}></colgroup>
         <colgroup span={3} style={{ borderLeft: '1px solid grey' }}></colgroup>
-        <TableHead>
+        <TableHead sx={{ position: 'sticky', top: top }}>
           <TableRow
             sx={{
               backgroundColor: 'info.main',
@@ -119,7 +158,7 @@ export default function RolesTable({ rows }: { rows: RoleType[] }) {
               نقش ها
             </TableCell>
           </TableRow>
-          <TableRow>
+          <TableRow sx={{ blockSize: 150, backgroundColor: bg }}>
             <TableCell sx={{ textAlign: 'center', p: 1 }}>ردیف</TableCell>
             <TableCell sx={{ textAlign: 'center' }}>عنوان</TableCell>
             <TableCell scope='col' sx={PermissionColumnStyle}>
@@ -128,7 +167,7 @@ export default function RolesTable({ rows }: { rows: RoleType[] }) {
             <TableCell scope='col' sx={PermissionColumnStyle}>
               ایجاد/ویرایش
             </TableCell>
-            <TableCell scope='col' sx={PermissionColumnStyle}>
+            <TableCell scope='col' sx={{ ...PermissionColumnStyle }}>
               حذف
             </TableCell>
             <TableCell scope='col' sx={PermissionColumnStyle}>
@@ -313,5 +352,6 @@ export default function RolesTable({ rows }: { rows: RoleType[] }) {
           ))}
         </TableBody>
       </Table>
+    </InfiniteScroll>
   ) : null;
 }

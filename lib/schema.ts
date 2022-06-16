@@ -140,12 +140,13 @@ const typeDefs = /* GraphQL */ `
     createRole: Boolean
     editRole: Boolean
     deleteRole: Boolean
+    createdAt: String
   }
 
   type Query {
     persons: [Person!]
     places: [Place!]
-    roles: [Role!]
+    roles(take: Int!, cursor: String): [Role!]
   }
   type Mutation {
     createRole(name: String!, permissions: Permissions!): Role!

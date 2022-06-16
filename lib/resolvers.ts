@@ -35,15 +35,33 @@ const resolvers: Resolvers = {
       
       return placesDB;
     },
-    async roles(_parent, _args, _context, _info): Promise<any> {
+    async roles(_parent, _args: {take: number, cursor?: string | undefined}, _context): Promise<any> {
+      console.log(_args);
+      
       // check authentication and permission
       const { req } = _context;
       const session = await getSession({ req });
       if (!session || !(await canViewRoles(session))) {
         throw new GraphQLYogaError('Unauthorized');
       }
-      const rolesDB = await prisma.role.findMany();
-      return rolesDB;
+      if (_args.cursor){
+        return await prisma.role.findMany({
+          take: _args?.take,
+          skip:1,
+          cursor: {
+            id: _args.cursor,
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        });
+      }
+      return await prisma.role.findMany({
+        take: _args?.take,
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
     },
   },
   Mutation: {
