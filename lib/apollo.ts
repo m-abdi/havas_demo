@@ -69,9 +69,8 @@ function createApolloClient(context?: ResolverContext) {
                   console.log('offset < 0', offset);
                 }
                 console.log(offset);
-                
-                console.log("------------");
-                
+
+                console.log('------------');
 
                 // Now that we have a reliable offset, the rest of this logic
 
@@ -83,6 +82,9 @@ function createApolloClient(context?: ResolverContext) {
 
                 return merged;
               },
+            },
+            hasNextRole: {
+              keyArgs: false,
             },
           },
         },

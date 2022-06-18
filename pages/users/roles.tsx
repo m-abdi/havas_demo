@@ -1,33 +1,36 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useApolloClient, useQuery } from '@apollo/client';
 
+import { AllRolesDocument } from 'lib/graphql-operations';
 import { InfoContext } from 'pages/_app';
 import Layout from 'src/Components/Layout';
 import Loader from 'src/Components/Loader';
 import RoleTable from 'src/Components/RolesTable/RolesTable';
-import { RolesDocument } from 'lib/graphql-operations';
 import Snackbar from 'src/Components/Snackbar';
-import { useQuery } from '@apollo/client';
+import { useRouter } from 'next/router';
 
 const pageName = 'نقش ها';
 export default function roles() {
   // states
-  const [hasMoreRows, setHasMoreRows] = useState(true);
-  const [rolesData, setRolesData] = useState('');
   // page info context
   const infoContext: any = useContext(InfoContext);
   useEffect(() => {
     infoContext.changePageName(pageName);
   }, []);
-  const { loading, error, data, fetchMore } = useQuery(RolesDocument, {
+  const router = useRouter();
+  // fetch roles from graphql server
+  const { loading, error, data, fetchMore } = useQuery(AllRolesDocument, {
     fetchPolicy: 'cache-and-network',
-    variables: { take: 2, cursor: rolesData?.roles?.length > 0 ? rolesData?.roles[rolesData.roles.length - 1]?.id : undefined },
+    nextFetchPolicy: "cache-and-network",
+    variables: {
+      take: 13,
+      // read existing cursor from apollo cache
+      cursor: useApolloClient().readQuery({
+        query: AllRolesDocument,
+      })?.roles?.[0]?.id,
+    },
   });
-  // put data in rolesData state
-  useEffect(() => {
-    setRolesData(data);
-  }, [data]);
-console.log(rolesData);
-
+  console.log(data);
   return (
     <Layout>
       {loading ? (
@@ -35,10 +38,11 @@ console.log(rolesData);
       ) : error ? null : (
         data && (
           <RoleTable
-            top='65px'
+            top='0px'
             fetchMore={fetchMore}
-            hasMoreRows={hasMoreRows}
-            setHasMoreRows={setHasMoreRows}
+            loading={loading}
+            router={router}
+            hasNextRole={data?.hasNextRole}
             rows={data?.roles as RoleType[]}
           />
         )

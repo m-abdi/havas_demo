@@ -94,7 +94,7 @@ function Navbar({ children }) {
     3: false,
     4: false,
     5: false,
-    6:false
+    6: false,
   });
   //
   const { data: session } = useSession();
@@ -125,11 +125,13 @@ function Navbar({ children }) {
           text: 'تگ جدید',
           icon: <AddCircleOutlineOutlined />,
           path: '/users/newTag',
+          roleName: 'createTag',
         },
         {
           text: 'مشاهده تگ ها',
           icon: <RemoveRedEyeRoundedIcon />,
           path: '/users/tags',
+          roleName: 'viewTag',
         },
       ],
     },
@@ -143,11 +145,13 @@ function Navbar({ children }) {
           text: 'نقش جدید',
           icon: <AddCircleOutlineOutlined />,
           path: '/users/newRole',
+          roleName: 'createRole',
         },
         {
           text: 'مشاهده نقش ها',
           icon: <SearchRoundedIcon />,
           path: '/users/roles',
+          roleName: 'viewRole',
         },
       ],
     },
@@ -161,21 +165,25 @@ function Navbar({ children }) {
           text: 'شخص جدید',
           icon: <AddCircleOutlineOutlined />,
           path: '/users/newPerson',
+          roleName: 'createPerson',
         },
         {
           text: 'مشاهده اشخاص',
           icon: <SearchRoundedIcon />,
           path: '/users/persons',
+          roleName: 'viewPerson',
         },
         {
           text: 'مکان جدید',
           icon: <AddCircleOutlineOutlined />,
           path: '/users/newPlace',
+          roleName: 'createPlace',
         },
         {
           text: 'مشاهده اماکن',
           icon: <SearchRoundedIcon />,
           path: '/users/places',
+          roleName: 'viewPlace',
         },
       ],
     },
@@ -188,21 +196,25 @@ function Navbar({ children }) {
           text: 'تجهیز جدید',
           icon: <AddCircleOutlineOutlined />,
           path: '/users/newEquipment',
+          roleName: 'createEquipment',
         },
         {
           text: 'مشاهده تجهیزات',
           icon: <SearchRoundedIcon />,
           path: '/users/equipments',
+          roleName: 'viewEquipment',
         },
         {
           text: 'موجودی جدید',
           icon: <AddCircleOutlineOutlined />,
           path: '/users/newAsset',
+          roleName: 'createAsset',
         },
         {
           text: 'مشاهده موجودی',
           icon: <SearchRoundedIcon />,
           path: '/users/assets',
+          roleName: 'viewAsset',
         },
       ],
     },
@@ -215,11 +227,13 @@ function Navbar({ children }) {
           text: 'درخواست مجوز جدید',
           icon: <AddCircleOutlineOutlined />,
           path: '/users/newLicense',
+          roleName: 'createLicense',
         },
         {
           text: 'مجوزهای ثبت شده',
           icon: <SearchRoundedIcon />,
           path: '/users/licenses',
+          roleName: 'viewLicense',
         },
       ],
     },
@@ -364,51 +378,60 @@ function Navbar({ children }) {
             <ListItemText primary='داشبورد' />
           </ListItemButton>
           {/* نشان دادن List */}
-          {menuItems.map((item) => (
-            <Box key={item.text}>
-              <ListItemButton
-                onClick={(event) => {
-                  handleDrawList(event, item.id);
-                  if (item?.path) {
-                    router.push(item.path);
-                  }
-                }}
-              >
-                <ListItemIcon sx={{ minWidth: '32px' }}>
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText primary={`${item.text}`} />
-                <ListItemIcon sx={{ minWidth: '32px' }}>
-                  {item.sublists &&
-                    (drawListOpen[item.id] ? <ExpandLess /> : <ExpandMore />)}
-                </ListItemIcon>
-              </ListItemButton>
-              {/* نشان دادن SubList */}
-              <Collapse in={drawListOpen[item.id]} timeout='auto' unmountOnExit>
-                <List component='div' disablePadding>
-                  {item.sublists.map((sublist) => (
-                    <ListItemButton
-                      key={sublist.text}
-                      onClick={() => {
-                        router.push(sublist.path);
-                      }}
-                      sx={{
-                        pl: 6,
-                        ...(location.pathname === sublist.path && {
-                          backgroundColor: 'blue',
-                        }),
-                      }}
-                    >
-                      <ListItemIcon sx={{ minWidth: '32px' }}>
-                        {sublist.icon}
-                      </ListItemIcon>
-                      <ListItemText primary={sublist.text} />
-                    </ListItemButton>
-                  ))}
-                </List>
-              </Collapse>
-            </Box>
-          ))}
+          {menuItems.map((item) =>
+            item.sublists.filter((s) => session?.user?.role?.[s.roleName]).length >
+            0 ? (
+              <Box key={item.text}>
+                <ListItemButton
+                  onClick={(event) => {
+                    handleDrawList(event, item.id);
+                    if (item?.path) {
+                      router.push(item.path);
+                    }
+                  }}
+                >
+                  <ListItemIcon sx={{ minWidth: '32px' }}>
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={`${item.text}`} />
+                  <ListItemIcon sx={{ minWidth: '32px' }}>
+                    {item.sublists &&
+                      (drawListOpen[item.id] ? <ExpandLess /> : <ExpandMore />)}
+                  </ListItemIcon>
+                </ListItemButton>
+                {/* نشان دادن SubList */}
+                <Collapse
+                  in={drawListOpen[item.id]}
+                  timeout='auto'
+                  unmountOnExit
+                >
+                  <List component='div' disablePadding>
+                    {item.sublists.map((sublist) =>
+                      session?.user?.role?.[sublist.roleName] ? (
+                        <ListItemButton
+                          key={sublist.text}
+                          onClick={() => {
+                            router.push(sublist.path);
+                          }}
+                          sx={{
+                            pl: 6,
+                            ...(location.pathname === sublist.path && {
+                              backgroundColor: 'blue',
+                            }),
+                          }}
+                        >
+                          <ListItemIcon sx={{ minWidth: '32px' }}>
+                            {sublist.icon}
+                          </ListItemIcon>
+                          <ListItemText primary={sublist.text} />
+                        </ListItemButton>
+                      ) : null
+                    )}
+                  </List>
+                </Collapse>
+              </Box>
+            ) : null
+          )}
         </List>
       </Drawer>
       <IconButton

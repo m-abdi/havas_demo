@@ -35,6 +35,7 @@ interface ButtonProps {
    * Optional click handler
    */
   onClick?: () => void;
+  startIcon?: any
 }
 
 /**
@@ -45,6 +46,7 @@ export default memo(function Button({
   size = 'medium',
   color = 'primary',
   label = 'ارسال',
+  startIcon,
   ...props
 }: ButtonProps) {
   return (
@@ -54,6 +56,7 @@ export default memo(function Button({
       color={color}
       {...props}
       sx={{ borderRadius: '13px' }}
+      startIcon={startIcon}
     >
       {label}
     </MuiButton>

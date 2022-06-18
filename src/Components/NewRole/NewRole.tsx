@@ -10,16 +10,18 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 
 import { Button as MyButton } from '../Button';
 import { styled } from '@mui/material/styles';
 
 const Button = styled(MyButton)({});
 export default memo(function NewRole({
+  existingRoleData,
   onSubmit,
 }: {
-  onSubmit: (name: string, permissions: any) => Promise<boolean>;
+  existingRoleData: RoleType;
+  onSubmit: (name: string, permissions: any, edit: string) => Promise<boolean>;
 }) {
   // states
   const [name, setName] = useState('');
@@ -47,6 +49,32 @@ export default memo(function NewRole({
   const [createRole, setCreateRole] = useState(false);
   const [editRole, setEditRole] = useState(false);
   const [deleteRole, setDeleteRole] = useState(false);
+  const [editId, setEditId] = useState("")
+  // fill input field with existing role data
+  useEffect(() => {
+    if (existingRoleData) {
+      setEditId(existingRoleData.id)
+      setName(existingRoleData.name);
+      setViewPerson(existingRoleData.viewPerson as boolean);
+      setViewPlace(existingRoleData.viewPlace as boolean);
+      setViewEquipmentAndAsset(existingRoleData.viewEquipment as boolean);
+      setViewLicense(existingRoleData.viewLicense as boolean);
+      setViewTag(existingRoleData.viewTag as boolean);
+      setViewRole(existingRoleData.viewRole as boolean);
+      setCreatePerson(existingRoleData.createPerson as boolean);
+      setCreatePlace(existingRoleData.createPlace as boolean);
+      setCreateEquipmentAndAsset(existingRoleData.createEquipment as boolean);
+      setCreateLicense(existingRoleData.createLicense as boolean);
+      setCreateTag(existingRoleData.createTag as boolean);
+      setCreateRole(existingRoleData.createRole as boolean);
+      setDeletePerson(existingRoleData.deletePerson as boolean);
+      setDeletePlace(existingRoleData.deletePlace as boolean);
+      setDeleteEquipmentAndAsset(existingRoleData.deleteEquipment as boolean);
+      setDeleteLicense(existingRoleData.deleteLicense as boolean);
+      setDeleteTag(existingRoleData.deleteTag as boolean);
+      setDeleteRole(existingRoleData.deleteRole as boolean);
+    }
+  }, [existingRoleData]);
 
   //
   return (
@@ -88,55 +116,6 @@ export default memo(function NewRole({
           justifyContent={'center'}
           flexWrap={'wrap'}
         >
-          {/* اشخاص */}
-          <FormControl>
-            <FormLabel>اشخاص</FormLabel>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    color='secondary'
-                    checked={viewPerson}
-                    onChange={() => setViewPerson(!viewPerson)}
-                  />
-                }
-                label='مشاهده اشخاص'
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    color='success'
-                    checked={createPerson}
-                    onChange={() => {
-                      setCreatePerson(!createPerson);
-                      setEditPerson(!editPerson);
-                    }}
-                  />
-                }
-                label='ایجاد/ویرایش اشخاص'
-              />
-              {/* <FormControlLabel
-                control={
-                  <Checkbox
-                    color='info'
-                    checked={editPerson}
-                    onChange={() => setEditPerson(!editPerson)}
-                  />
-                }
-                label='ویرایش اشخاص'
-              /> */}
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    color='error'
-                    checked={deletePerson}
-                    onChange={() => setDeletePerson(!deletePerson)}
-                  />
-                }
-                label='حذف اشخاص'
-              />
-            </FormGroup>
-          </FormControl>
           {/* اماکن */}
           <FormControl>
             <FormLabel>اماکن</FormLabel>
@@ -186,6 +165,56 @@ export default memo(function NewRole({
               />
             </FormGroup>
           </FormControl>
+          {/* اشخاص */}
+          <FormControl>
+            <FormLabel>اشخاص</FormLabel>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    color='secondary'
+                    checked={viewPerson}
+                    onChange={() => setViewPerson(!viewPerson)}
+                  />
+                }
+                label='مشاهده اشخاص'
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    color='success'
+                    checked={createPerson}
+                    onChange={() => {
+                      setCreatePerson(!createPerson);
+                      setEditPerson(!editPerson);
+                    }}
+                  />
+                }
+                label='ایجاد/ویرایش اشخاص'
+              />
+              {/* <FormControlLabel
+                control={
+                  <Checkbox
+                    color='info'
+                    checked={editPerson}
+                    onChange={() => setEditPerson(!editPerson)}
+                  />
+                }
+                label='ویرایش اشخاص'
+              /> */}
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    color='error'
+                    checked={deletePerson}
+                    onChange={() => setDeletePerson(!deletePerson)}
+                  />
+                }
+                label='حذف اشخاص'
+              />
+            </FormGroup>
+          </FormControl>
+
           {/* تجهیزات و موجودی */}
           <FormControl>
             <FormLabel>تجهیزات و موجودی</FormLabel>
@@ -398,36 +427,40 @@ export default memo(function NewRole({
         size='large'
         sx={{ alignSelf: 'flex-end' }}
         onClick={() =>
-          onSubmit(name, {
-            viewPerson,
-            createPerson,
-            editPerson,
-            deletePerson,
-            viewPlace,
-            createPlace,
-            editPlace,
-            deletePlace,
-            viewEquipment: viewEquipmentAndAsset,
-            createEquipment: createEquipmentAndAsset,
-            editEquipment: editEquipmentAndAsset,
-            deleteEquipment: deleteEquipmentAndAsset,
-            viewAsset: viewEquipmentAndAsset,
-            createAsset: createEquipmentAndAsset,
-            editAsset: editEquipmentAndAsset,
-            deleteAsset: deleteEquipmentAndAsset,
-            viewLicense,
-            createLicense,
-            editLicense,
-            deleteLicense,
-            viewTag,
-            createTag,
-            editTag,
-            deleteTag,
-            viewRole,
-            createRole,
-            editRole,
-            deleteRole,
-          })
+          onSubmit(
+            name,
+            {
+              viewPerson,
+              createPerson,
+              editPerson,
+              deletePerson,
+              viewPlace,
+              createPlace,
+              editPlace,
+              deletePlace,
+              viewEquipment: viewEquipmentAndAsset,
+              createEquipment: createEquipmentAndAsset,
+              editEquipment: editEquipmentAndAsset,
+              deleteEquipment: deleteEquipmentAndAsset,
+              viewAsset: viewEquipmentAndAsset,
+              createAsset: createEquipmentAndAsset,
+              editAsset: editEquipmentAndAsset,
+              deleteAsset: deleteEquipmentAndAsset,
+              viewLicense,
+              createLicense,
+              editLicense,
+              deleteLicense,
+              viewTag,
+              createTag,
+              editTag,
+              deleteTag,
+              viewRole,
+              createRole,
+              editRole,
+              deleteRole,
+            },
+            editId
+          )
         }
       />
     </Stack>

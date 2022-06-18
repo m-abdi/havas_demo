@@ -146,10 +146,12 @@ const typeDefs = /* GraphQL */ `
   type Query {
     persons: [Person!]
     places: [Place!]
+    role(roleId: ID!): Role
     roles(take: Int!, cursor: String): [Role!]
+    hasNextRole(take: Int!, cursor: String): Boolean!
   }
   type Mutation {
-    createRole(name: String!, permissions: Permissions!): Role!
+    createRole(name: String!, permissions: Permissions!, edit: String): Role!
     createPerson(
       firstName: String
       lastName: String

@@ -1,12 +1,48 @@
-mutation createRole($name: String!, $permissions: Permissions!) {
-  createRole(name: $name, permissions: $permissions) {
+mutation createRole($name: String!, $permissions: Permissions!, $edit: String) {
+  createRole(name: $name, permissions: $permissions, edit: $edit) {
     id
     name
   }
 }
 
-query roles($take: Int!, $cursor: String) {
+query allRoles($take: Int!, $cursor: String) {
   roles(take: $take, cursor: $cursor) {
+    id
+    name
+    viewPerson
+    createPerson
+    editPerson
+    deletePerson
+    viewPlace
+    createPlace
+    editPlace
+    deletePlace
+    viewEquipment
+    createEquipment
+    editEquipment
+    deleteEquipment
+    viewAsset
+    createAsset
+    editAsset
+    deleteAsset
+    viewLicense
+    createLicense
+    editLicense
+    deleteLicense
+    viewTag
+    createTag
+    editTag
+    deleteTag
+    viewRole
+    createRole
+    editRole
+    deleteRole
+  }
+  hasNextRole(take: $take, cursor: $cursor)
+}
+
+query specificRole($roleId: ID!) {
+  role(roleId: $roleId) {
     id
     name
     viewPerson
