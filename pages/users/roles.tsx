@@ -71,11 +71,11 @@ export default function roles() {
             setCheckedAll={setCheckedAll}
             checkedItems={checkedItems}
             setCheckedItems={setCheckedItems}
-            checkedAllPages={
-              router?.query?.checkedAllPages
-                ? JSON.parse(router?.query?.checkedAllPages)
-                : []
-            }
+            // checkedAllPages={
+            //   router?.query?.checkedAllPages
+            //     ? JSON.parse(router?.query?.checkedAllPages)
+            //     : []
+            // }
           />
         )
       )}

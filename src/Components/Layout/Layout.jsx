@@ -59,10 +59,10 @@ const ToolbarOffest = styled('div', { name: 'ToolbarOffest' })(({ theme }) => ({
 }));
 
 const AppBar2 = styled('nav')({
-  display: 'flex',
+    display:'flex',
   minHeight: secAppbarHeight,
-  alignItems: 'center',
-  position: 'sticky',
+  alignItems:'center',
+  paddingRight:'1.2rem',
   background: '#bbc6d4',
 });
 
@@ -71,15 +71,28 @@ const MainContent = styled('div', {
   name: 'MainContent',
 })(({ theme, drawOpen }) => ({
   zIndex: '3',
-  width: drawOpen ? '100%' : '100vw',
+  width: '100%',
+  marginLeft: -drawerWidth,
+  transition: theme.transitions.create(['margin', 'width'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(drawOpen && {
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginLeft: 0,
+  }),
 }));
 
 const PageContent = styled('main', { name: 'PageContent' })(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   height: 'fit-content',
-  px: 10,
-  py: 3,
+  padding: 15,
+  inlineSize: "100% !important"
 }));
 
 function Navbar({ children }) {

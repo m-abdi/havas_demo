@@ -23,7 +23,7 @@ export default function newRole() {
   // states
   const [loading, setLoading] = useState(false);
   const [existingRoleData, setExistingRoleData] = useState(
-    JSON.parse(router?.query?.role as string)
+    router.query.role ? JSON?.parse(router?.query?.role as string) : null
   );
   // effects
   useEffect(() => {

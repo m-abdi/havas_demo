@@ -111,7 +111,7 @@ export default memo(function NewRole({
         </Typography>
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
-          spacing={5}
+          spacing={3}
           alignItems='center'
           justifyContent={'center'}
           flexWrap={'wrap'}
