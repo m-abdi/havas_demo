@@ -44,7 +44,25 @@ function createApolloClient(context?: ResolverContext) {
       typePolicies: {
         Query: {
           fields: {
-            roles: offsetLimitPagination(),
+            roles: {
+              ...offsetLimitPagination(),
+              keyArgs: false,
+              read(
+                existing,
+                {
+                  args: {
+                    // Default to returning the entire cached list,
+                    // if offset and limit are not provided.
+                    offset,
+                    limit,
+                  } = {},
+                }
+              ) {
+                console.log(offset, limit);
+
+                return existing && existing.slice(offset, offset + limit);
+              },
+            },
           },
         },
       },
@@ -95,7 +113,6 @@ function offsetFromCursor(items, cursor, readField) {
     // a good idea to use readField when you're not sure what
 
     // kind of elements you're dealing with.
-
 
     if (readField('id', item) === cursor) {
       // Add one because the cursor identifies the item just

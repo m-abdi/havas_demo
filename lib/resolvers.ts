@@ -65,11 +65,7 @@ const resolvers: Resolvers = {
         },
       });
     },
-    async hasNextRole(
-      _parent,
-      _args: any,
-      _context
-    ): Promise<any> {
+    async hasNextRole(_parent, _args: any, _context): Promise<any> {
       // check authentication and permission
       const { req } = _context;
       const session = await getSession({ req });
@@ -96,6 +92,16 @@ const resolvers: Resolvers = {
         },
       });
       return nextRole?.length > 0;
+    },
+    async countAllRoles(_: any, __: any, _context: any): Promise<any> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canViewRoles(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+
+      return await prisma.role.count();
     },
   },
   Mutation: {

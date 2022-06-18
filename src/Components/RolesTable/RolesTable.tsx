@@ -1,5 +1,6 @@
 import {
   Box,
+  Checkbox,
   IconButton,
   Menu,
   MenuItem,
@@ -40,9 +41,16 @@ export default memo(function RolesTable({
   router,
   hasNextRole,
   loading,
+  pageNumber,
   session,
   itemsPerPage,
   setItemsPerPage,
+  allRolesCount,
+  checkedAll,
+  setCheckedAll,
+  checkedItems,
+  setCheckedItems,
+  checkedAllPages,
 }: {
   rows: RoleType[];
   router: any;
@@ -52,12 +60,16 @@ export default memo(function RolesTable({
   session: Session | null;
   itemsPerPage: number;
   setItemsPerPage: any;
+  pageNumber: number;
+  allRolesCount: number;
 }) {
   // states
   const [rowOptionsAnchorElement, setRowOptionsAnchorElement] =
     useState<null | HTMLElement>(null);
   const [choosedRow, setChoosedRow] = useState('');
+
   const rowOptionsOpen = Boolean(rowOptionsAnchorElement);
+  //
 
   // handlers for options button (three dots in last column)
   const handleOptionsOpen = (
@@ -86,10 +98,17 @@ export default memo(function RolesTable({
               backgroundColor: 'white',
             }}
           >
-            <caption>
+            {/* <caption>
               نقش های تعریف شده در اپلیکیشن حواس به همراه سطح دسترسی هر یک از
               آنها
-            </caption>
+            </caption> */}
+            <colgroup
+              span={1}
+              style={{
+                borderLeft: '1px solid grey',
+                backgroundColor: 'white',
+              }}
+            ></colgroup>
             <colgroup
               span={1}
               style={{
@@ -138,7 +157,7 @@ export default memo(function RolesTable({
                   borderBottom: '2px solid grey',
                 }}
               >
-                <TableCell colSpan={3}></TableCell>
+                <TableCell colSpan={4}></TableCell>
                 <TableCell
                   colSpan={3}
                   scope='colgroup'
@@ -208,6 +227,47 @@ export default memo(function RolesTable({
               </TableRow>
               <TableRow sx={{ blockSize: 150 }}>
                 <TableCell scope='col' sx={{ textAlign: 'center', p: 1 }}>
+                  <Checkbox
+                    checked={
+                      checkedAll &&
+                      checkedAllPages.some((e) => e === pageNumber)
+                    }
+                    onChange={() => {
+                      if (!checkedAll) {
+                        const allItemsChecked = {...checkedItems};
+                        
+                        rows.forEach((row) => {
+                          allItemsChecked[row.id] = true;
+                        });
+                        console.log(allItemsChecked);
+                        const inList = checkedAllPages?.some(
+                          (e) => e === pageNumber
+                        );
+
+                        if (!inList) {
+                          router.push(
+                            `/users/roles?checkedAllPages=${JSON.stringify([
+                              ...checkedAllPages,
+                              pageNumber,
+                            ])}`
+                          );
+                        }
+                        setCheckedItems({ ...allItemsChecked });
+                      } else {
+                        router.push(
+                          `/users/roles?checkedAllPages=${JSON.stringify(
+                            checkedAllPages.filter((e) => e !== pageNumber)
+                          )}`
+                        );
+                       
+
+                        setCheckedItems({});
+                      }
+                      setCheckedAll(!checkedAll);
+                    }}
+                  />
+                </TableCell>
+                <TableCell scope='col' sx={{ textAlign: 'center', p: 1 }}>
                   ردیف
                 </TableCell>
                 <TableCell scope='col'></TableCell>
@@ -275,7 +335,20 @@ export default memo(function RolesTable({
               {rows.map((row, index) => (
                 <TableRow key={row.id}>
                   <TableCell sx={{ textAlign: 'center' }}>
-                    {index + 1}
+                    <Checkbox
+                      checked={
+                        checkedItems?.[row.id] ? checkedItems?.[row?.id] : false
+                      }
+                      onChange={() =>
+                        setCheckedItems({
+                          ...checkedItems,
+                          [row?.id]: checkedItems?.[row?.id] ? false : true,
+                        })
+                      }
+                    />
+                  </TableCell>
+                  <TableCell sx={{ textAlign: 'center' }}>
+                    {index + 1 + pageNumber * itemsPerPage}
                   </TableCell>
                   <TableCell sx={{ textAlign: 'center', p: 1 }}>
                     <IconButton
@@ -429,8 +502,8 @@ export default memo(function RolesTable({
         <TablePagination
           component={'div'}
           rowsPerPageOptions={[5, 10, 15, 20, 30, 50]}
-          page={0}
-          count={18}
+          page={pageNumber}
+          count={allRolesCount}
           onPageChange={fetchMoreRows}
           onRowsPerPageChange={(
             event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -440,14 +513,14 @@ export default memo(function RolesTable({
           rowsPerPage={itemsPerPage}
           labelRowsPerPage='تعداد ردیف در هر صفحه'
           labelDisplayedRows={({ from, to, count }) => {
-            return `صفحه ${from} از ${to} ( ${
-              count !== -1 ? count : `بیشتر از ${to}`
-            } آیتم )`;
+            return `صفحه ${pageNumber + 1} از ${Math.ceil(
+              count / itemsPerPage
+            )} ( ${count !== -1 ? count : `بیشتر از ${to}`} آیتم )`;
           }}
           sx={{
-            "& .MuiTablePagination-actions	": {
-              inlineSize: 200
-            }
+            '& .MuiTablePagination-actions	': {
+              inlineSize: 200,
+            },
           }}
         />
       </Box>
@@ -475,4 +548,4 @@ export default memo(function RolesTable({
       )}
     </>
   ) : null;
-})
+});

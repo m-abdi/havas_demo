@@ -22,7 +22,9 @@ export default function newRole() {
 
   // states
   const [loading, setLoading] = useState(false);
-  const [existingRoleData, setExistingRoleData] = useState();
+  const [existingRoleData, setExistingRoleData] = useState(
+    JSON.parse(router?.query?.role as string)
+  );
   // effects
   useEffect(() => {
     if ('role' in router.query) {
@@ -57,7 +59,7 @@ export default function newRole() {
           setSnackbarColor('success');
           setSnackbarMessage('انجام شد');
           setSnackbarOpen(true);
-          window.location.href = '/users/roles'
+          router.push('/users/roles');
           return true;
         } else if (resp.errors) {
           setSnackbarColor('error');

@@ -13,7 +13,13 @@ import { useSession } from 'next-auth/react';
 const pageName = 'نقش ها';
 export default function roles() {
   // stats
+  const [pageNumber, setPageNumber] = useState(0);
+  const [offset, setOffset] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [checkedItems, setCheckedItems] = useState(
+    {} as { [key: string]: boolean }
+  );
+  const [checkedAll, setCheckedAll] = useState(false);
   //
   const { data: session } = useSession();
   // page info context
@@ -28,16 +34,20 @@ export default function roles() {
     nextFetchPolicy: 'cache-and-network',
     variables: {
       limit: itemsPerPage,
-      offset: 0,
+      offset,
     },
   });
   const fetchMoreRows = useCallback(
     (event: React.MouseEvent<HTMLButtonElement> | null, page: number) => {
+      console.log('----', itemsPerPage * page, itemsPerPage);
+
       fetchMore({
         variables: { offset: itemsPerPage * page, limit: itemsPerPage },
       });
+      setPageNumber(page);
+      setOffset(itemsPerPage * page);
     },
-    [itemsPerPage]
+    [itemsPerPage, pageNumber]
   );
 
   return (
@@ -53,8 +63,19 @@ export default function roles() {
             session={session}
             loading={loading}
             router={router}
+            pageNumber={pageNumber}
             hasNextRole={data?.hasNextRole}
             rows={data?.roles as RoleType[]}
+            allRolesCount={data?.countAllRoles as number}
+            checkedAll={checkedAll}
+            setCheckedAll={setCheckedAll}
+            checkedItems={checkedItems}
+            setCheckedItems={setCheckedItems}
+            checkedAllPages={
+              router?.query?.checkedAllPages
+                ? JSON.parse(router?.query?.checkedAllPages)
+                : []
+            }
           />
         )
       )}

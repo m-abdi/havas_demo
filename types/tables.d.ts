@@ -22,6 +22,7 @@ type RoleType = {
   editTag?: boolean;
   id: string;
   name: string;
+  numberIndex: number;
   viewAsset?: boolean;
   viewEquipment?: boolean;
   viewLicense?: boolean;

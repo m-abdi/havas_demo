@@ -9,6 +9,7 @@ query allRoles($limit: Int!, $offset: Int!) {
   roles(limit: $limit, offset: $offset) {
     id
     name
+    numberIndex
     viewPerson
     createPerson
     editPerson
@@ -39,6 +40,7 @@ query allRoles($limit: Int!, $offset: Int!) {
     deleteRole
   }
   hasNextRole(limit: $limit, offset: $offset)
+  countAllRoles(limit: $limit, offset: $offset)
 }
 
 query specificRole($roleId: ID!) {
