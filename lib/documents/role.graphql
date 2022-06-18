@@ -5,8 +5,8 @@ mutation createRole($name: String!, $permissions: Permissions!, $edit: String) {
   }
 }
 
-query allRoles($take: Int!, $cursor: String) {
-  roles(take: $take, cursor: $cursor) {
+query allRoles($limit: Int!, $offset: Int!) {
+  roles(limit: $limit, offset: $offset) {
     id
     name
     viewPerson
@@ -38,7 +38,7 @@ query allRoles($take: Int!, $cursor: String) {
     editRole
     deleteRole
   }
-  hasNextRole(take: $take, cursor: $cursor)
+  hasNextRole(limit: $limit, offset: $offset)
 }
 
 query specificRole($roleId: ID!) {

@@ -8,6 +8,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableRow,
   Typography,
@@ -21,6 +22,9 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import InfiniteScroll from 'react-infinite-scroller';
 import Loader from '../Loader';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
+import { Session } from 'next-auth';
+import { TableContainer } from '@mui/material';
+import { TablePagination } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 const PermissionColumnStyle = {
@@ -30,35 +34,30 @@ const PermissionColumnStyle = {
   px: 1,
   textAlign: 'center',
 };
-export default function RolesTable({
+export default memo(function RolesTable({
   rows,
-  top = '0px',
-  fetchMore,
+  fetchMoreRows,
   router,
   hasNextRole,
   loading,
+  session,
+  itemsPerPage,
+  setItemsPerPage,
 }: {
   rows: RoleType[];
   router: any;
   hasNextRole: boolean;
-  fetchMore: any;
-  top: string;
+  fetchMoreRows: any;
   loading: boolean;
+  session: Session | null;
+  itemsPerPage: number;
+  setItemsPerPage: any;
 }) {
   // states
-  const [bg, setBg] = useState('');
   const [rowOptionsAnchorElement, setRowOptionsAnchorElement] =
     useState<null | HTMLElement>(null);
   const [choosedRow, setChoosedRow] = useState('');
   const rowOptionsOpen = Boolean(rowOptionsAnchorElement);
-  // change background with scroll
-  useEffect(() => {
-    document
-      .querySelector('#infiniteScrollerContainer')
-      ?.addEventListener('scroll', () => {
-        setBg('secondary.main');
-      });
-  }, []);
 
   // handlers for options button (three dots in last column)
   const handleOptionsOpen = (
@@ -71,30 +70,11 @@ export default function RolesTable({
   const handleOptionsClose = () => {
     setRowOptionsAnchorElement(null);
   };
-  const fetchMoreRows = () => {
-    fetchMore({ variables: { cursor: rows[rows.length - 1]?.id, take: 4 } });
-  };
-
-  console.log(hasNextRole);
 
   return rows.length > 0 ? (
     <>
-      <Box
-        id='infiniteScrollerContainer'
-        sx={{
-          overflow: 'auto',
-          position: 'relative',
-          height: '750px',
-          px:9
-        }}
-      >
-        <InfiniteScroll
-          loadMore={fetchMoreRows}
-          hasMore={hasNextRole}
-          loader={<div key={0}>...</div>}
-          initialLoad={false}
-          useWindow={false}
-        >
+      <Box>
+        <TableContainer sx={{ px: 6 }}>
           <Table
             size='small'
             sx={{
@@ -111,47 +91,54 @@ export default function RolesTable({
               آنها
             </caption>
             <colgroup
-              style={{ borderLeft: '1px solid grey', backgroundColor: 'white' }}
-            ></colgroup>
-            <colgroup style={{ borderLeft: '1px solid grey' }}></colgroup>
-            <colgroup
-              span={3}
-              style={{ borderLeft: '1px solid grey' }}
-            ></colgroup>
-            <colgroup
-              span={3}
-              style={{ borderLeft: '1px solid grey' }}
-            ></colgroup>
-            <colgroup
-              span={3}
-              style={{ borderLeft: '1px solid grey' }}
-            ></colgroup>
-            <colgroup
-              span={3}
-              style={{ borderLeft: '1px solid grey' }}
-            ></colgroup>
-            <colgroup
-              span={3}
-              style={{ borderLeft: '1px solid grey' }}
-            ></colgroup>
-            <colgroup
-              span={3}
-              style={{ borderLeft: '1px solid grey' }}
+              span={1}
+              style={{
+                borderLeft: '1px solid grey',
+                backgroundColor: 'white',
+              }}
             ></colgroup>
             <colgroup
               span={1}
-         
+              style={{ borderLeft: '1px solid grey' }}
             ></colgroup>
-     
 
-            <TableHead sx={{ position: 'sticky', top: top }}>
+            <colgroup
+              span={1}
+              style={{ borderLeft: '1px solid grey' }}
+            ></colgroup>
+            <colgroup
+              span={3}
+              style={{ borderLeft: '1px solid grey' }}
+            ></colgroup>
+            <colgroup
+              span={3}
+              style={{ borderLeft: '1px solid grey' }}
+            ></colgroup>
+            <colgroup
+              span={3}
+              style={{ borderLeft: '1px solid grey' }}
+            ></colgroup>
+            <colgroup
+              span={3}
+              style={{ borderLeft: '1px solid grey' }}
+            ></colgroup>
+            <colgroup
+              span={3}
+              style={{ borderLeft: '1px solid grey' }}
+            ></colgroup>
+            <colgroup
+              span={3}
+              style={{ borderLeft: '1px solid grey' }}
+            ></colgroup>
+
+            <TableHead>
               <TableRow
                 sx={{
                   backgroundColor: 'info.main',
                   borderBottom: '2px solid grey',
                 }}
               >
-                <TableCell colSpan={2}></TableCell>
+                <TableCell colSpan={3}></TableCell>
                 <TableCell
                   colSpan={3}
                   scope='colgroup'
@@ -218,19 +205,16 @@ export default function RolesTable({
                 >
                   نقش ها
                 </TableCell>
-                <TableCell
-                  colSpan={1}
-                  scope='colgroup'
-                  sx={{
-                    textAlign: 'center',
-                    fontWeight: 'bold',
-                    fontSize: '1.2rem',
-                  }}
-                ></TableCell>
               </TableRow>
-              <TableRow sx={{ blockSize: 150, backgroundColor: bg }}>
-                <TableCell sx={{ textAlign: 'center', p: 1 }}>ردیف</TableCell>
-                <TableCell sx={{ textAlign: 'center' }}>عنوان</TableCell>
+              <TableRow sx={{ blockSize: 150 }}>
+                <TableCell scope='col' sx={{ textAlign: 'center', p: 1 }}>
+                  ردیف
+                </TableCell>
+                <TableCell scope='col'></TableCell>
+
+                <TableCell scope='col' sx={{ textAlign: 'center' }}>
+                  عنوان
+                </TableCell>
                 <TableCell scope='col' sx={PermissionColumnStyle}>
                   مشاهده
                 </TableCell>
@@ -285,7 +269,6 @@ export default function RolesTable({
                 <TableCell scope='col' sx={PermissionColumnStyle}>
                   حذف
                 </TableCell>
-                <TableCell scope='col' sx={PermissionColumnStyle}></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -293,6 +276,21 @@ export default function RolesTable({
                 <TableRow key={row.id}>
                   <TableCell sx={{ textAlign: 'center' }}>
                     {index + 1}
+                  </TableCell>
+                  <TableCell sx={{ textAlign: 'center', p: 1 }}>
+                    <IconButton
+                      sx={{ p: 0, m: 0 }}
+                      aria-controls={
+                        rowOptionsOpen ? 'options-menu' : undefined
+                      }
+                      aria-haspopup='true'
+                      aria-expanded={rowOptionsOpen ? 'true' : undefined}
+                      onClick={(e) => {
+                        handleOptionsOpen(e, row);
+                      }}
+                    >
+                      <MoreVertRoundedIcon />
+                    </IconButton>
                   </TableCell>
                   <TableCell sx={{ textAlign: 'center' }}>
                     {row?.name}
@@ -423,55 +421,58 @@ export default function RolesTable({
                       <CloseRoundedIcon sx={{ color: 'error.main' }} />
                     )}
                   </TableCell>
-                  <TableCell sx={{ textAlign: 'center', p: 1 }}>
-                    <IconButton
-                      sx={{ p: 0, m: 0 }}
-                      aria-controls={
-                        rowOptionsOpen ? 'options-menu' : undefined
-                      }
-                      aria-haspopup='true'
-                      aria-expanded={rowOptionsOpen ? 'true' : undefined}
-                      onClick={(e) => {
-                        handleOptionsOpen(e, row);
-                      }}
-                    >
-                      <MoreVertRoundedIcon />
-                    </IconButton>
-                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-          <Stack direction='row' alignItems='center' justifyContent='center'>
-            {hasNextRole && !loading ? (
-              <Button
-                variant='contained'
-                color='secondary'
-                onClick={fetchMoreRows}
-                label='بیشتر'
-              />
-            ) : null}
-          </Stack>
-        </InfiniteScroll>
-      </Box>
-      <Menu
-        anchorEl={rowOptionsAnchorElement}
-        open={rowOptionsOpen}
-        onClose={handleOptionsClose}
-      >
-        <MenuItem>
-          <Button
-            startIcon={<EditRoundedIcon />}
-            variant='text'
-            onClick={() =>
-              router.push(
-                `/users/newRole?edit=1&role=${JSON.stringify(choosedRow)}`
-              )
+        </TableContainer>
+        <TablePagination
+          component={'div'}
+          rowsPerPageOptions={[5, 10, 15, 20, 30, 50]}
+          page={0}
+          count={18}
+          onPageChange={fetchMoreRows}
+          onRowsPerPageChange={(
+            event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+          ) => {
+            setItemsPerPage(parseInt(event.target.value));
+          }}
+          rowsPerPage={itemsPerPage}
+          labelRowsPerPage='تعداد ردیف در هر صفحه'
+          labelDisplayedRows={({ from, to, count }) => {
+            return `صفحه ${from} از ${to} ( ${
+              count !== -1 ? count : `بیشتر از ${to}`
+            } آیتم )`;
+          }}
+          sx={{
+            "& .MuiTablePagination-actions	": {
+              inlineSize: 200
             }
-            label='ویرایش'
-          />
-        </MenuItem>
-      </Menu>
+          }}
+        />
+      </Box>
+      {session?.user?.role?.['editRole'] && (
+        <Menu
+          anchorEl={rowOptionsAnchorElement}
+          open={rowOptionsOpen}
+          onClose={handleOptionsClose}
+        >
+          {session?.user?.role?.['editRole'] ? (
+            <MenuItem>
+              <Button
+                startIcon={<EditRoundedIcon />}
+                variant='text'
+                onClick={() =>
+                  router.push(
+                    `/users/newRole?edit=1&role=${JSON.stringify(choosedRow)}`
+                  )
+                }
+                label='ویرایش'
+              />
+            </MenuItem>
+          ) : null}
+        </Menu>
+      )}
     </>
   ) : null;
-}
+})

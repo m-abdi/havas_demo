@@ -48,7 +48,7 @@ const resolvers: Resolvers = {
     },
     async roles(
       _parent,
-      _args: { take: number; cursor?: string | undefined },
+      _args: { limit: number; offset: number },
       _context
     ): Promise<any> {
       // check authentication and permission
@@ -57,20 +57,9 @@ const resolvers: Resolvers = {
       if (!session || !(await canViewRoles(session))) {
         throw new GraphQLYogaError('Unauthorized');
       }
-      if (_args.cursor) {
-        return await prisma.role.findMany({
-          take: _args?.take,
-          skip: 1,
-          cursor: {
-            id: _args.cursor,
-          },
-          orderBy: {
-            createdAt: 'asc',
-          },
-        });
-      }
       return await prisma.role.findMany({
-        take: _args?.take,
+        take: _args?.limit,
+        skip: _args?.offset,
         orderBy: {
           createdAt: 'asc',
         },
@@ -78,7 +67,7 @@ const resolvers: Resolvers = {
     },
     async hasNextRole(
       _parent,
-      _args: { cursor: string },
+      _args: any,
       _context
     ): Promise<any> {
       // check authentication and permission
@@ -87,34 +76,10 @@ const resolvers: Resolvers = {
       if (!session || !(await canViewRoles(session))) {
         throw new GraphQLYogaError('Unauthorized');
       }
-      console.log(_args);
 
-      if (_args.cursor) {
-        const roles = await prisma.role.findMany({
-          take: _args?.take,
-          skip: 1,
-          cursor: {
-            id: _args.cursor,
-          },
-          orderBy: {
-            createdAt: 'asc',
-          },
-        });
-        if (!roles || roles.length === 0) return false;
-        const nextRole = await prisma.role.findMany({
-          take: 1,
-          skip: 1,
-          cursor: {
-            id: roles?.[roles?.length - 1]?.id,
-          },
-          orderBy: {
-            createdAt: 'asc',
-          },
-        });
-        return nextRole?.length > 0;
-      }
       const roles = await prisma.role.findMany({
-        take: _args?.take,
+        take: _args?.limit,
+        skip: _args?.offset,
         orderBy: {
           createdAt: 'asc',
         },
@@ -153,7 +118,6 @@ const resolvers: Resolvers = {
           },
         });
         return editedRole as Role;
-
       }
       const createdRole = await prisma.role.create({
         data: {

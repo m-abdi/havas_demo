@@ -78,7 +78,8 @@ const PageContent = styled('main', { name: 'PageContent' })(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   height: 'fit-content',
-  padding: 20,
+  px: 10,
+  py: 3,
 }));
 
 function Navbar({ children }) {

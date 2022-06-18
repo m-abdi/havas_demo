@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useApolloClient, useQuery } from '@apollo/client';
 
 import { AllRolesDocument } from 'lib/graphql-operations';
@@ -8,10 +8,14 @@ import Loader from 'src/Components/Loader';
 import RoleTable from 'src/Components/RolesTable/RolesTable';
 import Snackbar from 'src/Components/Snackbar';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 
 const pageName = 'نقش ها';
 export default function roles() {
-  // states
+  // stats
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  //
+  const { data: session } = useSession();
   // page info context
   const infoContext: any = useContext(InfoContext);
   useEffect(() => {
@@ -21,16 +25,21 @@ export default function roles() {
   // fetch roles from graphql server
   const { loading, error, data, fetchMore } = useQuery(AllRolesDocument, {
     fetchPolicy: 'cache-and-network',
-    nextFetchPolicy: "cache-and-network",
+    nextFetchPolicy: 'cache-and-network',
     variables: {
-      take: 13,
-      // read existing cursor from apollo cache
-      cursor: useApolloClient().readQuery({
-        query: AllRolesDocument,
-      })?.roles?.[0]?.id,
+      limit: itemsPerPage,
+      offset: 0,
     },
   });
-  console.log(data);
+  const fetchMoreRows = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement> | null, page: number) => {
+      fetchMore({
+        variables: { offset: itemsPerPage * page, limit: itemsPerPage },
+      });
+    },
+    [itemsPerPage]
+  );
+
   return (
     <Layout>
       {loading ? (
@@ -38,8 +47,10 @@ export default function roles() {
       ) : error ? null : (
         data && (
           <RoleTable
-            top='0px'
-            fetchMore={fetchMore}
+            itemsPerPage={itemsPerPage}
+            setItemsPerPage={setItemsPerPage}
+            fetchMoreRows={fetchMoreRows}
+            session={session}
             loading={loading}
             router={router}
             hasNextRole={data?.hasNextRole}
