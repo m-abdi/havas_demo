@@ -80,7 +80,7 @@ export default function newRole() {
       {loading ? (
         <Loader center={false} />
       ) : (
-        <NewRole existingRoleData={existingRoleData} onSubmit={onSubmit} />
+        <NewRole existingRoleData={existingRoleData} onSubmit={onSubmit}  />
       )}
       <Snackbar />
     </Layout>

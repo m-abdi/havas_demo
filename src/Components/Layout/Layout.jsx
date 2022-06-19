@@ -25,6 +25,7 @@ import {
   Typography,
   createTheme,
   styled,
+  useMediaQuery,
 } from '@mui/material';
 import React, { memo, useContext, useEffect } from 'react';
 import { getCookie, setCookie } from 'src/Cookies';
@@ -87,6 +88,13 @@ const MainContent = styled('div', {
     marginLeft: 0,
   }),
 }));
+const MainContentMobile = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'drawOpen',
+  name: 'MainContent',
+})(({ theme, drawOpen }) => ({
+  zIndex: '3',
+  width: '100%',
+}));
 
 const PageContent = styled('main', { name: 'PageContent' })(({ theme }) => ({
   display: 'flex',
@@ -114,9 +122,9 @@ function Navbar({ children }) {
   //
   const { data: session } = useSession();
   const infoContext = useContext(InfoContext);
-
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.up('sm'));
   useEffect(() => {
-    setDrawOpen(getCookie('drawOpen') === "true" ? true : false);
+    setDrawOpen(getCookie('drawOpen') === 'true' ? true : false);
   }, []);
 
   //
@@ -345,29 +353,56 @@ function Navbar({ children }) {
         </Toolbar>
       </AppBar>
       <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
-        <MainContent drawOpen={drawOpen}>
-          <ToolbarOffest />
-          {/* Secend Appbar */}
-          <AppBar2 drawOpen={drawOpen}>
-            <IconButton color='primary'>
-              <ArrowForwardIcon sx={{ ml: '1rem', fontSize: '1.2rem' }} />
-            </IconButton>
-            <Typography component='h1' variant='h5' sx={{ fontSize: '1.2rem' }}>
-              {' '}
-              {infoContext?.pageName}
-            </Typography>
-          </AppBar2>
+        {isSmallScreen ? (
+          <MainContent drawOpen={drawOpen}>
+            <ToolbarOffest />
+            {/* Secend Appbar */}
+            <AppBar2 drawOpen={drawOpen}>
+              <IconButton color='primary'>
+                <ArrowForwardIcon sx={{ ml: '1rem', fontSize: '1.2rem' }} />
+              </IconButton>
+              <Typography
+                component='h1'
+                variant='h5'
+                sx={{ fontSize: '1.2rem' }}
+              >
+                {' '}
+                {infoContext?.pageName}
+              </Typography>
+            </AppBar2>
 
-          {/* اطلاعات صفحه */}
-          <PageContent sx={{ inlineSize: 'inherit' }}>{children}</PageContent>
-        </MainContent>
+            {/* اطلاعات صفحه */}
+            <PageContent sx={{ inlineSize: 'inherit' }}>{children}</PageContent>
+          </MainContent>
+        ) : (
+          <MainContentMobile drawOpen={drawOpen}>
+            <ToolbarOffest />
+            {/* Secend Appbar */}
+            <AppBar2 drawOpen={drawOpen}>
+              <IconButton color='primary'>
+                <ArrowForwardIcon sx={{ ml: '1rem', fontSize: '1.2rem' }} />
+              </IconButton>
+              <Typography
+                component='h1'
+                variant='h5'
+                sx={{ fontSize: '1.2rem' }}
+              >
+                {' '}
+                {infoContext?.pageName}
+              </Typography>
+            </AppBar2>
+
+            {/* اطلاعات صفحه */}
+            <PageContent sx={{ inlineSize: 'inherit' }}>{children}</PageContent>
+          </MainContentMobile>
+        )}
       </ClickAwayListener>
       {/* Drawer */}
       <Drawer
         variant='persistent'
         anchor='left'
         sx={{
-          width: drawerWidth,
+          width: 0 ,
           flexShrink: 0,
           '& .MuiDrawer-paper': { width: drawerWidth },
         }}

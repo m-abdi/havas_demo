@@ -84,7 +84,11 @@ export default memo(function NewRole({
 
   //
   return (
-    <Stack spacing={2} divider={<Divider flexItem />} alignItems='center'>
+    <Stack
+      spacing={2}
+      divider={<Divider flexItem />}
+      alignItems='center'
+    >
       <TextField
         name='name'
         label='نام نقش مورد نظر را وارد کنید'

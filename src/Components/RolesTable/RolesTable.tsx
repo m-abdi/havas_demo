@@ -89,7 +89,7 @@ export default memo(function RolesTable({
     setRowOptionsAnchorElement(null);
   };
 
-  return rows.length > 0 ? (
+  return loading ? <Loader center /> : rows.length > 0 ? (
     <Box sx={{ maxInlineSize: '100%' }}>
       <Box>
         <TableContainer>

@@ -314,9 +314,18 @@ Main.args = {
       editRole: true,
       deleteRole: true,
     },
-    
   ],
-  fetchMore: ()=>{
-    
-  }
+  fetchMore: () => {},
+  pageNumber: 0,
+  itemsPerPage: 10,
+  allRolesCount:20
+};
+export const Loading = Template.bind({})
+Loading.args = {
+  ...Main.args,
+  loading: true
+};
+export const Empty = Template.bind({})
+Empty.args = {
+  rows: [],
 };

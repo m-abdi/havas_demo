@@ -30,7 +30,7 @@ interface ButtonProps {
   /**
    * Button state
    */
-  disabled: boolean;
+  disabled?: boolean;
   /**
    * unique id of element in dom
    */
