@@ -67,6 +67,12 @@ export default memo(function NewRole({
       setCreateLicense(existingRoleData.createLicense as boolean);
       setCreateTag(existingRoleData.createTag as boolean);
       setCreateRole(existingRoleData.createRole as boolean);
+      setEditPerson(existingRoleData.editPerson as boolean);
+      setEditPlace(existingRoleData.editPlace as boolean);
+      setEditEquipmentAndAsset(existingRoleData.editEquipment as boolean);
+      setEditLicense(existingRoleData.editLicense as boolean);
+      setEditTag(existingRoleData.editTag as boolean);
+      setEditRole(existingRoleData.editRole as boolean);
       setDeletePerson(existingRoleData.deletePerson as boolean);
       setDeletePlace(existingRoleData.deletePlace as boolean);
       setDeleteEquipmentAndAsset(existingRoleData.deleteEquipment as boolean);
@@ -394,7 +400,7 @@ export default memo(function NewRole({
                     }}
                   />
                 }
-                label='درخواست/ویرایش نقش ها'
+                label='ایجاد/ویرایش نقش ها'
               />
               {/* <FormControlLabel
                 control={

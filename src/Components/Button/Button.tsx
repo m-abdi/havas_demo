@@ -28,6 +28,10 @@ interface ButtonProps {
    */
   label: string;
   /**
+   * Button state
+   */
+  disabled: boolean;
+  /**
    * unique id of element in dom
    */
   id?: string;
@@ -35,7 +39,7 @@ interface ButtonProps {
    * Optional click handler
    */
   onClick?: () => void;
-  startIcon?: any
+  startIcon?: any;
 }
 
 /**
@@ -46,6 +50,7 @@ export default memo(function Button({
   size = 'medium',
   color = 'primary',
   label = 'ارسال',
+  disabled = false,
   startIcon,
   ...props
 }: ButtonProps) {
@@ -54,6 +59,7 @@ export default memo(function Button({
       variant={variant}
       size={size}
       color={color}
+      disabled={disabled}
       {...props}
       sx={{ borderRadius: '13px' }}
       startIcon={startIcon}

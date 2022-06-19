@@ -26,7 +26,7 @@ import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import { Session } from 'next-auth';
 import { TableContainer } from '@mui/material';
 import { TablePagination } from '@mui/material';
-import { getCookie } from 'src/Cookies';
+import { getCookie } from '../../Cookies';
 import { styled } from '@mui/material/styles';
 
 const PermissionColumnStyle = {
@@ -51,6 +51,7 @@ export default memo(function RolesTable({
   setCheckedAll,
   checkedItems,
   setCheckedItems,
+  setDeleteDialog,
 }: {
   rows: RoleType[];
   router: any;
@@ -66,6 +67,7 @@ export default memo(function RolesTable({
   setCheckedAll: any;
   setCheckedItems: any;
   checkedItems: { [key: string]: boolean };
+  setDeleteDialog: any;
 }) {
   // states
   const [rowOptionsAnchorElement, setRowOptionsAnchorElement] =
@@ -556,9 +558,7 @@ export default memo(function RolesTable({
           ) : null}
         </Menu>
       )}
-      <Box sx={{ position: 'absolute', top: 75, right: getCookie("drawOpen")=== "true" ? 70 : 200 }}>
-        <Button variant='contained' label='حذف' color='error' size='large' />
-      </Box>
+      
     </Box>
   ) : null;
 });

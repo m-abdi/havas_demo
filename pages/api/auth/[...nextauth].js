@@ -36,8 +36,9 @@ export default NextAuth({
       name: 'Credentials',
       async authorize(credentials, req) {
         try {
+          console.log(credentials.email);
           const potentialUser = await prisma.person.findFirst({
-            where: { id: credentials.id, password: credentials.password },
+            where: { id: credentials.email, password: credentials.password },
           });
           if (potentialUser) {
             await prisma.$disconnect();

@@ -77,3 +77,8 @@ query specificRole($roleId: ID!) {
     deleteRole
   }
 }
+
+
+mutation deleteRoles($roleIds: [String!]!) {
+  deleteRoles(roleIds: $roleIds)
+}

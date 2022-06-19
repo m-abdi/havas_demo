@@ -124,7 +124,7 @@ const resolvers: Resolvers = {
             ..._args.permissions,
           },
         });
-        return editedRole as Role;
+        return editedRole;
       }
       const createdRole = await prisma.role.create({
         data: {
@@ -155,6 +155,8 @@ const resolvers: Resolvers = {
       if (!session || !(await canDeleteRols(session))) {
         throw new GraphQLYogaError('Unauthorized');
       }
+      console.log(_args.roleIds);
+      
       // with two separate queries in a transaction (all queries must succeed)
       const deletePersons = prisma.person.deleteMany({
         where: { role: { id: { in: _args.roleIds } } },
@@ -162,10 +164,13 @@ const resolvers: Resolvers = {
       const deleteRoles = prisma.role.deleteMany({
         where: { id: { in: _args.roleIds } },
       });
+
       const transaction = await prisma.$transaction([
         deletePersons,
         deleteRoles,
       ]);
+      console.log(transaction);
+
       return _args.roleIds;
     },
   },

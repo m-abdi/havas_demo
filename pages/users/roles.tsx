@@ -1,12 +1,16 @@
+import { AllRolesDocument, DeleteRolesDocument } from 'lib/graphql-operations';
+import { InfoContext, SnackbarContext } from 'pages/_app';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { useApolloClient, useQuery } from '@apollo/client';
+import { useApolloClient, useMutation, useQuery } from '@apollo/client';
 
-import { AllRolesDocument } from 'lib/graphql-operations';
-import { InfoContext } from 'pages/_app';
+import { Box } from '@mui/material';
+import { Button } from '../../src/Components/Button';
+import DeleteRolesDialog from 'src/Components/DeleteRolesDialog';
 import Layout from 'src/Components/Layout';
 import Loader from 'src/Components/Loader';
 import RoleTable from 'src/Components/RolesTable/RolesTable';
 import Snackbar from 'src/Components/Snackbar';
+import { getCookie } from 'src/Cookies';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
@@ -19,8 +23,18 @@ export default function roles() {
   const [checkedItems, setCheckedItems] = useState(
     {} as { [key: string]: boolean }
   );
+  const [loading, setLoading] = useState(false);
   const [checkedAll, setCheckedAll] = useState(false);
+  const [deleteRoleDialog, setDeleteRoleDialog] = useState(false);
   //
+  const {
+    snackbarOpen,
+    setSnackbarOpen,
+    snackbarMessage,
+    setSnackbarMessage,
+    snackbarColor,
+    setSnackbarColor,
+  } = useContext(SnackbarContext);
   const { data: session } = useSession();
   // page info context
   const infoContext: any = useContext(InfoContext);
@@ -29,7 +43,12 @@ export default function roles() {
   }, []);
   const router = useRouter();
   // fetch roles from graphql server
-  const { loading, error, data, fetchMore } = useQuery(AllRolesDocument, {
+  const {
+    loading: rolesDataLoading,
+    error,
+    data,
+    fetchMore,
+  } = useQuery(AllRolesDocument, {
     fetchPolicy: 'cache-and-network',
     nextFetchPolicy: 'cache-and-network',
     variables: {
@@ -37,6 +56,44 @@ export default function roles() {
       offset,
     },
   });
+  // deleteRoles Mutation
+  const [deleteRolesMutation, { loading: deletingRolesLoading }] =
+    useMutation(DeleteRolesDocument);
+  // handlers
+  const deleteRoles = useCallback(async (): Promise<any> => {
+    const roleIds = Object.keys(checkedItems).filter((k) => checkedItems[k]);
+    console.log(roleIds);
+
+    // provide a response for user interaction(sending...)
+    setLoading(true);
+    setSnackbarColor('info');
+    setSnackbarMessage('در حال ارسال');
+    setSnackbarOpen(true);
+    try {
+      const resp = await deleteRolesMutation({
+        variables: { roleIds },
+        refetchQueries: [{ query: AllRolesDocument }, 'allRoles'],
+      });
+      if (resp.data?.deleteRoles) {
+        setSnackbarColor('success');
+        setSnackbarMessage('انجام شد');
+        setSnackbarOpen(true);
+      } else if (resp?.errors) {
+        setSnackbarColor('error');
+        setSnackbarMessage('خطا');
+        setSnackbarOpen(true);
+      }
+    } catch (e) {
+      setSnackbarColor('error');
+      setSnackbarMessage('خطا');
+      setSnackbarOpen(true);
+    }
+    setOffset(0);
+    setPageNumber(0);
+    setLoading(false);
+    setDeleteRoleDialog(false);
+  }, [checkedItems]);
+
   const fetchMoreRows = useCallback(
     (event: React.MouseEvent<HTMLButtonElement> | null, page: number) => {
       console.log('----', itemsPerPage * page, itemsPerPage);
@@ -56,27 +113,55 @@ export default function roles() {
         <Loader center />
       ) : error ? null : (
         data && (
-          <RoleTable
-            itemsPerPage={itemsPerPage}
-            setItemsPerPage={setItemsPerPage}
-            fetchMoreRows={fetchMoreRows}
-            session={session}
-            loading={loading}
-            router={router}
-            pageNumber={pageNumber}
-            hasNextRole={data?.hasNextRole}
-            rows={data?.roles as RoleType[]}
-            allRolesCount={data?.countAllRoles as number}
-            checkedAll={checkedAll}
-            setCheckedAll={setCheckedAll}
-            checkedItems={checkedItems}
-            setCheckedItems={setCheckedItems}
-            // checkedAllPages={
-            //   router?.query?.checkedAllPages
-            //     ? JSON.parse(router?.query?.checkedAllPages)
-            //     : []
-            // }
-          />
+          <>
+            <RoleTable
+              itemsPerPage={itemsPerPage}
+              setItemsPerPage={setItemsPerPage}
+              fetchMoreRows={fetchMoreRows}
+              session={session}
+              loading={loading}
+              router={router}
+              pageNumber={pageNumber}
+              hasNextRole={data?.hasNextRole}
+              rows={data?.roles as RoleType[]}
+              allRolesCount={data?.countAllRoles as number}
+              checkedAll={checkedAll}
+              setCheckedAll={setCheckedAll}
+              checkedItems={checkedItems}
+              setCheckedItems={setCheckedItems}
+              setDeleteDialog={setDeleteRoleDialog}
+              // checkedAllPages={
+              //   router?.query?.checkedAllPages
+              //     ? JSON.parse(router?.query?.checkedAllPages)
+              //     : []
+              // }
+            />
+            <Box
+              sx={{
+                position: 'absolute',
+                top: 75,
+                right: getCookie('drawOpen') === 'true' ? 70 : 200,
+              }}
+            >
+              <Button
+                variant='contained'
+                disabled={
+                  Object.keys(checkedItems).length === 0 ||
+                  Object.keys(checkedItems).filter((k) => checkedItems[k])
+                    .length === 0
+                }
+                label='حذف'
+                color='error'
+                size='large'
+                onClick={() => setDeleteRoleDialog(true)}
+              />
+            </Box>
+            <DeleteRolesDialog
+              open={deleteRoleDialog}
+              closeDialog={() => setDeleteRoleDialog(false)}
+              confirmDelete={deleteRoles}
+            />
+          </>
         )
       )}
       <Snackbar />
