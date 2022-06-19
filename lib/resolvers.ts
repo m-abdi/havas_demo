@@ -2,6 +2,7 @@ import { Person, Place, Resolvers, Role } from './resolvers-types';
 import {
   canCreatePerson,
   canCreateRole,
+  canDeleteRols,
   canViewPerson,
   canViewPlaces,
   canViewRoles,
@@ -146,6 +147,26 @@ const resolvers: Resolvers = {
         },
       });
       return createdPerson as any;
+    },
+    async deleteRoles(_parent, _args, _context, _info): Promise<any> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canDeleteRols(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+      // with two separate queries in a transaction (all queries must succeed)
+      const deletePersons = prisma.person.deleteMany({
+        where: { role: { id: { in: _args.roleIds } } },
+      });
+      const deleteRoles = prisma.role.deleteMany({
+        where: { id: { in: _args.roleIds } },
+      });
+      const transaction = await prisma.$transaction([
+        deletePersons,
+        deleteRoles,
+      ]);
+      return _args.roleIds;
     },
   },
   Person: {

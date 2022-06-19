@@ -143,6 +143,7 @@ const typeDefs = /* GraphQL */ `
     deleteRole: Boolean
     createdAt: String
   }
+ 
 
   type Query {
     persons: [Person!]
@@ -167,6 +168,7 @@ const typeDefs = /* GraphQL */ `
       roleId: ID!
       email: String
     ): Person!
+    deleteRoles(roleIds: [String!]!): [String!]!
   }
 `;
 

@@ -24,6 +24,6 @@
     "next-env.d.ts",
     "graphql.d.ts",
     "types/**/*.ts",
-
+ 
   ]
 }

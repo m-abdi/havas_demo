@@ -26,7 +26,8 @@ import {
   createTheme,
   styled,
 } from '@mui/material';
-import React, { memo, useContext } from 'react';
+import React, { memo, useContext, useEffect } from 'react';
+import { getCookie, setCookie } from 'src/Cookies';
 import { signOut, useSession } from 'next-auth/react';
 
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
@@ -50,8 +51,8 @@ import WorkspacePremiumRoundedIcon from '@mui/icons-material/WorkspacePremiumRou
 import { red } from '@mui/material/colors';
 import { useRouter } from 'next/router';
 
-const drawerWidth = 240;
-const secAppbarHeight = 64;
+export const drawerWidth = 240;
+export const secAppbarHeight = 64;
 
 const ToolbarOffest = styled('div', { name: 'ToolbarOffest' })(({ theme }) => ({
   ...theme.mixins.toolbar,
@@ -59,10 +60,10 @@ const ToolbarOffest = styled('div', { name: 'ToolbarOffest' })(({ theme }) => ({
 }));
 
 const AppBar2 = styled('nav')({
-    display:'flex',
+  display: 'flex',
   minHeight: secAppbarHeight,
-  alignItems:'center',
-  paddingRight:'1.2rem',
+  alignItems: 'center',
+  paddingRight: '1.2rem',
   background: '#bbc6d4',
 });
 
@@ -92,7 +93,7 @@ const PageContent = styled('main', { name: 'PageContent' })(({ theme }) => ({
   justifyContent: 'center',
   height: 'fit-content',
   padding: 15,
-  inlineSize: "100% !important"
+  inlineSize: '100% !important',
 }));
 
 function Navbar({ children }) {
@@ -114,8 +115,13 @@ function Navbar({ children }) {
   const { data: session } = useSession();
   const infoContext = useContext(InfoContext);
 
+  useEffect(() => {
+    setDrawOpen(getCookie('drawOpen') === "true" ? true : false);
+  }, []);
+
   //
   const handleDrawer = () => {
+    setCookie('drawOpen', !drawOpen);
     setDrawOpen(!drawOpen);
   };
 
@@ -260,7 +266,9 @@ function Navbar({ children }) {
       {/* First Appbar */}
       <AppBar
         elevation={2}
-        sx={{ '&.MuiAppBar-root': { backgroundColor: '#304967', zIndex: 30 } }}
+        sx={{
+          '&.MuiAppBar-root': { backgroundColor: '#304967', zIndex: 6000 },
+        }}
       >
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Typography sx={{ display: 'inline-block', margin: 1 }}>
@@ -349,7 +357,6 @@ function Navbar({ children }) {
               {infoContext?.pageName}
             </Typography>
           </AppBar2>
-          <ToolbarOffest />
 
           {/* اطلاعات صفحه */}
           <PageContent sx={{ inlineSize: 'inherit' }}>{children}</PageContent>
@@ -363,7 +370,6 @@ function Navbar({ children }) {
           width: drawerWidth,
           flexShrink: 0,
           '& .MuiDrawer-paper': { width: drawerWidth },
-          zIndex: 20,
         }}
         open={drawOpen}
       >
@@ -393,8 +399,8 @@ function Navbar({ children }) {
           </ListItemButton>
           {/* نشان دادن List */}
           {menuItems.map((item) =>
-            item.sublists.filter((s) => session?.user?.role?.[s.roleName]).length >
-            0 ? (
+            item.sublists.filter((s) => session?.user?.role?.[s.roleName])
+              .length > 0 ? (
               <Box key={item.text}>
                 <ListItemButton
                   onClick={(event) => {
@@ -457,7 +463,7 @@ function Navbar({ children }) {
           transitionDuration: '0.2s',
           transitionTimingFunction: 'ease-out',
           top: '50%',
-          zIndex: 50,
+          zIndex: 6000,
           border: 1,
           backgroundColor: 'secondary.main',
           boxShadow: 1,
