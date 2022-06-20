@@ -402,7 +402,7 @@ function Navbar({ children }) {
         variant='persistent'
         anchor='left'
         sx={{
-          width: 0 ,
+          width: 0,
           flexShrink: 0,
           '& .MuiDrawer-paper': { width: drawerWidth },
         }}
@@ -492,16 +492,18 @@ function Navbar({ children }) {
       <IconButton
         sx={{
           margin: 0.2,
-          position: 'absolute',
+          position: 'fixed',
           left: drawOpen ? drawerWidth - 28 : 0,
           transitionProperty: 'left',
           transitionDuration: '0.2s',
           transitionTimingFunction: 'ease-out',
-          top: '50%',
+          top: 'calc(0.5 * 100vh)',
           zIndex: 6000,
           border: 1,
           backgroundColor: 'secondary.main',
           boxShadow: 1,
+          blockSize:50,
+          inlineSize: 50
         }}
         size='large'
         color='inherit'
