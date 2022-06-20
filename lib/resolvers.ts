@@ -132,7 +132,7 @@ const resolvers: Resolvers = {
           ..._args.permissions,
         },
       });
-      return createdRole as Role;
+      return createdRole
     },
     async createPerson(_parent, _args, _context, _info): Promise<Person> {
       // check authentication and permission

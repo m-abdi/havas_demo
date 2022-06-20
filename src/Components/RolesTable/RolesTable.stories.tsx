@@ -315,7 +315,6 @@ Main.args = {
       deleteRole: true,
     },
   ],
-  fetchMore: () => {},
   pageNumber: 0,
   itemsPerPage: 10,
   allRolesCount:20

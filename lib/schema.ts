@@ -111,7 +111,6 @@ const typeDefs = /* GraphQL */ `
   }
   type Role {
     id: ID!
-    numberIndex: Int!
     name: String!
     viewPerson: Boolean
     createPerson: Boolean

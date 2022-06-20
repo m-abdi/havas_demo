@@ -279,8 +279,8 @@ function Navbar({ children }) {
         }}
       >
         <Toolbar sx={{ justifyContent: 'space-between' }}>
-          <Typography sx={{ display: 'inline-block', margin: 1 }}>
-            سامانه هوشمند حواس
+          <Typography variant='h5' sx={{ display: 'inline-block', margin: 1 }}>
+              حواس
           </Typography>
           <Stack direction='row' spacing={2} alignItems='center'>
             <Typography component='p' variant='body1'>

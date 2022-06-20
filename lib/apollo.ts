@@ -50,17 +50,14 @@ function createApolloClient(context?: ResolverContext) {
               read(
                 existing,
                 {
-                  args: {
-                    // Default to returning the entire cached list,
-                    // if offset and limit are not provided.
-                    offset,
-                    limit,
-                  } = {},
+                  args,
                 }
-              ) {
-                console.log(offset, limit);
-
-                return existing && existing.slice(offset, offset + limit);
+              ) :any {
+       
+                return (
+                  existing &&
+                  existing.slice(args?.offset, args?.offset + args?.limit)
+                );
               },
             },
           },
@@ -96,34 +93,34 @@ export function useApollo(initialState: any) {
   return store;
 }
 
-function offsetFromCursor(items, cursor, readField) {
-  // Search from the back of the list because the cursor we're
+// function offsetFromCursor(items, cursor, readField) {
+//   // Search from the back of the list because the cursor we're
 
-  // looking for is typically the ID of the last item.
+//   // looking for is typically the ID of the last item.
 
-  for (let i = items.length - 1; i >= 0; --i) {
-    const item = items[i];
+//   for (let i = items.length - 1; i >= 0; --i) {
+//     const item = items[i];
 
-    // Using readField works for both non-normalized objects
+//     // Using readField works for both non-normalized objects
 
-    // (returning item.id) and normalized references (returning
+//     // (returning item.id) and normalized references (returning
 
-    // the id field from the referenced entity object), so it's
+//     // the id field from the referenced entity object), so it's
 
-    // a good idea to use readField when you're not sure what
+//     // a good idea to use readField when you're not sure what
 
-    // kind of elements you're dealing with.
+//     // kind of elements you're dealing with.
 
-    if (readField('id', item) === cursor) {
-      // Add one because the cursor identifies the item just
+//     if (readField('id', item) === cursor) {
+//       // Add one because the cursor identifies the item just
 
-      // before the first item in the page we care about.
+//       // before the first item in the page we care about.
 
-      return i + 1;
-    }
-  }
+//       return i + 1;
+//     }
+//   }
 
-  // Report that the cursor could not be found.
+//   // Report that the cursor could not be found.
 
-  return -1;
-}
+//   return -1;
+// }

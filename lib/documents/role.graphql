@@ -9,7 +9,6 @@ query allRoles($limit: Int!, $offset: Int!) {
   roles(limit: $limit, offset: $offset) {
     id
     name
-    numberIndex
     viewPerson
     createPerson
     editPerson

@@ -112,7 +112,6 @@ model License {
 
 model Role {
   id              String   @id @default(uuid())
-  numberIndex     Int      @default(autoincrement())
   name            String?  @unique
   viewPerson      Boolean  @default(false)
   createPerson    Boolean

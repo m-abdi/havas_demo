@@ -20,7 +20,7 @@ export default memo(function NewRole({
   existingRoleData,
   onSubmit,
 }: {
-  existingRoleData: RoleType;
+  existingRoleData?: RoleType;
   onSubmit: (name: string, permissions: any, edit: string) => Promise<boolean>;
 }) {
   // states

@@ -139,8 +139,8 @@ export default function roles() {
             <Box
               sx={{
                 position: 'absolute',
-                top: 75,
-                right: getCookie('drawOpen') === 'true' ? 70 : 200,
+                top: 72,
+                right: getCookie('drawOpen') === 'true' ? "5%" : "12%",
               }}
             >
               <Button

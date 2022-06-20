@@ -13,6 +13,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  useTheme,
 } from '@mui/material';
 import React, { memo, useCallback, useEffect, useState } from 'react';
 
@@ -88,7 +89,7 @@ export default memo(function RolesTable({
   const handleOptionsClose = () => {
     setRowOptionsAnchorElement(null);
   };
-
+const theme = useTheme()
   return loading ? <Loader center /> : rows.length > 0 ? (
     <Box sx={{ maxInlineSize: '100%' }}>
       <Box>
@@ -102,6 +103,7 @@ export default memo(function RolesTable({
               border: '1px solid grey',
               borderCollapse: 'collapse',
               backgroundColor: 'white',
+         
             }}
           >
             {/* <caption>
