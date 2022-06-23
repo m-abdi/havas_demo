@@ -28,8 +28,8 @@ describe('interaction test for NewPerson page', () => {
     cy.get('#firstNameAndLastNameInput').type(
       testNewPersonData?.firstNameAndLastName
     );
-    cy.get('#roleInput').type(Main.args.roles[2].label as string);
-    cy.get('#placeInput').type(Main.args.places[2].label as string);
+    cy.get('#roleInput').type(Main?.args?.roles?.[2]?.label as string);
+    cy.get('#placeInput').type(Main?.args?.places?.[2].label as string);
     cy.get('#stateInput').type(testNewPersonData?.state);
     cy.get('#cityInput').type(testNewPersonData?.city);
     cy.get('#postalCodeInput').type(testNewPersonData?.postalCode);
@@ -42,8 +42,8 @@ describe('interaction test for NewPerson page', () => {
     cy.get('@onSubmitSpy').should(
       'have.been.calledWith',
       testNewPersonData.firstNameAndLastName,
-      Main.args?.places[2].id,
-      Main.args.roles[2].id,
+      Main?.args?.places?.[2].id,
+      Main?.args?.roles?.[2].id,
       testNewPersonData?.state,
       testNewPersonData?.city,
       testNewPersonData?.postalCode,

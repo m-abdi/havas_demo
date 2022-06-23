@@ -1,6 +1,5 @@
 import { CacheProvider, EmotionCache } from '@emotion/react';
 
-import Layout from './Components/Layout';
 import React from 'react';
 import { SessionProvider } from 'next-auth/react';
 import { Stack } from '@mui/material';

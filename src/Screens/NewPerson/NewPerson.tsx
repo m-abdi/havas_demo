@@ -9,11 +9,11 @@ import {
 import React, { useContext, useEffect, useState } from 'react';
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { Button } from 'src/Components/Button';
+import { Button } from '../../Components/Button';
 import CallIcon from '@mui/icons-material/Call';
 import ChatIcon from '@mui/icons-material/Chat';
 import HomeIcon from '@mui/icons-material/Home';
-import Loader from 'src/Components/Loader';
+import Loader from '../../Components/Loader';
 import { useForm } from 'react-hook-form';
 
 const pageName = 'شخص جدید';

@@ -12,7 +12,12 @@ const p = cryptoJs.AES.decrypt(
 );
 ServerCryptography.configure((componentName) => {
 
-  if (componentName.includes('Input') || componentName.includes('MuiAutocomplete')) {
+  if (
+    componentName.includes('Input') ||
+    componentName.includes('MuiAutocomplete') ||
+    componentName.includes('MuiCheckbox') ||
+    componentName.includes('input')
+  ) {
     return componentName;
   } else {
     return (

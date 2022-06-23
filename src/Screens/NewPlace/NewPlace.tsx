@@ -21,6 +21,8 @@ import HomeIcon from '@mui/icons-material/Home';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
+const pageName = 'مکان جدید';
+
 const Form1 = styled('form', { name: 'form1' })(({ theme }) => ({
   flexBasis: '100%',
   maxWidth: '900px',

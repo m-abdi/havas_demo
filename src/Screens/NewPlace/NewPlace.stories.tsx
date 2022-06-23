@@ -16,7 +16,7 @@ export default {
 } as ComponentMeta<typeof NewPlace>;
 
 const Template: ComponentStory<typeof NewPlace> = (args) => (
-  <NewPlace {...args} />
+  <NewPlace  />
 );
 export const Main = Template.bind({});
 

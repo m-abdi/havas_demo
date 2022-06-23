@@ -1,9 +1,34 @@
-$ build-storybook --output-dir /tmp/chromatic--214010-sB9D0CZ0WfCN
-info @storybook/react v6.5.8
+$ build-storybook --output-dir /tmp/chromatic--311942-HGmcTCnw3f3J
+info @storybook/react v6.5.9
 info 
-info => Cleaning outputDir: /tmp/chromatic--214010-sB9D0CZ0WfCN
+info => Cleaning outputDir: /tmp/chromatic--311942-HGmcTCnw3f3J
 info => Loading presets
-info => Copying static files: /home/mordad/Documents/Programming/React/havas/public at /tmp/chromatic--214010-sB9D0CZ0WfCN/
+WARN   Failed to load preset: {"type":"presets"} on level 1
+ERR! TypeError [ERR_INVALID_ARG_TYPE]: The "id" argument must be of type string. Received an instance of Object
+ERR!     at new NodeError (node:internal/errors:371:5)
+ERR!     at validateString (node:internal/validators:119:11)
+ERR!     at Module.require (node:internal/modules/cjs/loader:998:3)
+ERR!     at require (node:internal/modules/cjs/helpers:102:18)
+ERR!     at interopRequireDefault (/home/mordad/Documents/Programming/React/havas/node_modules/@storybook/core-common/dist/cjs/presets.js:178:16)
+ERR!     at getContent (/home/mordad/Documents/Programming/React/havas/node_modules/@storybook/core-common/dist/cjs/presets.js:194:10)
+ERR!     at loadPreset (/home/mordad/Documents/Programming/React/havas/node_modules/@storybook/core-common/dist/cjs/presets.js:203:20)
+ERR!     at /home/mordad/Documents/Programming/React/havas/node_modules/@storybook/core-common/dist/cjs/presets.js:256:18
+ERR!     at Array.reduce (<anonymous>)
+ERR!     at loadPresets (/home/mordad/Documents/Programming/React/havas/node_modules/@storybook/core-common/dist/cjs/presets.js:255:18)
+ERR!  TypeError [ERR_INVALID_ARG_TYPE]: The "id" argument must be of type string. Received an instance of Object
+ERR!     at new NodeError (node:internal/errors:371:5)
+ERR!     at validateString (node:internal/validators:119:11)
+ERR!     at Module.require (node:internal/modules/cjs/loader:998:3)
+ERR!     at require (node:internal/modules/cjs/helpers:102:18)
+ERR!     at interopRequireDefault (/home/mordad/Documents/Programming/React/havas/node_modules/@storybook/core-common/dist/cjs/presets.js:178:16)
+ERR!     at getContent (/home/mordad/Documents/Programming/React/havas/node_modules/@storybook/core-common/dist/cjs/presets.js:194:10)
+ERR!     at loadPreset (/home/mordad/Documents/Programming/React/havas/node_modules/@storybook/core-common/dist/cjs/presets.js:203:20)
+ERR!     at /home/mordad/Documents/Programming/React/havas/node_modules/@storybook/core-common/dist/cjs/presets.js:256:18
+ERR!     at Array.reduce (<anonymous>)
+ERR!     at loadPresets (/home/mordad/Documents/Programming/React/havas/node_modules/@storybook/core-common/dist/cjs/presets.js:255:18) {
+ERR!   code: 'ERR_INVALID_ARG_TYPE'
+ERR! }
+info => Copying static files: /home/mordad/Documents/Programming/React/havas/public at /tmp/chromatic--311942-HGmcTCnw3f3J/
 info => Compiling manager..
 info => Compiling preview..
 info Addon-docs: using MDX1
@@ -50,7 +75,6 @@ info => Using default Webpack5 setup
 <s> [webpack.Progress] 9% setup compilation JavascriptModulesPlugin
 <s> [webpack.Progress] 9% setup compilation JsonModulesPlugin
 <s> [webpack.Progress] 9% setup compilation AssetModulesPlugin
-<s> [webpack.Progress] 9% setup compilation EntryPlugin
 <s> [webpack.Progress] 9% setup compilation EntryPlugin
 <s> [webpack.Progress] 9% setup compilation EntryPlugin
 <s> [webpack.Progress] 9% setup compilation EntryPlugin
@@ -119,247 +143,100 @@ info => Using default Webpack5 setup
 <s> [webpack.Progress] 10% building
 <s> [webpack.Progress] 10% building 0/1 entries 0/0 dependencies 0/0 modules
 <s> [webpack.Progress] 10% building import loader ./node_modules/babel-loader/lib/index.js
-<s> [webpack.Progress] 10% building 0/15 entries 14/35 dependencies 0/13 modules
-<s> [webpack.Progress] 10% building 0/15 entries 15/35 dependencies 0/13 modules
-<s> [webpack.Progress] 13% building 1/15 entries 29/69 dependencies 2/26 modules
+<s> [webpack.Progress] 10% building 0/14 entries 13/32 dependencies 0/12 modules
+<s> [webpack.Progress] 13% building 1/14 entries 27/70 dependencies 2/24 modules
 <s> [webpack.Progress] 13% building import loader ./node_modules/@storybook/source-loader/dist/cjs/index.js
-<s> [webpack.Progress] 13% building 1/15 entries 43/77 dependencies 2/40 modules
-<s> [webpack.Progress] 13% building 1/15 entries 300/414 dependencies 8/156 modules
-<s> [webpack.Progress] 17% building 2/15 entries 527/746 dependencies 17/229 modules
-<s> [webpack.Progress] 17% building 2/15 entries 747/800 dependencies 22/306 modules
-<s> [webpack.Progress] 17% building 2/15 entries 881/1069 dependencies 40/307 modules
-<s> [webpack.Progress] 17% building 2/15 entries 1493/1511 dependencies 95/400 modules
-<s> [webpack.Progress] 17% building 2/15 entries 1897/2014 dependencies 206/500 modules
-<s> [webpack.Progress] 17% building 2/15 entries 2100/2298 dependencies 230/589 modules
-<s> [webpack.Progress] 17% building 2/15 entries 2683/2768 dependencies 334/800 modules
-<s> [webpack.Progress] 17% building 2/15 entries 3068/3200 dependencies 347/1014 modules
-<s> [webpack.Progress] 17% building 2/15 entries 3400/3504 dependencies 404/1059 modules
-<s> [webpack.Progress] 17% building 2/15 entries 4122/4200 dependencies 419/1121 modules
-<s> [webpack.Progress] 17% building 2/15 entries 4671/5100 dependencies 440/1147 modules
-<s> [webpack.Progress] 17% building 2/15 entries 5967/6000 dependencies 620/1384 modules
-<s> [webpack.Progress] 20% building 2/15 entries 6900/6923 dependencies 937/1586 modules
-<s> [webpack.Progress] 25% building 2/15 entries 7900/7982 dependencies 1386/1835 modules
-<s> [webpack.Progress] 25% building 2/15 entries 7966/8000 dependencies 1396/1836 modules
-<s> [webpack.Progress] 29% building 3/15 entries 8156/8186 dependencies 1751/1862 modules
-<s> [webpack.Progress] 29% building 4/15 entries 8156/8186 dependencies 1752/1862 modules
-<s> [webpack.Progress] 29% building 5/15 entries 8156/8186 dependencies 1753/1862 modules
-<s> [webpack.Progress] 32% building 6/15 entries 8156/8186 dependencies 1754/1862 modules
-<s> [webpack.Progress] 35% building 7/15 entries 8156/8186 dependencies 1755/1862 modules
-<s> [webpack.Progress] 39% building 8/15 entries 8156/8186 dependencies 1756/1862 modules
-<s> [webpack.Progress] 43% building 9/15 entries 8156/8186 dependencies 1757/1862 modules
-<s> [webpack.Progress] 46% building 10/15 entries 8156/8186 dependencies 1758/1862 modules
-<s> [webpack.Progress] 50% building 11/15 entries 8156/8186 dependencies 1759/1862 modules
-<s> [webpack.Progress] 54% building 12/15 entries 8156/8186 dependencies 1760/1862 modules
-<s> [webpack.Progress] 57% building 13/15 entries 8482/8489 dependencies 1910/1937 modules
-<s> [webpack.Progress] 61% building 14/15 entries 8507/8507 dependencies 1933/1948 modules
-<s> [webpack.Progress] 64% building 15/15 entries 8507/8507 dependencies 1948/1948 modules
-<s> [webpack.Progress] 65% building
-<s> [webpack.Progress] 69% building finish
-<s> [webpack.Progress] 69% building finish
-<s> [webpack.Progress] 70% sealing finish module graph
-<s> [webpack.Progress] 70% sealing finish module graph ResolverCachePlugin
-<s> [webpack.Progress] 70% sealing finish module graph InferAsyncModulesPlugin
-<s> [webpack.Progress] 70% sealing finish module graph FlagDependencyExportsPlugin
-<s> [webpack.Progress] 70% sealing finish module graph InnerGraphPlugin
-<s> [webpack.Progress] 70% sealing finish module graph WasmFinalizeExportsPlugin
-<s> [webpack.Progress] 70% sealing finish module graph
-<s> [webpack.Progress] 70% sealing plugins
-<s> [webpack.Progress] 70% sealing plugins DocGenPlugin
-<s> [webpack.Progress] 70% sealing plugins WarnCaseSensitiveModulesPlugin
-<s> [webpack.Progress] 70% sealing plugins
-<s> [webpack.Progress] 71% sealing dependencies optimization
-<s> [webpack.Progress] 71% sealing dependencies optimization SideEffectsFlagPlugin
-<s> [webpack.Progress] 71% sealing dependencies optimization FlagDependencyUsagePlugin
-<s> [webpack.Progress] 71% sealing dependencies optimization
-<s> [webpack.Progress] 71% sealing after dependencies optimization
-<s> [webpack.Progress] 71% sealing after dependencies optimization
-<s> [webpack.Progress] 72% sealing chunk graph
-<s> [webpack.Progress] 72% sealing chunk graph
-<s> [webpack.Progress] 73% sealing after chunk graph
-<s> [webpack.Progress] 73% sealing after chunk graph
-<s> [webpack.Progress] 73% sealing optimizing
-<s> [webpack.Progress] 73% sealing optimizing
-<s> [webpack.Progress] 74% sealing module optimization
-<s> [webpack.Progress] 74% sealing module optimization
-<s> [webpack.Progress] 75% sealing after module optimization
-<s> [webpack.Progress] 75% sealing after module optimization
-<s> [webpack.Progress] 75% sealing chunk optimization
-<s> [webpack.Progress] 75% sealing chunk optimization EnsureChunkConditionsPlugin
-<s> [webpack.Progress] 75% sealing chunk optimization RemoveEmptyChunksPlugin
-<s> [webpack.Progress] 75% sealing chunk optimization MergeDuplicateChunksPlugin
-<s> [webpack.Progress] 75% sealing chunk optimization SplitChunksPlugin
-<s> [webpack.Progress] 75% sealing chunk optimization RemoveEmptyChunksPlugin
-<s> [webpack.Progress] 75% sealing chunk optimization
-<s> [webpack.Progress] 76% sealing after chunk optimization
-<s> [webpack.Progress] 76% sealing after chunk optimization
-<s> [webpack.Progress] 77% sealing module and chunk tree optimization
-<s> [webpack.Progress] 77% sealing module and chunk tree optimization PersistentChildCompilerSingletonPlugin
-<s> [webpack.Progress] 77% sealing module and chunk tree optimization
-<s> [webpack.Progress] 77% sealing after module and chunk tree optimization
-<s> [webpack.Progress] 77% sealing after module and chunk tree optimization
-<s> [webpack.Progress] 78% sealing chunk modules optimization
-<s> [webpack.Progress] 78% sealing chunk modules optimization ModuleConcatenationPlugin
-<s> [webpack.Progress] 78% sealing chunk modules optimization
-<s> [webpack.Progress] 78% sealing after chunk modules optimization
-<s> [webpack.Progress] 78% sealing after chunk modules optimization
-<s> [webpack.Progress] 79% sealing module reviving
-<s> [webpack.Progress] 79% sealing module reviving RecordIdsPlugin
-<s> [webpack.Progress] 79% sealing module reviving
-<s> [webpack.Progress] 80% sealing before module ids
-<s> [webpack.Progress] 80% sealing before module ids
-<s> [webpack.Progress] 80% sealing module ids
-<s> [webpack.Progress] 80% sealing module ids NamedModuleIdsPlugin
-<s> [webpack.Progress] 80% sealing module ids
-<s> [webpack.Progress] 81% sealing module id optimization
-<s> [webpack.Progress] 81% sealing module id optimization
-<s> [webpack.Progress] 82% sealing module id optimization
-<s> [webpack.Progress] 82% sealing module id optimization
-<s> [webpack.Progress] 82% sealing chunk reviving
-<s> [webpack.Progress] 82% sealing chunk reviving RecordIdsPlugin
-<s> [webpack.Progress] 82% sealing chunk reviving
-<s> [webpack.Progress] 83% sealing before chunk ids
-<s> [webpack.Progress] 83% sealing before chunk ids
-<s> [webpack.Progress] 84% sealing chunk ids
-<s> [webpack.Progress] 84% sealing chunk ids DeterministicChunkIdsPlugin
-<s> [webpack.Progress] 84% sealing chunk ids
-<s> [webpack.Progress] 84% sealing chunk id optimization
-<s> [webpack.Progress] 84% sealing chunk id optimization FlagIncludedChunksPlugin
-<s> [webpack.Progress] 84% sealing chunk id optimization
-<s> [webpack.Progress] 85% sealing after chunk id optimization
-<s> [webpack.Progress] 85% sealing after chunk id optimization
-<s> [webpack.Progress] 86% sealing record modules
-<s> [webpack.Progress] 86% sealing record modules RecordIdsPlugin
-<s> [webpack.Progress] 86% sealing record modules
-<s> [webpack.Progress] 86% sealing record chunks
-<s> [webpack.Progress] 86% sealing record chunks RecordIdsPlugin
-<s> [webpack.Progress] 86% sealing record chunks
-<s> [webpack.Progress] 87% sealing module hashing
-<s> [webpack.Progress] 87% sealing module hashing
-<s> [webpack.Progress] 87% sealing code generation
-<s> [webpack.Progress] 87% sealing code generation
-<s> [webpack.Progress] 88% sealing runtime requirements
-<s> [webpack.Progress] 88% sealing runtime requirements
-<s> [webpack.Progress] 89% sealing hashing
-<s> [webpack.Progress] 89% sealing hashing
-<s> [webpack.Progress] 89% sealing after hashing
-<s> [webpack.Progress] 89% sealing after hashing
-<s> [webpack.Progress] 90% sealing record hash
-<s> [webpack.Progress] 90% sealing record hash
-<s> [webpack.Progress] 91% sealing module assets processing
-<s> [webpack.Progress] 91% sealing module assets processing
-<s> [webpack.Progress] 91% sealing chunk assets processing
-<s> [webpack.Progress] 91% sealing chunk assets processing
-<s> [webpack.Progress] 92% sealing asset processing
-<s> [webpack.Progress] 92% sealing asset processing PersistentChildCompilerSingletonPlugin
-<s> [webpack.Progress] 92% sealing asset processing TerserPlugin
-info => Manager built (30 s)
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin main.d2b25d7b.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin main.d2b25d7b.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin runtime~main.f2f02b95.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin runtime~main.f2f02b95.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 701.44dad820.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 701.44dad820.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 745.5f23f0a0.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 745.5f23f0a0.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 273.c5b2394f.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 273.c5b2394f.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 115.9ac1510a.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 115.9ac1510a.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 627.ea360603.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 627.ea360603.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 441.c7e4a4bb.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 441.c7e4a4bb.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 551.37011cee.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 551.37011cee.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 521.f20de4d7.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 521.f20de4d7.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 752.a7a33d53.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 752.a7a33d53.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 542.246489c6.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 542.246489c6.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 29.1a8af3ff.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 29.1a8af3ff.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin resolve sources
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 29.1a8af3ff.iframe.bundle.js attach SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 29.1a8af3ff.iframe.bundle.js attached SourceMap
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin resolve sources
-<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin
-<s> [webpack.Progress] 92% sealing asset processing HtmlWebpackPlugin
-<s> [webpack.Progress] 92% sealing asset processing HtmlWebpackPlugin
-<s> [webpack.Progress] 92% sealing asset processing HtmlWebpackPlugin resolve sources
-<s> [webpack.Progress] 92% sealing asset processing HtmlWebpackPlugin
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin main.b36c3971.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin main.b36c3971.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin runtime~main.77504cb9.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin runtime~main.77504cb9.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 701.3891cf53.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 701.3891cf53.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 745.600c8e0b.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 745.600c8e0b.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 551.eb46885b.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 551.eb46885b.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 752.f3155e3d.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 752.f3155e3d.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 542.56125a35.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 542.56125a35.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 273.97fe5d3d.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 273.97fe5d3d.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 115.eb0191eb.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 115.eb0191eb.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 627.45093831.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 627.45093831.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 441.1d118231.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 441.1d118231.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 521.bab4dac1.iframe.bundle.js generate SourceMap
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 521.bab4dac1.iframe.bundle.js generated SourceMap
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin resolve sources
-<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin
-<s> [webpack.Progress] 92% sealing asset processing
-<s> [webpack.Progress] 93% sealing after asset optimization
-<s> [webpack.Progress] 93% sealing after asset optimization
-<s> [webpack.Progress] 93% sealing recording
-<s> [webpack.Progress] 93% sealing recording
-<s> [webpack.Progress] 94% sealing after seal
-<s> [webpack.Progress] 94% sealing after seal
-<s> [webpack.Progress] 95% emitting emit
-<s> [webpack.Progress] 95% emitting emit
-<s> [webpack.Progress] 98% emitting after emit
-<s> [webpack.Progress] 98% emitting after emit SizeLimitsPlugin
-<s> [webpack.Progress] 98% emitting after emit
-<s> [webpack.Progress] 99% done plugins
-<s> [webpack.Progress] 99% done plugins CaseSensitivePathsPlugin
-<s> [webpack.Progress] 99% done plugins
-<s> [webpack.Progress] 99% 
-
-<s> [webpack.Progress] 99% cache store build dependencies
-<s> [webpack.Progress] 99% cache store build dependencies
+<s> [webpack.Progress] 13% building 1/14 entries 61/84 dependencies 2/49 modules
+<s> [webpack.Progress] 13% building 1/14 entries 370/433 dependencies 8/200 modules
+<s> [webpack.Progress] 17% building 2/14 entries 589/730 dependencies 15/261 modules
+<s> [webpack.Progress] 17% building 2/14 entries 1000/1083 dependencies 55/317 modules
+<s> [webpack.Progress] 17% building 2/14 entries 1431/1481 dependencies 72/400 modules
+<s> [webpack.Progress] 21% building 3/14 entries 1811/2099 dependencies 189/465 modules
 <s> [webpack.Progress] 99% cache begin idle
 <s> [webpack.Progress] 99% cache begin idle
 <s> [webpack.Progress] 100% 
 
-info => Preview built (35 s)
-WARN asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
-WARN This can impact web performance.
-WARN Assets: 
-WARN   273.97fe5d3d.iframe.bundle.js (598 KiB)
-WARN   115.eb0191eb.iframe.bundle.js (603 KiB)
-WARN   441.1d118231.iframe.bundle.js (792 KiB)
-WARN   29.e6a3a86f.iframe.bundle.js (1.88 MiB)
-WARN entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
-WARN Entrypoints:
-WARN   main (1.92 MiB)
-WARN       runtime~main.77504cb9.iframe.bundle.js
-WARN       29.e6a3a86f.iframe.bundle.js
-WARN       main.b36c3971.iframe.bundle.js
-WARN 
+ERR! => Failed to build the preview
+ERR! Module not found: Error: Can't resolve 'src/Components/Button' in '/home/mordad/Documents/Programming/React/havas/src/Screens/NewPerson'
 <s> [webpack.Progress] 99% cache shutdown
 <s> [webpack.Progress] 99% cache shutdown
 <s> [webpack.Progress] 100% 
 
-info => Output directory: /tmp/chromatic--214010-sB9D0CZ0WfCN
+<s> [webpack.Progress] 25% building 4/14 entries 1811/2099 dependencies 268/465 modules
+<s> [webpack.Progress] 29% building 5/14 entries 2082/2099 dependencies 283/465 modules
+<s> [webpack.Progress] 33% building 6/14 entries 2082/2099 dependencies 283/465 modules
+<s> [webpack.Progress] 37% building 7/14 entries 2082/2099 dependencies 283/465 modules
+<s> [webpack.Progress] 41% building 8/14 entries 2082/2099 dependencies 283/465 modules
+<s> [webpack.Progress] 45% building 9/14 entries 2082/2099 dependencies 283/465 modules
+<s> [webpack.Progress] 49% building 10/14 entries 2082/2099 dependencies 283/465 modules
+<s> [webpack.Progress] 53% building 11/14 entries 2082/2099 dependencies 283/465 modules
+<s> [webpack.Progress] 57% building 12/14 entries 2082/2099 dependencies 283/465 modules
+<s> [webpack.Progress] 61% building 13/14 entries 2082/2099 dependencies 283/465 modules
+<s> [webpack.Progress] 64% building 14/14 entries 2082/2099 dependencies 283/465 modules
+info => Manager built (17 s)
+ERR! ModuleNotFoundError: Module not found: Error: Can't resolve 'src/Components/Button' in '/home/mordad/Documents/Programming/React/havas/src/Screens/NewPerson'
+ERR!     at /home/mordad/Documents/Programming/React/havas/node_modules/@storybook/builder-webpack5/node_modules/webpack/lib/Compilation.js:2016:28
+ERR!     at /home/mordad/Documents/Programming/React/havas/node_modules/@storybook/builder-webpack5/node_modules/webpack/lib/NormalModuleFactory.js:798:13
+ERR!     at eval (eval at create (/home/mordad/Documents/Programming/React/havas/node_modules/@storybook/builder-webpack5/node_modules/tapable/lib/HookCodeFactory.js:33:10), <anonymous>:10:1)
+ERR!     at /home/mordad/Documents/Programming/React/havas/node_modules/@storybook/builder-webpack5/node_modules/webpack/lib/NormalModuleFactory.js:270:22
+ERR!     at eval (eval at create (/home/mordad/Documents/Programming/React/havas/node_modules/@storybook/builder-webpack5/node_modules/tapable/lib/HookCodeFactory.js:33:10), <anonymous>:9:1)
+ERR!     at /home/mordad/Documents/Programming/React/havas/node_modules/@storybook/builder-webpack5/node_modules/webpack/lib/NormalModuleFactory.js:434:22
+ERR!     at /home/mordad/Documents/Programming/React/havas/node_modules/@storybook/builder-webpack5/node_modules/webpack/lib/NormalModuleFactory.js:116:11
+ERR!     at /home/mordad/Documents/Programming/React/havas/node_modules/@storybook/builder-webpack5/node_modules/webpack/lib/NormalModuleFactory.js:670:25
+ERR!     at /home/mordad/Documents/Programming/React/havas/node_modules/@storybook/builder-webpack5/node_modules/webpack/lib/NormalModuleFactory.js:855:8
+ERR!     at /home/mordad/Documents/Programming/React/havas/node_modules/@storybook/builder-webpack5/node_modules/webpack/lib/NormalModuleFactory.js:975:5
+ERR!  ModuleNotFoundError: Module not found: Error: Can't resolve 'src/Components/Button' in '/home/mordad/Documents/Programming/React/havas/src/Screens/NewPerson'
+ERR!     at /home/mordad/Documents/Programming/React/havas/node_modules/@storybook/builder-webpack5/node_modules/webpack/lib/Compilation.js:2016:28
+ERR!     at /home/mordad/Documents/Programming/React/havas/node_modules/@storybook/builder-webpack5/node_modules/webpack/lib/NormalModuleFactory.js:798:13
+ERR!     at eval (eval at create (/home/mordad/Documents/Programming/React/havas/node_modules/@storybook/builder-webpack5/node_modules/tapable/lib/HookCodeFactory.js:33:10), <anonymous>:10:1)
+ERR!     at /home/mordad/Documents/Programming/React/havas/node_modules/@storybook/builder-webpack5/node_modules/webpack/lib/NormalModuleFactory.js:270:22
+ERR!     at eval (eval at create (/home/mordad/Documents/Programming/React/havas/node_modules/@storybook/builder-webpack5/node_modules/tapable/lib/HookCodeFactory.js:33:10), <anonymous>:9:1)
+ERR!     at /home/mordad/Documents/Programming/React/havas/node_modules/@storybook/builder-webpack5/node_modules/webpack/lib/NormalModuleFactory.js:434:22
+ERR!     at /home/mordad/Documents/Programming/React/havas/node_modules/@storybook/builder-webpack5/node_modules/webpack/lib/NormalModuleFactory.js:116:11
+ERR!     at /home/mordad/Documents/Programming/React/havas/node_modules/@storybook/builder-webpack5/node_modules/webpack/lib/NormalModuleFactory.js:670:25
+ERR!     at /home/mordad/Documents/Programming/React/havas/node_modules/@storybook/builder-webpack5/node_modules/webpack/lib/NormalModuleFactory.js:855:8
+ERR!     at /home/mordad/Documents/Programming/React/havas/node_modules/@storybook/builder-webpack5/node_modules/webpack/lib/NormalModuleFactory.js:975:5
+ERR! resolve 'src/Components/Button' in '/home/mordad/Documents/Programming/React/havas/src/Screens/NewPerson'
+ERR!   Parsed request is a module
+ERR!   using description file: /home/mordad/Documents/Programming/React/havas/package.json (relative path: ./src/Screens/NewPerson)
+ERR!     Field 'browser' doesn't contain a valid alias configuration
+ERR!     resolve as module
+ERR!       /home/mordad/Documents/Programming/React/havas/src/Screens/NewPerson/node_modules doesn't exist or is not a directory
+ERR!       /home/mordad/Documents/Programming/React/havas/src/Screens/node_modules doesn't exist or is not a directory
+ERR!       /home/mordad/Documents/Programming/React/havas/src/node_modules doesn't exist or is not a directory
+ERR!       looking for modules in /home/mordad/Documents/Programming/React/havas/node_modules
+ERR!         /home/mordad/Documents/Programming/React/havas/node_modules/src doesn't exist
+ERR!       /home/mordad/Documents/Programming/React/node_modules doesn't exist or is not a directory
+ERR!       /home/mordad/Documents/Programming/node_modules doesn't exist or is not a directory
+ERR!       /home/mordad/Documents/node_modules doesn't exist or is not a directory
+ERR!       /home/mordad/node_modules doesn't exist or is not a directory
+ERR!       /home/node_modules doesn't exist or is not a directory
+ERR!       /node_modules doesn't exist or is not a directory
+info => Loading presets
+WARN   Failed to load preset: {"type":"presets"} on level 1
+ERR! TypeError [ERR_INVALID_ARG_TYPE]: The "id" argument must be of type string. Received an instance of Object
+ERR!     at new NodeError (node:internal/errors:371:5)
+ERR!     at validateString (node:internal/validators:119:11)
+ERR!     at Module.require (node:internal/modules/cjs/loader:998:3)
+ERR!     at require (node:internal/modules/cjs/helpers:102:18)
+ERR!     at interopRequireDefault (/home/mordad/Documents/Programming/React/havas/node_modules/@storybook/core-common/dist/cjs/presets.js:178:16)
+ERR!     at getContent (/home/mordad/Documents/Programming/React/havas/node_modules/@storybook/core-common/dist/cjs/presets.js:194:10)
+ERR!     at loadPreset (/home/mordad/Documents/Programming/React/havas/node_modules/@storybook/core-common/dist/cjs/presets.js:203:20)
+ERR!     at /home/mordad/Documents/Programming/React/havas/node_modules/@storybook/core-common/dist/cjs/presets.js:256:18
+ERR!     at Array.reduce (<anonymous>)
+ERR!     at loadPresets (/home/mordad/Documents/Programming/React/havas/node_modules/@storybook/core-common/dist/cjs/presets.js:255:18)
+ERR!  TypeError [ERR_INVALID_ARG_TYPE]: The "id" argument must be of type string. Received an instance of Object
+ERR!     at new NodeError (node:internal/errors:371:5)
+ERR!     at validateString (node:internal/validators:119:11)
+ERR!     at Module.require (node:internal/modules/cjs/loader:998:3)
+ERR!     at require (node:internal/modules/cjs/helpers:102:18)
+ERR!     at interopRequireDefault (/home/mordad/Documents/Programming/React/havas/node_modules/@storybook/core-common/dist/cjs/presets.js:178:16)
+ERR!     at getContent (/home/mordad/Documents/Programming/React/havas/node_modules/@storybook/core-common/dist/cjs/presets.js:194:10)
+ERR!     at loadPreset (/home/mordad/Documents/Programming/React/havas/node_modules/@storybook/core-common/dist/cjs/presets.js:203:20)
+ERR!     at /home/mordad/Documents/Programming/React/havas/node_modules/@storybook/core-common/dist/cjs/presets.js:256:18
+ERR!     at Array.reduce (<anonymous>)
+ERR!     at loadPresets (/home/mordad/Documents/Programming/React/havas/node_modules/@storybook/core-common/dist/cjs/presets.js:255:18) {
+ERR!   code: 'ERR_INVALID_ARG_TYPE'
+ERR! }
+error Command failed with exit code 1.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
