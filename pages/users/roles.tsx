@@ -1,16 +1,15 @@
+import { Box, Container } from '@mui/material';
 import { DeleteRolesDocument, RolesDocument } from 'lib/graphql-operations';
 import { InfoContext, SnackbarContext } from 'pages/_app';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useApolloClient, useMutation, useQuery } from '@apollo/client';
 
-import { Box } from '@mui/material';
 import { Button } from '../../src/Components/Button';
 import DeleteRolesDialog from 'src/Components/DeleteRolesDialog';
 import Layout from 'src/Components/Layout';
 import Loader from 'src/Components/Loader';
 import RoleTable from 'src/Components/RolesTable/RolesTable';
 import Snackbar from 'src/Components/Snackbar';
-import { getCookie } from 'src/Cookies';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
@@ -113,7 +112,7 @@ export default function roles() {
         <Loader center />
       ) : error ? null : (
         data && (
-          <>
+          <Container maxWidth='xl' sx={{ position: 'relative', p: 0 }}>
             <RoleTable
               itemsPerPage={itemsPerPage}
               setItemsPerPage={setItemsPerPage}
@@ -139,8 +138,8 @@ export default function roles() {
             <Box
               sx={{
                 position: 'absolute',
-                top: 72,
-                right: getCookie('drawOpen') === 'true' ? "5%" : "12%",
+                top: -68,
+                right: "35px",
               }}
             >
               <Button
@@ -161,7 +160,7 @@ export default function roles() {
               closeDialog={() => setDeleteRoleDialog(false)}
               confirmDelete={deleteRoles}
             />
-          </>
+          </Container>
         )
       )}
       <Snackbar />
