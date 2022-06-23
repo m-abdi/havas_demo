@@ -1,8 +1,36 @@
 query allPerson {
-    persons {
-        id
-        firstName
-        lastName
+  persons {
+    id
+    firstNameAndLastName
+  }
+}
 
-    }
+mutation createNewPerson(
+  $id: String!
+  $firstNameAndLastName: String!
+  $roleId: ID!
+  $placeId: ID!
+  $state: String
+  $city: String
+  $postalCode: String
+  $address: String
+  $telephone: String
+  $mobileNumber: String
+  $website: String
+) {
+  createPerson(
+    id: $id
+    firstNameAndLastName: $firstNameAndLastName
+    roleId: $roleId
+    placeId: $placeId
+    state: $state
+    city: $city
+    postalCode: $postalCode
+    address: $address
+    telephone: $telephone
+    mobileNumber: $mobileNumber
+    website: $website
+  ) {
+    firstNameAndLastName
+  }
 }

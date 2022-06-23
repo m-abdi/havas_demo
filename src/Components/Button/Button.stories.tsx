@@ -2,11 +2,11 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import Button from './Button';
 import React from 'react';
-import StoriesDecorator from '../StoriesDecorator';
+import StoriesDecorator from '../../StoriesDecorator';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'Web App/Button',
+  title: 'Components/Button',
   component: Button,
   decorators: [
     (Story) => (

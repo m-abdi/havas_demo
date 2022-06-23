@@ -2,11 +2,8 @@ const typeDefs = /* GraphQL */ `
   # Users of the app
   type Person {
     id: ID!
-    firstName: String
-    lastName: String
+    firstNameAndLastName: String
     place: Place
-    title: String
-    responsibility: String
     state: String
     city: String
     postalCode: String
@@ -17,7 +14,6 @@ const typeDefs = /* GraphQL */ `
     roleId: ID
     createdAt: String
     editedAt: String
-    email: String!
   }
 
   type Place {
@@ -142,7 +138,6 @@ const typeDefs = /* GraphQL */ `
     deleteRole: Boolean
     createdAt: String
   }
- 
 
   type Query {
     persons: [Person!]
@@ -155,17 +150,17 @@ const typeDefs = /* GraphQL */ `
   type Mutation {
     createRole(name: String!, permissions: Permissions!, edit: String): Role!
     createPerson(
-      firstName: String
-      lastName: String
+      id: String
+      firstNameAndLastName: String
+      roleId: ID!
       placeId: ID!
       state: String
       city: String
       postalCode: String
       address: String
       telephone: String
-      phoneNumber: String
-      roleId: ID!
-      email: String
+      mobileNumber: String
+      website: String
     ): Person!
     deleteRoles(roleIds: [String!]!): [String!]!
   }

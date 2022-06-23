@@ -5,7 +5,7 @@ mutation createRole($name: String!, $permissions: Permissions!, $edit: String) {
   }
 }
 
-query allRoles($limit: Int!, $offset: Int!) {
+query roles($limit: Int!, $offset: Int!) {
   roles(limit: $limit, offset: $offset) {
     id
     name
@@ -77,7 +77,24 @@ query specificRole($roleId: ID!) {
   }
 }
 
-
 mutation deleteRoles($roleIds: [String!]!) {
   deleteRoles(roleIds: $roleIds)
+}
+
+query allRoles {
+  roles(limit: 1000000, offset: 0) {
+    name
+  }
+}
+
+
+query allRolesAndPlaces {
+  roles(limit: 1000000, offset: 0) {
+    id
+    label: name
+  }
+  places {
+    id
+    label: name
+  }
 }

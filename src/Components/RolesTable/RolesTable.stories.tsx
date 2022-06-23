@@ -2,11 +2,11 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import React from 'react';
 import RoleTable from './RolesTable';
-import StoriesDecorator from '../StoriesDecorator';
+import StoriesDecorator from '../../StoriesDecorator';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'Web App/ Role Table',
+  title: 'Components/ Role Table',
   component: RoleTable,
   decorators: [
     (Story) => (

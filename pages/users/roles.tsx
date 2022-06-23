@@ -1,4 +1,4 @@
-import { AllRolesDocument, DeleteRolesDocument } from 'lib/graphql-operations';
+import { DeleteRolesDocument, RolesDocument } from 'lib/graphql-operations';
 import { InfoContext, SnackbarContext } from 'pages/_app';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useApolloClient, useMutation, useQuery } from '@apollo/client';
@@ -48,7 +48,7 @@ export default function roles() {
     error,
     data,
     fetchMore,
-  } = useQuery(AllRolesDocument, {
+  } = useQuery(RolesDocument, {
     fetchPolicy: 'cache-and-network',
     nextFetchPolicy: 'cache-and-network',
     variables: {
@@ -72,7 +72,7 @@ export default function roles() {
     try {
       const resp = await deleteRolesMutation({
         variables: { roleIds },
-        refetchQueries: [{ query: AllRolesDocument }, 'allRoles'],
+        refetchQueries: [{ query: RolesDocument }, 'roles'],
       });
       if (resp.data?.deleteRoles) {
         setSnackbarColor('success');

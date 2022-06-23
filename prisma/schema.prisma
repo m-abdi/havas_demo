@@ -16,27 +16,24 @@ datasource db {
 // }
 
 model Person {
-  id             String    @id @default(uuid())
-  firstName      String?   @db.VarChar(255)
-  lastName       String?   @db.VarChar(255)
-  place          Place?    @relation(fields: [placeId], references: [id])
-  placeId        String?   @unique
-  title          String?   @db.VarChar(255)
-  responsibility String?   @db.VarChar(255)
-  state          String?   @db.VarChar(255)
-  city           String?   @db.VarChar(255)
-  postalCode     String?   @db.VarChar(255)
-  address        String?   @db.VarChar(255)
-  telephone      String?   @db.VarChar(255)
-  phoneNumber    String?   @db.VarChar(255)
-  role           Role      @relation(fields: [roleId], references: [id])
-  roleId         String
-  createdAt      DateTime  @default(now())
-  editedAt       DateTime  @updatedAt
-  email          String?   @unique
-  fromLicenses   License[] @relation("fromLicenses")
-  toLicenses     License[] @relation("toLicenses")
-  password       String
+  id           String    @id @default(uuid())
+  firstNameAndLastName    String?   @db.VarChar(255)
+  place        Place?    @relation(fields: [placeId], references: [id])
+  placeId      String?   @unique
+  state        String?   @db.VarChar(255)
+  city         String?   @db.VarChar(255)
+  postalCode   String?   @db.VarChar(255)
+  address      String?   @db.VarChar(255)
+  telephone    String?   @db.VarChar(255)
+  mobileNumber  String?   @db.VarChar(255)
+  website      String?   @db.VarChar(255)
+  role         Role      @relation(fields: [roleId], references: [id])
+  roleId       String
+  createdAt    DateTime  @default(now())
+  editedAt     DateTime  @updatedAt
+  fromLicenses License[] @relation("fromLicenses")
+  toLicenses   License[] @relation("toLicenses")
+  password     String
 }
 
 model Place {
@@ -86,7 +83,7 @@ model Asset {
 model Tag {
   id        String   @id @default(uuid())
   asset     Asset    @relation(fields: [assetId], references: [id])
-  assetId   String   
+  assetId   String   @unique
   createdAt DateTime @default(now())
   editedAt  DateTime @updatedAt
 }

@@ -1,5 +1,5 @@
 import NewRole from './NewRole';
-import Providers from '../StoriesDecorator';
+import Providers from '../../StoriesDecorator';
 describe('NewRole.cy.tsx', () => {
   it('changes role name correctly', () => {
     cy.mount(<NewRole onSubmit={async(name: string, permissions: any) => true} />);

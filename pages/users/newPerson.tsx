@@ -1,197 +1,97 @@
-import { Box, Checkbox, FilledInput, FormControl, FormControlLabel, FormLabel, Input, InputBase, InputLabel, Tab, TextField, Typography, styled } from '@mui/material'
-import React, { useContext, useEffect } from 'react'
+import {
+  AllRolesAndPlacesDocument,
+  CreateNewPersonDocument,
+} from 'lib/graphql-operations';
+import React, { useCallback, useContext } from 'react';
+import { useMutation, useQuery } from '@apollo/client';
 
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import CallIcon from '@mui/icons-material/Call';
-import ChatIcon from '@mui/icons-material/Chat';
-import HomeIcon from '@mui/icons-material/Home';
-import { InfoContext } from 'pages/_app';
 import Layout from 'src/Components/Layout';
-
-const pageName = "شخص جدید"
-const Form1 = styled('form',{name:'form1'})(({ theme }) => ({
-  flexBasis:'100%',
-  maxWidth:'900px',
-  display:'flex',
-  flexWrap:'wrap',
-  justifyContent:'center',
-  
-  padding: theme.spacing(2),
-}));
-
-const Section = styled('div',{name:'Section1'})(({ theme}) => ({
-  flex:'0 0 100%',
-  maxWidth:'100%',
-  flexWrap:'wrap',
-  display:'flex',
-  padding:'1rem',
-  }));
-
-const Titr = styled('div',{name:'Titr1'})(({ theme }) => ({
-display:'flex',
-flex:'0 0 100%',
-alignContent:'center',
-alignItems:'center',
-padding:'0em .4em',
-paddingBottom:'0.6em',
-color:'#333'
-
-}));
-
-// هر کدوم رو که خواستیم حتما یک ردیف کامل برا خودش بگیره
-const Row1 = styled('div',{name:'row'})(({theme}) => ({
-  flex:' 0 0 100%',
-  flexWrap:'wrap',
-  display:'flex',
-  marginBottom:'0.6em',
-  }));
-
-const Input1 = styled('div',{name:'Input1'})(({theme}) => ({
-  flex:'1 0 80px',
-  display:'flex',
-  flexDirection:'column',
-  margin:'0.2em 1em'
-  }));
-
-const Label1 = styled('label',{name:'Label1'})(({theme}) => ({
-  marginBottom:'0.3em',
-  fontSize:'.95em',
-  fontWeight:'5000',
-  color:'#777;'
-  }));
+import NewPerson from 'src/Screens/NewPerson';
+import Snackbar from 'src/Components/Snackbar';
+import { SnackbarContext } from 'pages/_app';
+import { useRouter } from 'next/router';
 
 export default function newPerson() {
-  // page info context
-  const infoContext: any = useContext(InfoContext);
-  useEffect(() => {
-    infoContext.changePageName(pageName);
-  }, []);
-  function Person() {
-    return (
-      <>
-        <Section>
-          <Titr>
-            <ChatIcon />
-            <Typography sx={{ paddingBottom: '5px', paddingRight: '5px' }}>
-              عمومی
-            </Typography>
-          </Titr>
-          <Row1>
-            <Input1>
-              <Label1>عنوان</Label1>
-              <TextField size='small' />
-            </Input1>
-            <Input1>
-              <Label1 sx={{ marginLeft: '0px !important' }}>مسولیت</Label1>
-              <TextField size='small' />
-            </Input1>
-          </Row1>
-          <Row1>
-            <Input1>
-              <Label1>مکان فعالیت</Label1>
-              <TextField size='small' />
-            </Input1>
-          </Row1>
-        </Section>
-        <Address />
-        <Call />
-      </>
-    );
-  }
+  // access to browser url input
+  const router = useRouter();
+  // snackbar global states
+  const {
+    snackbarOpen,
+    setSnackbarOpen,
+    snackbarMessage,
+    setSnackbarMessage,
+    snackbarColor,
+    setSnackbarColor,
+  } = useContext(SnackbarContext);
+  // fetch all roles and places for autocomplete fields
+  const { loading, error, data } = useQuery(AllRolesAndPlacesDocument, {
+    fetchPolicy: 'cache-and-network',
+  });
+  // new person mutation to server
+  const [
+    createPersonMutation,
+    { data: createdPerson, loading: sending, error: creationError },
+  ] = useMutation(CreateNewPersonDocument);
 
-  function Address() {
-    return (
-      <Section>
-        <Titr>
-          <HomeIcon />
-          <Typography sx={{ paddingRight: '5px' }}> اطلاعات آدرس</Typography>
-        </Titr>
-        <Row1>
-          <Input1>
-            <Label1>استان</Label1>
-            <TextField size='small' />
-          </Input1>
-          <Input1>
-            <Label1>شهر</Label1>
-            <TextField size='small' />
-          </Input1>
-          <Input1>
-            <Label1>کد پستی</Label1>
-            <TextField size='small' />
-          </Input1>
-        </Row1>
-        <Row1>
-          <Input1>
-            <Label1>آدرس</Label1>
-            <TextField size='small' />
-          </Input1>
-        </Row1>
-      </Section>
-    );
-  }
-
-  function Call() {
-    return (
-      <Section>
-        <Titr>
-          <CallIcon />
-          <Typography sx={{ paddingRight: '5px' }}>تماس</Typography>
-        </Titr>
-        <Row1>
-          <Input1>
-            <Label1>تلفن</Label1>
-            <TextField size='small' />
-          </Input1>
-          <Input1>
-            <Label1>موبایل</Label1>
-            <TextField size='small' />
-          </Input1>
-          <Input1>
-            <Label1>وبسایت</Label1>
-            <TextField size='small' />
-          </Input1>
-        </Row1>
-      </Section>
-    );
-  }
-
-  function More() {
-    return (
-      <Section>
-        <Titr>
-          <AddCircleIcon />
-          <Typography sx={{ paddingRight: '5px' }}>بیشتر</Typography>
-        </Titr>
-        <Row1>
-          <Input1>
-            <Label1>شناسه ملی</Label1>
-            <TextField size='small' />
-          </Input1>
-          <Input1>
-            <Label1>کد اقتصادی</Label1>
-            <TextField size='small' />
-          </Input1>
-          <Input1>
-            <Label1>شماره ثبت</Label1>
-            <TextField size='small' />
-          </Input1>
-        </Row1>
-        <Row1>
-          <Input1>
-            <Label1>توضیحات</Label1>
-            <TextField size='small' />
-          </Input1>
-        </Row1>
-      </Section>
-    );
-  }
+  // handlers
+  const createNewPersonHandler = useCallback(
+    async (
+      id: string,
+      firstNameAndLastName: string,
+      placeId: string,
+      roleId: string,
+      state: string,
+      city: string,
+      postalCode: string,
+      address: string,
+      telephone: string,
+      mobileNumber: string,
+      website: string
+    ) => {
+      setSnackbarColor('info');
+      setSnackbarMessage('در حال ارسال');
+      setSnackbarOpen(true);
+      const createdPerson = await createPersonMutation({
+        variables: {
+          id,
+          firstNameAndLastName,
+          placeId,
+          roleId,
+          state,
+          city,
+          postalCode,
+          address,
+          telephone,
+          mobileNumber,
+          website,
+        },
+      });
+      if (createdPerson.data) {
+        setSnackbarColor('success');
+        setSnackbarMessage('انجام شد');
+        setSnackbarOpen(true);
+        router.push('/users/persons');
+      } else {
+        setSnackbarColor('error');
+        setSnackbarMessage('خطا');
+        setSnackbarOpen(true);
+      }
+    },
+    []
+  );
 
   return (
-    <Layout>
-      <Form1 action=''>
-        <Person />
-      </Form1>
-    </Layout>
+    <>
+      <Layout>
+        <NewPerson
+          loading={loading}
+          sending={sending}
+          roles={data?.roles ?? ([] as any)}
+          places={data?.places ?? ([] as any)}
+          createNewPersonHandler={createNewPersonHandler}
+        />
+      </Layout>
+      <Snackbar />
+    </>
   );
 }
-

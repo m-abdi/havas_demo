@@ -124,7 +124,11 @@ function Navbar({ children }) {
   const infoContext = useContext(InfoContext);
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.up('sm'));
   useEffect(() => {
-    setDrawOpen(getCookie('drawOpen') === 'true' ? true : false);
+    setDrawOpen(
+      getCookie('drawOpen') === 'true' || !getCookie('drawOpen')
+        ? true
+        : false
+    );
   }, []);
 
   //
@@ -185,12 +189,13 @@ function Navbar({ children }) {
     },
     {
       text: 'اشخاص/اماکن',
-      id: 3,
+      id: 'persons-places',
       icon: <PeopleAltRoundedIcon />,
       path: false,
       sublists: [
         {
           text: 'شخص جدید',
+          id: 'newPerson',
           icon: <AddCircleOutlineOutlined />,
           path: '/users/newPerson',
           roleName: 'createPerson',
@@ -280,13 +285,11 @@ function Navbar({ children }) {
       >
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Typography variant='h5' sx={{ display: 'inline-block', margin: 1 }}>
-              حواس
+            حواس
           </Typography>
           <Stack direction='row' spacing={2} alignItems='center'>
             <Typography component='p' variant='body1'>
-              {`${session?.user?.firstName ?? ''} ${
-                session?.user?.lastName ?? ''
-              }`}
+              {session?.user?.firstNameAndLastName ?? ''}
             </Typography>
             <Typography
               component='p'
@@ -436,7 +439,7 @@ function Navbar({ children }) {
           {menuItems.map((item) =>
             item.sublists.filter((s) => session?.user?.role?.[s.roleName])
               .length > 0 ? (
-              <Box key={item.text}>
+              <Box id={item?.id} key={item.text}>
                 <ListItemButton
                   onClick={(event) => {
                     handleDrawList(event, item.id);
@@ -464,6 +467,7 @@ function Navbar({ children }) {
                     {item.sublists.map((sublist) =>
                       session?.user?.role?.[sublist.roleName] ? (
                         <ListItemButton
+                          id={sublist?.id}
                           key={sublist.text}
                           onClick={() => {
                             router.push(sublist.path);
@@ -502,8 +506,8 @@ function Navbar({ children }) {
           border: 1,
           backgroundColor: 'secondary.main',
           boxShadow: 1,
-          blockSize:50,
-          inlineSize: 50
+          blockSize: 50,
+          inlineSize: 50,
         }}
         size='large'
         color='inherit'

@@ -56,6 +56,7 @@ export default memo(function Button({
 }: ButtonProps) {
   return (
     <MuiButton
+      type='submit'
       variant={variant}
       size={size}
       color={color}

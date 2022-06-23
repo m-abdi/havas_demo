@@ -2,11 +2,11 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import NewRole from './NewRole';
 import React from 'react';
-import StoriesDecorator from '../StoriesDecorator';
+import StoriesDecorator from '../../StoriesDecorator';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'Web App/NewRole',
+  title: 'Components/NewRole',
   component: NewRole,
   decorators: [
     (Story) => (

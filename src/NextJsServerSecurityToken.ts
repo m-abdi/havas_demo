@@ -10,12 +10,18 @@ const p = cryptoJs.AES.decrypt(
   'U2FsdGVkX19WKEF+TK45z9eLMJJeCUGKn8yC1jUSp3A=',
   'NEXT_JS_SERVER_SECURITY'
 );
-ServerCryptography.configure(
-  (componentName) =>
-    n.toString(cryptoJs.enc.Utf8) +
-    '-' +
-    p.toString(cryptoJs.enc.Utf8) +
-    ' ' +
-    componentName
-);
+ServerCryptography.configure((componentName) => {
+
+  if (componentName.includes('Input') || componentName.includes('MuiAutocomplete')) {
+    return componentName;
+  } else {
+    return (
+      n.toString(cryptoJs.enc.Utf8) +
+      ' ' +
+      p.toString(cryptoJs.enc.Utf8) +
+      ' ' +
+      componentName
+    );
+  }
+});
 // DO NOT TOUCH THIS ---------------

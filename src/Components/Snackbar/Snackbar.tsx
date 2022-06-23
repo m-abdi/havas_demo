@@ -4,7 +4,7 @@ import React, { useContext, useState } from 'react';
 import { SnackbarContext } from 'pages/_app';
 
 export default function Snackbar(props: any) {
-  const smallScreensMatch = useMediaQuery((theme:any) =>
+  const smallScreensMatch = useMediaQuery((theme: any) =>
     theme?.breakpoints.up('sm')
   );
   const {
@@ -18,9 +18,10 @@ export default function Snackbar(props: any) {
 
   return (
     <MuiSnackbar
+      id='notification'
       open={snackbarOpen}
       anchorOrigin={{
-        horizontal:'left',
+        horizontal: 'left',
         vertical: 'bottom',
       }}
       autoHideDuration={6000}

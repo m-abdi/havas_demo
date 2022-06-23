@@ -132,7 +132,7 @@ const resolvers: Resolvers = {
           ..._args.permissions,
         },
       });
-      return createdRole
+      return createdRole;
     },
     async createPerson(_parent, _args, _context, _info): Promise<Person> {
       // check authentication and permission
@@ -141,9 +141,24 @@ const resolvers: Resolvers = {
       if (!session || !(await canCreatePerson(session))) {
         throw new GraphQLYogaError('Unauthorized');
       }
+      // hash salt
+      // const bcrypt = (await import("bcrypt")).default
+      // const salt = await bcrypt.genSalt(10);
+      // const hashedPassword = await bcrypt.hash(_args.telephone as string, salt);
       const createdPerson = await prisma.person.create({
         data: {
-          ...(_args as any),
+          id: _args.id as string,
+          firstNameAndLastName: _args.firstNameAndLastName,
+          password: _args.telephone as string,
+          place: { connect: { id: _args.placeId } },
+          role: { connect: { id: _args.roleId } },
+          address: _args.address,
+          state: _args.state,
+          city: _args.city,
+          postalCode: _args.postalCode,
+          telephone: _args.telephone,
+          mobileNumber: _args.mobileNumber,
+          website: _args.website,
         },
       });
       return createdPerson as any;
@@ -156,7 +171,7 @@ const resolvers: Resolvers = {
         throw new GraphQLYogaError('Unauthorized');
       }
       console.log(_args.roleIds);
-      
+
       // with two separate queries in a transaction (all queries must succeed)
       const deletePersons = prisma.person.deleteMany({
         where: { role: { id: { in: _args.roleIds } } },
