@@ -1,7 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import NewPerson from './NewPerson';
-import React from 'react';
 import StoriesDecorator from '../../StoriesDecorator';
 
 export default {

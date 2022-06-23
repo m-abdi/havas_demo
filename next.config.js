@@ -9,6 +9,7 @@ module.exports = {
           }
         : false,
   },
+
   async redirects() {
     return [
       {

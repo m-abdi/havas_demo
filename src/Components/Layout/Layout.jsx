@@ -28,7 +28,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import React, { memo, useContext, useEffect } from 'react';
-import { getCookie, setCookie } from 'src/Cookies';
+import { getCookie, setCookie } from '../../Cookies';
 import { signOut, useSession } from 'next-auth/react';
 
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
