@@ -11,6 +11,7 @@ module.exports = {
     'storybook-css-modules',
   ],
   framework: '@storybook/react',
+  
   webpack: (config) => {
     config.resolve.fallback = {
       ...config.resolve.fallback,
@@ -22,6 +23,7 @@ module.exports = {
 
     return config;
   },
+  statciDirs: ["../public"],
   core: {
     builder: '@storybook/builder-webpack5',
   },
