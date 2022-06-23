@@ -24,7 +24,7 @@ describe('interaction test for NewPerson page', () => {
       />,
       { props: { createNewPeronHandler: onSubmitSpy } }
     );
-    cy.get("#id").type(testNewPersonData.id)
+    cy.get('#id').type(testNewPersonData.id);
     cy.get('#firstNameAndLastNameInput').type(
       testNewPersonData?.firstNameAndLastName
     );
@@ -37,10 +37,11 @@ describe('interaction test for NewPerson page', () => {
     cy.get('#telephoneInput').type(testNewPersonData?.telephone);
     cy.get('#mobileNumberInput').type(testNewPersonData.mobileNumber);
     cy.get('#websiteInput').type(testNewPersonData.website);
-    cy.get('#submitButton').click();
+    cy.get('#submitButton').click({ force: true });
     cy.get('@onSubmitSpy').should('have.been.called');
     cy.get('@onSubmitSpy').should(
       'have.been.calledWith',
+      testNewPersonData.id,
       testNewPersonData.firstNameAndLastName,
       Main?.args?.places?.[2].id,
       Main?.args?.roles?.[2].id,

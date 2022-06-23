@@ -21,7 +21,7 @@ export default function Snackbar(props: any) {
       id='notification'
       open={snackbarOpen}
       anchorOrigin={{
-        horizontal: 'left',
+        horizontal: 'right',
         vertical: 'bottom',
       }}
       autoHideDuration={6000}
