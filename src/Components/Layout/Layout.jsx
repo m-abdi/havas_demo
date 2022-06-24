@@ -104,7 +104,13 @@ const PageContent = styled('main', { name: 'PageContent' })(({ theme }) => ({
   inlineSize: '100% !important',
 }));
 
-function Navbar({ children }) {
+function Navbar({ children, pageName }) {
+  // update page name for appbar2
+  // page info context
+  const infoContext = useContext(InfoContext);
+  useEffect(() => {
+    infoContext.changePageName(pageName);
+  }, []);
   // states
   const [drawOpen, setDrawOpen] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -121,13 +127,10 @@ function Navbar({ children }) {
   });
   //
   const { data: session } = useSession();
-  const infoContext = useContext(InfoContext);
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.up('sm'));
   useEffect(() => {
     setDrawOpen(
-      getCookie('drawOpen') === 'true' || !getCookie('drawOpen')
-        ? true
-        : false
+      getCookie('drawOpen') === 'true' || !getCookie('drawOpen') ? true : false
     );
   }, []);
 

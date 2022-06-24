@@ -9,10 +9,8 @@ import { useSession } from 'next-auth/react';
 
 export default function AuthenticationRequired({
   children,
-  pageName
 }: {
   children: any;
-  pageName: string;
 }) {
   const router = useRouter();
   // check for expired sessions or not loged-in users ---> redirect to login page
@@ -22,14 +20,9 @@ export default function AuthenticationRequired({
       router.push('/users/login');
     },
   });
-  // update page name for appbar2
-  // page info context
-  const infoContext: any = useContext(InfoContext);
-  useEffect(() => {
-    infoContext.changePageName(pageName);
-  }, []);
+ 
   return session ? (
-    <Layout>{children}</Layout>
+    children
   ) : (
     <>
       <Head>

@@ -15,7 +15,7 @@ export default function newLicense() {
     infoContext.changePageName(pageName);
   }, []);
   return (
-    <AuthenticationRequired pageName={pageName}>
+    <Layout pageName={pageName}>
       <Head>
         <title>{`${pageName}`} | حواس</title>
       </Head>
@@ -37,6 +37,6 @@ export default function newLicense() {
           </Select>
         </Grid>
       </Grid>
-    </AuthenticationRequired>
+    </Layout>
   );
 }

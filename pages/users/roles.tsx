@@ -7,6 +7,7 @@ import { useApolloClient, useMutation, useQuery } from '@apollo/client';
 import AuthenticationRequired from 'src/AuthenticationRequired';
 import { Button } from '../../src/Components/Button';
 import DeleteRolesDialog from 'src/Components/DeleteRolesDialog';
+import Head from 'next/head';
 import Layout from 'src/Components/Layout';
 import Loader from 'src/Components/Loader';
 import RoleTable from 'src/Components/RolesTable/RolesTable';
@@ -14,6 +15,7 @@ import Snackbar from 'src/Components/Snackbar';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
+const pageName = 'نقش ها';
 export default function roles() {
   // stats
   const [pageNumber, setPageNumber] = useState(0);
@@ -103,7 +105,10 @@ export default function roles() {
   );
 
   return (
-    <AuthenticationRequired pageName='نقش ها'>
+    <Layout pageName={pageName}>
+      <Head>
+        <title>{`${pageName}`} | حواس</title>
+      </Head>
       {loading ? (
         <Loader center />
       ) : error ? null : (
@@ -160,6 +165,6 @@ export default function roles() {
         )
       )}
       <Snackbar />
-    </AuthenticationRequired>
+    </Layout>
   );
 }

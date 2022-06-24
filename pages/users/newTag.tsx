@@ -89,7 +89,7 @@ const NewTag: NextPage = () => {
   }, [message]);
 
   return (
-    <AuthenticationRequired pageName={pageName}>
+    <Layout pageName={pageName}>
       <Head>
         <title>{`${pageName}`} | حواس</title>
       </Head>
@@ -180,7 +180,7 @@ const NewTag: NextPage = () => {
           </Box>
         </Container>
       )}
-    </AuthenticationRequired>
+    </Layout>
   );
 };
 

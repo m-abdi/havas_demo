@@ -12,7 +12,7 @@ const pageName = 'مکان جدید';
 export default function newPlace() {
   //
   return (
-    <AuthenticationRequired pageName={pageName}>
+    <Layout pageName={pageName}>
       <Head>
         <title>{`${pageName}`} | حواس</title>
       </Head>
@@ -23,6 +23,6 @@ export default function newPlace() {
         }}
       />
       <Snackbar />
-    </AuthenticationRequired>
+    </Layout>
   );
 }

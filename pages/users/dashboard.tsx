@@ -11,11 +11,13 @@ import { useSession } from 'next-auth/react';
 const pageName = 'داشبورد';
 export default function dashboard() {
   return (
-    <AuthenticationRequired pageName={pageName}>
-      <Head>
-        <title>{`${pageName}`} | حواس</title>
-      </Head>
-      داشبورد
+    <AuthenticationRequired>
+      <Layout pageName={pageName}>
+        <Head>
+          <title>{`${pageName}`} | حواس</title>
+        </Head>
+        داشبورد
+      </Layout>
     </AuthenticationRequired>
   );
 }

@@ -73,7 +73,7 @@ export default function newRole() {
   );
 
   return (
-    <AuthenticationRequired pageName={pageName}>
+    <Layout pageName={pageName}>
       <Head>
         <title>{`${pageName}`} | حواس</title>
       </Head>
@@ -83,6 +83,6 @@ export default function newRole() {
         <NewRole existingRoleData={existingRoleData} onSubmit={onSubmit} />
       )}
       <Snackbar />
-    </AuthenticationRequired>
+    </Layout>
   );
 }

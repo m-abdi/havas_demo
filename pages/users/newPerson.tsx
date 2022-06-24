@@ -85,7 +85,7 @@ export default function newPerson() {
   );
 
   return (
-    <AuthenticationRequired pageName={pageName}>
+    <Layout pageName={pageName}>
       <Head>
         <title>{`${pageName}`} | حواس</title>
       </Head>
@@ -97,6 +97,6 @@ export default function newPerson() {
         createNewPersonHandler={createNewPersonHandler}
       />
       <Snackbar />
-    </AuthenticationRequired>
+    </Layout>
   );
 }
