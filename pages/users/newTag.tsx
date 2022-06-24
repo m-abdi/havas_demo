@@ -66,9 +66,10 @@ function TagField(
 }
 const NewTag: NextPage = () => {
   // states
-  const [message, setMessage] = useState('');
-  const [assetId, setAssetId] = useState('');
-  const [connectionStatus, setConnectionStatus] = useState('Disconnected');
+  const [message, setMessage] = useState<string>('');
+  const [assetId, setAssetId] = useState<string>('');
+  const [connectionStatus, setConnectionStatus] =
+    useState<'Disconnected' | 'Connecting'>('Disconnected');
   const [tags, setTags] = useState([{ content: '', assetId: '' }]);
 
   //

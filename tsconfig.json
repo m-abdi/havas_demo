@@ -26,5 +26,5 @@
     "types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-  ]
+, "src/Screens/Persons/Persons.tsx"  ]
 }

@@ -4,6 +4,7 @@ import { InfoContext, SnackbarContext } from 'pages/_app';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useApolloClient, useMutation, useQuery } from '@apollo/client';
 
+import AuthenticationRequired from 'src/AuthenticationRequired';
 import { Button } from '../../src/Components/Button';
 import DeleteRolesDialog from 'src/Components/DeleteRolesDialog';
 import Layout from 'src/Components/Layout';
@@ -13,7 +14,6 @@ import Snackbar from 'src/Components/Snackbar';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
-const pageName = 'نقش ها';
 export default function roles() {
   // stats
   const [pageNumber, setPageNumber] = useState(0);
@@ -35,11 +35,7 @@ export default function roles() {
     setSnackbarColor,
   } = useContext(SnackbarContext);
   const { data: session } = useSession();
-  // page info context
-  const infoContext: any = useContext(InfoContext);
-  useEffect(() => {
-    infoContext.changePageName(pageName);
-  }, []);
+
   const router = useRouter();
   // fetch roles from graphql server
   const {
@@ -107,7 +103,7 @@ export default function roles() {
   );
 
   return (
-    <Layout>
+    <AuthenticationRequired pageName='نقش ها'>
       {loading ? (
         <Loader center />
       ) : error ? null : (
@@ -139,7 +135,7 @@ export default function roles() {
               sx={{
                 position: 'absolute',
                 top: -68,
-                right: "35px",
+                right: '35px',
               }}
             >
               <Button
@@ -164,6 +160,6 @@ export default function roles() {
         )
       )}
       <Snackbar />
-    </Layout>
+    </AuthenticationRequired>
   );
 }

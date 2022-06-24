@@ -15,7 +15,8 @@
     "cypress:run:e2e": "cypress run --e2e",
     "test": "yarn codegen && yarn cypress:run:c && yarn cypress:run:e2e && yarn chromatic",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "deploy": "yarn test && git push"
   },
   "dependencies": {
     "@apollo/client": "^3.5.10",
@@ -31,6 +32,7 @@
     "@mui/material": "latest",
     "@prisma/client": "3.14.0",
     "@tanstack/react-table": "^0.0.1-alpha.0",
+    "@tanstack/table-core": "^8.0.0",
     "@types/paho-mqtt": "^1.0.6",
     "@types/stylis": "^4.0.2",
     "crypto-js": "^4.1.1",

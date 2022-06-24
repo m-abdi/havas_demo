@@ -16,7 +16,12 @@ export default function newPlace() {
       <Head>
         <title>{`${pageName}`} | حواس</title>
       </Head>
-      <NewPlace />
+      <NewPlace
+        sending={false}
+        submitHandler={async () => {
+          return;
+        }}
+      />
       <Snackbar />
     </AuthenticationRequired>
   );

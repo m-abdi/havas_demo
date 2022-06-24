@@ -15,30 +15,28 @@ export default function newLicense() {
     infoContext.changePageName(pageName);
   }, []);
   return (
-    <AuthenticationRequired>
+    <AuthenticationRequired pageName={pageName}>
       <Head>
         <title>{`${pageName}`} | حواس</title>
       </Head>
-      <Layout>
-        <Grid
-          container
-          direction={'row'}
-          spacing={4}
-          alignItems='center'
-          sx={{ inlineSize: '100%' }}
-        >
-          <Grid item xs={12} sm={6} md={3}>
-            <Select native fullWidth label='انباردار'>
-              <option>mehdi abdi</option>
-            </Select>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Select native fullWidth label='تحویل گیرنده'>
-              <option>مهدی عبدی</option>
-            </Select>
-          </Grid>
+      <Grid
+        container
+        direction={'row'}
+        spacing={4}
+        alignItems='center'
+        sx={{ inlineSize: '100%' }}
+      >
+        <Grid item xs={12} sm={6} md={3}>
+          <Select native fullWidth label='انباردار'>
+            <option>mehdi abdi</option>
+          </Select>
         </Grid>
-      </Layout>
+        <Grid item xs={12} sm={6} md={3}>
+          <Select native fullWidth label='تحویل گیرنده'>
+            <option>مهدی عبدی</option>
+          </Select>
+        </Grid>
+      </Grid>
     </AuthenticationRequired>
   );
 }
