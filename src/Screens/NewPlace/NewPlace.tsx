@@ -1,6 +1,6 @@
 import {
   Box,
-  Checkbox,
+  Container,
   FilledInput,
   FormControl,
   FormControlLabel,
@@ -15,22 +15,18 @@ import {
 } from '@mui/material';
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { Button } from '../../Components/Button';
 import CallIcon from '@mui/icons-material/Call';
 import ChatIcon from '@mui/icons-material/Chat';
 import HomeIcon from '@mui/icons-material/Home';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-const pageName = 'مکان جدید';
-
 const Form1 = styled('form', { name: 'form1' })(({ theme }) => ({
-  flexBasis: '100%',
-  maxWidth: '900px',
   display: 'flex',
   flexWrap: 'wrap',
   justifyContent: 'center',
 
-  padding: theme.spacing(2),
 }));
 
 const Section = styled('div', { name: 'Section1' })(({ theme }) => ({
@@ -38,7 +34,6 @@ const Section = styled('div', { name: 'Section1' })(({ theme }) => ({
   maxWidth: '100%',
   flexWrap: 'wrap',
   display: 'flex',
-  padding: '1rem',
 }));
 
 const Titr = styled('div', { name: 'Titr1' })(({ theme }) => ({
@@ -73,9 +68,25 @@ const Label1 = styled('label', { name: 'Label1' })(({ theme }) => ({
   color: '#777;',
 }));
 
-export default function NewPerson() {
-  const { register, handleSubmit } = useForm();
+export default function NewPerson({
+  sending,
+  submitHandler,
+}: {
+  sending: boolean;
+  submitHandler: (data: any) => Promise<any>;
+}) {
+  // states
 
+  // hooks
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  // handlers
+  const onSubmit = (data: any) => {
+    alert(JSON.stringify(data));
+  };
   function Person() {
     return (
       <>
@@ -89,17 +100,17 @@ export default function NewPerson() {
           <Row1>
             <Input1>
               <Label1>عنوان</Label1>
-              <TextField size="small" />
+              <TextField size='small' />
             </Input1>
             <Input1>
               <Label1 sx={{ marginLeft: '0px !important' }}>مسولیت</Label1>
-              <TextField size="small" />
+              <TextField size='small' />
             </Input1>
           </Row1>
           <Row1>
             <Input1>
               <Label1>مکان فعالیت</Label1>
-              <TextField size="small" />
+              <TextField size='small' />
             </Input1>
           </Row1>
         </Section>
@@ -119,21 +130,41 @@ export default function NewPerson() {
         <Row1>
           <Input1>
             <Label1>استان</Label1>
-            <TextField size="small" />
+            <TextField
+              size='small'
+              inputProps={{
+                ...register('state'),
+              }}
+            />
           </Input1>
           <Input1>
             <Label1>شهر</Label1>
-            <TextField size="small" />
+            <TextField
+              size='small'
+              inputProps={{
+                ...register('city'),
+              }}
+            />
           </Input1>
           <Input1>
             <Label1>کد پستی</Label1>
-            <TextField size="small" />
+            <TextField
+              size='small'
+              inputProps={{
+                ...register('postalCode'),
+              }}
+            />
           </Input1>
         </Row1>
         <Row1>
           <Input1>
             <Label1>آدرس</Label1>
-            <TextField size="small" />
+            <TextField
+              size='small'
+              inputProps={{
+                ...register('address'),
+              }}
+            />
           </Input1>
         </Row1>
       </Section>
@@ -150,15 +181,30 @@ export default function NewPerson() {
         <Row1>
           <Input1>
             <Label1>تلفن</Label1>
-            <TextField size="small" />
+            <TextField
+              size='small'
+              inputProps={{
+                ...register('telephone'),
+              }}
+            />
           </Input1>
           <Input1>
             <Label1>موبایل</Label1>
-            <TextField size="small" />
+            <TextField
+              size='small'
+              inputProps={{
+                ...register('mobileNumber'),
+              }}
+            />
           </Input1>
           <Input1>
             <Label1>وبسایت</Label1>
-            <TextField size="small" />
+            <TextField
+              size='small'
+              inputProps={{
+                ...register('website'),
+              }}
+            />
           </Input1>
         </Row1>
       </Section>
@@ -175,21 +221,41 @@ export default function NewPerson() {
         <Row1>
           <Input1>
             <Label1>شناسه ملی</Label1>
-            <TextField size="small" />
+            <TextField
+              size='small'
+              inputProps={{
+                ...register('nationalId'),
+              }}
+            />
           </Input1>
           <Input1>
             <Label1>کد اقتصادی</Label1>
-            <TextField size="small" />
+            <TextField
+              size='small'
+              inputProps={{
+                ...register('economicalCode'),
+              }}
+            />
           </Input1>
           <Input1>
             <Label1>شماره ثبت</Label1>
-            <TextField size="small" />
+            <TextField
+              size='small'
+              inputProps={{
+                ...register('registeredNumber'),
+              }}
+            />
           </Input1>
         </Row1>
         <Row1>
           <Input1>
             <Label1>توضیحات</Label1>
-            <TextField size="small" />
+            <TextField
+              size='small'
+              inputProps={{
+                ...register('description'),
+              }}
+            />
           </Input1>
         </Row1>
       </Section>
@@ -197,65 +263,99 @@ export default function NewPerson() {
   }
 
   return (
-    <Form1>
-      <Section>
-        <Titr>
-          <ChatIcon />
-          <Typography sx={{ paddingBottom: '5px', paddingRight: '5px' }}>
-            عمومی
-          </Typography>
-        </Titr>
-        <Row1>
-          <Input1>
-            <Label1>عنوان</Label1>
-            <TextField size="small"
-              id='title'
-              inputProps={{ ...register('title', { required: true }) }}
-            />
-          </Input1>
-          <Input1>
-            <Label1>نماینده</Label1>
-            <TextField size="small"
-              id='representative'
-              inputProps={{ ...register('representative', { required: true }) }}
-            />
-          </Input1>
-          <Input1>
-            <Label1>سمت نماینده</Label1>
-            <TextField size="small"
-              id='representativeRole'
-              inputProps={{
-                ...register('representativeRole'),
-              }}
-            />
-          </Input1>
-        </Row1>
-        <Row1>
-          <Input1>
-            <Label1>زمینه فعالیت</Label1>
-            <TextField size="small"
-              id='contextOfActivity'
-              inputProps={{
-                ...register('contextOfActivity'),
-              }}
-            />
-          </Input1>
-        </Row1>
-        <Row1>
-          <Input1>
-            <Label1>دسته بندی</Label1>
-            <TextField size="small"
-              id='category'
-              inputProps={{
-                ...register('category'),
-              }}
-            />
-          </Input1>
-        </Row1>
-      </Section>
-      <Address />
-      <Call />
-      <More />
-    </Form1>
+    <Container maxWidth='md' sx={{ position: 'relative' }}>
+      <Form1 onSubmit={handleSubmit(onSubmit)}>
+        <Section>
+          <Titr>
+            <ChatIcon />
+            <Typography sx={{ paddingBottom: '5px', paddingRight: '5px' }}>
+              عمومی
+            </Typography>
+          </Titr>
+          <Row1>
+            <Input1>
+              <Label1>عنوان</Label1>
+              <TextField
+                size='small'
+                id='title'
+                inputProps={{ ...register('title', { required: true }) }}
+                error={errors?.title}
+                helperText={
+                  errors?.title?.type === 'required' &&
+                  'لطفا این فیلد را پر کنید'
+                }
+              />
+            </Input1>
+            <Input1>
+              <Label1>نماینده</Label1>
+              <TextField
+                size='small'
+                id='representative'
+                inputProps={{
+                  ...register('representative', { required: true }),
+                }}
+                error={errors?.representative}
+                helperText={
+                  errors?.representative?.type === 'required' &&
+                  'لطفا این فیلد را پر کنید'
+                }
+              />
+            </Input1>
+            <Input1>
+              <Label1>سمت نماینده</Label1>
+              <TextField
+                size='small'
+                id='representativeRole'
+                inputProps={{
+                  ...register('representativeRole'),
+                }}
+              />
+            </Input1>
+          </Row1>
+          <Row1>
+            <Input1>
+              <Label1>زمینه فعالیت</Label1>
+              <TextField
+                size='small'
+                id='contextOfActivity'
+                inputProps={{
+                  ...register('typeOfWork'),
+                }}
+              />
+            </Input1>
+          </Row1>
+          <Row1>
+            <Input1>
+              <Label1>دسته بندی</Label1>
+              <TextField
+                size='small'
+                id='category'
+                inputProps={{
+                  ...register('category'),
+                }}
+              />
+            </Input1>
+          </Row1>
+        </Section>
+        <Address />
+        <Call />
+        <More />
+        <Box
+          sx={{
+            position: 'absolute',
+            top: -68,
+            right: '35px',
+          }}
+        >
+          <Button
+            id='submitButton'
+            label='ارسال'
+            size='large'
+            color='success'
+            variant='contained'
+          />
+        </Box>
+      </Form1>
+    </Container>
   );
 }

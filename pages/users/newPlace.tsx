@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 
+import AuthenticationRequired from 'src/AuthenticationRequired';
 import Head from 'next/head';
 import { InfoContext } from 'pages/_app';
 import Layout from 'src/Components/Layout';
@@ -9,22 +10,14 @@ import { Snackbar } from '@mui/material';
 const pageName = 'مکان جدید';
 
 export default function newPlace() {
-  // page info context
-
-  const infoContext: any = useContext(InfoContext);
-  useEffect(() => {
-    infoContext.changePageName(pageName);
-  }, []);
   //
   return (
-    <>
+    <AuthenticationRequired pageName={pageName}>
       <Head>
         <title>{`${pageName}`} | حواس</title>
       </Head>
-      <Layout>
-        <NewPlace />
-      </Layout>
+      <NewPlace />
       <Snackbar />
-    </>
+    </AuthenticationRequired>
   );
 }

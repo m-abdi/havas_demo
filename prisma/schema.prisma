@@ -44,15 +44,16 @@ model Place {
   subset           Place[]   @relation("SuperPlaceSubset")
   representative   Person?
   typeOfWork       String?
+  category       String?
   state            String?
   city             String?
   postalCode       String?
   address          String?
   telephone        String?
-  phoneNumber      String?
+  mobileNumber      String?
   website          String?
   nationalId       String?
-  economicCode     String?
+  economicalCode     String?
   registeredNumber String?
   description      String?
   createdAt        String?

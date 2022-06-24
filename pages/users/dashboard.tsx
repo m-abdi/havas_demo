@@ -10,18 +10,12 @@ import { useSession } from 'next-auth/react';
 
 const pageName = 'داشبورد';
 export default function dashboard() {
-  // page info context
-  const infoContext: any = useContext(InfoContext);
-  useEffect(() => {
-    infoContext.changePageName(pageName);
-  }, []);
-
   return (
-    <AuthenticationRequired>
+    <AuthenticationRequired pageName={pageName}>
       <Head>
         <title>{`${pageName}`} | حواس</title>
       </Head>
-      <Layout>داشبورد</Layout>
+      داشبورد
     </AuthenticationRequired>
   );
 }

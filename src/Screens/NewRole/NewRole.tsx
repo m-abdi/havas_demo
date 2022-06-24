@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import React, { memo, useEffect, useState } from 'react';
 
-import { Button as MyButton } from '../Button';
+import { Button as MyButton } from '../../Components/Button';
 import { styled } from '@mui/material/styles';
 
 const Button = styled(MyButton)({});

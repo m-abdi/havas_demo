@@ -3,21 +3,18 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
 import { AllRolesDocument } from 'lib/graphql-operations';
+import AuthenticationRequired from 'src/AuthenticationRequired';
 import { CreateRoleDocument } from '../../lib/graphql-operations';
+import Head from 'next/head';
 import Layout from 'src/Components/Layout';
 import Loader from 'src/Components/Loader';
-import { NewRole } from 'src/Components/NewRole';
+import { NewRole } from 'src/Screens/NewRole';
 import Snackbar from 'src/Components/Snackbar';
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
 
 const pageName = 'نقش جدید';
 export default function newRole() {
-  // page info context
-  const infoContext: any = useContext(InfoContext);
-  useEffect(() => {
-    infoContext.changePageName(pageName);
-  }, []);
   const router = useRouter();
 
   // states
@@ -76,13 +73,16 @@ export default function newRole() {
   );
 
   return (
-    <Layout>
+    <AuthenticationRequired pageName={pageName}>
+      <Head>
+        <title>{`${pageName}`} | حواس</title>
+      </Head>
       {loading ? (
         <Loader center={false} />
       ) : (
-        <NewRole existingRoleData={existingRoleData} onSubmit={onSubmit}  />
+        <NewRole existingRoleData={existingRoleData} onSubmit={onSubmit} />
       )}
       <Snackbar />
-    </Layout>
+    </AuthenticationRequired>
   );
 }

@@ -1,13 +1,18 @@
+import React, { useContext, useEffect } from 'react';
+
 import Head from 'next/head';
+import { InfoContext } from 'pages/_app';
+import Layout from './Components/Layout';
 import Loader from './Components/Loader';
-import React from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
 export default function AuthenticationRequired({
   children,
+  pageName
 }: {
   children: any;
+  pageName: string;
 }) {
   const router = useRouter();
   // check for expired sessions or not loged-in users ---> redirect to login page
@@ -17,13 +22,19 @@ export default function AuthenticationRequired({
       router.push('/users/login');
     },
   });
+  // update page name for appbar2
+  // page info context
+  const infoContext: any = useContext(InfoContext);
+  useEffect(() => {
+    infoContext.changePageName(pageName);
+  }, []);
   return session ? (
-    children
+    <Layout>{children}</Layout>
   ) : (
     <>
-    <Head>
+      <Head>
         <title>در حال ورود |‌ حواس</title>
-    </Head>
+      </Head>
       <Loader withText={true} center />;
     </>
   );

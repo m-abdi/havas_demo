@@ -70,12 +70,7 @@ const NewTag: NextPage = () => {
   const [assetId, setAssetId] = useState('');
   const [connectionStatus, setConnectionStatus] = useState('Disconnected');
   const [tags, setTags] = useState([{ content: '', assetId: '' }]);
-  // page info context
 
-  const infoContext: any = useContext(InfoContext);
-  useEffect(() => {
-    infoContext.changePageName(pageName);
-  }, []);
   //
   useEffect(() => {
     if (connectionStatus === 'Disconnected') {
@@ -93,28 +88,27 @@ const NewTag: NextPage = () => {
   }, [message]);
 
   return (
-    <AuthenticationRequired>
+    <AuthenticationRequired pageName={pageName}>
       <Head>
         <title>{`${pageName}`} | حواس</title>
       </Head>
-      <Layout>
-        {connectionStatus === 'Disconnected' ||
-        connectionStatus === 'Connecting' ? (
-          <RFID status='CONNECTING' />
-        ) : (
-          <Container maxWidth='md' sx={{position: 'relative'}}>
-            <Stack
-              spacing={2}
-              sx={{
-                my: 4,
-                flexDirection: 'column',
-                flexWrap: "wrap",
-                justifyContent: 'center',
-                alignItems: 'center',
-                inlineSize: '100%',
-              }}
-            >
-              {/* <Typography
+      {connectionStatus === 'Disconnected' ||
+      connectionStatus === 'Connecting' ? (
+        <RFID status='CONNECTING' />
+      ) : (
+        <Container maxWidth='md' sx={{ position: 'relative' }}>
+          <Stack
+            spacing={2}
+            sx={{
+              my: 4,
+              flexDirection: 'column',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              alignItems: 'center',
+              inlineSize: '100%',
+            }}
+          >
+            {/* <Typography
                 variant='h4'
                 component='h1'
                 gutterBottom
@@ -124,68 +118,67 @@ const NewTag: NextPage = () => {
               >
                 Status : {connectionStatus}
               </Typography> */}
-              <RFID status='CONNECTED' />
-              <Divider flexItem />
-              <Stack
-                spacing={2}
-                flexWrap="wrap"
-                sx={{ inlineSize: '100%' }}
-                alignItems='center'
-              >
-                {tags.map((tag, index) => (
-                  <Stack
-                    key={index}
-                    direction={{xs: "column",md: 'row'}}
-                    alignItems='center'
-                    justifyContent={'space-between'}
-                    spacing={1}
-                    sx={{ inlineSize: '100%', flexWrap: "wrap" }}
-                  >
-                    <Typography>{index + 1}</Typography>
-                    {tag.content.length === 0 ? (
-                      <HeartBeat borderColor='info.main'>
-                        {TagField(tag, index, tags)}
-                      </HeartBeat>
-                    ) : (
-                      TagField(tag, index, tags)
-                    )}
-                    {tag.assetId.length === 0 ? (
-                      <HeartBeat borderColor='info.main'>
-                        <AssetField assetId={assetId} setAssetId={setAssetId} />
-                      </HeartBeat>
-                    ) : (
-                      <AssetField assetId={assetId} setAssetId={setAssetId} />
-                    )}
-                    <IconButton
-                      sx={{ color: 'error.main' }}
-                      onClick={() => {
-                        setTags(tags.filter((t, i) => i !== index));
-                      }}
-                    >
-                      <DeleteForeverRoundedIcon />
-                    </IconButton>
-                  </Stack>
-                ))}
-              </Stack>
-            </Stack>
-            <Box
-              sx={{
-                position: 'absolute',
-                top: -68,
-                right: '35px',
-              }}
+            <RFID status='CONNECTED' />
+            <Divider flexItem />
+            <Stack
+              spacing={2}
+              flexWrap='wrap'
+              sx={{ inlineSize: '100%' }}
+              alignItems='center'
             >
-              <Button
-                id='submitButton'
-                label='ارسال'
-                size='large'
-                color='success'
-                variant='contained'
-              />
-            </Box>
-          </Container>
-        )}
-      </Layout>
+              {tags.map((tag, index) => (
+                <Stack
+                  key={index}
+                  direction={{ xs: 'column', md: 'row' }}
+                  alignItems='center'
+                  justifyContent={'space-between'}
+                  spacing={1}
+                  sx={{ inlineSize: '100%', flexWrap: 'wrap' }}
+                >
+                  <Typography>{index + 1}</Typography>
+                  {tag.content.length === 0 ? (
+                    <HeartBeat borderColor='info.main'>
+                      {TagField(tag, index, tags)}
+                    </HeartBeat>
+                  ) : (
+                    TagField(tag, index, tags)
+                  )}
+                  {tag.assetId.length === 0 ? (
+                    <HeartBeat borderColor='info.main'>
+                      <AssetField assetId={assetId} setAssetId={setAssetId} />
+                    </HeartBeat>
+                  ) : (
+                    <AssetField assetId={assetId} setAssetId={setAssetId} />
+                  )}
+                  <IconButton
+                    sx={{ color: 'error.main' }}
+                    onClick={() => {
+                      setTags(tags.filter((t, i) => i !== index));
+                    }}
+                  >
+                    <DeleteForeverRoundedIcon />
+                  </IconButton>
+                </Stack>
+              ))}
+            </Stack>
+          </Stack>
+          <Box
+            sx={{
+              position: 'absolute',
+              top: -68,
+              right: '35px',
+            }}
+          >
+            <Button
+              id='submitButton'
+              label='ارسال'
+              size='large'
+              color='success'
+              variant='contained'
+            />
+          </Box>
+        </Container>
+      )}
     </AuthenticationRequired>
   );
 };

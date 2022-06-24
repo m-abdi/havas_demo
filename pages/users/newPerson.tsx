@@ -6,6 +6,7 @@ import { InfoContext, SnackbarContext } from 'pages/_app';
 import React, { useCallback, useContext, useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
+import AuthenticationRequired from 'src/AuthenticationRequired';
 import Head from 'next/head';
 import Layout from 'src/Components/Layout';
 import NewPerson from 'src/Screens/NewPerson';
@@ -15,13 +16,6 @@ import { useRouter } from 'next/router';
 const pageName = 'شخص جدید';
 
 export default function newPerson() {
-  // page info context
-
-  const infoContext: any = useContext(InfoContext);
-  useEffect(() => {
-    infoContext.changePageName(pageName);
-  }, []);
-  //
   // access to browser url input
   const router = useRouter();
   // snackbar global states
@@ -91,20 +85,18 @@ export default function newPerson() {
   );
 
   return (
-    <>
+    <AuthenticationRequired pageName={pageName}>
       <Head>
         <title>{`${pageName}`} | حواس</title>
       </Head>
-      <Layout>
-        <NewPerson
-          loading={loading}
-          sending={sending}
-          roles={data?.roles ?? ([] as any)}
-          places={data?.places ?? ([] as any)}
-          createNewPersonHandler={createNewPersonHandler}
-        />
-      </Layout>
+      <NewPerson
+        loading={loading}
+        sending={sending}
+        roles={data?.roles ?? ([] as any)}
+        places={data?.places ?? ([] as any)}
+        createNewPersonHandler={createNewPersonHandler}
+      />
       <Snackbar />
-    </>
+    </AuthenticationRequired>
   );
 }
