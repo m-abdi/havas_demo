@@ -2,16 +2,26 @@ import {
   AllRolesAndPlacesDocument,
   CreateNewPersonDocument,
 } from 'lib/graphql-operations';
-import React, { useCallback, useContext } from 'react';
+import { InfoContext, SnackbarContext } from 'pages/_app';
+import React, { useCallback, useContext, useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
+import Head from 'next/head';
 import Layout from 'src/Components/Layout';
 import NewPerson from 'src/Screens/NewPerson';
 import Snackbar from 'src/Components/Snackbar';
-import { SnackbarContext } from 'pages/_app';
 import { useRouter } from 'next/router';
 
+const pageName = 'شخص جدید';
+
 export default function newPerson() {
+  // page info context
+
+  const infoContext: any = useContext(InfoContext);
+  useEffect(() => {
+    infoContext.changePageName(pageName);
+  }, []);
+  //
   // access to browser url input
   const router = useRouter();
   // snackbar global states
@@ -82,6 +92,9 @@ export default function newPerson() {
 
   return (
     <>
+      <Head>
+        <title>{`${pageName}`} | حواس</title>
+      </Head>
       <Layout>
         <NewPerson
           loading={loading}

@@ -140,7 +140,7 @@ export default function newPerson({
     );
   };
   return (
-    <Container maxWidth='md' sx={{ position: 'relative', p: "16px" }}>
+    <Container maxWidth='md' sx={{ position: 'relative', p: '16px' }}>
       <Form1 onSubmit={handleSubmit(collectInputsData)}>
         {/* عنوان و مکان و نقش */}
         <Section>
@@ -194,7 +194,20 @@ export default function newPerson({
               />
             </Input1>
           </Row1>
+
           <Row1>
+            <Input1>
+              <Label1>کد ملی</Label1>
+              <TextField
+                id='id'
+                size='small'
+                inputProps={{ ...register('id', { required: true }) }}
+                error={errors.id?.type === 'required'}
+                helperText={
+                  errors.id?.type === 'required' && 'لطفا این فیلد را پر کنید'
+                }
+              />
+            </Input1>
             <Input1>
               <Label1>مکان فعالیت</Label1>
               <Autocomplete
@@ -301,46 +314,12 @@ export default function newPerson({
             </Input1>
           </Row1>
         </Section>
-        {/*  بیشتر */}
-        <Section>
-          <Titr>
-            <AddCircleIcon />
-            <Typography sx={{ paddingRight: '5px' }}>بیشتر</Typography>
-          </Titr>
-          <Row1>
-            <Input1>
-              <Label1>شناسه ملی</Label1>
-              <TextField
-                id='id'
-                size='small'
-                inputProps={{ ...register('id', { required: true }) }}
-                error={errors.id?.type === 'required'}
-                helperText={
-                  errors.id?.type === 'required' && 'لطفا این فیلد را پر کنید'
-                }
-              />
-            </Input1>
-            <Input1>
-              <Label1>کد اقتصادی</Label1>
-              <TextField size='small' />
-            </Input1>
-            <Input1>
-              <Label1>شماره ثبت</Label1>
-              <TextField size='small' />
-            </Input1>
-          </Row1>
-          <Row1>
-            <Input1>
-              <Label1>توضیحات</Label1>
-              <TextField size='small' />
-            </Input1>
-          </Row1>
-        </Section>
+
         <Box
           sx={{
             position: 'absolute',
             top: -68,
-            right: "35px",
+            right: '35px',
           }}
         >
           <Button
@@ -349,21 +328,6 @@ export default function newPerson({
             size='large'
             color='success'
             variant='contained'
-            //   onClick={async () =>
-            //     await createNewPersonHandler(
-            //       firstName,
-            //       lastName,
-            //       place?.id,
-            //       role?.id,
-            //       state,
-            //       city,
-            //       postalCode,
-            //       address,
-            //       telephone,
-            //       mobileNumber,
-            //       website
-            //     )
-            //   }
           />
         </Box>
       </Form1>

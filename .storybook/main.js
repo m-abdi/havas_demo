@@ -10,8 +10,9 @@ module.exports = {
     '@storybook/addon-a11y',
     'storybook-css-modules',
   ],
+  staticDirs: ['../public'],
   framework: '@storybook/react',
-  
+
   webpack: (config) => {
     config.resolve.fallback = {
       ...config.resolve.fallback,
@@ -23,7 +24,6 @@ module.exports = {
 
     return config;
   },
-  statciDirs: ["../public"],
   core: {
     builder: '@storybook/builder-webpack5',
   },

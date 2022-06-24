@@ -4,7 +4,7 @@ import NewPlace from './NewPlace';
 import StoriesDecorator from '../../StoriesDecorator';
 
 export default {
-  title: 'Pages/NewPerson',
+  title: 'Pages/NewPlace',
   component: NewPlace,
   decorators: [
     (Story) => (
