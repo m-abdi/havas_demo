@@ -7,8 +7,7 @@ declare module 'next-auth' {
     /** This is an example. You can find me in types/next-auth.d.ts */
     user: {
       readonly id: string;
-      readonly firstName: string;
-      readonly lastName: string;
+      readonly firstNameAndLastName: string;
       readonly role: {
         readonly id: string;
         readonly name: string;

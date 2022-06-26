@@ -161,7 +161,9 @@ const typeDefs = /* GraphQL */ `
       telephone: String
       mobileNumber: String
       website: String
+      edit: String
     ): Person!
+    
     deleteRoles(roleIds: [String!]!): [String!]!
   }
 `;

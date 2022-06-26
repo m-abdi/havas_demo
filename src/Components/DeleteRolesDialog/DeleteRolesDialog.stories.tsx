@@ -1,13 +1,13 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import DeleteRolesDialog from './DeleteRolesDialog';
+import DeleteDialog from './DeleteRolesDialog';
 import React from 'react';
 import StoriesDecorator from '../../StoriesDecorator';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: 'Components/DeleteRolesDialog',
-  component: DeleteRolesDialog,
+  component: DeleteDialog,
   decorators: [
     (Story) => (
       <StoriesDecorator>
@@ -15,11 +15,11 @@ export default {
       </StoriesDecorator>
     ),
   ],
-} as ComponentMeta<typeof DeleteRolesDialog>;
+} as ComponentMeta<typeof DeleteDialog>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof DeleteRolesDialog> = (args) => (
-  <DeleteRolesDialog {...args} />
+const Template: ComponentStory<typeof DeleteDialog> = (args) => (
+  <DeleteDialog {...args} />
 );
 
 export const Open = Template.bind({});

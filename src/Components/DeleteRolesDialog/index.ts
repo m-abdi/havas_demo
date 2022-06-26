@@ -1,2 +1,2 @@
-import DeleteRolesDialog from './DeleteRolesDialog';
-export default DeleteRolesDialog;
+import DeleteDialog from './DeleteRolesDialog';
+export default DeleteDialog;

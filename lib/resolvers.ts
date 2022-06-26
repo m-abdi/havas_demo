@@ -145,6 +145,28 @@ const resolvers: Resolvers = {
       // const bcrypt = (await import("bcrypt")).default
       // const salt = await bcrypt.genSalt(10);
       // const hashedPassword = await bcrypt.hash(_args.telephone as string, salt);
+      if (_args.edit) {
+        const editedPerson = await prisma.person.update({
+          where: {
+            id: _args.edit,
+          },
+          data: {
+            id: _args.id as string,
+            firstNameAndLastName: _args.firstNameAndLastName,
+            password: _args.telephone as string,
+            place: { connect: { id: _args.placeId } },
+            role: { connect: { id: _args.roleId } },
+            address: _args.address,
+            state: _args.state,
+            city: _args.city,
+            postalCode: _args.postalCode,
+            telephone: _args.telephone,
+            mobileNumber: _args.mobileNumber,
+            website: _args.website,
+          },
+        });
+        return editedPerson as any;
+      }
       const createdPerson = await prisma.person.create({
         data: {
           id: _args.id as string,

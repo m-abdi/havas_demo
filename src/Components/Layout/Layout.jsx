@@ -104,18 +104,25 @@ const PageContent = styled('main', { name: 'PageContent' })(({ theme }) => ({
   inlineSize: '100% !important',
 }));
 
-function Navbar({ children, pageName }) {
+function Layout({ children, pageName }) {
   // update page name for appbar2
   // page info context
   const infoContext = useContext(InfoContext);
   useEffect(() => {
     infoContext.changePageName(pageName);
   }, []);
+  const router = useRouter();
+  // check for expired sessions or not loged-in users ---> redirect to login page
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push('/users/login');
+    },
+  });
   // states
   const [drawOpen, setDrawOpen] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   //
-  const router = useRouter();
   const location = () => {};
   const [drawListOpen, setDrawListOpen] = React.useState({
     1: false,
@@ -126,7 +133,6 @@ function Navbar({ children, pageName }) {
     6: false,
   });
   //
-  const { data: session } = useSession();
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.up('sm'));
   useEffect(() => {
     setDrawOpen(
@@ -303,7 +309,9 @@ function Navbar({ children, pageName }) {
             </Typography>
             <IconButton
               id='accountOptionsButton'
+              aria-label='حساب کاربری'
               aria-describedby={accountOptionsId}
+              title='حساب کاربری'
               onClick={(e) => {
                 e.stopPropagation();
                 handleAccountOptionsClick(e);
@@ -527,4 +535,4 @@ function Navbar({ children, pageName }) {
   );
 }
 
-export default memo(Navbar);
+export default memo(Layout);

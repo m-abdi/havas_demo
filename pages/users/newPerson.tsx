@@ -36,6 +36,7 @@ export default function newPerson() {
     createPersonMutation,
     { data: createdPerson, loading: sending, error: creationError },
   ] = useMutation(CreateNewPersonDocument);
+ 
 
   // handlers
   const createNewPersonHandler = useCallback(
@@ -50,7 +51,8 @@ export default function newPerson() {
       address: string,
       telephone: string,
       mobileNumber: string,
-      website: string
+      website: string,
+      edit: string
     ) => {
       setSnackbarColor('info');
       setSnackbarMessage('در حال ارسال');
@@ -68,6 +70,7 @@ export default function newPerson() {
           telephone,
           mobileNumber,
           website,
+          edit,
         },
       });
       if (createdPerson.data) {

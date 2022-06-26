@@ -16,5 +16,9 @@ export default {
   ],
 } as ComponentMeta<typeof Layout>;
 
-const Template: ComponentStory<typeof Layout> = (args) => <Layout {...args} ><div>Mehdi Abdi</div></Layout>;
+const Template: ComponentStory<typeof Layout> = (args) => (
+  <Layout {...args}>
+    <div>Mehdi Abdi</div>
+  </Layout>
+);
 export const Main = Template.bind({});

@@ -9,22 +9,24 @@ import {
 import { Button } from '../Button';
 import React from 'react';
 
-export default function DeleteRolesDialog({
+export default function DeleteDialog({
+  title = 'آیا مطمئن هستید؟',
+  text = 'با این کار تمام موارد انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!',
   open,
   closeDialog,
   confirmDelete,
 }: {
+  title?: string;
+  text?: string;
   open: boolean;
   closeDialog: () => void;
   confirmDelete: () => Promise<boolean | undefined>;
 }) {
   return (
     <Dialog open={open} onClose={closeDialog}>
-      <DialogTitle>آیا مطمئن هستید؟</DialogTitle>
+      <DialogTitle>{title}</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          با این کار تمام نقش های انتخاب شده و افراد در آن نقش ها پاک خواهند شد!
-        </DialogContentText>
+        <DialogContentText>{text}</DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button

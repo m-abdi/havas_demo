@@ -6,7 +6,7 @@ import { useApolloClient, useMutation, useQuery } from '@apollo/client';
 
 import AuthenticationRequired from 'src/AuthenticationRequired';
 import { Button } from '../../src/Components/Button';
-import DeleteRolesDialog from 'src/Components/DeleteRolesDialog';
+import DeleteDialog from 'src/Components/DeleteRolesDialog';
 import Head from 'next/head';
 import Layout from 'src/Components/Layout';
 import Loader from 'src/Components/Loader';
@@ -156,7 +156,8 @@ export default function roles() {
                 onClick={() => setDeleteRoleDialog(true)}
               />
             </Box>
-            <DeleteRolesDialog
+            <DeleteDialog
+              text='با این کار تمام نقش های انتخاب شده و افراد در آن نقش ها پاک خواهند شد!'
               open={deleteRoleDialog}
               closeDialog={() => setDeleteRoleDialog(false)}
               confirmDelete={deleteRoles}

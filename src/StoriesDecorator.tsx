@@ -1,7 +1,7 @@
 import { CacheProvider, EmotionCache } from '@emotion/react';
+import { SessionProvider, getSession } from 'next-auth/react';
 
 import React from 'react';
-import { SessionProvider } from 'next-auth/react';
 import { Stack } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import createCache from '@emotion/cache';
@@ -9,11 +9,10 @@ import { prefixer } from 'stylis';
 import rtlPlugin from 'stylis-plugin-rtl';
 import theme from './theme';
 
-const session = {
+const session =  {
   user: {
     id: '123',
-    firstName: 'مهدی',
-    lastName: 'عبدی',
+    firstNameAndLastName: "مهدی عبدی",
     role: {
       id: 'id',
       name: 'مدیریت',
