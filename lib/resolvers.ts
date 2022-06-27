@@ -21,7 +21,13 @@ const resolvers: Resolvers = {
       if (!session || !(await canViewPerson(session))) {
         throw new GraphQLYogaError('Unauthorized');
       }
-      const personsDB = await prisma.person.findMany();
+      const personsDB = await prisma.person.findMany({
+        include: {
+          role: true,
+          place: true,
+        },
+      });
+      console.log(personsDB);
 
       return personsDB as any;
     },

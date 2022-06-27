@@ -1,7 +1,22 @@
-query allPerson {
+query allPersons {
   persons {
     id
     firstNameAndLastName
+    role {
+      id
+      name
+    }
+    place {
+      id 
+      name
+    }
+    state
+    city
+    postalCode
+    address
+    telephone
+    mobileNumber
+    website
   }
 }
 

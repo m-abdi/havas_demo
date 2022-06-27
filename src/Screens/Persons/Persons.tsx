@@ -26,8 +26,8 @@ import {
   useTable,
 } from 'react-table';
 
-import { Button } from 'src/Components/Button';
-import DeleteDialog from 'src/Components/DeleteRolesDialog';
+import { Button } from '../../Components/Button';
+import DeleteDialog from '../../Components/DeleteRolesDialog';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
@@ -75,7 +75,10 @@ const Styles = styled.div`
     }
     .th {
       font-weight: bold;
-      font-size: calc(0.6em + 0.6vw);
+      font-size: calc(14px + (21 - 14) * ((100vw - 300px) / (1600 - 300)));
+    }
+    .td {
+      font-size: calc(14px + (17 - 14) * ((100vw - 300px) / (1600 - 300)));
     }
     .th,
     .td {
@@ -115,7 +118,16 @@ const Styles = styled.div`
   }
 `;
 
-export default memo(function Persons({ data }: { data: DataType[] }) {
+export default memo(function Persons({
+  loading,
+  data,
+}: {
+  loading: boolean;
+  data: DataType[];
+}) {
+  if (loading) {
+    return <div>loading</div>;
+  }
   //  states
   const [rowOptionsAnchorElement, setRowOptionsAnchorElement] =
     useState<null | HTMLElement>(null);
@@ -525,7 +537,7 @@ export default memo(function Persons({ data }: { data: DataType[] }) {
         </Box>
       </Styles>
       <DeleteDialog
-      text='با این کار تمامی اشخاص انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
+        text='با این کار تمامی اشخاص انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
         open={deletePersonDialog}
         closeDialog={() => setDeletePersonDialog(false)}
         confirmDelete={async () => {

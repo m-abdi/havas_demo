@@ -150,7 +150,7 @@ export default function newPerson({
       allFieldsData?.telephone,
       allFieldsData?.mobileNumber,
       allFieldsData?.website,
-      existingPerson ? existingPerson?.id : ''
+      existingPerson?.id ? existingPerson?.id : ''
     );
   };
   // if editing => extract existing user data from query param

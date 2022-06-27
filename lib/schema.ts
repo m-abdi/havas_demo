@@ -9,7 +9,8 @@ const typeDefs = /* GraphQL */ `
     postalCode: String
     address: String
     telephone: String
-    phoneNumber: String
+    mobileNumber: String
+    website: String
     role: Role!
     roleId: ID
     createdAt: String
@@ -29,7 +30,7 @@ const typeDefs = /* GraphQL */ `
     postalCode: String
     address: String
     telephone: String
-    phoneNumber: String
+    mobileNumber: String
     website: String
     nationalId: String
     economicCode: String
