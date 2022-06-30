@@ -15,6 +15,7 @@ describe('interaction test for NewPerson page', () => {
   it('calls the submite handler function with correct values', () => {
     const onSubmitSpy = cy.stub().as('onSubmitSpy');
     const onNewPlaceSpy = cy.stub().as('onNewPlaceSpy');
+    const onNewCategorySpy = cy.stub().as('onNewCategorySpy');
     cy.mount(
       <NewPerson
         loading={false}
@@ -24,15 +25,20 @@ describe('interaction test for NewPerson page', () => {
         allPlaces={Main.args?.allPlaces as any}
         createNewPersonHandler={onSubmitSpy}
         createNewPlaceHandler={onNewPlaceSpy}
+        createNewCategoryHandler={onNewCategorySpy}
+        deletePlacesHandler={async (placeIds: string[]) => {
+          return;
+        }}
       />,
       {
         props: {
           createNewPeronHandler: onSubmitSpy,
           createNewPlaceHandler: onNewPlaceSpy,
+          createNewCategoryHandler: onNewCategorySpy,
         },
       }
     );
-    cy.get('#id', {timeout: 20000}).type(testNewPersonData.id);
+    cy.get('#id', { timeout: 20000 }).type(testNewPersonData.id);
     cy.get('#firstNameAndLastNameInput').type(
       testNewPersonData?.firstNameAndLastName
     );

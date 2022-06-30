@@ -74,3 +74,12 @@ export async function canDeletePersons(session: Session) {
   });
   return user?.role.deletePerson;
 }
+export async function canDeletePlaces(session: Session) {
+  const user = await prisma.person.findFirst({
+    where: {
+      id: session.user.id,
+    },
+    include: { role: true },
+  });
+  return user?.role.deletePlace;
+}

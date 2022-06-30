@@ -1,8 +1,10 @@
 import {
   AllPlacesDocument,
   AllRolesAndPlacesDocument,
+  CreateCategoryDocument,
   CreateNewPersonDocument,
   CreatePlaceDocument,
+  DeletePlacesDocument,
 } from 'lib/graphql-operations';
 import { InfoContext, SnackbarContext } from 'pages/_app';
 import React, { useCallback, useContext, useEffect } from 'react';
@@ -32,7 +34,6 @@ export default function newPerson() {
   // fetch all roles and places for autocomplete fields
   const { loading, error, data } = useQuery(AllRolesAndPlacesDocument, {
     fetchPolicy: 'cache-and-network',
-    
   });
   // new person mutation to server
   const [
@@ -44,6 +45,13 @@ export default function newPerson() {
     createPlaceMutation,
     { data: createdPlace, loading: sendingPlace, error: errorPlace },
   ] = useMutation(CreatePlaceDocument);
+  // new category mutation
+  const [createCategoryMutation, { data: categoryId }] = useMutation(
+    CreateCategoryDocument
+  );
+  // delete place mutation
+  const [deletePlacesMutation] = useMutation(DeletePlacesDocument);
+
   // handlers
   const createNewPersonHandler = useCallback(
     async (
@@ -160,8 +168,69 @@ export default function newPerson() {
     },
     []
   );
+  const createNewCategoryHandler = useCallback(
+    async (name: string, superPlaceId: string) => {
+      setSnackbarColor('info');
+      setSnackbarMessage('در حال ارسال');
+      setSnackbarOpen(true);
+      try {
+        const resp = await createCategoryMutation({
+          variables: { name, superPlaceId },
+          refetchQueries: [
+            { query: AllRolesAndPlacesDocument },
+            'allRolesAndPlaces',
+          ],
+        });
+        if (resp.data) {
+          setSnackbarColor('success');
+          setSnackbarMessage('انجام شد');
+          setSnackbarOpen(true);
+          return resp.data.createCategory;
+        } else {
+          setSnackbarColor('error');
+          setSnackbarMessage('خطا');
+          setSnackbarOpen(true);
+          return false;
+        }
+      } catch {
+        setSnackbarColor('error');
+        setSnackbarMessage('خطا');
+        setSnackbarOpen(true);
+        return false;
+      }
+    },
+    []
+  );
+  const deletePlaces = useCallback(async (placeIds: string[]): Promise<any> => {
+    // provide a response for user interaction(sending...)
+    setSnackbarColor('info');
+    setSnackbarMessage('در حال ارسال');
+    setSnackbarOpen(true);
+    try {
+      const resp = await deletePlacesMutation({
+        variables: { placeIds },
+        refetchQueries: [
+          { query: AllRolesAndPlacesDocument },
+          'allRolesAndPlacesDocument',
+        ],
+      });
 
+      if (resp?.data) {
+        setSnackbarColor('success');
+        setSnackbarMessage('انجام شد');
+        setSnackbarOpen(true);
+      } else if (resp?.errors) {
+        setSnackbarColor('error');
+        setSnackbarMessage('خطا');
+        setSnackbarOpen(true);
+      }
+    } catch (e) {
+      setSnackbarColor('error');
+      setSnackbarMessage('خطا');
+      setSnackbarOpen(true);
+    }
 
+  }, []);
   return (
     <Layout pageName={pageName}>
       <Head>
@@ -171,10 +240,12 @@ export default function newPerson() {
         loading={loading}
         sending={sending}
         roles={data?.roles ?? ([] as any)}
-        places={data?.places?.map((p) => ({ id: p.id, label: p.name })) as any}
+        places={data?.places?.map((p) => ({ id: p.id, label: p.name, isCategory: p.isCategory })) as any}
         allPlaces={data?.places as any}
         createNewPersonHandler={createNewPersonHandler}
         createNewPlaceHandler={createNewPlaceHandler}
+        createNewCategoryHandler={createNewCategoryHandler}
+        deletePlacesHandler={deletePlaces}
       />
       <Snackbar />
     </Layout>

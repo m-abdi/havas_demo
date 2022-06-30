@@ -2,6 +2,7 @@ query allPlaces {
   places {
     id
     name
+    isCategory
     superPlace {
       id
       name
@@ -50,4 +51,12 @@ mutation createPlace(
     id
     label: name
   }
+}
+
+mutation createCategory($name: String!, $superPlaceId: String!) {
+  createCategory(name: $name, superPlaceId: $superPlaceId)
+}
+
+mutation deletePlaces($placeIds: [String!]!) {
+  deletePlaces(placeIds: $placeIds)
 }

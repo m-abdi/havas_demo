@@ -23,6 +23,7 @@ const typeDefs = /* GraphQL */ `
     superPlace: Place
     superPlaceId: ID
     subset: [Place]
+    isCategory: Boolean
     representative: Person
     typeOfWork: String
     state: String
@@ -183,9 +184,10 @@ const typeDefs = /* GraphQL */ `
       website: String
       edit: String
     ): Person!
-
+    
     deleteRoles(roleIds: [String!]!): [String!]!
     deletePersons(personIds: [String!]!): Int!
+    deletePlaces(placeIds: [String!]!): Int!
     createPlace(
       name: String!
       superPlaceId: String
@@ -203,6 +205,7 @@ const typeDefs = /* GraphQL */ `
       description: String
       edit: String
     ): Place!
+    createCategory(name: String!, superPlaceId: String!): ID!
   }
 `;
 

@@ -19,12 +19,15 @@ export const testNewPlaceData = {
 describe('interaction test for NewPlace page', () => {
   it('calls the submite handler function with correct values', () => {
     const onSubmitSpy = cy.spy().as('onSubmitSpy');
+    const onNewCategorySpy = cy.spy().as('onNewCategorySpy');
     cy.mount(
       <NewPlace
         sending={false}
         persons={Main.args?.persons as any}
         places={Main.args?.places as any}
         createNewPlaceHandler={onSubmitSpy}
+        createNewCategoryHandler={onNewCategorySpy}
+        deletePlacesHandler={async (placeIds: string[]) => {return}}
       />,
       { props: { createNewPeronHandler: onSubmitSpy } }
     );

@@ -27,7 +27,7 @@ export default function Snackbar(props: any) {
       autoHideDuration={6000}
       onClose={() => setSnackbarOpen(false)}
       sx={{
-        zIndex: 5000,
+        zIndex: 10000,
       }}
     >
       <Alert

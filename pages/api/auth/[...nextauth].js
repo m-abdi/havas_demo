@@ -41,7 +41,6 @@ export default NextAuth({
           });
           if (potentialUser) {
             await prisma.$disconnect();
-            console.log(potentialUser);
             return { name: potentialUser.firstNameAndLastName, email: potentialUser.id }
           }
           await prisma.$disconnect();

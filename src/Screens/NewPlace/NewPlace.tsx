@@ -8,6 +8,7 @@ import {
   FormLabel,
   IconButton,
   Input,
+  InputAdornment,
   InputBase,
   InputLabel,
   Stack,
@@ -24,7 +25,9 @@ import { Button } from '../../Components/Button';
 import CallIcon from '@mui/icons-material/Call';
 import ChatIcon from '@mui/icons-material/Chat';
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
+import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import HomeIcon from '@mui/icons-material/Home';
 import RadioButtonCheckedRoundedIcon from '@mui/icons-material/RadioButtonCheckedRounded';
@@ -87,15 +90,20 @@ export default function NewPlace({
   persons = [],
   readOnlyRepresentative = '',
   createNewPlaceHandler,
+  createNewCategoryHandler,
   placeCreationHandler,
+  deletePlacesHandler,
   modalMode,
 }: {
   sending?: boolean;
   places: {
     id: string;
     name: string;
+    isCategory: boolean;
     superPlace: null | { id: string; name: string };
-    subset: { id: string; name: string; subset: any[] }[] | [];
+    subset:
+      | { id: string; name: string; subset: any[]; isCategory: boolean }[]
+      | [];
   }[];
   persons: any[];
   modalMode?: boolean;
@@ -118,9 +126,19 @@ export default function NewPlace({
     edit: string
   ) => Promise<{ [key: string]: any } | false>;
   placeCreationHandler?: (newPlace?: { id: string; label: string }) => void;
+  createNewCategoryHandler: (
+    name: string,
+    superPlaceId: string
+  ) => Promise<any>;
+  deletePlacesHandler: (placeIds: string[]) => Promise<any>;
 }) {
   // states
   const [category, setCategory] = useState('');
+  const [newCategory, setNewCategory] = useState<{
+    [id: string]: { status: boolean; value: string };
+  }>({
+    layer0: { status: false, value: '' },
+  });
   const [representative, setRepresentative] = useState(
     readOnlyRepresentative ? persons[0] : null
   );
@@ -150,6 +168,7 @@ export default function NewPlace({
     }
     if (!category) {
       alert('یک دسته بندی را انتخاب کنید');
+      return false;
     }
     placeCreationHandler?.();
     const newPlaceCreationResp = await createNewPlaceHandler(
@@ -465,7 +484,7 @@ export default function NewPlace({
                 defaultCollapseIcon={<ExpandMoreIcon />}
                 defaultExpandIcon={<ChevronRightIcon />}
                 defaultExpanded={places
-                  ?.filter((p) => !p.superPlace)
+                  ?.filter((p) => !p.superPlace && p.isCategory)
                   .map((p) => p.id)}
                 sx={{
                   height: 150,
@@ -476,7 +495,7 @@ export default function NewPlace({
                 }}
               >
                 {places
-                  ?.filter((p) => !p.superPlace)
+                  ?.filter((p) => !p.superPlace && p.isCategory)
                   .map((superplace) => (
                     <Stack key={superplace.id} direction='row'>
                       {category === superplace.id ? (
@@ -488,34 +507,157 @@ export default function NewPlace({
                       ) : (
                         <RadioButtonUncheckedRoundedIcon
                           id={superplace.id}
+                          sx={{ cursor: 'pointer' }}
                           onClick={() => setCategory(superplace.id)}
                         />
                       )}
-                      <TreeItem nodeId={superplace.id} label={superplace.name}>
-                        {superplace.subset.map((subPlace) => (
-                          <TreeItem
-                            key={subPlace.id}
-                            nodeId={subPlace.id}
-                            label={subPlace.name}
-                            icon={
-                              category === subPlace.id ? (
-                                <CheckCircleOutlineRoundedIcon
-                                  sx={{
-                                    color: 'green',
-                                  }}
+                      <Stack direction='row' alignItems={"flex-start"}>
+                        <TreeItem
+                          nodeId={superplace.id}
+                          label={superplace.name}
+                        >
+                          {superplace.subset
+                            .filter((subPlace) => subPlace.isCategory)
+                            .map((subPlace) => (
+                              <Stack
+                                direction={'row'}
+                                spacing={1}
+                                alignItems='center'
+                                key={subPlace.id}
+                              >
+                                <TreeItem
+                                  nodeId={subPlace.id}
+                                  label={subPlace.name}
+                                  icon={
+                                    category === subPlace.id ? (
+                                      <IconButton sx={{ p: 0, mx: 0.5 }}>
+                                        <CheckCircleOutlineRoundedIcon
+                                          sx={{
+                                            color: 'green',
+                                          }}
+                                        />
+                                      </IconButton>
+                                    ) : (
+                                      <IconButton sx={{ p: 0, mx: 0.5 }}>
+                                        <RadioButtonUncheckedRoundedIcon
+                                          id={subPlace.id}
+                                          onClick={() =>
+                                            setCategory(subPlace.id)
+                                          }
+                                        />
+                                      </IconButton>
+                                    )
+                                  }
                                 />
-                              ) : (
-                                <RadioButtonUncheckedRoundedIcon
-                                  id={subPlace.id}
-                                  onClick={() => setCategory(subPlace.id)}
-                                />
-                              )
-                            }
-                          />
-                        ))}
-                      </TreeItem>
+                                <IconButton
+                                  onClick={async () =>
+                                    await deletePlacesHandler([subPlace.id])
+                                  }
+                                >
+                                  <DeleteRoundedIcon
+                                    sx={{ color: 'error.main' }}
+                                  />
+                                </IconButton>
+                              </Stack>
+                            ))}
+
+                          {newCategory?.[superplace.id]?.status ? (
+                            <TextField
+                              size='small'
+                              variant='standard'
+                              value={newCategory[superplace.id].value}
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position='start'>
+                                    <CheckTwoToneIcon
+                                      sx={{
+                                        color: 'success.main',
+                                        cursor: 'pointer',
+                                      }}
+                                      onClick={async (e) => {
+                                        e.stopPropagation();
+                                        await createNewCategoryHandler(
+                                          newCategory[superplace.id].value,
+                                          superplace.id
+                                        );
+                                      }}
+                                    />
+                                  </InputAdornment>
+                                ),
+                              }}
+                              onChange={(e) =>
+                                setNewCategory({
+                                  ...newCategory,
+                                  [superplace.id]: {
+                                    status: true,
+                                    value: e.target.value,
+                                  },
+                                })
+                              }
+                            />
+                          ) : (
+                            <IconButton
+                              onClick={() =>
+                                setNewCategory({
+                                  ...newCategory,
+                                  [superplace.id]: { status: true, value: '' },
+                                })
+                              }
+                            >
+                              <AddCircleIcon sx={{ p: 0, mx: 0.5 }} />
+                            </IconButton>
+                          )}
+                        </TreeItem>
+                        <IconButton
+                          onClick={async () =>
+                            await deletePlacesHandler([superplace.id])
+                          }
+                        >
+                          <DeleteRoundedIcon sx={{ color: 'error.main' }} />
+                        </IconButton>
+                      </Stack>
                     </Stack>
                   ))}
+                {newCategory.layer0.status ? (
+                  <TextField
+                    size='small'
+                    variant='standard'
+                    value={newCategory.layer0.value}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position='start'>
+                          <CheckTwoToneIcon
+                            sx={{ color: 'success.main', cursor: 'pointer' }}
+                            onClick={async (e) => {
+                              e.stopPropagation();
+                              await createNewCategoryHandler(
+                                newCategory.layer0.value,
+                                ''
+                              );
+                            }}
+                          />
+                        </InputAdornment>
+                      ),
+                    }}
+                    onChange={(e) =>
+                      setNewCategory({
+                        ...newCategory,
+                        layer0: { status: true, value: e.target.value },
+                      })
+                    }
+                  />
+                ) : (
+                  <IconButton
+                    onClick={() =>
+                      setNewCategory({
+                        ...newCategory,
+                        layer0: { status: true, value: '' },
+                      })
+                    }
+                  >
+                    <AddCircleIcon sx={{ p: 0, mx: 0.5 }} />
+                  </IconButton>
+                )}
               </TreeView>
             </Input1>
           </Row1>
@@ -523,17 +665,7 @@ export default function NewPlace({
         <Address />
         <Call />
         <More />
-        <Box
-          sx={{
-            position: modalMode ? 'sticky' : 'absolute',
-            top: modalMode ? 'auto' : -68,
-            bottom: modalMode ? 0 : 'auto',
-            right: modalMode ? 'auto' : '35px',
-            backgroundColor: modalMode ? 'white' : 'auto',
-            inlineSize: '100%',
-            p: modalMode ? 2 : 0,
-          }}
-        >
+        <Box>
           <Button
             id='newPlaceSubmitButton'
             label='ارسال'

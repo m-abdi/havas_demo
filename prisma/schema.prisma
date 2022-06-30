@@ -16,32 +16,33 @@ datasource db {
 // }
 
 model Person {
-  id           String    @id @default(uuid())
-  firstNameAndLastName    String?   @db.VarChar(255)
-  place        Place?    @relation(fields: [placeId], references: [id])
-  placeId      String?   @unique
-  state        String?   @db.VarChar(255)
-  city         String?   @db.VarChar(255)
-  postalCode   String?   @db.VarChar(255)
-  address      String?   @db.VarChar(255)
-  telephone    String?   @db.VarChar(255)
-  mobileNumber  String?   @db.VarChar(255)
-  website      String?   @db.VarChar(255)
-  role         Role      @relation(fields: [roleId], references: [id])
-  roleId       String
-  createdAt    DateTime  @default(now())
-  editedAt     DateTime  @updatedAt
-  fromLicenses License[] @relation("fromLicenses")
-  toLicenses   License[] @relation("toLicenses")
-  password     String
+  id                   String    @id @default(uuid())
+  firstNameAndLastName String?   @db.VarChar(255)
+  place                Place?    @relation(fields: [placeId], references: [id])
+  placeId              String?   @unique
+  state                String?   @db.VarChar(255)
+  city                 String?   @db.VarChar(255)
+  postalCode           String?   @db.VarChar(255)
+  address              String?   @db.VarChar(255)
+  telephone            String?   @db.VarChar(255)
+  mobileNumber         String?   @db.VarChar(255)
+  website              String?   @db.VarChar(255)
+  role                 Role      @relation(fields: [roleId], references: [id])
+  roleId               String
+  createdAt            DateTime  @default(now())
+  editedAt             DateTime  @updatedAt
+  fromLicenses         License[] @relation("fromLicenses")
+  toLicenses           License[] @relation("toLicenses")
+  password             String
 }
 
 model Place {
   id               String    @id @default(uuid())
-  name             String    @db.VarChar(255) @unique
+  name             String    @unique @db.VarChar(255)
   superPlace       Place?    @relation("SuperPlaceSubset", fields: [superPlaceId], references: [id])
   superPlaceId     String?
   subset           Place[]   @relation("SuperPlaceSubset")
+  isCategory       Boolean   @default(false)
   representative   Person?
   typeOfWork       String?
   state            String?
@@ -49,10 +50,10 @@ model Place {
   postalCode       String?
   address          String?
   telephone        String?
-  mobileNumber      String?
+  mobileNumber     String?
   website          String?
   nationalId       String?
-  economicalCode     String?
+  economicalCode   String?
   registeredNumber String?
   description      String?
   createdAt        String?

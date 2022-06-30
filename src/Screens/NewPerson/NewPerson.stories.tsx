@@ -21,16 +21,16 @@ const Template: ComponentStory<typeof NewPerson> = (args) => (
 export const Main = Template.bind({});
 Main.args = {
   roles: [
-    { label: 'مدیریت', id: '1' },
-    { label: 'انباردار', id: '2' },
-    { label: 'اداری', id: '3' },
-    { label: 'آی تی', id: '4' },
+    { label: 'مدیریت', id: '1', isCategory: false },
+    { label: 'انباردار', id: '2', isCategory: false },
+    { label: 'اداری', id: '3', isCategory: false },
+    { label: 'آی تی', id: '4', isCategory: false },
   ],
   places: [
-    { label: 'اداری', id: '11' },
-    { label: 'انبار', id: '22' },
-    { label: 'ساختمان فناوری اطلاعات', id: '33' },
-    { label: 'کارگاه', id: '44' },
+    { label: 'اداری', id: '11', isCategory: false },
+    { label: 'انبار', id: '22', isCategory: false },
+    { label: 'ساختمان فناوری اطلاعات', id: '33', isCategory: false },
+    { label: 'کارگاه', id: '44', isCategory: false },
   ],
   allPlaces: [
     {

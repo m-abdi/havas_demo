@@ -1,9 +1,16 @@
-import { Person, PersonFilter, Place, Resolvers, Role } from './resolvers-types';
+import {
+  Person,
+  PersonFilter,
+  Place,
+  Resolvers,
+  Role,
+} from './resolvers-types';
 import {
   canCreatePerson,
   canCreatePlace,
   canCreateRole,
   canDeletePersons,
+  canDeletePlaces,
   canDeleteRols,
   canViewPerson,
   canViewPlaces,
@@ -241,6 +248,38 @@ const resolvers: Resolvers = {
       });
       return createdPerson as any;
     },
+    async createCategory(
+      _,
+      { name, superPlaceId }: { name: string; superPlaceId: string},
+      _context
+    ): Promise<any> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canCreatePlace(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+      if (superPlaceId) {
+        return await (
+          await prisma.place.create({
+            data: {
+              name,
+              isCategory: true,
+              superPlace: { connect: { id: superPlaceId } },
+            },
+          })
+        ).id;
+      } else {
+        return await (
+          await prisma.place.create({
+            data: {
+              name,
+              isCategory: true,
+            },
+          })
+        ).id;
+      }
+    },
     async createPlace(
       _,
       {
@@ -355,6 +394,24 @@ const resolvers: Resolvers = {
       console.log(deletedPersons);
 
       return deletedPersons?.count;
+    },
+    async deletePlaces(
+      _: any,
+      { placeIds }: { placeIds: string[] },
+      _context: any
+    ): Promise<number> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canDeletePlaces(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+
+      const deletedPlaces = await prisma.place.deleteMany({
+        where: { id: { in: placeIds } },
+      });
+
+      return deletedPlaces?.count;
     },
   },
   Person: {

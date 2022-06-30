@@ -96,13 +96,16 @@ query allRolesAndPlaces {
   places {
     id
     name
+    isCategory
     superPlace {
       id
       name
+      isCategory
     }
     subset {
       id
       name
+      isCategory
     }
   }
 }

@@ -88,6 +88,7 @@ const Label1 = styled('label', { name: 'Label1' })(({ theme }) => ({
 interface OptionsType {
   label: string;
   id: string;
+  isCategory: boolean;
 }
 
 export default function newPerson({
@@ -98,6 +99,8 @@ export default function newPerson({
   allPlaces,
   createNewPersonHandler,
   createNewPlaceHandler,
+  createNewCategoryHandler,
+  deletePlacesHandler,
 }: {
   loading: boolean;
   sending: boolean;
@@ -135,6 +138,11 @@ export default function newPerson({
     description: string,
     edit: string
   ) => Promise<false | { [key: string]: any }>;
+  createNewCategoryHandler: (
+    name: string,
+    superPlaceId: string
+  ) => Promise<any>;
+  deletePlacesHandler: (placeIds: string[]) => Promise<any>;
 }) {
   const {
     register,
@@ -213,299 +221,300 @@ export default function newPerson({
   }
   return (
     <Container maxWidth='md' sx={{ position: 'relative', p: '16px' }}>
-        <>
-          <Form1 id='123' onSubmit={handleSubmit(collectInputsData)}>
-            {/* عنوان و مکان و نقش */}
-            <Section>
-              <Titr>
-                <ChatIcon />
-                <Typography sx={{ paddingBottom: '5px', paddingRight: '5px' }}>
-                  عمومی
-                </Typography>
-              </Titr>
-              <Row1>
-                <Input1>
-                  <Label1>عنوان</Label1>
-                  <TextField
-                    size='small'
-                    id='firstNameAndLastNameInput'
-                    inputProps={{
-                      ...register('firstNameAndLastName', {
-                        required: true,
-                        value: existingPerson.firstNameAndLastName,
-                      }),
-                    }}
-                    error={errors.firstNameAndLastName?.type === 'required'}
-                    helperText={
-                      errors.firstNameAndLastName?.type === 'required' &&
-                      'لطفا این فیلد را پر کنید'
+      <>
+        <Form1 id='123' onSubmit={handleSubmit(collectInputsData)}>
+          {/* عنوان و مکان و نقش */}
+          <Section>
+            <Titr>
+              <ChatIcon />
+              <Typography sx={{ paddingBottom: '5px', paddingRight: '5px' }}>
+                عمومی
+              </Typography>
+            </Titr>
+            <Row1>
+              <Input1>
+                <Label1>عنوان</Label1>
+                <TextField
+                  size='small'
+                  id='firstNameAndLastNameInput'
+                  inputProps={{
+                    ...register('firstNameAndLastName', {
+                      required: true,
+                      value: existingPerson.firstNameAndLastName,
+                    }),
+                  }}
+                  error={errors.firstNameAndLastName?.type === 'required'}
+                  helperText={
+                    errors.firstNameAndLastName?.type === 'required' &&
+                    'لطفا این فیلد را پر کنید'
+                  }
+                />
+              </Input1>
+              <Input1>
+                <Label1 sx={{ marginLeft: '0px !important' }}>مسولیت</Label1>
+                <Autocomplete
+                  disablePortal
+                  id='roleInput'
+                  options={roles}
+                  defaultValue={
+                    existingPerson?.role
+                      ? roles.find((p) => p?.id === existingPerson?.role?.id)
+                      : null
+                  }
+                  value={role}
+                  onChange={(event, newValue) => {
+                    setRole(newValue as any);
+                    setRoleError(false);
+                  }}
+                  onInputChange={(event, newInput) => {
+                    if (
+                      roles.length > 0 &&
+                      roles.some((r) => r.label === newInput)
+                    ) {
+                      setRole(roles.find((r) => r.label === newInput) as any);
+                      setRoleError(false);
                     }
-                  />
-                </Input1>
-                <Input1>
-                  <Label1 sx={{ marginLeft: '0px !important' }}>مسولیت</Label1>
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      size='small'
+                      error={roleError}
+                      helperText={roleError && 'لطفا این فیلد را پر کنید'}
+                    />
+                  )}
+                />
+              </Input1>
+            </Row1>
+
+            <Row1>
+              <Input1>
+                <Label1>کد ملی</Label1>
+                <TextField
+                  id='id'
+                  size='small'
+                  inputProps={{
+                    ...register('id', {
+                      required: true,
+                      value: existingPerson?.id,
+                    }),
+                  }}
+                  error={errors.id?.type === 'required'}
+                  helperText={
+                    errors.id?.type === 'required' && 'لطفا این فیلد را پر کنید'
+                  }
+                />
+              </Input1>
+              <Input1>
+                <Label1>مکان فعالیت</Label1>
+                <Stack direction='row' alignItems='center' spacing={1}>
                   <Autocomplete
                     disablePortal
-                    id='roleInput'
-                    options={roles}
+                    id='placeInput'
+                    options={places.filter((p) => !p.isCategory)}
+                    sx={{ flexGrow: 1 }}
                     defaultValue={
-                      existingPerson?.role
-                        ? roles.find((p) => p?.id === existingPerson?.role?.id)
+                      existingPerson?.place
+                        ? places.find(
+                            (p) => p?.id === existingPerson?.place?.id
+                          )
                         : null
                     }
-                    value={role}
+                    value={place}
                     onChange={(event, newValue) => {
-                      setRole(newValue as any);
-                      setRoleError(false);
+                      setPlace(newValue as any);
+                      setPlaceError(false);
                     }}
                     onInputChange={(event, newInput) => {
                       if (
-                        roles.length > 0 &&
-                        roles.some((r) => r.label === newInput)
+                        places.length > 0 &&
+                        places.some((r) => r.label === newInput)
                       ) {
-                        setRole(roles.find((r) => r.label === newInput) as any);
-                        setRoleError(false);
+                        setPlace(
+                          places.find((r) => r.label === newInput) as any
+                        );
+                        setPlaceError(false);
                       }
                     }}
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         size='small'
-                        error={roleError}
-                        helperText={roleError && 'لطفا این فیلد را پر کنید'}
+                        error={placeError}
+                        helperText={placeError && 'لطفا این فیلد را پر کنید'}
                       />
                     )}
                   />
-                </Input1>
-              </Row1>
+                  <IconButton
+                    id='createPlaceButton'
+                    color='success'
+                    size='large'
+                    sx={{ p: 0, backgroundColor: 'whitesmoke' }}
+                    onClick={() => setNewPlaceDialogOpen(true)}
+                  >
+                    <AddCircleOutlineRoundedIcon />
+                  </IconButton>
+                </Stack>
+              </Input1>
+            </Row1>
+          </Section>
+          {/* آدرس  */}
+          <Section>
+            <Titr>
+              <HomeIcon />
+              <Typography sx={{ paddingRight: '5px' }}>
+                {' '}
+                اطلاعات آدرس
+              </Typography>
+            </Titr>
+            <Row1>
+              <Input1>
+                <Label1>استان</Label1>
+                <TextField
+                  id='stateInput'
+                  name='state'
+                  size='small'
+                  inputProps={{
+                    ...register('state', { value: existingPerson?.state }),
+                  }}
+                />
+              </Input1>
+              <Input1>
+                <Label1>شهر</Label1>
+                <TextField
+                  id='cityInput'
+                  size='small'
+                  inputProps={{
+                    ...register('city', { value: existingPerson?.city }),
+                  }}
+                />
+              </Input1>
+              <Input1>
+                <Label1>کد پستی</Label1>
+                <TextField
+                  id='postalCodeInput'
+                  size='small'
+                  inputProps={{
+                    ...register('postalCode', {
+                      value: existingPerson?.postalCode,
+                    }),
+                  }}
+                />
+              </Input1>
+            </Row1>
+            <Row1>
+              <Input1>
+                <Label1>آدرس</Label1>
+                <TextField
+                  id='addressInput'
+                  size='small'
+                  inputProps={{
+                    ...register('address', {
+                      value: existingPerson?.address,
+                    }),
+                  }}
+                />
+              </Input1>
+            </Row1>
+          </Section>
+          {/* اطلاعات تماس */}
+          <Section>
+            <Titr>
+              <CallIcon />
+              <Typography sx={{ paddingRight: '5px' }}>تماس</Typography>
+            </Titr>
+            <Row1>
+              <Input1>
+                <Label1>تلفن</Label1>
+                <TextField
+                  id='telephoneInput'
+                  size='small'
+                  inputProps={{
+                    ...register('telephone', {
+                      required: true,
+                      setValueAs: (v) => toEnglishDigit(v),
+                      value: existingPerson?.telephone,
+                    }),
+                  }}
+                  error={errors.telephone?.type === 'required'}
+                  helperText={
+                    errors.telephone?.type === 'required' &&
+                    'لطفا این فیلد را پر کنید'
+                  }
+                />
+              </Input1>
+              <Input1>
+                <Label1>موبایل</Label1>
+                <TextField
+                  id='mobileNumberInput'
+                  size='small'
+                  inputProps={{
+                    ...register('mobileNumber', {
+                      value: existingPerson?.mobileNumber,
+                    }),
+                  }}
+                />
+              </Input1>
+              <Input1>
+                <Label1>وبسایت</Label1>
+                <TextField
+                  id='websiteInput'
+                  size='small'
+                  inputProps={{
+                    ...register('website', {
+                      value: existingPerson?.website,
+                    }),
+                  }}
+                />
+              </Input1>
+            </Row1>
+          </Section>
 
-              <Row1>
-                <Input1>
-                  <Label1>کد ملی</Label1>
-                  <TextField
-                    id='id'
-                    size='small'
-                    inputProps={{
-                      ...register('id', {
-                        required: true,
-                        value: existingPerson?.id,
-                      }),
-                    }}
-                    error={errors.id?.type === 'required'}
-                    helperText={
-                      errors.id?.type === 'required' &&
-                      'لطفا این فیلد را پر کنید'
-                    }
-                  />
-                </Input1>
-                <Input1>
-                  <Label1>مکان فعالیت</Label1>
-                  <Stack direction='row' alignItems='center' spacing={1}>
-                    <Autocomplete
-                      disablePortal
-                      id='placeInput'
-                      options={places}
-                      sx={{ flexGrow: 1 }}
-                      defaultValue={
-                        existingPerson?.place
-                          ? places.find(
-                              (p) => p?.id === existingPerson?.place?.id
-                            )
-                          : null
-                      }
-                      value={place}
-                      onChange={(event, newValue) => {
-                        setPlace(newValue as any);
-                        setPlaceError(false);
-                      }}
-                      onInputChange={(event, newInput) => {
-                        if (
-                          places.length > 0 &&
-                          places.some((r) => r.label === newInput)
-                        ) {
-                          setPlace(
-                            places.find((r) => r.label === newInput) as any
-                          );
-                          setPlaceError(false);
-                        }
-                      }}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          size='small'
-                          error={placeError}
-                          helperText={placeError && 'لطفا این فیلد را پر کنید'}
-                        />
-                      )}
-                    />
-                    <IconButton
-                      id='createPlaceButton'
-                      color='success'
-                      size='large'
-                      sx={{ p: 0, backgroundColor: 'whitesmoke' }}
-                      onClick={() => setNewPlaceDialogOpen(true)}
-                    >
-                      <AddCircleOutlineRoundedIcon />
-                    </IconButton>
-                  </Stack>
-                </Input1>
-              </Row1>
-            </Section>
-            {/* آدرس  */}
-            <Section>
-              <Titr>
-                <HomeIcon />
-                <Typography sx={{ paddingRight: '5px' }}>
-                  {' '}
-                  اطلاعات آدرس
-                </Typography>
-              </Titr>
-              <Row1>
-                <Input1>
-                  <Label1>استان</Label1>
-                  <TextField
-                    id='stateInput'
-                    name='state'
-                    size='small'
-                    inputProps={{
-                      ...register('state', { value: existingPerson?.state }),
-                    }}
-                  />
-                </Input1>
-                <Input1>
-                  <Label1>شهر</Label1>
-                  <TextField
-                    id='cityInput'
-                    size='small'
-                    inputProps={{
-                      ...register('city', { value: existingPerson?.city }),
-                    }}
-                  />
-                </Input1>
-                <Input1>
-                  <Label1>کد پستی</Label1>
-                  <TextField
-                    id='postalCodeInput'
-                    size='small'
-                    inputProps={{
-                      ...register('postalCode', {
-                        value: existingPerson?.postalCode,
-                      }),
-                    }}
-                  />
-                </Input1>
-              </Row1>
-              <Row1>
-                <Input1>
-                  <Label1>آدرس</Label1>
-                  <TextField
-                    id='addressInput'
-                    size='small'
-                    inputProps={{
-                      ...register('address', {
-                        value: existingPerson?.address,
-                      }),
-                    }}
-                  />
-                </Input1>
-              </Row1>
-            </Section>
-            {/* اطلاعات تماس */}
-            <Section>
-              <Titr>
-                <CallIcon />
-                <Typography sx={{ paddingRight: '5px' }}>تماس</Typography>
-              </Titr>
-              <Row1>
-                <Input1>
-                  <Label1>تلفن</Label1>
-                  <TextField
-                    id='telephoneInput'
-                    size='small'
-                    inputProps={{
-                      ...register('telephone', {
-                        required: true,
-                        setValueAs: (v) => toEnglishDigit(v),
-                        value: existingPerson?.telephone,
-                      }),
-                    }}
-                    error={errors.telephone?.type === 'required'}
-                    helperText={
-                      errors.telephone?.type === 'required' &&
-                      'لطفا این فیلد را پر کنید'
-                    }
-                  />
-                </Input1>
-                <Input1>
-                  <Label1>موبایل</Label1>
-                  <TextField
-                    id='mobileNumberInput'
-                    size='small'
-                    inputProps={{
-                      ...register('mobileNumber', {
-                        value: existingPerson?.mobileNumber,
-                      }),
-                    }}
-                  />
-                </Input1>
-                <Input1>
-                  <Label1>وبسایت</Label1>
-                  <TextField
-                    id='websiteInput'
-                    size='small'
-                    inputProps={{
-                      ...register('website', {
-                        value: existingPerson?.website,
-                      }),
-                    }}
-                  />
-                </Input1>
-              </Row1>
-            </Section>
-
-            <Box
-              sx={{
-                position: 'absolute',
-                top: -68,
-                right: '35px',
-              }}
-            >
-              <Button
-                id='submitButton'
-                label='ارسال'
-                size='large'
-                color='success'
-                variant='contained'
-              />
-            </Box>
-          </Form1>
-          <Dialog
-            sx={{ zIndex: 7000 }}
-            open={newPlaceDialogOpen}
-            onClose={() => setNewPlaceDialogOpen(false)}
+          <Box
+            sx={{
+              position: 'absolute',
+              top: -68,
+              right: '35px',
+            }}
           >
-            <DialogTitle sx={{ textAlign: 'center' }}>مکان جدید</DialogTitle>
-            <DialogContent sx={{ position: 'relative' }}>
-              <NewPlace
-                modalMode={true}
-                places={allPlaces}
-                createNewPlaceHandler={createNewPlaceHandler}
-                placeCreationHandler={placeCreationHandler}
-                persons={[
-                  {
-                    label: getNewPlaceFormValues?.().firstNameAndLastName,
-                    id: '123',
-                    role: { name: role?.label },
-                  },
-                ]}
-                readOnlyRepresentative={
-                  getNewPlaceFormValues?.().firstNameAndLastName
-                }
-              />
-            </DialogContent>
-            <DialogActions sx={{ px: 5 }}></DialogActions>
-          </Dialog>
-        </>
+            <Button
+              id='submitButton'
+              label='ارسال'
+              size='large'
+              color='success'
+              variant='contained'
+            />
+          </Box>
+        </Form1>
+        <Dialog
+          sx={{ zIndex: 7000 }}
+          open={newPlaceDialogOpen}
+          onClose={() => setNewPlaceDialogOpen(false)}
+        >
+          <DialogTitle sx={{ textAlign: 'center' }}>مکان جدید</DialogTitle>
+          <DialogContent sx={{ position: 'relative' }}>
+            <NewPlace
+              modalMode={true}
+              places={allPlaces}
+              createNewPlaceHandler={createNewPlaceHandler}
+              placeCreationHandler={placeCreationHandler}
+              createNewCategoryHandler={createNewCategoryHandler}
+              deletePlacesHandler={deletePlacesHandler}
+              persons={[
+                {
+                  label: getNewPlaceFormValues?.().firstNameAndLastName,
+                  id: '123',
+                  role: { name: role?.label },
+                },
+              ]}
+              readOnlyRepresentative={
+                getNewPlaceFormValues?.().firstNameAndLastName
+              }
+            />
+          </DialogContent>
+          <DialogActions sx={{ px: 5 }}></DialogActions>
+        </Dialog>
+      </>
     </Container>
   );
 }
