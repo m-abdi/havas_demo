@@ -167,11 +167,11 @@ Main.args = {
       website: 'mehdiabdi.info',
     },
   ],
-  setItemsPerPage: (i) => {
+  setItemsPerPage: (i: any) => {
     itemsPerPage = i;
   },
   pageNumber: 0,
-  fetchMoreRows: (e, p)=>{}
+  fetchMoreRows: (e, p) => {},
 };
 
 export const Loading = Template.bind({});

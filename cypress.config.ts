@@ -5,6 +5,7 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       on('task', {
         deletePersonAndPlace: ({ personId, placeName }) => {
+          
           const person = prisma.person
             .delete({
               where: { id: personId },
@@ -20,7 +21,6 @@ export default defineConfig({
           return null
         },
         checkPerson: (info: any) => {
-          console.log('----', info);
           
           return prisma.person
             .findFirst({

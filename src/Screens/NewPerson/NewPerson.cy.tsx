@@ -14,7 +14,7 @@ export const testNewPersonData = {
 describe('interaction test for NewPerson page', () => {
   it('calls the submite handler function with correct values', () => {
     const onSubmitSpy = cy.stub().as('onSubmitSpy');
-    const onNewPlaceSpy = cy.spy().as('onNewPlaceSpy');
+    const onNewPlaceSpy = cy.stub().as('onNewPlaceSpy');
     cy.mount(
       <NewPerson
         loading={false}
@@ -32,7 +32,7 @@ describe('interaction test for NewPerson page', () => {
         },
       }
     );
-    cy.get('#id').type(testNewPersonData.id);
+    cy.get('#id', {timeout: 20000}).type(testNewPersonData.id);
     cy.get('#firstNameAndLastNameInput').type(
       testNewPersonData?.firstNameAndLastName
     );

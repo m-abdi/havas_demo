@@ -193,16 +193,16 @@ export default function newPerson({
   const existingPerson = useMemo(
     () =>
       JSON.parse(
-        router.query?.person ? (router?.query?.person as string) : '{}'
+        router?.query?.person ? (router?.query?.person as string) : '{}'
       ),
-    [router.isReady]
+    [router?.isReady]
   );
   // check for editing mode
   useEffect(() => {
     if (router?.isReady) {
       setEditRoleCheck(true);
     }
-  }, [router.isReady]);
+  }, [router?.isReady]);
 
   //
   if (sending) {
@@ -213,7 +213,6 @@ export default function newPerson({
   }
   return (
     <Container maxWidth='md' sx={{ position: 'relative', p: '16px' }}>
-      {editRoleCheck && roles && places && (
         <>
           <Form1 id='123' onSubmit={handleSubmit(collectInputsData)}>
             {/* عنوان و مکان و نقش */}
@@ -507,7 +506,6 @@ export default function newPerson({
             <DialogActions sx={{ px: 5 }}></DialogActions>
           </Dialog>
         </>
-      )}
     </Container>
   );
 }

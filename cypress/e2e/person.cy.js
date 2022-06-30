@@ -21,7 +21,7 @@ const testEditedPersonData = {
   city: 'بندرعباس',
   postalCode: '۴۵۶۱۲۳',
   address: 'اراک خیابان نجت',
-  telephone: '۷۸۹۴۵۶۱۴۷',
+  telephone: '987989165',
   mobileNumber: '۰۹۳۷۱۲۴۶۶۸۵',
   website: 'mehdiabdi.info',
 };
@@ -186,10 +186,10 @@ describe('persons table', () => {
       );
       cy.task('checkPerson', { ...testEditedPersonData });
     });
-    after("delete edited person", ()=>{
-         cy.task('deletePersonAndPlace', {
-           personId: testEditedPersonData.id,
-           placeName: "testNewPersonData2.placeName",
-         });
-    })
+    // after("delete edited person", ()=>{
+    //      cy.task('deletePersonAndPlace', {
+    //        personId: testEditedPersonData.id,
+    //        placeName: "testNewPersonData2.placeName",
+    //      });
+    // })
 });

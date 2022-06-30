@@ -16,7 +16,7 @@ export const testNewPlaceData = {
   description: 'توضیحات مکان',
   edit: '',
 };
-describe('interaction test for NewPerson page', () => {
+describe('interaction test for NewPlace page', () => {
   it('calls the submite handler function with correct values', () => {
     const onSubmitSpy = cy.spy().as('onSubmitSpy');
     cy.mount(

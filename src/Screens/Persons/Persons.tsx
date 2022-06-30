@@ -419,7 +419,7 @@ export default memo(function Persons({
           // The cell can use the individual row's getToggleRowSelectedProps method
           // to the render a checkbox
           Cell: ({ row }: { row: any }) => (
-            <>{parseInt(row.id) + 1 + offset * pageNumber}</>
+            <>{row.index + 1 + offset * pageNumber}</>
           ),
         },
         {
