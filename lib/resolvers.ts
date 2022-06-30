@@ -1,7 +1,9 @@
-import { Person, Place, Resolvers, Role } from './resolvers-types';
+import { Person, PersonFilter, Place, Resolvers, Role } from './resolvers-types';
 import {
   canCreatePerson,
+  canCreatePlace,
   canCreateRole,
+  canDeletePersons,
   canDeleteRols,
   canViewPerson,
   canViewPlaces,
@@ -9,27 +11,76 @@ import {
 } from './permissions';
 
 import { GraphQLYogaError } from '@graphql-yoga/node';
+import { RelatedFieldFilter } from './resolvers-types';
 import { getSession } from 'next-auth/react';
 import prisma from '../prisma/client';
 
 const resolvers: Resolvers = {
   Query: {
-    async persons(_parent, _args, _context, _info): Promise<Person[]> {
+    async persons(
+      _parent,
+      {
+        limit,
+        offset,
+        filters,
+      }: {
+        limit: number;
+        offset: number;
+        filters: PersonFilter;
+      },
+      _context,
+      _info
+    ): Promise<Person[]> {
       // check authentication and permission
       const { req } = _context;
       const session = await getSession({ req });
       if (!session || !(await canViewPerson(session))) {
         throw new GraphQLYogaError('Unauthorized');
       }
+
+      const parsedFilters = Object.fromEntries(
+        Object.entries(filters).filter((e) => {
+          if ((e[0] === 'place' || e[0] === 'role') && 'name' in e[1]) {
+            return e[1]?.name?.contains;
+          } else if ('contains' in e[1]) {
+            return e[1]?.contains;
+          }
+        })
+      );
+
       const personsDB = await prisma.person.findMany({
+        take: limit,
+        skip: offset,
         include: {
           role: true,
           place: true,
         },
+        where: parsedFilters,
       });
-      console.log(personsDB);
 
       return personsDB as any;
+    },
+    async personsCount(
+      _,
+      { filters }: { filters: PersonFilter },
+      _context
+    ): Promise<number> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canViewPerson(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+      const parsedFilters = Object.fromEntries(
+        Object.entries(filters).filter((e) => {
+          if ((e[0] === 'place' || e[0] === 'role') && 'name' in e[1]) {
+            return e[1].name.contains;
+          } else if ('contains' in e[1]) {
+            return e[1].contains;
+          }
+        })
+      );
+      return (await prisma.person.count({ where: parsedFilters })) as number;
     },
     async places(_parent, _args, _context, _info): Promise<any> {
       // check authentication and permission
@@ -39,7 +90,7 @@ const resolvers: Resolvers = {
         throw new GraphQLYogaError('Unauthorized');
       }
       const placesDB = await prisma.place.findMany({
-        include: { subset: true },
+        include: { subset: true, superPlace: true },
       });
 
       return placesDB;
@@ -159,7 +210,6 @@ const resolvers: Resolvers = {
           data: {
             id: _args.id as string,
             firstNameAndLastName: _args.firstNameAndLastName,
-            password: _args.telephone as string,
             place: { connect: { id: _args.placeId } },
             role: { connect: { id: _args.roleId } },
             address: _args.address,
@@ -191,6 +241,78 @@ const resolvers: Resolvers = {
       });
       return createdPerson as any;
     },
+    async createPlace(
+      _,
+      {
+        name,
+        superPlaceId,
+        typeOfWork,
+        state,
+        city,
+        postalCode,
+        address,
+        telephone,
+        mobileNumber,
+        website,
+        nationalId,
+        economicalCode,
+        registeredNumber,
+        description,
+        edit,
+      }: any,
+      _context
+    ): Promise<Place> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canCreatePlace(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+
+      if (edit) {
+        const editedPlace = await prisma.place.update({
+          where: {
+            id: edit,
+          },
+          data: {
+            name,
+            typeOfWork,
+            superPlace: { connect: { id: superPlaceId } },
+            state,
+            city,
+            postalCode,
+            address,
+            telephone,
+            mobileNumber,
+            website,
+            nationalId,
+            economicalCode,
+            registeredNumber,
+            description,
+          },
+        });
+        return editedPlace;
+      }
+      const createdPlace = await prisma.place.create({
+        data: {
+          name,
+          typeOfWork,
+          superPlace: { connect: { id: superPlaceId } },
+          state,
+          city,
+          postalCode,
+          address,
+          telephone,
+          mobileNumber,
+          website,
+          nationalId,
+          economicalCode,
+          registeredNumber,
+          description,
+        },
+      });
+      return createdPlace;
+    },
     async deleteRoles(_parent, _args, _context, _info): Promise<any> {
       // check authentication and permission
       const { req } = _context;
@@ -212,9 +334,27 @@ const resolvers: Resolvers = {
         deletePersons,
         deleteRoles,
       ]);
-      console.log(transaction);
 
       return _args.roleIds;
+    },
+    async deletePersons(
+      _: any,
+      { personIds }: { personIds: string[] },
+      _context: any
+    ): Promise<number> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canDeletePersons(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+
+      const deletedPersons = await prisma.person.deleteMany({
+        where: { id: { in: personIds } },
+      });
+      console.log(deletedPersons);
+
+      return deletedPersons?.count;
     },
   },
   Person: {

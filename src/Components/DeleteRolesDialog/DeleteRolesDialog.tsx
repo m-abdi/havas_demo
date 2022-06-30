@@ -20,7 +20,7 @@ export default function DeleteDialog({
   text?: string;
   open: boolean;
   closeDialog: () => void;
-  confirmDelete: () => Promise<boolean | undefined>;
+  confirmDelete: () => Promise<void>;
 }) {
   return (
     <Dialog open={open} onClose={closeDialog}>

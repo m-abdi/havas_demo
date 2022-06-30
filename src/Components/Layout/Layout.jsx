@@ -211,6 +211,7 @@ function Layout({ children, pageName }) {
         },
         {
           text: 'مشاهده اشخاص',
+          id: 'persons',
           icon: <SearchRoundedIcon />,
           path: '/users/persons',
           roleName: 'viewPerson',

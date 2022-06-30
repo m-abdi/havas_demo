@@ -9,6 +9,7 @@ module.exports = {
     '@storybook/addon-interactions',
     '@storybook/addon-a11y',
     'storybook-css-modules',
+    'storybook-addon-next-router',
   ],
   staticDirs: ['../public'],
   framework: '@storybook/react',

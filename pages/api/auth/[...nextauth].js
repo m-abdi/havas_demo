@@ -4,7 +4,7 @@ import 'dotenv/config';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import NextAuth from 'next-auth';
-import prisma from "../../../prisma/client"
+import prisma from '../../../prisma/client';
 
 export default NextAuth({
   pages: {
@@ -15,11 +15,11 @@ export default NextAuth({
       try {
         const userData = await prisma.person.findFirst({
           where: {
-            id: session.user.id,
+            id: session.user.email,
           },
           include: {
-            role: true
-          }
+            role: true,
+          },
         });
         session.user = { ...session.user, ...userData, password: undefined };
         return session;
@@ -36,13 +36,13 @@ export default NextAuth({
       name: 'Credentials',
       async authorize(credentials, req) {
         try {
-          console.log(credentials.email);
           const potentialUser = await prisma.person.findFirst({
             where: { id: credentials.email, password: credentials.password },
           });
           if (potentialUser) {
             await prisma.$disconnect();
-            return potentialUser;
+            console.log(potentialUser);
+            return { name: potentialUser.firstNameAndLastName, email: potentialUser.id }
           }
           await prisma.$disconnect();
           return null;

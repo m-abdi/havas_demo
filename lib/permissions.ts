@@ -47,6 +47,15 @@ export async function canCreatePerson(session: Session) {
   });
   return user?.role.createPerson;
 }
+export async function canCreatePlace(session: Session) {
+  const user = await prisma.person.findFirst({
+    where: {
+      id: session.user.id,
+    },
+    include: { role: true },
+  });
+  return user?.role.createPlace;
+}
 export async function canDeleteRols(session: Session) {
   const user = await prisma.person.findFirst({
     where: {
@@ -55,4 +64,13 @@ export async function canDeleteRols(session: Session) {
     include: { role: true },
   });
   return user?.role.deleteRole;
+}
+export async function canDeletePersons(session: Session) {
+  const user = await prisma.person.findFirst({
+    where: {
+      id: session.user.id,
+    },
+    include: { role: true },
+  });
+  return user?.role.deletePerson;
 }

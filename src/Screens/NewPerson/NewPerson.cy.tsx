@@ -14,15 +14,23 @@ export const testNewPersonData = {
 describe('interaction test for NewPerson page', () => {
   it('calls the submite handler function with correct values', () => {
     const onSubmitSpy = cy.stub().as('onSubmitSpy');
+    const onNewPlaceSpy = cy.spy().as('onNewPlaceSpy');
     cy.mount(
       <NewPerson
         loading={false}
         sending={false}
         roles={Main.args?.roles as any}
         places={Main.args?.places as any}
+        allPlaces={Main.args?.allPlaces as any}
         createNewPersonHandler={onSubmitSpy}
+        createNewPlaceHandler={onNewPlaceSpy}
       />,
-      { props: { createNewPeronHandler: onSubmitSpy } }
+      {
+        props: {
+          createNewPeronHandler: onSubmitSpy,
+          createNewPlaceHandler: onNewPlaceSpy,
+        },
+      }
     );
     cy.get('#id').type(testNewPersonData.id);
     cy.get('#firstNameAndLastNameInput').type(

@@ -22,7 +22,7 @@ const typeDefs = /* GraphQL */ `
     name: String!
     superPlace: Place
     superPlaceId: ID
-    subset: [Place!]
+    subset: [Place]
     representative: Person
     typeOfWork: String
     state: String
@@ -139,9 +139,28 @@ const typeDefs = /* GraphQL */ `
     deleteRole: Boolean
     createdAt: String
   }
-
+  input RelatedFieldFilter {
+    name: ContainsSearchType!
+  }
+  input ContainsSearchType {
+    contains: String!
+  }
+  input PersonFilter {
+    id: ContainsSearchType!
+    firstNameAndLastName: ContainsSearchType!
+    place: RelatedFieldFilter!
+    state: ContainsSearchType!
+    city: ContainsSearchType!
+    postalCode: ContainsSearchType!
+    address: ContainsSearchType!
+    telephone: ContainsSearchType!
+    mobileNumber: ContainsSearchType!
+    website: ContainsSearchType!
+    role: RelatedFieldFilter!
+  }
   type Query {
-    persons: [Person!]
+    persons(limit: Int!, offset: Int!, filters: PersonFilter!): [Person!]
+    personsCount(filters: PersonFilter!): Int
     places: [Place!]
     role(roleId: ID!): Role
     roles(limit: Int!, offset: Int!): [Role!]
@@ -164,8 +183,26 @@ const typeDefs = /* GraphQL */ `
       website: String
       edit: String
     ): Person!
-    
+
     deleteRoles(roleIds: [String!]!): [String!]!
+    deletePersons(personIds: [String!]!): Int!
+    createPlace(
+      name: String!
+      superPlaceId: String
+      typeOfWork: String
+      state: String
+      city: String
+      postalCode: String
+      address: String
+      telephone: String
+      mobileNumber: String
+      website: String
+      nationalId: String
+      economicalCode: String
+      registeredNumber: String
+      description: String
+      edit: String
+    ): Place!
   }
 `;
 

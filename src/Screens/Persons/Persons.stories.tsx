@@ -15,15 +15,19 @@ export default {
   ],
 } as ComponentMeta<typeof Persons>;
 
-const Template: ComponentStory<typeof Persons> = (args) => <Persons {...args} />;
+const Template: ComponentStory<typeof Persons> = (args) => (
+  <Persons {...args} />
+);
+let itemsPerPage = 10;
 export const Main = Template.bind({});
 Main.args = {
+  itemsPerPage,
   data: [
     {
       id: '0520649875',
       firstNameAndLastName: 'مهدی عبدی',
-      place: { name: 'دفتر مدیریت' },
-      role: { name: 'مدیریت' },
+      place: { id: '12123123', name: 'دفتر مدیریت' },
+      role: { id: '1212323423123', name: 'مدیریت' },
       state: 'مرکزی',
       city: 'اراک',
       postalCode: '۹۸۹۹۸۷',
@@ -35,8 +39,8 @@ Main.args = {
     {
       id: '052064۵۶۵۱75',
       firstNameAndLastName: 'حسین آرمان پور',
-      place: { name: 'دفتر مدیریت' },
-      role: { name: 'مدیریت' },
+      place: { id: '79085', name: 'دفتر مدیریت' },
+      role: { id: '12125i3123', name: 'مدیریت' },
       state: 'هرمزگان',
       city: 'بندرعباس',
       postalCode: '78989',
@@ -48,8 +52,112 @@ Main.args = {
     {
       id: '0522449875',
       firstNameAndLastName: 'علی عبدی',
-      place: { name: 'دفتر مدیریت' },
-      role: { name: 'مدیریت' },
+      place: { id: '7897890', name: 'دفتر مدیریت' },
+      role: { id: '789', name: 'مدیریت' },
+      state: 'مرکزی',
+      city: 'اراک',
+      postalCode: '۹۸۹۹۸۷',
+      address: 'اراک خیابان ملک',
+      telephone: '984965665',
+      mobileNumber: '09371246685',
+      website: 'mehdiabdi.info',
+    },
+    {
+      id: '0522449875',
+      firstNameAndLastName: 'علی عبدی',
+      place: { id: '7897890', name: 'دفتر مدیریت' },
+      role: { id: '789', name: 'مدیریت' },
+      state: 'مرکزی',
+      city: 'اراک',
+      postalCode: '۹۸۹۹۸۷',
+      address: 'اراک خیابان ملک',
+      telephone: '984965665',
+      mobileNumber: '09371246685',
+      website: 'mehdiabdi.info',
+    },
+    {
+      id: '0522449875',
+      firstNameAndLastName: 'علی عبدی',
+      place: { id: '7897890', name: 'دفتر مدیریت' },
+      role: { id: '789', name: 'مدیریت' },
+      state: 'مرکزی',
+      city: 'اراک',
+      postalCode: '۹۸۹۹۸۷',
+      address: 'اراک خیابان ملک',
+      telephone: '984965665',
+      mobileNumber: '09371246685',
+      website: 'mehdiabdi.info',
+    },
+    {
+      id: '0522449875',
+      firstNameAndLastName: 'علی عبدی',
+      place: { id: '7897890', name: 'دفتر مدیریت' },
+      role: { id: '789', name: 'مدیریت' },
+      state: 'مرکزی',
+      city: 'اراک',
+      postalCode: '۹۸۹۹۸۷',
+      address: 'اراک خیابان ملک',
+      telephone: '984965665',
+      mobileNumber: '09371246685',
+      website: 'mehdiabdi.info',
+    },
+    {
+      id: '0522449875',
+      firstNameAndLastName: 'علی عبدی',
+      place: { id: '7897890', name: 'دفتر مدیریت' },
+      role: { id: '789', name: 'مدیریت' },
+      state: 'مرکزی',
+      city: 'اراک',
+      postalCode: '۹۸۹۹۸۷',
+      address: 'اراک خیابان ملک',
+      telephone: '984965665',
+      mobileNumber: '09371246685',
+      website: 'mehdiabdi.info',
+    },
+    {
+      id: '0522449875',
+      firstNameAndLastName: 'علی عبدی',
+      place: { id: '7897890', name: 'دفتر مدیریت' },
+      role: { id: '789', name: 'مدیریت' },
+      state: 'مرکزی',
+      city: 'اراک',
+      postalCode: '۹۸۹۹۸۷',
+      address: 'اراک خیابان ملک',
+      telephone: '984965665',
+      mobileNumber: '09371246685',
+      website: 'mehdiabdi.info',
+    },
+    {
+      id: '0522449875',
+      firstNameAndLastName: 'علی عبدی',
+      place: { id: '7897890', name: 'دفتر مدیریت' },
+      role: { id: '789', name: 'مدیریت' },
+      state: 'مرکزی',
+      city: 'اراک',
+      postalCode: '۹۸۹۹۸۷',
+      address: 'اراک خیابان ملک',
+      telephone: '984965665',
+      mobileNumber: '09371246685',
+      website: 'mehdiabdi.info',
+    },
+    {
+      id: '0522449875',
+      firstNameAndLastName: 'علی عبدی',
+      place: { id: '7897890', name: 'دفتر مدیریت' },
+      role: { id: '789', name: 'مدیریت' },
+      state: 'مرکزی',
+      city: 'اراک',
+      postalCode: '۹۸۹۹۸۷',
+      address: 'اراک خیابان ملک',
+      telephone: '984965665',
+      mobileNumber: '09371246685',
+      website: 'mehdiabdi.info',
+    },
+    {
+      id: '0522449875',
+      firstNameAndLastName: 'علی عبدی',
+      place: { id: '7897890', name: 'دفتر مدیریت' },
+      role: { id: '789', name: 'مدیریت' },
       state: 'مرکزی',
       city: 'اراک',
       postalCode: '۹۸۹۹۸۷',
@@ -59,9 +167,18 @@ Main.args = {
       website: 'mehdiabdi.info',
     },
   ],
+  setItemsPerPage: (i) => {
+    itemsPerPage = i;
+  },
+  pageNumber: 0,
+  fetchMoreRows: (e, p)=>{}
 };
 
-
+export const Loading = Template.bind({});
+Loading.args = {
+  ...Main.args,
+  loading: true,
+};
 
 //  const columns = useMemo(
 //    () => [
@@ -113,7 +230,6 @@ Main.args = {
 //    ],
 //    []
 //  );
-
 
 // <th
 //                 {...column.getHeaderProps(column.getSortByToggleProps())}

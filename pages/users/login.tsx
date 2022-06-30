@@ -12,18 +12,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import type { Session } from 'next-auth';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { toEnglishDigit } from '../../src/Logic/toEnglishDigit';
 import { useRouter } from 'next/router';
 
-function toEnglishDigit(oldString: string) {
-  const find = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
-  const replace = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-  let tempString = oldString;
-  for (let i = 0; i < find.length; i++) {
-    const regex = new RegExp(find[i], 'g');
-    tempString = tempString.replace(regex, replace[i]);
-  }
-  return tempString;
-}
 export default function SignIn() {
   // states
   const [id, setId] = useState('');

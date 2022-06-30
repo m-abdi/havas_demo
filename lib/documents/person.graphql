@@ -1,5 +1,5 @@
-query allPersons {
-  persons {
+query allPersons($limit: Int!, $offset: Int!, $filters: PersonFilter!) {
+  persons(limit: $limit, offset: $offset, filters: $filters) {
     id
     firstNameAndLastName
     role {
@@ -7,7 +7,7 @@ query allPersons {
       name
     }
     place {
-      id 
+      id
       name
     }
     state
@@ -18,6 +18,7 @@ query allPersons {
     mobileNumber
     website
   }
+  count: personsCount(filters: $filters)
 }
 
 mutation createNewPerson(
@@ -50,4 +51,8 @@ mutation createNewPerson(
   ) {
     firstNameAndLastName
   }
+}
+
+mutation deletePersons($personIds: [String!]!) {
+  deletePersons(personIds: $personIds)
 }

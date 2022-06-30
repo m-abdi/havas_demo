@@ -95,6 +95,14 @@ query allRolesAndPlaces {
   }
   places {
     id
-    label: name
+    name
+    superPlace {
+      id
+      name
+    }
+    subset {
+      id
+      name
+    }
   }
 }

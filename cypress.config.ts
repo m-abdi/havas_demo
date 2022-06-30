@@ -4,13 +4,24 @@ export default defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
       on('task', {
-        deletePerson: (id: string) => {
-          return prisma.person
-            .delete({ where: { id } })
-            .then((u) => null)
+        deletePersonAndPlace: ({ personId, placeName }) => {
+          const person = prisma.person
+            .delete({
+              where: { id: personId },
+            })
+            .then((p) => p)
             .catch((e) => null);
+          const place = prisma.place
+            .delete({
+              where: { name: placeName },
+            })
+            .then((p) => p)
+            .catch((e) => null);
+          return null
         },
         checkPerson: (info: any) => {
+          console.log('----', info);
+          
           return prisma.person
             .findFirst({
               where: {

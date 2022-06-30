@@ -20,3 +20,46 @@ const Template: ComponentStory<typeof NewPlace> = (args) => (
 );
 export const Main = Template.bind({});
 
+Main.args = {
+  places: [
+    {
+      id: 'e0baa2f2-054b-4b28-a9cf-37f884da041b',
+      name: 'بیمارستان',
+      superPlace: null,
+      subset: [
+        {
+          id: 'e78e6f2b-e039-4c5a-a5ed-c5b00c4861a4',
+          name: 'انبار',
+          subset: [],
+        },
+        {
+          id: '0414cf4e-7cfa-4e79-ad10-bf1b62705a49',
+          name: 'اداری',
+          subset: [],
+        },
+      ],
+    },
+    {
+      id: 'e78e6f2b-e039-4c5a-a5ed-c5b00c4861a4',
+      name: 'انبار',
+      superPlace: {
+        id: 'e0baa2f2-054b-4b28-a9cf-37f884da041b',
+        name: 'بیمارستان',
+      },
+      subset: [],
+    },
+    {
+      id: '0414cf4e-7cfa-4e79-ad10-bf1b62705a49',
+      name: 'اداری',
+      superPlace: {
+        id: 'e0baa2f2-054b-4b28-a9cf-37f884da041b',
+        name: 'بیمارستان',
+      },
+      subset: [],
+    },
+  ],
+  persons: [
+    { label: 'مهدی عبدی', id: '1', role: { name: 'مدیریت' } },
+    { label: 'سعید عبدی', id: '2', role: { name: 'انباردار' } },
+  ],
+};

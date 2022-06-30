@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL_ELEPHANTSQL")
+  url      = env("DATABASE_URL")
 }
 
 // datasource db {
@@ -38,13 +38,12 @@ model Person {
 
 model Place {
   id               String    @id @default(uuid())
-  name             String    @db.VarChar(255)
+  name             String    @db.VarChar(255) @unique
   superPlace       Place?    @relation("SuperPlaceSubset", fields: [superPlaceId], references: [id])
   superPlaceId     String?
   subset           Place[]   @relation("SuperPlaceSubset")
   representative   Person?
   typeOfWork       String?
-  category       String?
   state            String?
   city             String?
   postalCode       String?

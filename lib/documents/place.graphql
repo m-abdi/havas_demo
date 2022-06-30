@@ -1,5 +1,53 @@
 query allPlaces {
   places {
+    id
     name
+    superPlace {
+      id
+      name
+    }
+    subset {
+      id
+      name
+    }
+  }
+}
+
+mutation createPlace(
+  $name: String!
+  $superPlaceId: String
+  $typeOfWork: String
+  $state: String
+  $city: String
+  $postalCode: String
+  $address: String
+  $telephone: String
+  $mobileNumber: String
+  $website: String
+  $nationalId: String
+  $economicalCode: String
+  $registeredNumber: String
+  $description: String
+  $edit: String
+) {
+  createPlace(
+    name: $name
+    superPlaceId: $superPlaceId
+    typeOfWork: $typeOfWork
+    state: $state
+    city: $city
+    postalCode: $postalCode
+    address: $address
+    telephone: $telephone
+    mobileNumber: $mobileNumber
+    website: $website
+    nationalId: $nationalId
+    economicalCode: $economicalCode
+    registeredNumber: $registeredNumber
+    description: $description
+    edit: $edit
+  ) {
+    id
+    label: name
   }
 }

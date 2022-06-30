@@ -16,12 +16,28 @@ export default function newPlace() {
       <Head>
         <title>{`${pageName}`} | حواس</title>
       </Head>
-      <NewPlace
+      {/* <NewPlace
         sending={false}
-        submitHandler={async () => {
-          return;
+        createNewPlaceHandler={async (
+          name: string,
+          superPlaceId: string,
+          typeOfWork: string,
+          state: string,
+          city: string,
+          postalCode: string,
+          address: string,
+          telephone: string,
+          mobileNumber: string,
+          website: string,
+          nationalId: string,
+          economicalCode: string,
+          registeredNumber: string,
+          description: string,
+          edit: string
+        ) => {
+          return false;
         }}
-      />
+      /> */}
       <Snackbar />
     </Layout>
   );
