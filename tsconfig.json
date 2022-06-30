@@ -24,7 +24,6 @@
     "next-env.d.ts",
     "graphql.d.ts",
     "types/**/*.ts",
-    "**/*.ts",
-    "**/*.tsx"
-, "src/Screens/Persons/Persons.tsx"  ]
+
+ "src/Screens/Persons/Persons.tsx"  ]
 }
