@@ -90,7 +90,9 @@ export default memo(function RolesTable({
     setRowOptionsAnchorElement(null);
   };
 const theme = useTheme()
-  return loading ? <Loader center /> : rows.length > 0 ? (
+  return loading ? (
+    <Loader center />
+  ) : rows.length > 0 ? (
     <Box sx={{ maxInlineSize: '100%' }}>
       <Box>
         <TableContainer>
@@ -103,7 +105,6 @@ const theme = useTheme()
               border: '1px solid grey',
               borderCollapse: 'collapse',
               backgroundColor: 'white',
-         
             }}
           >
             {/* <caption>
@@ -387,7 +388,7 @@ const theme = useTheme()
                     )}
                   </TableCell>
                   <TableCell sx={{ textAlign: 'center' }}>
-                    {row.createPlace ? (
+                    {row.createPlace && row.editPlace ? (
                       <DoneOutlineRoundedIcon sx={{ color: 'success.main' }} />
                     ) : (
                       <CloseRoundedIcon sx={{ color: 'error.main' }} />
@@ -408,7 +409,7 @@ const theme = useTheme()
                     )}
                   </TableCell>
                   <TableCell sx={{ textAlign: 'center' }}>
-                    {row.createPerson ? (
+                    {row.createPerson && row.editPerson ? (
                       <DoneOutlineRoundedIcon sx={{ color: 'success.main' }} />
                     ) : (
                       <CloseRoundedIcon sx={{ color: 'error.main' }} />
@@ -429,7 +430,7 @@ const theme = useTheme()
                     )}
                   </TableCell>
                   <TableCell sx={{ textAlign: 'center' }}>
-                    {row.createEquipment ? (
+                    {row.createEquipment && row.editEquipment ? (
                       <DoneOutlineRoundedIcon sx={{ color: 'success.main' }} />
                     ) : (
                       <CloseRoundedIcon sx={{ color: 'error.main' }} />
@@ -450,7 +451,7 @@ const theme = useTheme()
                     )}
                   </TableCell>
                   <TableCell sx={{ textAlign: 'center' }}>
-                    {row.createTag ? (
+                    {row.createTag && row.editTag ? (
                       <DoneOutlineRoundedIcon sx={{ color: 'success.main' }} />
                     ) : (
                       <CloseRoundedIcon sx={{ color: 'error.main' }} />
@@ -471,7 +472,7 @@ const theme = useTheme()
                     )}
                   </TableCell>
                   <TableCell sx={{ textAlign: 'center' }}>
-                    {row.createLicense ? (
+                    {row.createLicense && row.editLicense ? (
                       <DoneOutlineRoundedIcon sx={{ color: 'success.main' }} />
                     ) : (
                       <CloseRoundedIcon sx={{ color: 'error.main' }} />
@@ -492,7 +493,7 @@ const theme = useTheme()
                     )}
                   </TableCell>
                   <TableCell sx={{ textAlign: 'center' }}>
-                    {row.createRole ? (
+                    {row.createRole && row.editRole ? (
                       <DoneOutlineRoundedIcon sx={{ color: 'success.main' }} />
                     ) : (
                       <CloseRoundedIcon sx={{ color: 'error.main' }} />
@@ -560,7 +561,6 @@ const theme = useTheme()
           ) : null}
         </Menu>
       )}
-      
     </Box>
   ) : null;
 });

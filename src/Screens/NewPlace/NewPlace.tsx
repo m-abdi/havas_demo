@@ -30,6 +30,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import HomeIcon from '@mui/icons-material/Home';
+import Loader from 'src/Components/Loader';
 import RadioButtonCheckedRoundedIcon from '@mui/icons-material/RadioButtonCheckedRounded';
 import RadioButtonUncheckedRoundedIcon from '@mui/icons-material/RadioButtonUncheckedRounded';
 import TreeItem from '@mui/lab/TreeItem';
@@ -85,16 +86,18 @@ const Label1 = styled('label', { name: 'Label1' })(({ theme }) => ({
 }));
 
 export default function NewPlace({
+  loading = false,
   sending,
   places = [],
   persons = [],
+  existingPlace = {},
   readOnlyRepresentative = '',
   createNewPlaceHandler,
   createNewCategoryHandler,
   placeCreationHandler,
   deletePlacesHandler,
-  modalMode,
 }: {
+  loading: boolean;
   sending?: boolean;
   places: {
     id: string;
@@ -106,11 +109,12 @@ export default function NewPlace({
       | [];
   }[];
   persons: any[];
-  modalMode?: boolean;
+  existingPlace: any;
   readOnlyRepresentative?: string;
   createNewPlaceHandler: (
     name: string,
     superPlaceId: string,
+    reperesentativeId: string,
     typeOfWork: string,
     state: string,
     city: string,
@@ -144,20 +148,21 @@ export default function NewPlace({
   );
   const [representativeError, setRepresentativeError] = useState(false);
   //
+  useEffect(() => {
+    if (existingPlace.name) {
+      setRepresentative({
+        ...existingPlace?.representative,
+        label: existingPlace?.representative?.firstNameAndLastName,
+      });
+      setCategory(existingPlace?.superPlace?.id);
+    }
+  }, [existingPlace]);
 
-  // hooks
-  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  // // if editing => extract existing user data from query param
-  // const existingPlace = useMemo(
-  //   () =>
-  //     JSON.parse(router.query?.place ? (router?.query?.place as string) : '{}'),
-  //   [router.isReady]
-  // );
 
   // handlers
   const onSubmit = async (data: any) => {
@@ -174,6 +179,7 @@ export default function NewPlace({
     const newPlaceCreationResp = await createNewPlaceHandler(
       data.name,
       category,
+      representative?.id,
       data.typeOfWork,
       data.state,
       data.city,
@@ -186,49 +192,14 @@ export default function NewPlace({
       data.economicalCode,
       data.registeredNumber,
       data.description,
-      ''
+      existingPlace?.name ? existingPlace.id : ''
     );
-    if (newPlaceCreationResp) {
+    if (newPlaceCreationResp && !existingPlace.id) {
       placeCreationHandler?.(newPlaceCreationResp as any);
     } else {
       alert('problem');
     }
   };
-
-  //
-  function Person() {
-    return (
-      <>
-        <Section>
-          <Titr>
-            <ChatIcon />
-            <Typography sx={{ paddingBottom: '5px', paddingRight: '5px' }}>
-              عمومی
-            </Typography>
-          </Titr>
-          <Row1>
-            <Input1>
-              <Label1>عنوان</Label1>
-              <TextField size='small' />
-            </Input1>
-            <Input1>
-              <Label1 sx={{ marginLeft: '0px !important' }}>مسولیت</Label1>
-
-              <TextField size='small' />
-            </Input1>
-          </Row1>
-          <Row1>
-            <Input1>
-              <Label1>مکان فعالیت</Label1>
-              <TextField size='small' />
-            </Input1>
-          </Row1>
-        </Section>
-        <Address />
-        <Call />
-      </>
-    );
-  }
 
   function Address() {
     return (
@@ -244,7 +215,9 @@ export default function NewPlace({
               id='state'
               size='small'
               inputProps={{
-                ...register('state'),
+                ...register('state', {
+                  value: existingPlace.state,
+                }),
               }}
             />
           </Input1>
@@ -254,7 +227,9 @@ export default function NewPlace({
               id='city'
               size='small'
               inputProps={{
-                ...register('city'),
+                ...register('city', {
+                  value: existingPlace.city,
+                }),
               }}
             />
           </Input1>
@@ -264,7 +239,9 @@ export default function NewPlace({
               id='postalCode'
               size='small'
               inputProps={{
-                ...register('postalCode'),
+                ...register('postalCode', {
+                  value: existingPlace.postalCode,
+                }),
               }}
             />
           </Input1>
@@ -276,7 +253,9 @@ export default function NewPlace({
               id='address'
               size='small'
               inputProps={{
-                ...register('address'),
+                ...register('address', {
+                  value: existingPlace.address,
+                }),
               }}
             />
           </Input1>
@@ -300,6 +279,7 @@ export default function NewPlace({
               size='small'
               inputProps={{
                 ...register('telephone', {
+                  value: existingPlace.telephone,
                   setValueAs: (v) => toEnglishDigit(v),
                 }),
               }}
@@ -312,6 +292,8 @@ export default function NewPlace({
               size='small'
               inputProps={{
                 ...register('mobileNumber', {
+                  value: existingPlace.mobileNumber,
+
                   setValueAs: (v) => toEnglishDigit(v),
                 }),
               }}
@@ -323,7 +305,9 @@ export default function NewPlace({
               id='website'
               size='small'
               inputProps={{
-                ...register('website'),
+                ...register('website', {
+                  value: existingPlace.website,
+                }),
               }}
             />
           </Input1>
@@ -346,7 +330,9 @@ export default function NewPlace({
               id='nationalId'
               size='small'
               inputProps={{
-                ...register('nationalId'),
+                ...register('nationalId', {
+                  value: existingPlace.nationalId,
+                }),
               }}
             />
           </Input1>
@@ -356,7 +342,9 @@ export default function NewPlace({
               id='economicalCode'
               size='small'
               inputProps={{
-                ...register('economicalCode'),
+                ...register('economicalCode', {
+                  value: existingPlace.economicalCode,
+                }),
               }}
             />
           </Input1>
@@ -366,7 +354,9 @@ export default function NewPlace({
               id='registeredNumber'
               size='small'
               inputProps={{
-                ...register('registeredNumber'),
+                ...register('registeredNumber', {
+                  value: existingPlace.registeredNumber,
+                }),
               }}
             />
           </Input1>
@@ -378,7 +368,9 @@ export default function NewPlace({
               id='description'
               size='small'
               inputProps={{
-                ...register('description'),
+                ...register('description', {
+                  value: existingPlace.description,
+                }),
               }}
             />
           </Input1>
@@ -403,7 +395,12 @@ export default function NewPlace({
               <TextField
                 size='small'
                 id='name'
-                inputProps={{ ...register('name', { required: true }) }}
+                inputProps={{
+                  ...register('name', {
+                    required: true,
+                    value: existingPlace.name,
+                  }),
+                }}
                 error={errors?.name}
                 helperText={
                   errors?.name?.type === 'required' &&
@@ -464,7 +461,9 @@ export default function NewPlace({
                 size='small'
                 id='typeOfWork'
                 inputProps={{
-                  ...register('typeOfWork'),
+                  ...register('typeOfWork', {
+                    value: existingPlace.typeOfWork,
+                  }),
                 }}
               />
             </Input1>
@@ -479,186 +478,193 @@ export default function NewPlace({
                   ...register('category'),
                 }}
               /> */}
-              <TreeView
-                aria-label='category navigator'
-                defaultCollapseIcon={<ExpandMoreIcon />}
-                defaultExpandIcon={<ChevronRightIcon />}
-                defaultExpanded={places
-                  ?.filter((p) => !p.superPlace && p.isCategory)
-                  .map((p) => p.id)}
-                sx={{
-                  height: 150,
-                  flexGrow: 1,
-                  overflowY: 'auto',
-                  overflowX: 'hidden',
-                  fontFamily: 'Vazir',
-                }}
-              >
-                {places
-                  ?.filter((p) => !p.superPlace && p.isCategory)
-                  .map((superplace) => (
-                    <Stack key={superplace.id} direction='row'>
-                      {category === superplace.id ? (
-                        <CheckCircleOutlineRoundedIcon
-                          sx={{
-                            color: 'green',
-                          }}
-                        />
-                      ) : (
-                        <RadioButtonUncheckedRoundedIcon
-                          id={superplace.id}
-                          sx={{ cursor: 'pointer' }}
-                          onClick={() => setCategory(superplace.id)}
-                        />
-                      )}
-                      <Stack direction='row' alignItems={"flex-start"}>
-                        <TreeItem
-                          nodeId={superplace.id}
-                          label={superplace.name}
-                        >
-                          {superplace.subset
-                            .filter((subPlace) => subPlace.isCategory)
-                            .map((subPlace) => (
-                              <Stack
-                                direction={'row'}
-                                spacing={1}
-                                alignItems='center'
-                                key={subPlace.id}
-                              >
-                                <TreeItem
-                                  nodeId={subPlace.id}
-                                  label={subPlace.name}
-                                  icon={
-                                    category === subPlace.id ? (
-                                      <IconButton sx={{ p: 0, mx: 0.5 }}>
-                                        <CheckCircleOutlineRoundedIcon
-                                          sx={{
-                                            color: 'green',
-                                          }}
-                                        />
-                                      </IconButton>
-                                    ) : (
-                                      <IconButton sx={{ p: 0, mx: 0.5 }}>
-                                        <RadioButtonUncheckedRoundedIcon
-                                          id={subPlace.id}
-                                          onClick={() =>
-                                            setCategory(subPlace.id)
-                                          }
-                                        />
-                                      </IconButton>
-                                    )
-                                  }
-                                />
-                                <IconButton
-                                  onClick={async () =>
-                                    await deletePlacesHandler([subPlace.id])
-                                  }
-                                >
-                                  <DeleteRoundedIcon
-                                    sx={{ color: 'error.main' }}
-                                  />
-                                </IconButton>
-                              </Stack>
-                            ))}
-
-                          {newCategory?.[superplace.id]?.status ? (
-                            <TextField
-                              size='small'
-                              variant='standard'
-                              value={newCategory[superplace.id].value}
-                              InputProps={{
-                                endAdornment: (
-                                  <InputAdornment position='start'>
-                                    <CheckTwoToneIcon
-                                      sx={{
-                                        color: 'success.main',
-                                        cursor: 'pointer',
-                                      }}
-                                      onClick={async (e) => {
-                                        e.stopPropagation();
-                                        await createNewCategoryHandler(
-                                          newCategory[superplace.id].value,
-                                          superplace.id
-                                        );
-                                      }}
-                                    />
-                                  </InputAdornment>
-                                ),
-                              }}
-                              onChange={(e) =>
-                                setNewCategory({
-                                  ...newCategory,
-                                  [superplace.id]: {
-                                    status: true,
-                                    value: e.target.value,
-                                  },
-                                })
-                              }
-                            />
-                          ) : (
-                            <IconButton
-                              onClick={() =>
-                                setNewCategory({
-                                  ...newCategory,
-                                  [superplace.id]: { status: true, value: '' },
-                                })
-                              }
-                            >
-                              <AddCircleIcon sx={{ p: 0, mx: 0.5 }} />
-                            </IconButton>
-                          )}
-                        </TreeItem>
-                        <IconButton
-                          onClick={async () =>
-                            await deletePlacesHandler([superplace.id])
-                          }
-                        >
-                          <DeleteRoundedIcon sx={{ color: 'error.main' }} />
-                        </IconButton>
-                      </Stack>
-                    </Stack>
-                  ))}
-                {newCategory.layer0.status ? (
-                  <TextField
-                    size='small'
-                    variant='standard'
-                    value={newCategory.layer0.value}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position='start'>
-                          <CheckTwoToneIcon
-                            sx={{ color: 'success.main', cursor: 'pointer' }}
-                            onClick={async (e) => {
-                              e.stopPropagation();
-                              await createNewCategoryHandler(
-                                newCategory.layer0.value,
-                                ''
-                              );
+              {loading || sending ? (
+                <Loader center={false} />
+              ) : (
+                <TreeView
+                  aria-label='category navigator'
+                  defaultCollapseIcon={<ExpandMoreIcon />}
+                  defaultExpandIcon={<ChevronRightIcon />}
+                  defaultExpanded={places
+                    ?.filter((p) => !p.superPlace && p.isCategory)
+                    .map((p) => p.id)}
+                  sx={{
+                    height: 150,
+                    flexGrow: 1,
+                    overflowY: 'auto',
+                    overflowX: 'hidden',
+                    fontFamily: 'Vazir',
+                  }}
+                >
+                  {places
+                    ?.filter((p) => !p.superPlace && p.isCategory)
+                    .map((superplace) => (
+                      <Stack key={superplace.id} direction='row'>
+                        {category === superplace.id? (
+                          <CheckCircleOutlineRoundedIcon
+                            sx={{
+                              color: 'green',
                             }}
                           />
-                        </InputAdornment>
-                      ),
-                    }}
-                    onChange={(e) =>
-                      setNewCategory({
-                        ...newCategory,
-                        layer0: { status: true, value: e.target.value },
-                      })
-                    }
-                  />
-                ) : (
-                  <IconButton
-                    onClick={() =>
-                      setNewCategory({
-                        ...newCategory,
-                        layer0: { status: true, value: '' },
-                      })
-                    }
-                  >
-                    <AddCircleIcon sx={{ p: 0, mx: 0.5 }} />
-                  </IconButton>
-                )}
-              </TreeView>
+                        ) : (
+                          <RadioButtonUncheckedRoundedIcon
+                            id={superplace.id}
+                            sx={{ cursor: 'pointer' }}
+                            onClick={() => setCategory(superplace.id)}
+                          />
+                        )}
+                        <Stack direction='row' alignItems={'flex-start'}>
+                          <TreeItem
+                            nodeId={superplace.id}
+                            label={superplace.label}
+                          >
+                            {superplace?.subset
+                              ?.filter((subPlace) => subPlace?.isCategory)
+                              .map((subPlace) => (
+                                <Stack
+                                  direction={'row'}
+                                  spacing={1}
+                                  alignItems='center'
+                                  key={subPlace.id}
+                                >
+                                  <TreeItem
+                                    nodeId={subPlace.id}
+                                    label={subPlace.name}
+                                    icon={
+                                      category === subPlace.id  ? (
+                                        <IconButton sx={{ p: 0, mx: 0.5 }}>
+                                          <CheckCircleOutlineRoundedIcon
+                                            sx={{
+                                              color: 'green',
+                                            }}
+                                          />
+                                        </IconButton>
+                                      ) : (
+                                        <IconButton sx={{ p: 0, mx: 0.5 }}>
+                                          <RadioButtonUncheckedRoundedIcon
+                                            id={subPlace.id}
+                                            onClick={() =>
+                                              setCategory(subPlace.id)
+                                            }
+                                          />
+                                        </IconButton>
+                                      )
+                                    }
+                                  />
+                                  <IconButton
+                                    onClick={async () =>
+                                      await deletePlacesHandler([subPlace.id])
+                                    }
+                                  >
+                                    <DeleteRoundedIcon
+                                      sx={{ color: 'error.main' }}
+                                    />
+                                  </IconButton>
+                                </Stack>
+                              ))}
+
+                            {newCategory?.[superplace.id]?.status ? (
+                              <TextField
+                                size='small'
+                                variant='standard'
+                                value={newCategory[superplace.id].value}
+                                InputProps={{
+                                  endAdornment: (
+                                    <InputAdornment position='start'>
+                                      <CheckTwoToneIcon
+                                        sx={{
+                                          color: 'success.main',
+                                          cursor: 'pointer',
+                                        }}
+                                        onClick={async (e) => {
+                                          e.stopPropagation();
+                                          await createNewCategoryHandler(
+                                            newCategory[superplace.id].value,
+                                            superplace.id
+                                          );
+                                        }}
+                                      />
+                                    </InputAdornment>
+                                  ),
+                                }}
+                                onChange={(e) =>
+                                  setNewCategory({
+                                    ...newCategory,
+                                    [superplace.id]: {
+                                      status: true,
+                                      value: e.target.value,
+                                    },
+                                  })
+                                }
+                              />
+                            ) : (
+                              <IconButton
+                                onClick={() =>
+                                  setNewCategory({
+                                    ...newCategory,
+                                    [superplace.id]: {
+                                      status: true,
+                                      value: '',
+                                    },
+                                  })
+                                }
+                              >
+                                <AddCircleIcon sx={{ p: 0, mx: 0.5 }} />
+                              </IconButton>
+                            )}
+                          </TreeItem>
+                          <IconButton
+                            onClick={async () =>
+                              await deletePlacesHandler([superplace.id])
+                            }
+                          >
+                            <DeleteRoundedIcon sx={{ color: 'error.main' }} />
+                          </IconButton>
+                        </Stack>
+                      </Stack>
+                    ))}
+                  {newCategory.layer0.status ? (
+                    <TextField
+                      size='small'
+                      variant='standard'
+                      value={newCategory.layer0.value}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position='start'>
+                            <CheckTwoToneIcon
+                              sx={{ color: 'success.main', cursor: 'pointer' }}
+                              onClick={async (e) => {
+                                e.stopPropagation();
+                                await createNewCategoryHandler(
+                                  newCategory.layer0.value,
+                                  ''
+                                );
+                              }}
+                            />
+                          </InputAdornment>
+                        ),
+                      }}
+                      onChange={(e) =>
+                        setNewCategory({
+                          ...newCategory,
+                          layer0: { status: true, value: e.target.value },
+                        })
+                      }
+                    />
+                  ) : (
+                    <IconButton
+                      onClick={() =>
+                        setNewCategory({
+                          ...newCategory,
+                          layer0: { status: true, value: '' },
+                        })
+                      }
+                    >
+                      <AddCircleIcon sx={{ p: 0, mx: 0.5 }} />
+                    </IconButton>
+                  )}
+                </TreeView>
+              )}
             </Input1>
           </Row1>
         </Section>

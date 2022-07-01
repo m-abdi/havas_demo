@@ -76,6 +76,22 @@ function createApolloClient(context?: ResolverContext) {
                 );
               },
             },
+            places: {
+              ...offsetLimitPagination(),
+              keyArgs: ["filters"],
+              read(
+                existing,
+                {
+                  args,
+                }
+              ) :any {
+       
+                return (
+                  existing &&
+                  existing.slice(args?.offset, args?.offset + args?.limit)
+                );
+              },
+            },
           },
         },
       },

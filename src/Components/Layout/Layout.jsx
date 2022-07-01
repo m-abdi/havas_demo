@@ -216,12 +216,12 @@ function Layout({ children, pageName }) {
           path: '/users/persons',
           roleName: 'viewPerson',
         },
-        {
-          text: 'مکان جدید',
-          icon: <AddCircleOutlineOutlined />,
-          path: '/users/newPlace',
-          roleName: 'createPlace',
-        },
+        // {
+        //   text: 'مکان جدید',
+        //   icon: <AddCircleOutlineOutlined />,
+        //   path: '/users/newPlace',
+        //   roleName: 'createPlace',
+        // },
         {
           text: 'مشاهده اماکن',
           icon: <SearchRoundedIcon />,

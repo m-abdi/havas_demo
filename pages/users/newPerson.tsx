@@ -110,6 +110,7 @@ export default function newPerson() {
     async (
       name: string,
       superPlaceId: string,
+      representativId: string |null,
       typeOfWork: string,
       state: string,
       city: string,
@@ -132,6 +133,7 @@ export default function newPerson() {
           variables: {
             name,
             superPlaceId,
+            representativId,
             typeOfWork,
             state,
             city,
@@ -233,9 +235,7 @@ export default function newPerson() {
   }, []);
   return (
     <Layout pageName={pageName}>
-      <Head>
-        <title>{`${pageName}`} | حواس</title>
-      </Head>
+
       <NewPerson
         loading={loading}
         sending={sending}

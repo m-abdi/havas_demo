@@ -144,7 +144,7 @@ export default memo(function NewRole({
                 control={
                   <Checkbox
                     color='success'
-                    checked={createPlace}
+                    checked={createPlace && editPlace}
                     onChange={() => {
                       setCreatePlace(!createPlace);
                       setEditPlace(!editPlace);
@@ -193,7 +193,7 @@ export default memo(function NewRole({
                 control={
                   <Checkbox
                     color='success'
-                    checked={createPerson}
+                    checked={createPerson && editPerson}
                     onChange={() => {
                       setCreatePerson(!createPerson);
                       setEditPerson(!editPerson);
@@ -245,7 +245,7 @@ export default memo(function NewRole({
                 control={
                   <Checkbox
                     color='success'
-                    checked={createEquipmentAndAsset}
+                    checked={createEquipmentAndAsset && editEquipmentAndAsset}
                     onChange={() => {
                       setCreateEquipmentAndAsset(!createEquipmentAndAsset);
                       setEditEquipmentAndAsset(!editEquipmentAndAsset);
@@ -299,7 +299,7 @@ export default memo(function NewRole({
                 control={
                   <Checkbox
                     color='success'
-                    checked={createTag}
+                    checked={createTag && editTag}
                     onChange={() => {
                       setCreateTag(!createTag);
                       setEditTag(!editTag);
@@ -348,7 +348,7 @@ export default memo(function NewRole({
                 control={
                   <Checkbox
                     color='success'
-                    checked={createLicense}
+                    checked={createLicense && editLicense}
                     onChange={() => {
                       setCreateLicense(!createLicense);
                       setEditLicense(!editLicense);
@@ -397,7 +397,7 @@ export default memo(function NewRole({
                 control={
                   <Checkbox
                     color='success'
-                    checked={createRole}
+                    checked={createRole && editRole}
                     onChange={() => {
                       setCreateRole(!createRole);
                       setEditRole(!editRole);

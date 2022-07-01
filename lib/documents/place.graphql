@@ -1,22 +1,39 @@
-query allPlaces {
-  places {
+query allPlaces($limit: Int, $offset: Int, $filters: PlaceFilter) {
+  places(limit: $limit, offset: $offset, filters: $filters) {
     id
     name
     isCategory
+    typeOfWork
     superPlace {
       id
       name
     }
-    subset {
+    representative {
       id
-      name
+      firstNameAndLastName
+      role {
+        name
+      }
     }
+    state
+    city
+    postalCode
+    address
+    telephone
+    mobileNumber
+    website
+    nationalId
+    economicalCode
+    registeredNumber
+    description
   }
+  count: placesCount(filters: $filters)
 }
 
 mutation createPlace(
   $name: String!
   $superPlaceId: String
+  $representativeId: String
   $typeOfWork: String
   $state: String
   $city: String
@@ -34,6 +51,7 @@ mutation createPlace(
   createPlace(
     name: $name
     superPlaceId: $superPlaceId
+    representativeId: $representativeId
     typeOfWork: $typeOfWork
     state: $state
     city: $city

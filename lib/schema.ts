@@ -34,7 +34,7 @@ const typeDefs = /* GraphQL */ `
     mobileNumber: String
     website: String
     nationalId: String
-    economicCode: String
+    economicalCode: String
     registeredNumber: String
     description: String
     createdAt: String
@@ -143,6 +143,10 @@ const typeDefs = /* GraphQL */ `
   input RelatedFieldFilter {
     name: ContainsSearchType!
   }
+  input RelatedPersonFilter {
+    firstNameAndLastName: ContainsSearchType!
+    role: RelatedFieldFilter
+  }
   input ContainsSearchType {
     contains: String!
   }
@@ -159,10 +163,30 @@ const typeDefs = /* GraphQL */ `
     website: ContainsSearchType!
     role: RelatedFieldFilter!
   }
+  input PlaceFilter {
+    id: ContainsSearchType!
+    name: ContainsSearchType!
+    superPlace: RelatedFieldFilter!
+    representative: RelatedPersonFilter!
+    isCategory: Boolean
+    typeOfWork: ContainsSearchType!
+    state: ContainsSearchType!
+    city: ContainsSearchType!
+    postalCode: ContainsSearchType!
+    address: ContainsSearchType!
+    telephone: ContainsSearchType!
+    mobileNumber: ContainsSearchType!
+    website: ContainsSearchType!
+    nationalId: ContainsSearchType!
+    economicalCode: ContainsSearchType!
+    registeredNumber: ContainsSearchType!
+    description: ContainsSearchType!
+  }
   type Query {
-    persons(limit: Int!, offset: Int!, filters: PersonFilter!): [Person!]
-    personsCount(filters: PersonFilter!): Int
-    places: [Place!]
+    persons(limit: Int, offset: Int, filters: PersonFilter): [Person!]
+    personsCount(filters: PersonFilter): Int
+    places(limit: Int, offset: Int, filters: PlaceFilter): [Place!]
+    placesCount(filters: PlaceFilter): Int
     role(roleId: ID!): Role
     roles(limit: Int!, offset: Int!): [Role!]
     hasNextRole(limit: Int!, offset: Int!): Boolean!
@@ -184,13 +208,14 @@ const typeDefs = /* GraphQL */ `
       website: String
       edit: String
     ): Person!
-    
+
     deleteRoles(roleIds: [String!]!): [String!]!
     deletePersons(personIds: [String!]!): Int!
     deletePlaces(placeIds: [String!]!): Int!
     createPlace(
       name: String!
       superPlaceId: String
+      representativeId: String
       typeOfWork: String
       state: String
       city: String

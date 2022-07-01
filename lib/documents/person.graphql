@@ -1,4 +1,4 @@
-query allPersons($limit: Int!, $offset: Int!, $filters: PersonFilter!) {
+query allPersons($limit: Int, $offset: Int, $filters: PersonFilter) {
   persons(limit: $limit, offset: $offset, filters: $filters) {
     id
     firstNameAndLastName
@@ -55,4 +55,12 @@ mutation createNewPerson(
 
 mutation deletePersons($personIds: [String!]!) {
   deletePersons(personIds: $personIds)
+}
+
+
+query allPersonsOptions($limit: Int, $offset: Int, $filters: PersonFilter) {
+  persons(limit: $limit, offset: $offset, filters: $filters) {
+    id
+    label: firstNameAndLastName
+  }
 }

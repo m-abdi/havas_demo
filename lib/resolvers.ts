@@ -2,6 +2,7 @@ import {
   Person,
   PersonFilter,
   Place,
+  PlaceFilter,
   Resolvers,
   Role,
 } from './resolvers-types';
@@ -27,13 +28,13 @@ const resolvers: Resolvers = {
     async persons(
       _parent,
       {
-        limit,
-        offset,
+        limit = 1000000,
+        offset = 0,
         filters,
       }: {
-        limit: number;
-        offset: number;
-        filters: PersonFilter;
+        limit?: number;
+        offset?: number;
+        filters?: PersonFilter;
       },
       _context,
       _info
@@ -45,16 +46,29 @@ const resolvers: Resolvers = {
         throw new GraphQLYogaError('Unauthorized');
       }
 
-      const parsedFilters = Object.fromEntries(
-        Object.entries(filters).filter((e) => {
-          if ((e[0] === 'place' || e[0] === 'role') && 'name' in e[1]) {
-            return e[1]?.name?.contains;
-          } else if ('contains' in e[1]) {
-            return e[1]?.contains;
-          }
-        })
-      );
+      if (filters) {
+        const parsedFilters = Object.fromEntries(
+          Object.entries(filters).filter((e) => {
+            if ((e[0] === 'place' || e[0] === 'role') && 'name' in e[1]) {
+              return e[1]?.name?.contains;
+            } else if ('contains' in e[1]) {
+              return e[1]?.contains;
+            }
+          })
+        );
 
+        const personsDB = await prisma.person.findMany({
+          take: limit,
+          skip: offset,
+          include: {
+            role: true,
+            place: true,
+          },
+          where: parsedFilters,
+        });
+
+        return personsDB as any;
+      }
       const personsDB = await prisma.person.findMany({
         take: limit,
         skip: offset,
@@ -62,14 +76,13 @@ const resolvers: Resolvers = {
           role: true,
           place: true,
         },
-        where: parsedFilters,
       });
 
       return personsDB as any;
     },
     async personsCount(
       _,
-      { filters }: { filters: PersonFilter },
+      { filters }: { filters?: PersonFilter },
       _context
     ): Promise<number> {
       // check authentication and permission
@@ -78,29 +91,125 @@ const resolvers: Resolvers = {
       if (!session || !(await canViewPerson(session))) {
         throw new GraphQLYogaError('Unauthorized');
       }
-      const parsedFilters = Object.fromEntries(
-        Object.entries(filters).filter((e) => {
-          if ((e[0] === 'place' || e[0] === 'role') && 'name' in e[1]) {
-            return e[1].name.contains;
-          } else if ('contains' in e[1]) {
-            return e[1].contains;
-          }
-        })
-      );
-      return (await prisma.person.count({ where: parsedFilters })) as number;
+      if (filters) {
+        const parsedFilters = Object.fromEntries(
+          Object.entries(filters).filter((e) => {
+            if ((e[0] === 'place' || e[0] === 'role') && 'name' in e[1]) {
+              return e[1].name.contains;
+            } else if ('contains' in e[1]) {
+              return e[1].contains;
+            }
+          })
+        );
+        return (await prisma.person.count({ where: parsedFilters })) as number;
+      }
+      return (await prisma.person.count()) as number;
     },
-    async places(_parent, _args, _context, _info): Promise<any> {
+    async places(
+      _parent,
+      {
+        limit = 1000000,
+        offset = 0,
+        filters,
+      }: {
+        limit?: number;
+        offset?: number;
+        filters?: PlaceFilter;
+      },
+      _context,
+      _info
+    ): Promise<any> {
       // check authentication and permission
       const { req } = _context;
       const session = await getSession({ req });
       if (!session || !(await canViewPlaces(session))) {
         throw new GraphQLYogaError('Unauthorized');
       }
+      if (filters) {
+        const parsedFilters = Object.fromEntries(
+          Object.entries(filters).filter((e) => {
+            if (e[0] === 'isCategory') {
+              return true;
+            } else if (e[0] === 'superPlace' && 'name' in e[1]) {
+              return e[1]?.name?.contains;
+            } else if (
+              e[0] === 'representative' &&
+              'firstNameAndLastName' in e[1]
+            ) {
+              return (
+                e[1]?.firstNameAndLastName?.contains ||
+                e[1]?.role?.name?.contains
+              );
+            } else if ('contains' in e[1]) {
+              return e[1]?.contains;
+            }
+          })
+        );
+        console.log(parsedFilters);
+
+        const placesDB = await prisma.place.findMany({
+          take: limit,
+          skip: offset,
+          include: {
+            superPlace: true,
+            representative: { include: { role: true } },
+          },
+          where: parsedFilters,
+        });
+
+        return placesDB as any;
+      }
       const placesDB = await prisma.place.findMany({
-        include: { subset: true, superPlace: true },
+        take: limit,
+        skip: offset,
+        include: {
+          superPlace: true,
+          representative: { include: { role: true } },
+        },
       });
 
-      return placesDB;
+      return placesDB as any;
+    },
+    async placesCount(
+      _,
+      { filters }: { filters?: PlaceFilter },
+      _context
+    ): Promise<number> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canViewPlaces(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+      if (filters) {
+        console.log(filters);
+        
+        const parsedFilters = Object.fromEntries(
+          Object.entries(filters).filter((e) => {
+            if (e[0] === 'isCategory') {
+              return true;
+            } else if (e[0] === 'superPlace' && 'name' in e[1]) {
+              return e[1]?.name?.contains;
+            } else if (
+              e[0] === 'representative' &&
+              'firstNameAndLastName' in e[1]
+            ) {
+              return (
+                e[1]?.firstNameAndLastName?.contains ||
+                e[1]?.role?.name?.contains
+              );
+            } else if ('contains' in e[1]) {
+              return e[1]?.contains;
+            }
+          })
+        );
+        console.log(parsedFilters);
+
+        return (await prisma.place.count({
+          where: parsedFilters,
+        })) as number;
+      }
+      return (await prisma.place.count()) as number;
     },
     async role(_parent: any, _args: any, _context: any): Promise<any> {
       // check authentication and permission
@@ -250,7 +359,7 @@ const resolvers: Resolvers = {
     },
     async createCategory(
       _,
-      { name, superPlaceId }: { name: string; superPlaceId: string},
+      { name, superPlaceId }: { name: string; superPlaceId: string },
       _context
     ): Promise<any> {
       // check authentication and permission
@@ -285,6 +394,7 @@ const resolvers: Resolvers = {
       {
         name,
         superPlaceId,
+        representativeId,
         typeOfWork,
         state,
         city,
@@ -317,6 +427,7 @@ const resolvers: Resolvers = {
             name,
             typeOfWork,
             superPlace: { connect: { id: superPlaceId } },
+            representative: { connect: { id: representativeId } },
             state,
             city,
             postalCode,
@@ -337,6 +448,7 @@ const resolvers: Resolvers = {
           name,
           typeOfWork,
           superPlace: { connect: { id: superPlaceId } },
+          representative: { connect: { id: representativeId } },
           state,
           city,
           postalCode,
