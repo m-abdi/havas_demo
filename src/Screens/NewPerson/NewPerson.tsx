@@ -28,6 +28,7 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { Button } from '../../Components/Button';
 import CallIcon from '@mui/icons-material/Call';
 import ChatIcon from '@mui/icons-material/Chat';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import HomeIcon from '@mui/icons-material/Home';
 import Loader from '../../Components/Loader';
 import NewPlace from '../NewPlace';
@@ -491,8 +492,24 @@ export default function newPerson({
           open={newPlaceDialogOpen}
           onClose={() => setNewPlaceDialogOpen(false)}
         >
-          <DialogTitle sx={{ textAlign: 'center' }}>مکان جدید</DialogTitle>
-          <DialogContent sx={{ position: 'relative' }}>
+          <DialogTitle sx={{ textAlign: 'center' }}>
+            <Stack
+              direction='row'
+              alignItems='center'
+              justifyContent={'space-between'}
+            >
+              <span style={{ inlineSize: '10%' }}>
+                <IconButton onClick={() => setNewPlaceDialogOpen(false)}>
+                  <CloseRoundedIcon />
+                </IconButton>
+              </span>
+              <Typography variant='h5' component="h2" sx={{ flexGrow: 1, textAlign: 'center' }}>
+                مکان جدید
+              </Typography>
+              <span style={{ inlineSize: '10%' }}></span>
+            </Stack>
+          </DialogTitle>
+          <DialogContent sx={{ position: 'relative', p: '1px' }}>
             <NewPlace
               modalMode={true}
               places={allPlaces}
