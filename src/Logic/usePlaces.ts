@@ -166,6 +166,8 @@ export default function usePlaces(
           refetchQueries: [
             { query: AllRolesAndPlacesDocument },
             'allRolesAndPlaces',
+            { query: AllPlacesDocument },
+            'allPlaces',
           ],
         });
         if (resp.data) {
