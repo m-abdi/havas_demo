@@ -313,7 +313,7 @@ export default function newPerson({
                   <Autocomplete
                     disablePortal
                     id='placeInput'
-                    options={places.filter((p: any) => !p.isCategory)}
+                    options={places?.filter((p: any) => !p.isCategory)}
                     sx={{ flexGrow: 1 }}
                     defaultValue={
                       existingPerson?.place
