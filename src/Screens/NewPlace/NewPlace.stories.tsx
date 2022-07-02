@@ -24,9 +24,9 @@ Main.args = {
   places: [
     {
       id: 'e0baa2f2-054b-4b28-a9cf-37f884da041b',
-      name: 'بیمارستان',
+      label: 'بیمارستان',
       superPlace: null,
-      isCategory: false,
+      isCategory: true,
 
       subset: [
         {
@@ -45,7 +45,7 @@ Main.args = {
     },
     {
       id: 'e78e6f2b-e039-4c5a-a5ed-c5b00c4861a4',
-      name: 'انبار',
+      label: 'انبار',
       isCategory: false,
       superPlace: {
         id: 'e0baa2f2-054b-4b28-a9cf-37f884da041b',
@@ -55,7 +55,7 @@ Main.args = {
     },
     {
       id: '0414cf4e-7cfa-4e79-ad10-bf1b62705a49',
-      name: 'اداری',
+      label: 'اداری',
       isCategory: false,
       superPlace: {
         id: 'e0baa2f2-054b-4b28-a9cf-37f884da041b',

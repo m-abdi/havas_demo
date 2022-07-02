@@ -87,15 +87,38 @@ query allRoles {
   }
 }
 
-
 query allRolesAndPlaces {
   roles(limit: 1000000, offset: 0) {
     id
     label: name
   }
-  places {
+  places(
+    offset: 0
+    limit: 1000000
+    filters: {
+      id: { contains: "" }
+      name: { contains: "" }
+      superPlace: { name: { contains: "" } }
+      representative: {
+        firstNameAndLastName: { contains: "" }
+        role: { name: { contains: "" } }
+      }
+      typeOfWork: { contains: "" }
+      state: { contains: "" }
+      city: { contains: "" }
+      postalCode: { contains: "" }
+      address: { contains: "" }
+      telephone: { contains: "" }
+      mobileNumber: { contains: "" }
+      website: { contains: "" }
+      nationalId: { contains: "" }
+      economicalCode: { contains: "" }
+      registeredNumber: { contains: "" }
+      description: { contains: "" }
+    }
+  ) {
     id
-    name
+    label: name
     isCategory
     superPlace {
       id

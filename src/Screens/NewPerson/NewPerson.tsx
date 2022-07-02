@@ -107,7 +107,7 @@ export default function newPerson({
   sending: boolean;
   allPlaces: any[];
   roles: OptionsType[];
-  places: OptionsType[];
+  places: any;
   createNewPersonHandler: (
     id: string,
     firstNameAndLastName: string,
@@ -125,6 +125,7 @@ export default function newPerson({
   createNewPlaceHandler: (
     name: string,
     superPlaceId: string,
+    representativeId: string | null,
     typeOfWork: string,
     state: string,
     city: string,
@@ -312,12 +313,12 @@ export default function newPerson({
                   <Autocomplete
                     disablePortal
                     id='placeInput'
-                    options={places.filter((p) => !p.isCategory)}
+                    options={places.filter((p: any) => !p.isCategory)}
                     sx={{ flexGrow: 1 }}
                     defaultValue={
                       existingPerson?.place
                         ? places.find(
-                            (p) => p?.id === existingPerson?.place?.id
+                            (p: any) => p?.id === existingPerson?.place?.id
                           )
                         : null
                     }
@@ -329,10 +330,10 @@ export default function newPerson({
                     onInputChange={(event, newInput) => {
                       if (
                         places.length > 0 &&
-                        places.some((r) => r.label === newInput)
+                        places.some((r: any) => r.label === newInput)
                       ) {
                         setPlace(
-                          places.find((r) => r.label === newInput) as any
+                          places.find((r: any) => r.label === newInput) as any
                         );
                         setPlaceError(false);
                       }
@@ -503,7 +504,11 @@ export default function newPerson({
                   <CloseRoundedIcon />
                 </IconButton>
               </span>
-              <Typography variant='h5' component="h2" sx={{ flexGrow: 1, textAlign: 'center' }}>
+              <Typography
+                variant='h5'
+                component='h2'
+                sx={{ flexGrow: 1, textAlign: 'center' }}
+              >
                 مکان جدید
               </Typography>
               <span style={{ inlineSize: '10%' }}></span>
@@ -511,7 +516,7 @@ export default function newPerson({
           </DialogTitle>
           <DialogContent sx={{ position: 'relative', p: '1px' }}>
             <NewPlace
-              modalMode={true}
+              modal={true}
               places={allPlaces}
               createNewPlaceHandler={createNewPlaceHandler}
               placeCreationHandler={placeCreationHandler}
@@ -527,6 +532,8 @@ export default function newPerson({
               readOnlyRepresentative={
                 getNewPlaceFormValues?.().firstNameAndLastName
               }
+              loading={loading}
+              existingPlace={undefined}
             />
           </DialogContent>
           <DialogActions sx={{ px: 5 }}></DialogActions>

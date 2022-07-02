@@ -82,7 +82,6 @@ export default function newRole() {
       ) : (
         <NewRole existingRoleData={existingRoleData} onSubmit={onSubmit} />
       )}
-      <Snackbar />
     </Layout>
   );
 }

@@ -68,6 +68,7 @@ mutation createPlace(
   ) {
     id
     label: name
+    isCategory
   }
 }
 

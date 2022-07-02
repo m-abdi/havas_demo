@@ -15,6 +15,7 @@ import Persons from 'src/Screens/Persons';
 import Places from 'src/Screens/Places';
 import Snackbar from 'src/Components/Snackbar';
 import { SnackbarContext } from 'pages/_app';
+import usePlaces from 'src/Logic/usePlaces';
 
 const pageName = 'اماکن';
 export default function places() {
@@ -45,74 +46,13 @@ export default function places() {
     description: { contains: '' },
   });
 
-  //
-  const { setSnackbarOpen, setSnackbarMessage, setSnackbarColor } =
-    useContext(SnackbarContext);
-  // get all persons from graph
-  const { data, loading, error, fetchMore } = useQuery(AllPlacesDocument, {
-    fetchPolicy: 'cache-and-network',
-    nextFetchPolicy: 'cache-and-network',
-    variables: {
-      offset,
-      limit: itemsPerPage,
-      filters,
-    },
-  });
-  const [deletePlacesMutation, { data: deletedPersons, loading: deleting }] =
-    useMutation(DeletePlacesDocument);
-
-  // handlers
-  const deletePlaces = useCallback(
-    async (placeIds: string[]): Promise<any> => {
-      // provide a response for user interaction(sending...)
-      setSnackbarColor('info');
-      setSnackbarMessage('در حال ارسال');
-      setSnackbarOpen(true);
-      try {
-        const resp = await deletePlacesMutation({
-          variables: { placeIds: placeIds },
-          refetchQueries: [{ query: AllPlacesDocument }, 'allPlaces'],
-        });
-
-        if (resp?.data) {
-          setSnackbarColor('success');
-          setSnackbarMessage('انجام شد');
-          setSnackbarOpen(true);
-        } else if (resp?.errors) {
-          setSnackbarColor('error');
-          setSnackbarMessage('خطا');
-          setSnackbarOpen(true);
-        }
-      } catch (e) {
-        setSnackbarColor('error');
-        setSnackbarMessage('خطا');
-        setSnackbarOpen(true);
-      }
-    },
-    []
-  );
-
-  const fetchMoreRows = useCallback(
-    function (
-      event: any,
-      page: number
-      // itemsPerPage: number
-    ) {
-      try {
-        fetchMore({
-          variables: {
-            offset: itemsPerPage * page,
-            limit: itemsPerPage,
-            filters,
-          },
-        });
-      } catch {
-        console.log('');
-      }
-      setPageNumber(page);
-      setOffset(itemsPerPage * page);
-    },
-    [itemsPerPage, pageNumber]
+  const { loading, data, fetchMore, deleting, deleteHandler } = usePlaces(
+    offset,
+    pageNumber,
+    itemsPerPage,
+    filters,
+    setPageNumber,
+    setOffset
   );
 
   return (
@@ -127,11 +67,10 @@ export default function places() {
         setItemsPerPage={setItemsPerPage}
         filters={filters}
         setFilters={setFilters}
-        fetchMoreRows={fetchMoreRows}
+        fetchMoreRows={fetchMore}
         deleting={deleting}
-        deletePlacesHandler={deletePlaces}
+        deletePlacesHandler={deleteHandler}
       />
-      <Snackbar />
     </Layout>
   );
 }

@@ -1,4 +1,8 @@
-query allPersons($limit: Int, $offset: Int, $filters: PersonFilter) {
+query allPersons(
+  $limit: Int = 1000000
+  $offset: Int = 0
+  $filters: PersonFilter
+) {
   persons(limit: $limit, offset: $offset, filters: $filters) {
     id
     firstNameAndLastName
@@ -20,7 +24,19 @@ query allPersons($limit: Int, $offset: Int, $filters: PersonFilter) {
   }
   count: personsCount(filters: $filters)
 }
-
+query allPersonsOptions(
+  $limit: Int = 2000000
+  $offset: Int = 0
+  $filters: PersonFilter
+) {
+  persons(limit: $limit, offset: $offset, filters: $filters) {
+    id
+    label: firstNameAndLastName
+    role {
+      name
+    }
+  }
+}
 mutation createNewPerson(
   $id: String!
   $firstNameAndLastName: String!
@@ -55,12 +71,4 @@ mutation createNewPerson(
 
 mutation deletePersons($personIds: [String!]!) {
   deletePersons(personIds: $personIds)
-}
-
-
-query allPersonsOptions($limit: Int, $offset: Int, $filters: PersonFilter) {
-  persons(limit: $limit, offset: $offset, filters: $filters) {
-    id
-    label: firstNameAndLastName
-  }
 }

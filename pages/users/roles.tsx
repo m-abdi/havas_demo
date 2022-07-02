@@ -165,7 +165,6 @@ export default function roles() {
           </Container>
         )
       )}
-      <Snackbar />
     </Layout>
   );
 }

@@ -183,9 +183,9 @@ const typeDefs = /* GraphQL */ `
     description: ContainsSearchType!
   }
   type Query {
-    persons(limit: Int, offset: Int, filters: PersonFilter): [Person!]
+    persons(limit: Int , offset: Int, filters: PersonFilter): [Person]!
     personsCount(filters: PersonFilter): Int
-    places(limit: Int, offset: Int, filters: PlaceFilter): [Place!]
+    places(limit: Int, offset: Int, filters: PlaceFilter): [Place]!
     placesCount(filters: PlaceFilter): Int
     role(roleId: ID!): Role
     roles(limit: Int!, offset: Int!): [Role!]

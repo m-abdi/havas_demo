@@ -7,8 +7,8 @@ export const testNewPlaceData = {
   city: 'اراک',
   postalCode: '۷۸۹',
   address: 'اراک اراک',
-  telephone: '۰۹۳۷۱۲۴۶۶۸۵',
-  mobileNumber: '۰۹۳۷۱۲۴۶۶۸۵',
+  telephone: '6849898',
+  mobileNumber: '85989498',
   website: 'mehdiabdi.info',
   nationalId: '789456',
   economicalCode: '123456',
@@ -22,13 +22,15 @@ describe('interaction test for NewPlace page', () => {
     const onNewCategorySpy = cy.spy().as('onNewCategorySpy');
     cy.mount(
       <NewPlace
+        loading={false}
         sending={false}
         persons={Main.args?.persons as any}
         places={Main.args?.places as any}
         createNewPlaceHandler={onSubmitSpy}
         createNewCategoryHandler={onNewCategorySpy}
-        deletePlacesHandler={async (placeIds: string[]) => {return}}
-      />,
+        deletePlacesHandler={async (placeIds: string[]) => {
+          return;
+        } } modal={false} existingPlace={undefined}      />,
       { props: { createNewPeronHandler: onSubmitSpy } }
     );
     cy.get('#name').type(testNewPlaceData.name);
@@ -39,7 +41,7 @@ describe('interaction test for NewPlace page', () => {
       .should('eq', Main?.args?.persons?.[0]?.role?.name as string);
     cy.get('#typeOfWork').type(testNewPlaceData?.typeOfWork, { force: true });
     const placeCategoryId = Main.args?.places?.find(
-      (p) => p.subset.length === 0
+      (p) => p.isCategory
     )?.id;
     cy.get(`#${placeCategoryId}`).click();
     cy.get('#state').type(testNewPlaceData?.state);
@@ -53,7 +55,7 @@ describe('interaction test for NewPlace page', () => {
     cy.get('#economicalCode').type(testNewPlaceData.economicalCode);
     cy.get('#registeredNumber').type(testNewPlaceData.registeredNumber);
     cy.get('#description').type(testNewPlaceData.description);
-    cy.get('#submitButton').click({ force: true });
+    cy.get('#newPlaceSubmitButton').click({ force: true });
     cy.get('@onSubmitSpy').should('have.been.called');
     cy.get('@onSubmitSpy').should(
       'have.been.calledWith',

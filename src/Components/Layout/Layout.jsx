@@ -47,6 +47,7 @@ import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
 import PermIdentityRoundedIcon from '@mui/icons-material/PermIdentityRounded';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import Snackbar from '../Snackbar';
 import StyleRoundedIcon from '@mui/icons-material/StyleRounded';
 import WorkspacePremiumRoundedIcon from '@mui/icons-material/WorkspacePremiumRounded';
 import { red } from '@mui/material/colors';
@@ -532,6 +533,7 @@ function Layout({ children, pageName }) {
           <ArrowBackIosNewRoundedIcon />
         )}
       </IconButton>
+      <Snackbar />
     </Box>
   );
 }

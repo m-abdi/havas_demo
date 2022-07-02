@@ -12,6 +12,7 @@ import Layout from 'src/Components/Layout';
 import Persons from 'src/Screens/Persons';
 import Snackbar from 'src/Components/Snackbar';
 import { SnackbarContext } from 'pages/_app';
+import usePersons from 'src/Logic/usePersons';
 
 const pageName = 'اشخاص';
 export default function persons() {
@@ -34,83 +35,23 @@ export default function persons() {
   });
 
   //
-  const {
-    snackbarOpen,
-    setSnackbarOpen,
-    snackbarMessage,
-    setSnackbarMessage,
-    snackbarColor,
-    setSnackbarColor,
-  } = useContext(SnackbarContext);
+  const { setSnackbarOpen, setSnackbarMessage, setSnackbarColor } =
+    useContext(SnackbarContext);
   // get all persons from graph
-  const { data, loading, error, fetchMore } = useQuery(AllPersonsDocument, {
-    fetchPolicy: 'cache-and-network',
-    nextFetchPolicy: 'cache-and-network',
-    variables: {
-      offset,
-      limit: itemsPerPage,
-      filters,
-    },
-  });
-  const [deletePersonsMutation, { data: deletedPersons, loading: deleting }] =
-    useMutation(DeletePersonsDocument);
-
-  // handlers
-  const deletePersons = useCallback(
-    async (personIds: string[]): Promise<any> => {
-      // provide a response for user interaction(sending...)
-      setSnackbarColor('info');
-      setSnackbarMessage('در حال ارسال');
-      setSnackbarOpen(true);
-      try {
-        const resp = await deletePersonsMutation({
-          variables: { personIds },
-          refetchQueries: [{ query: AllPersonsDocument }, 'allPersons'],
-        });
-
-        if (resp?.data) {
-          setSnackbarColor('success');
-          setSnackbarMessage('انجام شد');
-          setSnackbarOpen(true);
-        } else if (resp?.errors) {
-          setSnackbarColor('error');
-          setSnackbarMessage('خطا');
-          setSnackbarOpen(true);
-        }
-      } catch (e) {
-        setSnackbarColor('error');
-        setSnackbarMessage('خطا');
-        setSnackbarOpen(true);
-      }
-      // setOffset(0);
-      // setPageNumber(0);
-      // setLoading(false);
-      // setDeleteRoleDialog(false);
-    },
-    []
-  );
-
-  const fetchMoreRows = useCallback(
-    function (
-      event: any,
-      page: number
-      // itemsPerPage: number
-    ) {
-      try {
-        fetchMore({
-          variables: {
-            offset: itemsPerPage * page,
-            limit: itemsPerPage,
-            filters,
-          },
-        });
-      } catch {
-        console.log('');
-      }
-      setPageNumber(page);
-      setOffset(itemsPerPage * page);
-    },
-    [itemsPerPage, pageNumber]
+  const {
+    data,
+    loading,
+    error,
+    fetchMore: fetchMoreRows,
+    deleting,
+    deleteHandler,
+  } = usePersons(
+    offset,
+    pageNumber,
+    itemsPerPage,
+    filters,
+    setPageNumber,
+    setOffset
   );
 
   return (
@@ -127,9 +68,8 @@ export default function persons() {
         setFilters={setFilters}
         fetchMoreRows={fetchMoreRows}
         deleting={deleting}
-        deletePersonsHandler={deletePersons}
+        deletePersonsHandler={deleteHandler}
       />
-      <Snackbar />
     </Layout>
   );
 }

@@ -1,9 +1,10 @@
+import {Main} from "../../src/Screens/NewPerson/NewPerson.stories"
 /// <reference types="cypress" />
 const testNewPersonData = {
   id: '123456789123',
   firstNameAndLastName: 'مهدی عبدی تست انباردار ۱',
   roleName: 'انباردار',
-  placeName: 'انبار',
+  placeName: 'بیمارستان',
   state: 'مرکزی',
   city: 'اراک',
   postalCode: '38196',

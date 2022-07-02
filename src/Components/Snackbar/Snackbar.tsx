@@ -1,7 +1,7 @@
 import { Alert, Snackbar as MuiSnackbar, useMediaQuery } from '@mui/material';
 import React, { useContext, useState } from 'react';
 
-import { SnackbarContext } from 'pages/_app';
+import { SnackbarContext } from '../../../pages/_app';
 
 export default function Snackbar(props: any) {
   const smallScreensMatch = useMediaQuery((theme: any) =>

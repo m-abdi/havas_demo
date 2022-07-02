@@ -30,7 +30,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import HomeIcon from '@mui/icons-material/Home';
-import Loader from 'src/Components/Loader';
+import Loader from '../../../src/Components/Loader';
 import RadioButtonCheckedRoundedIcon from '@mui/icons-material/RadioButtonCheckedRounded';
 import RadioButtonUncheckedRoundedIcon from '@mui/icons-material/RadioButtonUncheckedRounded';
 import TreeItem from '@mui/lab/TreeItem';
@@ -88,6 +88,7 @@ const Label1 = styled('label', { name: 'Label1' })(({ theme }) => ({
 export default function NewPlace({
   loading = false,
   sending,
+  modal = false,
   places = [],
   persons = [],
   existingPlace = {},
@@ -99,9 +100,10 @@ export default function NewPlace({
 }: {
   loading: boolean;
   sending?: boolean;
+  modal: boolean;
   places: {
     id: string;
-    name: string;
+    label: string;
     isCategory: boolean;
     superPlace: null | { id: string; name: string };
     subset:
@@ -175,6 +177,7 @@ export default function NewPlace({
       alert('یک دسته بندی را انتخاب کنید');
       return false;
     }
+
     placeCreationHandler?.();
     const newPlaceCreationResp = await createNewPlaceHandler(
       data.name,
@@ -194,10 +197,12 @@ export default function NewPlace({
       data.description,
       existingPlace?.name ? existingPlace.id : ''
     );
+    console.log(newPlaceCreationResp);
+
     if (newPlaceCreationResp && !existingPlace.id) {
       placeCreationHandler?.(newPlaceCreationResp as any);
     } else {
-      alert('problem');
+      console.log('');
     }
   };
 
@@ -500,7 +505,7 @@ export default function NewPlace({
                     ?.filter((p) => !p.superPlace && p.isCategory)
                     .map((superplace) => (
                       <Stack key={superplace.id} direction='row'>
-                        {category === superplace.id? (
+                        {category === superplace.id ? (
                           <CheckCircleOutlineRoundedIcon
                             sx={{
                               color: 'green',
@@ -516,7 +521,7 @@ export default function NewPlace({
                         <Stack direction='row' alignItems={'flex-start'}>
                           <TreeItem
                             nodeId={superplace.id}
-                            label={superplace.label}
+                            label={superplace?.label}
                           >
                             {superplace?.subset
                               ?.filter((subPlace) => subPlace?.isCategory)
@@ -531,7 +536,7 @@ export default function NewPlace({
                                     nodeId={subPlace.id}
                                     label={subPlace.name}
                                     icon={
-                                      category === subPlace.id  ? (
+                                      category === subPlace.id ? (
                                         <IconButton sx={{ p: 0, mx: 0.5 }}>
                                           <CheckCircleOutlineRoundedIcon
                                             sx={{
@@ -671,7 +676,13 @@ export default function NewPlace({
         <Address />
         <Call />
         <More />
-        <Box>
+        <Box
+          sx={{
+            position: !modal ? 'absolute' : 'static',
+            top: -68,
+            right: '35px',
+          }}
+        >
           <Button
             id='newPlaceSubmitButton'
             label='ارسال'
