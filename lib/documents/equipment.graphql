@@ -1,0 +1,25 @@
+query equipments(
+  $limit: Int = 1000000
+  $offset: Int = 0
+  $filters: EquipmentFilter
+) {
+  equipments(limit: $limit, offset: $offset, filters: $filters) {
+    name
+    model
+    factory
+    serialNumber
+    productionYear
+    installationYear
+    terminologyCode
+    hasInstructions
+    supportCompany
+    supportMobile
+    supportTelephone
+  }
+  count: equipmentsCount(filters: $filters)
+}
+
+
+mutation deleteEquipments($equipmentIds: [String!]!) {
+  deleteEquipments(equipmentIds: $equipmentIds)
+}

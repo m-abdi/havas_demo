@@ -758,7 +758,11 @@ export default memo(function Places({
             size='large'
             color='error'
             variant='contained'
-            disabled={selectedFlatRows.length === 0 ? true : false}
+            disabled={
+              selectedFlatRows.length === 0 || !session?.user?.role.deletePlace
+                ? true
+                : false
+            }
             onClick={() => {
               setDeletePersonDialog(true);
             }}

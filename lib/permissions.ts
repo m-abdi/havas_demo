@@ -28,6 +28,24 @@ export async function canViewPerson(session: Session) {
   });
   return user?.role.viewPerson;
 }
+export async function canViewEquipments(session: Session) {
+  const user = await prisma.person.findFirst({
+    where: {
+      id: session.user.id,
+    },
+    include: { role: true },
+  });
+  return user?.role.viewEquipment;
+}
+export async function canViewAssets(session: Session) {
+  const user = await prisma.person.findFirst({
+    where: {
+      id: session.user.id,
+    },
+    include: { role: true },
+  });
+  return user?.role.viewAsset;
+}
 export async function canCreateRole(session: Session) {
   const user = await prisma.person.findFirst({
     where: {
@@ -73,6 +91,24 @@ export async function canDeletePersons(session: Session) {
     include: { role: true },
   });
   return user?.role.deletePerson;
+}
+export async function canDeleteEquipments(session: Session) {
+  const user = await prisma.person.findFirst({
+    where: {
+      id: session.user.id,
+    },
+    include: { role: true },
+  });
+  return user?.role.deleteEquipment;
+}
+export async function canDeleteAssets(session: Session) {
+  const user = await prisma.person.findFirst({
+    where: {
+      id: session.user.id,
+    },
+    include: { role: true },
+  });
+  return user?.role.deleteAsset;
 }
 export async function canDeletePlaces(session: Session) {
   const user = await prisma.person.findFirst({

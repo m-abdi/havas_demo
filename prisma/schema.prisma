@@ -60,25 +60,38 @@ model Place {
   editedAt         String?
   fromLicenses     License[] @relation("fromLicensesPlace")
   toLicenses       License[] @relation("toLicensesPlace")
+  Asset            Asset[]
 }
 
 model Equipment {
-  id                     String   @id @default(uuid())
-  name                   String   @db.VarChar(255)
-  technicalSpecification String   @db.VarChar(1000)
-  createdAt              DateTime @default(now())
-  editedAt               DateTime @updatedAt
-  assets                 Asset[]
+  name             String   @db.VarChar(255)
+  model            String?  @db.VarChar(3000)
+  factory          String?  @db.VarChar(300)
+  serialNumber     String   @db.VarChar(300)
+  productionYear   String?  @db.VarChar(300)
+  installationYear String?  @db.VarChar(300)
+  terminologyCode  String   @id
+  hasInstructions  Boolean
+  instruction      String?
+  picture          String?
+  supportCompany   String?  @db.VarChar(1000)
+  supportMobile    String?  @db.VarChar(300)
+  supportTelephone String?  @db.VarChar(100)
+  createdAt        DateTime @default(now())
+  editedAt         DateTime @updatedAt
+  assets           Asset[]
 }
 
 model Asset {
-  id             String    @id @default(uuid())
-  equipment      Equipment @relation(fields: [equipmentId], references: [id])
-  equipmentId    String
-  numberOfAssets Int
-  createdAt      DateTime  @default(now())
-  editedAt       DateTime  @updatedAt
-  tag            Tag?
+  id                 String    @id @default(uuid())
+  equipment          Equipment @relation(fields: [equipmentId], references: [terminologyCode])
+  equipmentId        String
+  publicPropertyCode String
+  place              Place     @relation(fields: [placeId], references: [id])
+  placeId            String
+  createdAt          DateTime  @default(now())
+  editedAt           DateTime  @updatedAt
+  tag                Tag?
 }
 
 model Tag {

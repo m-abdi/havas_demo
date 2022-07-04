@@ -32,7 +32,9 @@ import {
 } from 'react-table';
 
 import { Button } from '../../Components/Button';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import DeleteDialog from '../../Components/DeleteRolesDialog';
+import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
@@ -52,16 +54,9 @@ interface Props {
 }
 interface DataType {
   id: string;
-  firstNameAndLastName: string;
-  place: { id: string; name: string };
-  role: { id: string; name: string };
-  state: string;
-  city: string;
-  postalCode: string;
-  address: string;
-  telephone: string;
-  mobileNumber: string;
-  website: string;
+  equipment: { id: string; name: string };
+  publicPropertyCode: string;
+  place: { name: string };
 }
 const Styles = styled.div`
   padding: 1rem;
@@ -129,7 +124,7 @@ const Styles = styled.div`
   }
 `;
 var delayTimer: any;
-export default memo(function Persons({
+export default memo(function Assets({
   loading,
   deleting,
   data = [],
@@ -140,8 +135,8 @@ export default memo(function Persons({
   offset,
   setFilters,
   fetchMoreRows,
-  allPersonsCount,
-  deletePersonsHandler,
+  allAssetsCount,
+  deleteAssetsHandler: deleteAssetsHandler,
 }: {
   loading: boolean;
   deleting: boolean;
@@ -152,9 +147,9 @@ export default memo(function Persons({
   setItemsPerPage: any;
   filters: any;
   setFilters: any;
-  allPersonsCount: number;
+  allAssetsCount: number;
   fetchMoreRows: (e: any, page: number) => void;
-  deletePersonsHandler: (persons: string[]) => Promise<void>;
+  deleteAssetsHandler: (placeIds: string[]) => Promise<void>;
 }) {
   //  states
   const [rowOptionsAnchorElement, setRowOptionsAnchorElement] =
@@ -183,49 +178,16 @@ export default memo(function Persons({
   const columns: any = useMemo(
     () => [
       {
-        Header: 'کد ملی',
-        accessor: 'id', // accessor is the "key" in the data
+        Header: 'نام تجهیز',
+        accessor: 'equipment.name', // accessor is the "key" in the data
       },
       {
-        Header: 'عنوان',
-        accessor: 'firstNameAndLastName', // accessor is the "key" in the data
+        Header: 'کد بیت المال',
+        accessor: 'publicPropertyCode', // accessor is the "key" in the data
       },
       {
-        Header: 'نقش',
-        accessor: 'role.name', // accessor is the "key" in the data
-      },
-      {
-        Header: 'مکان',
+        Header: 'محل استقرار',
         accessor: 'place.name', // accessor is the "key" in the data
-      },
-
-      {
-        Header: 'استان',
-        accessor: 'state',
-      },
-      {
-        Header: 'شهر',
-        accessor: 'city', // accessor is the "key" in the data
-      },
-      {
-        Header: 'کد پستی',
-        accessor: 'postalCode', // accessor is the "key" in the data
-      },
-      {
-        Header: 'آدرس',
-        accessor: 'address', // accessor is the "key" in the data
-      },
-      {
-        Header: 'تلفن',
-        accessor: 'telephone', // accessor is the "key" in the data
-      },
-      {
-        Header: 'تلفن همراه',
-        accessor: 'mobileNumber', // accessor is the "key" in the data
-      },
-      {
-        Header: 'سایت',
-        accessor: 'website', // accessor is the "key" in the data
       },
     ],
     [offset, pageNumber]
@@ -547,15 +509,25 @@ export default memo(function Persons({
                               delayTimer = setTimeout(function () {
                                 setFilters({
                                   ...filters,
-                                  [column.id === 'role.name'
-                                    ? 'role'
+                                  [column.id === 'equipment.name'
+                                    ? 'equipment'
                                     : column.id === 'place.name'
                                     ? 'place'
                                     : column.id]:
-                                    column.id === 'role.name'
-                                      ? { name: { contains: e.target.value } }
+                                    column.id === 'equipment.name'
+                                      ? {
+                                          ...filters?.equipment,
+                                          name: {
+                                            contains: e.target.value,
+                                          },
+                                        }
                                       : column.id === 'place.name'
-                                      ? { name: { contains: e.target.value } }
+                                      ? {
+                                          ...filters?.place,
+                                          name: {
+                                            contains: e.target.value,
+                                          },
+                                        }
                                       : { contains: e.target.value },
                                 });
                                 fetchMoreRows(e, 0);
@@ -608,14 +580,7 @@ export default memo(function Persons({
                     <Skeleton width={148} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
+                   
                   </Stack>
                 ))}
               </Stack>
@@ -679,7 +644,7 @@ export default memo(function Persons({
           component={'div'}
           rowsPerPageOptions={[5, 10, 15, 20, 30, 50]}
           page={pageNumber}
-          count={allPersonsCount}
+          count={allAssetsCount}
           onPageChange={fetchMoreRows}
           onRowsPerPageChange={(
             event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -715,7 +680,7 @@ export default memo(function Persons({
             color='error'
             variant='contained'
             disabled={
-              selectedFlatRows.length === 0 || !session?.user?.role?.deletePerson
+              selectedFlatRows.length === 0 || !session?.user?.role?.deleteAsset
                 ? true
                 : false
             }
@@ -726,13 +691,11 @@ export default memo(function Persons({
         </Box>
       </Styles>
       <DeleteDialog
-        text='با این کار تمامی اشخاص انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
+        text='با این کار تمامی اماکن انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
         open={deletePersonDialog}
         closeDialog={() => setDeletePersonDialog(false)}
         confirmDelete={async () => {
-          await deletePersonsHandler(
-            selectedFlatRows.map((p) => p.original.id)
-          );
+          await deleteAssetsHandler(selectedFlatRows.map((p) => p.original.id));
           setDeletePersonDialog(false);
         }}
       />
@@ -750,9 +713,7 @@ export default memo(function Persons({
                 variant='text'
                 onClick={() =>
                   router.push(
-                    `/users/newPerson?edit=1&person=${JSON.stringify(
-                      choosedRow
-                    )}`
+                    `/users/newPlace?edit=1&place=${JSON.stringify(choosedRow)}`
                   )
                 }
                 label='ویرایش'

@@ -6,6 +6,8 @@ import {
   Checkbox,
   Container,
   Divider,
+  FormControl,
+  FormControlLabel,
   IconButton,
   Menu,
   MenuItem,
@@ -32,7 +34,9 @@ import {
 } from 'react-table';
 
 import { Button } from '../../Components/Button';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import DeleteDialog from '../../Components/DeleteRolesDialog';
+import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
@@ -51,17 +55,19 @@ interface Props {
   name?: string;
 }
 interface DataType {
-  id: string;
-  firstNameAndLastName: string;
-  place: { id: string; name: string };
-  role: { id: string; name: string };
-  state: string;
-  city: string;
-  postalCode: string;
-  address: string;
-  telephone: string;
-  mobileNumber: string;
-  website: string;
+  name: string;
+  model: string;
+  factory: string;
+  serialNumber: string;
+  productionYear: string;
+  installationYear: string;
+  terminologyCode: string;
+  hasInstructions: boolean;
+  supportCompany: string;
+  supportMobile: string;
+  supportTelephone: string;
+  createdAt: string;
+  editedAt: string;
 }
 const Styles = styled.div`
   padding: 1rem;
@@ -129,7 +135,7 @@ const Styles = styled.div`
   }
 `;
 var delayTimer: any;
-export default memo(function Persons({
+export default memo(function Equipments({
   loading,
   deleting,
   data = [],
@@ -140,8 +146,8 @@ export default memo(function Persons({
   offset,
   setFilters,
   fetchMoreRows,
-  allPersonsCount,
-  deletePersonsHandler,
+  allEquipmentsCount: allequipmentsCount,
+  deleteEquipmentsHandler: deleteequipmentsHandler,
 }: {
   loading: boolean;
   deleting: boolean;
@@ -152,14 +158,15 @@ export default memo(function Persons({
   setItemsPerPage: any;
   filters: any;
   setFilters: any;
-  allPersonsCount: number;
+  allEquipmentsCount: number;
   fetchMoreRows: (e: any, page: number) => void;
-  deletePersonsHandler: (persons: string[]) => Promise<void>;
+  deleteEquipmentsHandler: (placeIds: string[]) => Promise<void>;
 }) {
   //  states
   const [rowOptionsAnchorElement, setRowOptionsAnchorElement] =
     useState<null | HTMLElement>(null);
   const [choosedRow, setChoosedRow] = useState<any>('');
+  const [hasInstructions, setHasInstructions] = useState<boolean>();
   const rowOptionsOpen = Boolean(rowOptionsAnchorElement);
   const [deletePersonDialog, setDeletePersonDialog] = useState(false);
 
@@ -183,49 +190,59 @@ export default memo(function Persons({
   const columns: any = useMemo(
     () => [
       {
-        Header: 'کد ملی',
-        accessor: 'id', // accessor is the "key" in the data
+        Header: 'نام',
+        accessor: 'name', // accessor is the "key" in the data
       },
       {
-        Header: 'عنوان',
-        accessor: 'firstNameAndLastName', // accessor is the "key" in the data
+        Header: 'مدل دستگاه',
+        accessor: 'model', // accessor is the "key" in the data
       },
       {
-        Header: 'نقش',
-        accessor: 'role.name', // accessor is the "key" in the data
+        Header: 'کارخانه سازنده',
+        accessor: 'factory', // accessor is the "key" in the data
       },
       {
-        Header: 'مکان',
-        accessor: 'place.name', // accessor is the "key" in the data
+        Header: 'شماره سریال تجهیز',
+        accessor: 'serialNumber', // accessor is the "key" in the data
+        width: 200,
       },
 
       {
-        Header: 'استان',
-        accessor: 'state',
+        Header: 'سال ساخت',
+        accessor: 'productionYear',
+      },
+
+      {
+        Header: 'سال نصب',
+        accessor: 'installationYear',
+      },
+
+      {
+        Header: 'کد ترمینولوژی',
+        accessor: 'terminologyCode', // accessor is the "key" in the data
       },
       {
-        Header: 'شهر',
-        accessor: 'city', // accessor is the "key" in the data
+        id: 'hasInstructions',
+        Header: 'آموزش کاربری',
+        width: 180,
+        accessor: (d: any) =>
+          d.hasInstructions ? (
+            <DoneRoundedIcon sx={{ color: 'success.main' }} />
+          ) : (
+            <CloseRoundedIcon sx={{ color: 'error.main' }} />
+          ), // accessor is the "key" in the data
       },
       {
-        Header: 'کد پستی',
-        accessor: 'postalCode', // accessor is the "key" in the data
+        Header: 'شرکت پشتیبان',
+        accessor: 'supportCompany', // accessor is the "key" in the data
       },
       {
-        Header: 'آدرس',
-        accessor: 'address', // accessor is the "key" in the data
+        Header: 'تلفن همراه پشتیبانی',
+        accessor: 'supportMobile', // accessor is the "key" in the data
       },
       {
-        Header: 'تلفن',
-        accessor: 'telephone', // accessor is the "key" in the data
-      },
-      {
-        Header: 'تلفن همراه',
-        accessor: 'mobileNumber', // accessor is the "key" in the data
-      },
-      {
-        Header: 'سایت',
-        accessor: 'website', // accessor is the "key" in the data
+        Header: 'تلفن پشتیبانی',
+        accessor: 'supportTelephone', // accessor is the "key" in the data
       },
     ],
     [offset, pageNumber]
@@ -430,7 +447,7 @@ export default memo(function Persons({
           maxWidth: 35,
           Cell: ({ row }: { row: any }) => (
             <IconButton
-              id={row?.original?.id + '-options'}
+              id={row?.original?.terminologyCode + '-options'}
               title='گزینه ها'
               sx={{ p: 0, m: 0, color: 'inherit', backgroundColor: 'inherit' }}
               onClick={(e) => {
@@ -442,6 +459,20 @@ export default memo(function Persons({
           ),
         },
         ...columns,
+        {
+          id: 'downloads',
+          disableResizing: false,
+          minWidth: 35,
+          width: 80,
+          maxWidth: 90,
+          disableSortBy: true,
+          disableFilters: true,
+          Header: () => <>دانلودها</>,
+   
+          Cell: ({ row }: { row: any }) => (
+            <>{row.index + 1 + offset * pageNumber}</>
+          ),
+        },
       ]);
     }
   );
@@ -514,7 +545,7 @@ export default memo(function Persons({
                           flexItem
                           variant='fullWidth'
                           sx={{
-                            display: ['index', 'selectAll', 'options'].includes(
+                            display: ['index', 'selectAll', 'options', "downloads"].includes(
                               column?.id
                             )
                               ? 'none'
@@ -527,9 +558,13 @@ export default memo(function Persons({
                         ) && column.canFilter
                           ? column.render('Filter')
                           : null} */}
-                        {!['selectAll', 'options', 'index'].includes(
-                          column?.id
-                        ) && (
+                        {![
+                          'selectAll',
+                          'options',
+                          'index',
+                          'hasInstructions',
+                          "downloads"
+                        ].includes(column?.id) && (
                           <TextField
                             size='small'
                             color='secondary'
@@ -547,15 +582,9 @@ export default memo(function Persons({
                               delayTimer = setTimeout(function () {
                                 setFilters({
                                   ...filters,
-                                  [column.id === 'role.name'
-                                    ? 'role'
-                                    : column.id === 'place.name'
-                                    ? 'place'
-                                    : column.id]:
-                                    column.id === 'role.name'
-                                      ? { name: { contains: e.target.value } }
-                                      : column.id === 'place.name'
-                                      ? { name: { contains: e.target.value } }
+                                  [column.id]:
+                                    column.id === 'hasInstructions'
+                                      ? hasInstructions
                                       : { contains: e.target.value },
                                 });
                                 fetchMoreRows(e, 0);
@@ -579,10 +608,42 @@ export default memo(function Persons({
                             placeholder={`جستجو ...`}
                           />
                         )}
+                        {['hasInstructions'].includes(column.id) && (
+                          <FormControl>
+                            <Stack
+                              direction='row'
+                              alignItems={'center'}
+                              justifyContent='center'
+                            >
+                              <FormControlLabel
+                                label='دارد'
+                                color='success'
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setHasInstructions(true);
+                                }}
+                                checked={hasInstructions}
+                                control={<Checkbox color='success' />}
+                              ></FormControlLabel>
+                              <FormControlLabel
+                                label='ندارد'
+                                color='error'
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setHasInstructions(false);
+                                }}
+                                checked={
+                                  hasInstructions === false ? true : false
+                                }
+                                control={<Checkbox color='error' />}
+                              ></FormControlLabel>
+                            </Stack>
+                          </FormControl>
+                        )}
                       </Stack>
                       {/* Use column.getResizerProps to hook up the events correctly */}
                       <div
-                        {...column.getResizerProps()}
+                        {...column?.getResizerProps()}
                         className={`resizer ${
                           column.isResizing ? 'isResizing' : ''
                         }`}
@@ -608,14 +669,14 @@ export default memo(function Persons({
                     <Skeleton width={148} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
+                    <Skeleton width={198} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
+                    <Skeleton width={146} height={42} variant='rectangular' />
+                    <Skeleton width={180} height={42} variant='rectangular' />
+                    <Skeleton width={146} height={42} variant='rectangular' />
+                    <Skeleton width={146} height={42} variant='rectangular' />
+                    <Skeleton width={146} height={42} variant='rectangular' />
                   </Stack>
                 ))}
               </Stack>
@@ -679,7 +740,7 @@ export default memo(function Persons({
           component={'div'}
           rowsPerPageOptions={[5, 10, 15, 20, 30, 50]}
           page={pageNumber}
-          count={allPersonsCount}
+          count={allequipmentsCount}
           onPageChange={fetchMoreRows}
           onRowsPerPageChange={(
             event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -715,7 +776,8 @@ export default memo(function Persons({
             color='error'
             variant='contained'
             disabled={
-              selectedFlatRows.length === 0 || !session?.user?.role?.deletePerson
+              selectedFlatRows.length === 0 ||
+              !session?.user?.role?.deleteEquipment
                 ? true
                 : false
             }
@@ -726,12 +788,12 @@ export default memo(function Persons({
         </Box>
       </Styles>
       <DeleteDialog
-        text='با این کار تمامی اشخاص انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
+        text='با این کار تمامی اماکن انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
         open={deletePersonDialog}
         closeDialog={() => setDeletePersonDialog(false)}
         confirmDelete={async () => {
-          await deletePersonsHandler(
-            selectedFlatRows.map((p) => p.original.id)
+          await deleteequipmentsHandler(
+            selectedFlatRows.map((p) => p?.original?.terminologyCode)
           );
           setDeletePersonDialog(false);
         }}
@@ -745,14 +807,12 @@ export default memo(function Persons({
           {session?.user?.role?.['editPerson'] ? (
             <MenuItem>
               <Button
-                id={choosedRow?.id + '-edit'}
+                id={choosedRow?.terminologyCode + '-edit'}
                 startIcon={<EditRoundedIcon />}
                 variant='text'
                 onClick={() =>
                   router.push(
-                    `/users/newPerson?edit=1&person=${JSON.stringify(
-                      choosedRow
-                    )}`
+                    `/users/newPlace?edit=1&place=${JSON.stringify(choosedRow)}`
                   )
                 }
                 label='ویرایش'

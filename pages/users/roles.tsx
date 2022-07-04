@@ -148,7 +148,8 @@ export default function roles() {
                 disabled={
                   Object.keys(checkedItems).length === 0 ||
                   Object.keys(checkedItems).filter((k) => checkedItems[k])
-                    .length === 0
+                    .length === 0 ||
+                  !session?.user?.role?.deleteRole
                 }
                 label='حذف'
                 color='error'

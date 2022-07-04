@@ -10,9 +10,13 @@ import {
   canCreatePerson,
   canCreatePlace,
   canCreateRole,
+  canDeleteAssets,
+  canDeleteEquipments,
   canDeletePersons,
   canDeletePlaces,
   canDeleteRols,
+  canViewAssets,
+  canViewEquipments,
   canViewPerson,
   canViewPlaces,
   canViewRoles,
@@ -119,7 +123,11 @@ const resolvers: Resolvers = {
                 e[1]?.firstNameAndLastName?.contains ||
                 e[1]?.role?.name?.contains
               );
-            } else if (typeof e[1] !== 'boolean' && e[1] && 'contains' in e[1]) {
+            } else if (
+              typeof e[1] !== 'boolean' &&
+              e[1] &&
+              'contains' in e[1]
+            ) {
               return e[1]?.contains;
             }
           })
@@ -180,7 +188,11 @@ const resolvers: Resolvers = {
                 e[1]?.firstNameAndLastName?.contains ||
                 e[1]?.role?.name?.contains
               );
-            } else if (typeof e[1] !== 'boolean' && e[1] && 'contains' in e[1]) {
+            } else if (
+              typeof e[1] !== 'boolean' &&
+              e[1] &&
+              'contains' in e[1]
+            ) {
               return e[1]?.contains;
             }
           })
@@ -191,6 +203,136 @@ const resolvers: Resolvers = {
         })) as number;
       }
       return (await prisma.place.count()) as number;
+    },
+    async equipments(_, _args, _context): Promise<any> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canViewEquipments(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+      const { limit, offset, filters } = _args;
+      if (filters) {
+        const parsedFilters = Object.fromEntries(
+          Object.entries(filters).filter((e) => {
+            if (e[0] === 'hasInstruncions') {
+              return true;
+            } else if (
+              typeof e[1] !== 'boolean' &&
+              e[1] &&
+              'contains' in e[1]
+            ) {
+              return e[1]?.contains;
+            }
+          })
+        );
+
+        const equipmentsDB = await prisma.equipment.findMany({
+          take: limit ?? 2000000,
+          skip: offset ?? 0,
+
+          where: parsedFilters,
+        });
+
+        return equipmentsDB as any;
+      }
+      const equipmentsDB = await prisma.equipment.findMany({
+        take: limit ?? 2000000,
+        skip: offset ?? 0,
+      });
+
+      return equipmentsDB as any;
+    },
+    async equipmentsCount(_, _args, _context): Promise<number> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canViewEquipments(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+      const { filters } = _args;
+
+      if (filters) {
+        const parsedFilters = Object.fromEntries(
+          Object.entries(filters).filter((e) => {
+            if (e[0] === 'hasInstruncions') {
+              return true;
+            } else if (
+              typeof e[1] !== 'boolean' &&
+              e[1] &&
+              'contains' in e[1]
+            ) {
+              return e[1]?.contains;
+            }
+          })
+        );
+
+        return (await prisma.equipment.count({
+          where: parsedFilters,
+        })) as number;
+      }
+      return (await prisma.equipment.count()) as number;
+    },
+    async assets(_, _args, _context): Promise<any> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canViewAssets(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+      const { limit, offset, filters } = _args;
+      if (filters) {
+        const parsedFilters = Object.fromEntries(
+          Object.entries(filters).filter((e) => {
+            if ((e[0] === 'equipment' || e[0] === 'place') && 'name' in e[1]) {
+              return e[1]?.name?.contains;
+            } else if ('contains' in e[1]) {
+              return e[1]?.contains;
+            }
+          })
+        );
+
+        const assetsDB = await prisma.asset.findMany({
+          take: limit ?? 2000000,
+          skip: offset ?? 0,
+
+          where: parsedFilters,
+        });
+
+        return assetsDB as any;
+      }
+      const assetsDB = await prisma.asset.findMany({
+        take: limit ?? 2000000,
+        skip: offset ?? 0,
+      });
+
+      return assetsDB as any;
+    },
+    async assetsCount(_, _args, _context): Promise<number> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canViewEquipments(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+      const { filters } = _args;
+
+      if (filters) {
+        const parsedFilters = Object.fromEntries(
+          Object.entries(filters).filter((e) => {
+            if ((e[0] === 'equipment' || e[0] === 'place') && 'name' in e[1]) {
+              return e[1]?.name?.contains;
+            } else if ('contains' in e[1]) {
+              return e[1]?.contains;
+            }
+          })
+        );
+
+        return (await prisma.asset.count({
+          where: parsedFilters,
+        })) as number;
+      }
+      return (await prisma.asset.count()) as number;
     },
     async role(_parent: any, _args: any, _context: any): Promise<any> {
       // check authentication and permission
@@ -505,6 +647,42 @@ const resolvers: Resolvers = {
       });
 
       return deletedPlaces?.count;
+    },
+    async deleteEquipments(
+      _: any,
+      { equipmentIds }: { equipmentIds: string[] },
+      _context: any
+    ): Promise<number> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canDeleteEquipments(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+
+      const deletedEquipments = await prisma.equipment.deleteMany({
+        where: { terminologyCode: { in: equipmentIds } },
+      });
+
+      return deletedEquipments?.count;
+    },
+    async deleteAssets(
+      _: any,
+      { assetIds }: { assetIds: string[] },
+      _context: any
+    ): Promise<number> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canDeleteAssets(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+
+      const deletedAssets = await prisma.asset.deleteMany({
+        where: { id: { in: assetIds } },
+      });
+
+      return deletedAssets?.count;
     },
   },
   Person: {

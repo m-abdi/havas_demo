@@ -42,18 +42,33 @@ const typeDefs = /* GraphQL */ `
   }
 
   type Equipment {
-    id: ID!
-    name: String!
-    technicalSpecification: String
+    name: String
+    model: String
+    factory: String
+    serialNumber: String
+    productionYear: String
+    installationYear: String
+    terminologyCode: String
+    hasInstructions: Boolean
+    instruction: String
+    picture: String
+    supportCompany: String
+    supportMobile: String
+    supportTelephone: String
     createdAt: String
     editedAt: String
+    assets: [Asset]
   }
   type Asset {
     id: ID!
     equipment: Equipment
-    numberOfAssets: Int
+    equipmentId: String
+    publicPropertyCode: String
+    place: Place
+    placeId: String
     createdAt: String
     editedAt: String
+    tag: Tag
   }
 
   type Tag {
@@ -182,11 +197,33 @@ const typeDefs = /* GraphQL */ `
     registeredNumber: ContainsSearchType!
     description: ContainsSearchType!
   }
+  input EquipmentFilter {
+    name: ContainsSearchType!
+    model: ContainsSearchType!
+    factory: ContainsSearchType!
+    serialNumber: ContainsSearchType!
+    productionYear: ContainsSearchType!
+    installationYear: ContainsSearchType!
+    terminologyCode: ContainsSearchType!
+    hasInstructions: Boolean
+    supportCompany: ContainsSearchType!
+    supportMobile: ContainsSearchType!
+    supportTelephone: ContainsSearchType!
+  }
+  input AssetFilter {
+    equipment: RelatedFieldFilter!
+    publicPropertyCode: ContainsSearchType!
+    place: RelatedFieldFilter!
+  }
   type Query {
-    persons(limit: Int , offset: Int, filters: PersonFilter): [Person]!
+    persons(limit: Int, offset: Int, filters: PersonFilter): [Person]!
     personsCount(filters: PersonFilter): Int
     places(limit: Int, offset: Int, filters: PlaceFilter): [Place]!
     placesCount(filters: PlaceFilter): Int
+    equipments(limit: Int, offset: Int, filters: EquipmentFilter): [Equipment]!
+    equipmentsCount(filters: EquipmentFilter): Int
+    assets(limit: Int, offset: Int, filters: AssetFilter): [Asset]!
+    assetsCount(filters: AssetFilter): Int
     role(roleId: ID!): Role
     roles(limit: Int!, offset: Int!): [Role!]
     hasNextRole(limit: Int!, offset: Int!): Boolean!
@@ -212,6 +249,8 @@ const typeDefs = /* GraphQL */ `
     deleteRoles(roleIds: [String!]!): [String!]!
     deletePersons(personIds: [String!]!): Int!
     deletePlaces(placeIds: [String!]!): Int!
+    deleteEquipments(equipmentIds: [String!]!): Int!
+    deleteAssets(assetIds: [String!]!): Int!
     createPlace(
       name: String!
       superPlaceId: String

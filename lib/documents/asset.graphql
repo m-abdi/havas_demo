@@ -1,0 +1,20 @@
+query assets($limit: Int = 1000000, $offset: Int = 0, $filters: AssetFilter) {
+  assets(limit: $limit, offset: $offset, filters: $filters) {
+    id
+    equipment {
+      name
+    }
+    publicPropertyCode
+    place {
+      name
+    }
+    createdAt
+    editedAt
+  }
+  count: assetsCount(filters: $filters)
+}
+
+
+mutation deleteAssets($assetIds: [String!]!) {
+  deleteAssets(assetIds: $assetIds)
+}
