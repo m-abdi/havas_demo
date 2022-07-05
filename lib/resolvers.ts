@@ -621,7 +621,7 @@ const resolvers: Resolvers = {
         edit,
       }: any,
       _context: any
-    ): Promise<Equipment> {
+    ): Promise<any> {
       // check authentication and permission
       const { req } = _context;
       const session = await getSession({ req });
