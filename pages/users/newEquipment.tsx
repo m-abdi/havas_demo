@@ -27,7 +27,7 @@ export default function newEquipment() {
   });
 
   // if editing => extract existing equipment data from query param
-  const existingPlace = useMemo(
+  const existingEquipment = useMemo(
     () =>
       JSON.parse(
         router?.query?.equipment ? (router?.query?.equipment as string) : '{}'
@@ -51,6 +51,7 @@ export default function newEquipment() {
           })) as any
         }
         createHandler={createNew}
+        existingEquipment={existingEquipment}
       />
     </Layout>
   );

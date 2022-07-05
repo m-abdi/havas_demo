@@ -125,10 +125,12 @@ export default function NewEquipment({
   //
   useEffect(() => {
     if (existingEquipment.name) {
-      setSupportCompany(existingEquipment?.supportCompany);
+      setSupportCompany(
+        factories.find((f) => f.id === existingEquipment.supportCompany.id)
+      );
       setHasInstructions(existingEquipment?.hasInstructions);
     }
-  }, [existingEquipment]);
+  }, [existingEquipment, factories]);
   // handlers
   const submitHandler = async (data: any) => {
     await createHandler(
@@ -148,7 +150,7 @@ export default function NewEquipment({
   };
 
   return (
-    <Container maxWidth='md' sx={{ position: 'relative', p: '8px' }}>
+    <Container maxWidth='lg' sx={{ position: 'relative', p: '8px' }}>
       <Form1 onSubmit={handleSubmit(submitHandler)}>
         <Row1>
           <Input1>
@@ -345,7 +347,7 @@ export default function NewEquipment({
               )}
             </Input1>
             <Input1>
-              <Label1>شماره تماس 1</Label1>
+              <Label1>شماره تماس ۱</Label1>
               <TextField
                 size='small'
                 id='supportTelephone1'
@@ -357,7 +359,7 @@ export default function NewEquipment({
               />
             </Input1>
             <Input1>
-              <Label1>شماره تماس 2</Label1>
+              <Label1>شماره تماس ۲</Label1>
               <TextField
                 size='small'
                 id='supportTelephone2'
@@ -374,7 +376,7 @@ export default function NewEquipment({
           sx={{
             position: 'absolute',
             top: -68,
-            right: '35px',
+            right: 'min(10%, 105px)',
           }}
         >
           <Button

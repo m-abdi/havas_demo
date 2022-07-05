@@ -34,9 +34,9 @@ export default function equipments() {
     productionYear: { contains: '' },
     installationYear: { contains: '' },
     terminologyCode: { contains: '' },
-    supportCompany: { contains: '' },
-    supportMobile: { contains: '' },
-    supportTelephone: { contains: '' },
+    supportCompany: { name: { contains: '' } },
+    supportTelephone1: { contains: '' },
+    supportTelephone2: { contains: '' },
   });
 
   const { loading, data, fetchMore, deleting, deleteHandler } = useEquipments(

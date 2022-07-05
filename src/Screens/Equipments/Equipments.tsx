@@ -63,7 +63,7 @@ interface DataType {
   installationYear: string;
   terminologyCode: string;
   hasInstructions: boolean;
-  supportCompany: string;
+  supportCompany: { name: string };
   supportTelephone1: string;
   supportTelephone2: string;
   createdAt: string;
@@ -147,7 +147,7 @@ export default memo(function Equipments({
   setFilters,
   fetchMoreRows,
   allEquipmentsCount: allequipmentsCount,
-  deleteEquipmentsHandler: deleteequipmentsHandler,
+  deleteEquipmentsHandler,
 }: {
   loading: boolean;
   deleting: boolean;
@@ -168,7 +168,7 @@ export default memo(function Equipments({
   const [choosedRow, setChoosedRow] = useState<any>('');
   const [hasInstructions, setHasInstructions] = useState<boolean>();
   const rowOptionsOpen = Boolean(rowOptionsAnchorElement);
-  const [deletePersonDialog, setDeletePersonDialog] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState(false);
 
   // const [value, setValue] = React.useState(globalFilter);
 
@@ -198,7 +198,7 @@ export default memo(function Equipments({
         accessor: 'model', // accessor is the "key" in the data
       },
       {
-        Header: 'کارخانه سازنده',
+        Header: 'کارخانه',
         accessor: 'factory', // accessor is the "key" in the data
       },
       {
@@ -234,7 +234,7 @@ export default memo(function Equipments({
       },
       {
         Header: 'شرکت پشتیبان',
-        accessor: 'supportCompany', // accessor is the "key" in the data
+        accessor: 'supportCompany.name', // accessor is the "key" in the data
       },
       {
         Header: 'شماره تماس ۱',
@@ -243,6 +243,7 @@ export default memo(function Equipments({
       {
         Header: 'شماره تماس ۲',
         accessor: 'supportTelephone2', // accessor is the "key" in the data
+        width: 155,
       },
     ],
     [offset, pageNumber]
@@ -463,12 +464,12 @@ export default memo(function Equipments({
           id: 'downloads',
           disableResizing: false,
           minWidth: 35,
-          width: 80,
+          width: 90,
           maxWidth: 90,
           disableSortBy: true,
           disableFilters: true,
           Header: () => <>دانلودها</>,
-   
+
           Cell: ({ row }: { row: any }) => (
             <>{row.index + 1 + offset * pageNumber}</>
           ),
@@ -545,9 +546,12 @@ export default memo(function Equipments({
                           flexItem
                           variant='fullWidth'
                           sx={{
-                            display: ['index', 'selectAll', 'options', "downloads"].includes(
-                              column?.id
-                            )
+                            display: [
+                              'index',
+                              'selectAll',
+                              'options',
+                              'downloads',
+                            ].includes(column?.id)
                               ? 'none'
                               : 'auto',
                           }}
@@ -563,7 +567,7 @@ export default memo(function Equipments({
                           'options',
                           'index',
                           'hasInstructions',
-                          "downloads"
+                          'downloads',
                         ].includes(column?.id) && (
                           <TextField
                             size='small'
@@ -582,8 +586,12 @@ export default memo(function Equipments({
                               delayTimer = setTimeout(function () {
                                 setFilters({
                                   ...filters,
-                                  [column.id]:
-                                    column.id === 'hasInstructions'
+                                  [column.id === 'supportCompany.name'
+                                    ? 'supportCompany'
+                                    : column.id]:
+                                    column.id === 'supportCompany.name'
+                                      ? { name: { contains: e.target.value } }
+                                      : column.id === 'hasInstructions'
                                       ? hasInstructions
                                       : { contains: e.target.value },
                                 });
@@ -676,7 +684,8 @@ export default memo(function Equipments({
                     <Skeleton width={180} height={42} variant='rectangular' />
                     <Skeleton width={146} height={42} variant='rectangular' />
                     <Skeleton width={146} height={42} variant='rectangular' />
-                    <Skeleton width={146} height={42} variant='rectangular' />
+                    <Skeleton width={155} height={42} variant='rectangular' />
+                    <Skeleton width={90} height={42} variant='rectangular' />
                   </Stack>
                 ))}
               </Stack>
@@ -782,20 +791,20 @@ export default memo(function Equipments({
                 : false
             }
             onClick={() => {
-              setDeletePersonDialog(true);
+              setDeleteDialog(true);
             }}
           />
         </Box>
       </Styles>
       <DeleteDialog
-        text='با این کار تمامی اماکن انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
-        open={deletePersonDialog}
-        closeDialog={() => setDeletePersonDialog(false)}
+        text='با این کار تمامی تجهیزات انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
+        open={deleteDialog}
+        closeDialog={() => setDeleteDialog(false)}
         confirmDelete={async () => {
-          await deleteequipmentsHandler(
+          await deleteEquipmentsHandler(
             selectedFlatRows.map((p) => p?.original?.terminologyCode)
           );
-          setDeletePersonDialog(false);
+          setDeleteDialog(false);
         }}
       />
       {session?.user?.role?.editPerson ? (
@@ -812,7 +821,9 @@ export default memo(function Equipments({
                 variant='text'
                 onClick={() =>
                   router.push(
-                    `/users/newPlace?edit=1&place=${JSON.stringify(choosedRow)}`
+                    `/users/newEquipment?edit=1&equipment=${JSON.stringify(
+                      choosedRow
+                    )}`
                   )
                 }
                 label='ویرایش'

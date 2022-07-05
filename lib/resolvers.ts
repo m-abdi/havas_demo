@@ -220,6 +220,13 @@ const resolvers: Resolvers = {
             if (e[0] === 'hasInstruncions') {
               return true;
             } else if (
+              e[0] === 'supportCompany' &&
+              typeof e[1] !== 'boolean' &&
+              e[1] &&
+              'name' in e[1]
+            ) {
+              return e[1]?.name?.contains;
+            } else if (
               typeof e[1] !== 'boolean' &&
               e[1] &&
               'contains' in e[1]
@@ -232,7 +239,7 @@ const resolvers: Resolvers = {
         const equipmentsDB = await prisma.equipment.findMany({
           take: limit ?? 2000000,
           skip: offset ?? 0,
-
+          include: {supportCompany: true},
           where: parsedFilters,
         });
 
@@ -241,6 +248,7 @@ const resolvers: Resolvers = {
       const equipmentsDB = await prisma.equipment.findMany({
         take: limit ?? 2000000,
         skip: offset ?? 0,
+        include: { supportCompany: true },
       });
 
       return equipmentsDB as any;
@@ -259,6 +267,13 @@ const resolvers: Resolvers = {
           Object.entries(filters).filter((e) => {
             if (e[0] === 'hasInstruncions') {
               return true;
+            } else if (
+              e[0] === 'supportCompany' &&
+              typeof e[1] !== 'boolean' &&
+              e[1] &&
+              'name' in e[1]
+            ) {
+              return e[1]?.name?.contains;
             } else if (
               typeof e[1] !== 'boolean' &&
               e[1] &&
@@ -628,7 +643,7 @@ const resolvers: Resolvers = {
             installationYear,
             terminologyCode,
             hasInstructions,
-            supportCompanyId: { connect: { id: supportCompanyId } },
+            supportCompany: { connect: { id: supportCompanyId } },
             supportTelephone1,
             supportTelephone2,
           },
@@ -645,7 +660,7 @@ const resolvers: Resolvers = {
           installationYear,
           terminologyCode,
           hasInstructions,
-          supportCompanyId: { connect: { id: supportCompanyId } },
+          supportCompany: { connect: { id: supportCompanyId } },
           supportTelephone1,
           supportTelephone2,
         },
