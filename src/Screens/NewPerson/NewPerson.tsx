@@ -293,8 +293,8 @@ export default function newPerson({
               <Input1>
                 <Label1>کد ملی</Label1>
                 <TextField
-                  id='id'
                   size='small'
+                  id='id'
                   inputProps={{
                     ...register('id', {
                       required: true,

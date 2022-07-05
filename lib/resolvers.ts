@@ -7,6 +7,7 @@ import {
   Role,
 } from './resolvers-types';
 import {
+  canCreateEquipment,
   canCreatePerson,
   canCreatePlace,
   canCreateRole,
@@ -22,6 +23,7 @@ import {
   canViewRoles,
 } from './permissions';
 
+import { Equipment } from '@prisma/client';
 import { GraphQLYogaError } from '@graphql-yoga/node';
 import { RelatedFieldFilter } from './resolvers-types';
 import { getSession } from 'next-auth/react';
@@ -586,6 +588,69 @@ const resolvers: Resolvers = {
         },
       });
       return createdPlace;
+    },
+    async createEquipment(
+      _,
+      {
+        name,
+        model,
+        factory,
+        serialNumber,
+        productionYear,
+        installationYear,
+        terminologyCode,
+        hasInstructions,
+        supportCompanyId,
+        supportTelephone1,
+        supportTelephone2,
+        edit,
+      }: any,
+      _context: any
+    ): Promise<Equipment> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canCreateEquipment(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+
+      if (edit) {
+        const editedEquipment = await prisma.equipment.update({
+          where: {
+            terminologyCode: edit,
+          },
+          data: {
+            name,
+            model,
+            factory,
+            serialNumber,
+            productionYear,
+            installationYear,
+            terminologyCode,
+            hasInstructions,
+            supportCompanyId: { connect: { id: supportCompanyId } },
+            supportTelephone1,
+            supportTelephone2,
+          },
+        });
+        return editedEquipment;
+      }
+      const createdEquipment = await prisma.equipment.create({
+        data: {
+          name,
+          model,
+          factory,
+          serialNumber,
+          productionYear,
+          installationYear,
+          terminologyCode,
+          hasInstructions,
+          supportCompanyId: { connect: { id: supportCompanyId } },
+          supportTelephone1,
+          supportTelephone2,
+        },
+      });
+      return createdEquipment;
     },
     async deleteRoles(_parent, _args, _context, _info): Promise<any> {
       // check authentication and permission

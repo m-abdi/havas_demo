@@ -52,9 +52,9 @@ const typeDefs = /* GraphQL */ `
     hasInstructions: Boolean
     instruction: String
     picture: String
-    supportCompany: String
-    supportMobile: String
-    supportTelephone: String
+    supportCompany: Place
+    supportTelephone1: String
+    supportTelephone2: String
     createdAt: String
     editedAt: String
     assets: [Asset]
@@ -206,9 +206,9 @@ const typeDefs = /* GraphQL */ `
     installationYear: ContainsSearchType!
     terminologyCode: ContainsSearchType!
     hasInstructions: Boolean
-    supportCompany: ContainsSearchType!
-    supportMobile: ContainsSearchType!
-    supportTelephone: ContainsSearchType!
+    supportCompany: RelatedFieldFilter!
+    supportTelephone1: ContainsSearchType!
+    supportTelephone2: ContainsSearchType!
   }
   input AssetFilter {
     equipment: RelatedFieldFilter!
@@ -269,6 +269,20 @@ const typeDefs = /* GraphQL */ `
       description: String
       edit: String
     ): Place!
+    createEquipment(
+      name: String!
+      model: String
+      factory: String
+      serialNumber: String
+      productionYear: String
+      installationYear: String
+      terminologyCode: String!
+      hasInstructions: Boolean
+      supportCompanyId: String
+      supportTelephone1: String
+      supportTelephone2: String
+      edit: String
+    ): Equipment!
     createCategory(name: String!, superPlaceId: String!): ID!
   }
 `;

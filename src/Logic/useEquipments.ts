@@ -1,5 +1,6 @@
 import {
   AllPersonsDocument,
+  CreateEquipmentDocument,
   CreateNewPersonDocument,
   DeleteEquipmentsDocument,
   DeletePersonsDocument,
@@ -39,10 +40,9 @@ export default function useEquipments(
     },
   });
   // new person mutation to server
-  const [
-    createPersonMutation,
-    { data: createdPerson, loading: sending, error: creationError },
-  ] = useMutation(CreateNewPersonDocument);
+  const [createEquipmentMutation, { loading: sending }] = useMutation(
+    CreateEquipmentDocument
+  );
   // delete
   const [deleteEquipmentsMutation, { loading: deleting }] = useMutation(
     DeleteEquipmentsDocument
@@ -74,17 +74,17 @@ export default function useEquipments(
   // creation handler
   const createNew = useCallback(
     async (
-      id: string,
-      firstNameAndLastName: string,
-      placeId: string,
-      roleId: string,
-      state: string,
-      city: string,
-      postalCode: string,
-      address: string,
-      telephone: string,
-      mobileNumber: string,
-      website: string,
+      name: string,
+      model: string,
+      factoryId: string,
+      serialNumber: string,
+      productionYear: string,
+      installationYear: string,
+      terminologyCode: string,
+      hasInstructions: boolean,
+      supportCompany: string,
+      supportTelephone1: string,
+      supportTelephone2: string,
       edit: string
     ) => {
       useNotification(
@@ -94,19 +94,19 @@ export default function useEquipments(
         setSnackbarOpen
       );
       try {
-        const createdPerson = await createPersonMutation({
+        const createdPerson = await createEquipmentMutation({
           variables: {
-            id,
-            firstNameAndLastName,
-            placeId,
-            roleId,
-            state,
-            city,
-            postalCode,
-            address,
-            telephone,
-            mobileNumber,
-            website,
+            name,
+            model,
+            factoryId,
+            serialNumber,
+            productionYear,
+            installationYear,
+            terminologyCode,
+            hasInstructions,
+            supportCompany,
+            supportTelephone1,
+            supportTelephone2,
             edit,
           },
         });
@@ -117,7 +117,7 @@ export default function useEquipments(
             setSnackbarMessage,
             setSnackbarOpen
           );
-          router.push('/users/persons');
+          router.push('/users/equipments');
         } else {
           useNotification(
             'error',

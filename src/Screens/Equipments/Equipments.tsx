@@ -64,8 +64,8 @@ interface DataType {
   terminologyCode: string;
   hasInstructions: boolean;
   supportCompany: string;
-  supportMobile: string;
-  supportTelephone: string;
+  supportTelephone1: string;
+  supportTelephone2: string;
   createdAt: string;
   editedAt: string;
 }
@@ -237,12 +237,12 @@ export default memo(function Equipments({
         accessor: 'supportCompany', // accessor is the "key" in the data
       },
       {
-        Header: 'تلفن همراه پشتیبانی',
-        accessor: 'supportMobile', // accessor is the "key" in the data
+        Header: 'شماره تماس ۱',
+        accessor: 'supportTelephone1', // accessor is the "key" in the data
       },
       {
-        Header: 'تلفن پشتیبانی',
-        accessor: 'supportTelephone', // accessor is the "key" in the data
+        Header: 'شماره تماس ۲',
+        accessor: 'supportTelephone2', // accessor is the "key" in the data
       },
     ],
     [offset, pageNumber]

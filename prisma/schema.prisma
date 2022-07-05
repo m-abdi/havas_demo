@@ -37,12 +37,12 @@ model Person {
 }
 
 model Place {
-  id               String    @id @default(uuid())
-  name             String    @unique @db.VarChar(255)
-  superPlace       Place?    @relation("SuperPlaceSubset", fields: [superPlaceId], references: [id])
+  id               String      @id @default(uuid())
+  name             String      @unique @db.VarChar(255)
+  superPlace       Place?      @relation("SuperPlaceSubset", fields: [superPlaceId], references: [id])
   superPlaceId     String?
-  subset           Place[]   @relation("SuperPlaceSubset")
-  isCategory       Boolean   @default(false)
+  subset           Place[]     @relation("SuperPlaceSubset")
+  isCategory       Boolean     @default(false)
   representative   Person?
   typeOfWork       String?
   state            String?
@@ -58,28 +58,30 @@ model Place {
   description      String?
   createdAt        String?
   editedAt         String?
-  fromLicenses     License[] @relation("fromLicensesPlace")
-  toLicenses       License[] @relation("toLicensesPlace")
+  fromLicenses     License[]   @relation("fromLicensesPlace")
+  toLicenses       License[]   @relation("toLicensesPlace")
   Asset            Asset[]
+  Equipment        Equipment[]
 }
 
 model Equipment {
-  name             String   @db.VarChar(255)
-  model            String?  @db.VarChar(3000)
-  factory          String?  @db.VarChar(300)
-  serialNumber     String   @db.VarChar(300)
-  productionYear   String?  @db.VarChar(300)
-  installationYear String?  @db.VarChar(300)
-  terminologyCode  String   @id
-  hasInstructions  Boolean
-  instruction      String?
-  picture          String?
-  supportCompany   String?  @db.VarChar(1000)
-  supportMobile    String?  @db.VarChar(300)
-  supportTelephone String?  @db.VarChar(100)
-  createdAt        DateTime @default(now())
-  editedAt         DateTime @updatedAt
-  assets           Asset[]
+  name              String   @db.VarChar(255)
+  model             String?  @db.VarChar(3000)
+  factory           String?  @db.VarChar(1000)
+  serialNumber      String   @db.VarChar(300)
+  productionYear    String?  @db.VarChar(300)
+  installationYear  String?  @db.VarChar(300)
+  terminologyCode   String   @id
+  hasInstructions   Boolean
+  instruction       String?
+  picture           String?
+  supportCompany    Place?   @relation(fields: [supportCompanyId], references: [id])
+  supportCompanyId  String?
+  supportTelephone1 String?  @db.VarChar(300)
+  supportTelephone2 String?  @db.VarChar(100)
+  createdAt         DateTime @default(now())
+  editedAt          DateTime @updatedAt
+  assets            Asset[]
 }
 
 model Asset {

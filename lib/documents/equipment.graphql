@@ -12,13 +12,49 @@ query equipments(
     installationYear
     terminologyCode
     hasInstructions
-    supportCompany
-    supportMobile
-    supportTelephone
+    supportCompany {
+      id
+      name
+    }
+    supportTelephone1
+    supportTelephone2
   }
   count: equipmentsCount(filters: $filters)
 }
 
+mutation createEquipment(
+  $name: String!
+  $model: String
+  $factory: String
+  $serialNumber: String
+  $productionYear: String
+  $installationYear: String
+  $terminologyCode: String!
+  $hasInstructions: Boolean
+  $supportCompanyId: String
+  $supportTelephone1: String
+  $supportTelephone2: String
+  $edit: String
+) {
+  createEquipment(
+    name: $name
+    model: $model
+    factory: $factory
+    serialNumber: $serialNumber
+    productionYear: $productionYear
+    installationYear: $installationYear
+    terminologyCode: $terminologyCode
+    hasInstructions: $hasInstructions
+    supportCompanyId: $supportCompanyId
+    supportTelephone1: $supportTelephone1
+    supportTelephone2: $supportTelephone2
+    edit: $edit
+  ) {
+    name
+    terminologyCode
+    model
+  }
+}
 
 mutation deleteEquipments($equipmentIds: [String!]!) {
   deleteEquipments(equipmentIds: $equipmentIds)
