@@ -22,6 +22,17 @@ query equipments(
   count: equipmentsCount(filters: $filters)
 }
 
+query equipmentsAndPlaces {
+  places {
+    id
+    label: name
+  }
+  equipments {
+    id: terminologyCode
+    label: name
+  }
+}
+
 mutation createEquipment(
   $name: String!
   $model: String

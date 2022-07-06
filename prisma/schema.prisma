@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
@@ -16,17 +16,17 @@ datasource db {
 // }
 
 model Person {
-  id                   String    @id @default(uuid())
-  firstNameAndLastName String?   @db.VarChar(255)
-  place                Place?    @relation(fields: [placeId], references: [id])
+  id                   String    @id @default(uuid()) @map("_id")
+  firstNameAndLastName String?
+  place                Place?    @relation(fields: [placeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   placeId              String?   @unique
-  state                String?   @db.VarChar(255)
-  city                 String?   @db.VarChar(255)
-  postalCode           String?   @db.VarChar(255)
-  address              String?   @db.VarChar(255)
-  telephone            String?   @db.VarChar(255)
-  mobileNumber         String?   @db.VarChar(255)
-  website              String?   @db.VarChar(255)
+  state                String?
+  city                 String?
+  postalCode           String?
+  address              String?
+  telephone            String?
+  mobileNumber         String?
+  website              String?
   role                 Role      @relation(fields: [roleId], references: [id])
   roleId               String
   createdAt            DateTime  @default(now())
@@ -37,9 +37,9 @@ model Person {
 }
 
 model Place {
-  id               String      @id @default(uuid())
-  name             String      @unique @db.VarChar(255)
-  superPlace       Place?      @relation("SuperPlaceSubset", fields: [superPlaceId], references: [id])
+  id               String      @id @default(uuid()) @map("_id")
+  name             String      @unique
+  superPlace       Place?      @relation("SuperPlaceSubset", fields: [superPlaceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   superPlaceId     String?
   subset           Place[]     @relation("SuperPlaceSubset")
   isCategory       Boolean     @default(false)
@@ -65,27 +65,27 @@ model Place {
 }
 
 model Equipment {
-  name              String   @db.VarChar(255)
-  model             String?  @db.VarChar(3000)
-  factory           String?  @db.VarChar(1000)
-  serialNumber      String   @db.VarChar(300)
-  productionYear    String?  @db.VarChar(300)
-  installationYear  String?  @db.VarChar(300)
-  terminologyCode   String   @id
+  name              String
+  model             String?
+  factory           String?
+  serialNumber      String
+  productionYear    String?
+  installationYear  String?
+  terminologyCode   String   @id @map("_id")
   hasInstructions   Boolean
   instruction       String?
   picture           String?
   supportCompany    Place?   @relation(fields: [supportCompanyId], references: [id])
   supportCompanyId  String?
-  supportTelephone1 String?  @db.VarChar(300)
-  supportTelephone2 String?  @db.VarChar(100)
+  supportTelephone1 String?
+  supportTelephone2 String?
   createdAt         DateTime @default(now())
   editedAt          DateTime @updatedAt
   assets            Asset[]
 }
 
 model Asset {
-  id                 String    @id @default(uuid())
+  id                 String    @id @default(uuid()) @map("_id")
   equipment          Equipment @relation(fields: [equipmentId], references: [terminologyCode])
   equipmentId        String
   publicPropertyCode String
@@ -97,7 +97,7 @@ model Asset {
 }
 
 model Tag {
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) @map("_id")
   asset     Asset    @relation(fields: [assetId], references: [id])
   assetId   String   @unique
   createdAt DateTime @default(now())
@@ -105,7 +105,7 @@ model Tag {
 }
 
 model License {
-  id           String   @id @default(uuid())
+  id           String   @id @default(uuid()) @map("_id")
   fromPerson   Person   @relation(name: "fromLicenses", fields: [fromPersonId], references: [id])
   fromPersonId String
   toPerson     Person   @relation(name: "toLicenses", fields: [toPersonId], references: [id])
@@ -124,7 +124,7 @@ model License {
 }
 
 model Role {
-  id              String   @id @default(uuid())
+  id              String   @id @default(uuid()) @map("_id")
   name            String?  @unique
   viewPerson      Boolean  @default(false)
   createPerson    Boolean

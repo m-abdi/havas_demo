@@ -283,6 +283,12 @@ const typeDefs = /* GraphQL */ `
       supportTelephone2: String
       edit: String
     ): Equipment!
+    createAsset(
+      equipmentId: String!
+      publicPropertyCode: String!
+      placeId: String!
+      edit: String
+    ): Place!
     createCategory(name: String!, superPlaceId: String!): ID!
   }
 `;

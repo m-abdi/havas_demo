@@ -83,6 +83,15 @@ export async function canCreateEquipment(session: Session) {
   });
   return user?.role.createEquipment;
 }
+export async function canCreateAsset(session: Session) {
+  const user = await prisma.person.findFirst({
+    where: {
+      id: session.user.id,
+    },
+    include: { role: true },
+  });
+  return user?.role.createAsset;
+}
 export async function canDeleteRols(session: Session) {
   const user = await prisma.person.findFirst({
     where: {

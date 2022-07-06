@@ -1,6 +1,7 @@
 import {
   AllPersonsDocument,
   AssetsDocument,
+  CreateAssetDocument,
   CreateNewPersonDocument,
   DeleteAssetsDocument,
   DeleteEquipmentsDocument,
@@ -44,11 +45,11 @@ export default function useAssets(
       filters,
     },
   });
-  // new person mutation to server
+  // new asset mutation to server
   const [
     createAssetMutation,
-    { data: createdPerson, loading: sending, error: creationError },
-  ] = useMutation(CreateNewPersonDocument);
+    {  loading: sending },
+  ] = useMutation(CreateAssetDocument);
   // delete
   const [deleteAssetMutation, { loading: deleting }] =
     useMutation(DeleteAssetsDocument);
@@ -78,20 +79,7 @@ export default function useAssets(
   );
   // creation handler
   const createNew = useCallback(
-    async (
-      id: string,
-      firstNameAndLastName: string,
-      placeId: string,
-      roleId: string,
-      state: string,
-      city: string,
-      postalCode: string,
-      address: string,
-      telephone: string,
-      mobileNumber: string,
-      website: string,
-      edit: string
-    ) => {
+    async (equipmentId: string, publicPropertyCode: string, placeId: string, edit: string) => {
       useNotification(
         'sending',
         setSnackbarColor,
@@ -99,30 +87,22 @@ export default function useAssets(
         setSnackbarOpen
       );
       try {
-        const createdPerson = await createAssetMutation({
+        const createdAsset = await createAssetMutation({
           variables: {
-            id,
-            firstNameAndLastName,
+            equipmentId,
+            publicPropertyCode,
             placeId,
-            roleId,
-            state,
-            city,
-            postalCode,
-            address,
-            telephone,
-            mobileNumber,
-            website,
             edit,
           },
         });
-        if (createdPerson) {
+        if (createdAsset) {
           useNotification(
             'success',
             setSnackbarColor,
             setSnackbarMessage,
             setSnackbarOpen
           );
-          router.push('/users/persons');
+          router.push('/users/assets');
         } else {
           useNotification(
             'error',
@@ -155,7 +135,7 @@ export default function useAssets(
       );
       try {
         const resp = await deleteAssetMutation({
-          variables: {  assetIds },
+          variables: { assetIds },
           refetchQueries: [{ query: AssetsDocument }, 'assets'],
         });
 

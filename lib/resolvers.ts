@@ -7,6 +7,7 @@ import {
   Role,
 } from './resolvers-types';
 import {
+  canCreateAsset,
   canCreateEquipment,
   canCreatePerson,
   canCreatePlace,
@@ -239,7 +240,7 @@ const resolvers: Resolvers = {
         const equipmentsDB = await prisma.equipment.findMany({
           take: limit ?? 2000000,
           skip: offset ?? 0,
-          include: {supportCompany: true},
+          include: { supportCompany: true },
           where: parsedFilters,
         });
 
@@ -666,6 +667,40 @@ const resolvers: Resolvers = {
         },
       });
       return createdEquipment;
+    },
+    async createAsset(
+      _,
+      { equipmentId, publicPropertyCode, placeId, edit }: any,
+      _context: any
+    ): Promise<any> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canCreateAsset(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+
+      if (edit) {
+        const editedAsset = await prisma.asset.update({
+          where: {
+            id: edit,
+          },
+          data: {
+            equipment: { connect: { terminologyCode: equipmentId } },
+            publicPropertyCode,
+            place: { connect: { id: placeId } },
+          },
+        });
+        return editedAsset;
+      }
+      const createdAsset = await prisma.asset.create({
+        data: {
+          equipment: { connect: { terminologyCode: equipmentId } },
+          publicPropertyCode,
+          place: { connect: { id: placeId } },
+        },
+      });
+      return createdAsset;
     },
     async deleteRoles(_parent, _args, _context, _info): Promise<any> {
       // check authentication and permission

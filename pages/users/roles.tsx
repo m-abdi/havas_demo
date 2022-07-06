@@ -106,66 +106,35 @@ export default function roles() {
 
   return (
     <Layout pageName={pageName}>
-      <Head>
-        <title>{`${pageName}`} | حواس</title>
-      </Head>
-      {loading ? (
-        <Loader center />
-      ) : error ? null : (
-        data && (
-          <Container maxWidth='xl' sx={{ position: 'relative', p: 0 }}>
-            <RoleTable
-              itemsPerPage={itemsPerPage}
-              setItemsPerPage={setItemsPerPage}
-              fetchMoreRows={fetchMoreRows}
-              session={session}
-              loading={loading}
-              router={router}
-              pageNumber={pageNumber}
-              hasNextRole={data?.hasNextRole}
-              rows={data?.roles as RoleType[]}
-              allRolesCount={data?.countAllRoles as number}
-              checkedAll={checkedAll}
-              setCheckedAll={setCheckedAll}
-              checkedItems={checkedItems}
-              setCheckedItems={setCheckedItems}
-              setDeleteDialog={setDeleteRoleDialog}
-              // checkedAllPages={
-              //   router?.query?.checkedAllPages
-              //     ? JSON.parse(router?.query?.checkedAllPages)
-              //     : []
-              // }
-            />
-            <Box
-              sx={{
-                position: 'absolute',
-                top: -68,
-                right: '35px',
-              }}
-            >
-              <Button
-                variant='contained'
-                disabled={
-                  Object.keys(checkedItems).length === 0 ||
-                  Object.keys(checkedItems).filter((k) => checkedItems[k])
-                    .length === 0 ||
-                  !session?.user?.role?.deleteRole
-                }
-                label='حذف'
-                color='error'
-                size='large'
-                onClick={() => setDeleteRoleDialog(true)}
-              />
-            </Box>
-            <DeleteDialog
-              text='با این کار تمام نقش های انتخاب شده و افراد در آن نقش ها پاک خواهند شد!'
-              open={deleteRoleDialog}
-              closeDialog={() => setDeleteRoleDialog(false)}
-              confirmDelete={deleteRoles}
-            />
-          </Container>
-        )
-      )}
+      <RoleTable
+        itemsPerPage={itemsPerPage}
+        setItemsPerPage={setItemsPerPage}
+        fetchMoreRows={fetchMoreRows}
+        session={session}
+        loading={rolesDataLoading}
+        router={router}
+        pageNumber={pageNumber}
+        hasNextRole={data?.hasNextRole as boolean}
+        rows={data?.roles as RoleType[]}
+        allRolesCount={data?.countAllRoles as number}
+        checkedAll={checkedAll}
+        setCheckedAll={setCheckedAll}
+        checkedItems={checkedItems}
+        setCheckedItems={setCheckedItems}
+        setDeleteDialog={setDeleteRoleDialog}
+        // checkedAllPages={
+        //   router?.query?.checkedAllPages
+        //     ? JSON.parse(router?.query?.checkedAllPages)
+        //     : []
+        // }
+      />
+
+      <DeleteDialog
+        text='با این کار تمام نقش های انتخاب شده و افراد در آن نقش ها پاک خواهند شد!'
+        open={deleteRoleDialog}
+        closeDialog={() => setDeleteRoleDialog(false)}
+        confirmDelete={deleteRoles}
+      />
     </Layout>
   );
 }

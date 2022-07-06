@@ -15,7 +15,7 @@ import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/system';
 import { Button } from '../../Components/Button';
 import HomeIcon from '@mui/icons-material/Home';
-import Loader from 'src/Components/Loader';
+import Loader from '../../Components/Loader';
 import { useForm } from 'react-hook-form';
 
 const Form1 = styled('form', { name: 'form1' })(({ theme }) => ({
@@ -148,7 +148,9 @@ export default function NewEquipment({
       existingEquipment?.terminologyCode ?? ''
     );
   };
-
+  if (sending) {
+    return <Loader center />;
+  }
   return (
     <Container maxWidth='lg' sx={{ position: 'relative', p: '8px' }}>
       <Form1 onSubmit={handleSubmit(submitHandler)}>
@@ -305,7 +307,7 @@ export default function NewEquipment({
               {loading ? (
                 <Skeleton
                   variant='rectangular'
-                  width={241}
+                  width={261}
                   height={40}
                   sx={{ borderRadius: '5px' }}
                 />
