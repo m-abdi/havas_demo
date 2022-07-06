@@ -2,10 +2,12 @@ query assets($limit: Int = 1000000, $offset: Int = 0, $filters: AssetFilter) {
   assets(limit: $limit, offset: $offset, filters: $filters) {
     id
     equipment {
+      id: terminologyCode
       name
     }
     publicPropertyCode
     place {
+      id
       name
     }
     createdAt

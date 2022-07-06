@@ -154,11 +154,13 @@ export default function NewAsset({
                 disablePortal
                 id='equipment'
                 options={equipments}
-                // defaultValue={
-                //   existingPerson?.role
-                //     ? roles.find((p) => p?.id === existingPerson?.role?.id)
-                //     : null
-                // }
+                defaultValue={
+                  existingAsset?.equipment
+                    ? equipments.find(
+                        (p) => p?.id === existingAsset?.equipment?.id
+                      )
+                    : null
+                }
                 value={equipment}
                 onChange={(event, newValue) => {
                   setEquipment(newValue as any);
@@ -217,12 +219,12 @@ export default function NewAsset({
                 disablePortal
                 id='place'
                 options={places}
-                // defaultValue={
-                //   existingPerson?.role
-                //     ? roles.find((p) => p?.id === existingPerson?.role?.id)
-                //     : null
-                // }
-                value={equipment}
+                defaultValue={
+                  existingAsset?.place
+                    ? places.find((p) => p?.id === existingAsset?.place?.id)
+                    : null
+                }
+                value={place}
                 onChange={(event, newValue) => {
                   setPlace(newValue as any);
                   // setFactoryError(false);

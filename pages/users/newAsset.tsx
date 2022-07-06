@@ -30,7 +30,7 @@ export default function newAsset() {
   const existingAsset = useMemo(
     () =>
       JSON.parse(
-        router?.query?.equipment ? (router?.query?.equipment as string) : '{}'
+        router?.query?.asset ? (router?.query?.asset as string) : '{}'
       ),
     [router?.isReady]
   );

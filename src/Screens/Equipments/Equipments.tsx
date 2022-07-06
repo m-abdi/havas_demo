@@ -13,6 +13,7 @@ import {
   MenuItem,
   Skeleton,
   Stack,
+  Switch,
   Table,
   TableContainer,
   TablePagination,
@@ -597,7 +598,6 @@ export default memo(function Equipments({
                                 });
                                 fetchMoreRows(e, 0);
                               }, 1000);
-                              // setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
                             }}
                             onClick={(e) => {
                               e.preventDefault();
@@ -618,34 +618,51 @@ export default memo(function Equipments({
                         )}
                         {['hasInstructions'].includes(column.id) && (
                           <FormControl>
-                            <Stack
-                              direction='row'
-                              alignItems={'center'}
-                              justifyContent='center'
+                            <Box
+                              onClick={(e) => {
+                                e.stopPropagation();
+                              }}
                             >
-                              <FormControlLabel
-                                label='دارد'
-                                color='success'
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setHasInstructions(true);
-                                }}
-                                checked={hasInstructions}
-                                control={<Checkbox color='success' />}
-                              ></FormControlLabel>
-                              <FormControlLabel
-                                label='ندارد'
-                                color='error'
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setHasInstructions(false);
-                                }}
-                                checked={
-                                  hasInstructions === false ? true : false
-                                }
-                                control={<Checkbox color='error' />}
-                              ></FormControlLabel>
-                            </Stack>
+                              <Stack
+                                direction={'row'}
+                                spacing={1}
+                                alignItems='center'
+                              >
+                                <Typography>ندارد</Typography>
+                                <Switch
+                                  id='hasInstructions'
+                                  checked={hasInstructions}
+                                  color='success'
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                  }}
+                                  onChange={(e) => {
+                                    e.stopPropagation();
+                                    setHasInstructions(!hasInstructions);
+                                    clearTimeout(delayTimer);
+                                    delayTimer = setTimeout(function () {
+                                      setFilters({
+                                        ...filters,
+                                        [column.id === 'supportCompany.name'
+                                          ? 'supportCompany'
+                                          : column.id]:
+                                          column.id === 'supportCompany.name'
+                                            ? {
+                                                name: {
+                                                  contains: e.target.value,
+                                                },
+                                              }
+                                            : column.id === 'hasInstructions'
+                                            ? !hasInstructions
+                                            : { contains: e.target.value },
+                                      });
+                                      fetchMoreRows(e, 0);
+                                    }, 1000);
+                                  }}
+                                />
+                                <Typography>دارد</Typography>
+                              </Stack>
+                            </Box>
                           </FormControl>
                         )}
                       </Stack>

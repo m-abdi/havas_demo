@@ -218,7 +218,7 @@ const resolvers: Resolvers = {
       if (filters) {
         const parsedFilters = Object.fromEntries(
           Object.entries(filters).filter((e) => {
-            if (e[0] === 'hasInstruncions') {
+            if (e[0] === 'hasInstructions') {
               return true;
             } else if (
               e[0] === 'supportCompany' &&
@@ -266,7 +266,7 @@ const resolvers: Resolvers = {
       if (filters) {
         const parsedFilters = Object.fromEntries(
           Object.entries(filters).filter((e) => {
-            if (e[0] === 'hasInstruncions') {
+            if (e[0] === 'hasInstructions') {
               return true;
             } else if (
               e[0] === 'supportCompany' &&
@@ -313,7 +313,7 @@ const resolvers: Resolvers = {
         const assetsDB = await prisma.asset.findMany({
           take: limit ?? 2000000,
           skip: offset ?? 0,
-
+          include: { equipment: true, place: true },
           where: parsedFilters,
         });
 
@@ -322,6 +322,7 @@ const resolvers: Resolvers = {
       const assetsDB = await prisma.asset.findMany({
         take: limit ?? 2000000,
         skip: offset ?? 0,
+        include: { equipment: true, place: true },
       });
 
       return assetsDB as any;

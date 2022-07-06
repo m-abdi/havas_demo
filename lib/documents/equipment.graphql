@@ -23,11 +23,11 @@ query equipments(
 }
 
 query equipmentsAndPlaces {
-  places {
+  places(limit: 2000000, offset: 0, filters: null) {
     id
     label: name
   }
-  equipments {
+  equipments(limit: 2000000, offset: 0, filters: null) {
     id: terminologyCode
     label: name
   }

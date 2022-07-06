@@ -691,7 +691,7 @@ export default memo(function Assets({
         </Box>
       </Styles>
       <DeleteDialog
-        text='با این کار تمامی اماکن انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
+        text='با این کار تمامی موجودی های انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
         open={deletePersonDialog}
         closeDialog={() => setDeletePersonDialog(false)}
         confirmDelete={async () => {
@@ -713,7 +713,7 @@ export default memo(function Assets({
                 variant='text'
                 onClick={() =>
                   router.push(
-                    `/users/newPlace?edit=1&place=${JSON.stringify(choosedRow)}`
+                    `/users/newAsset?edit=1&asset=${JSON.stringify(choosedRow)}`
                   )
                 }
                 label='ویرایش'
