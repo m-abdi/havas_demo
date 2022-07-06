@@ -459,13 +459,13 @@ const resolvers: Resolvers = {
       // const bcrypt = (await import("bcrypt")).default
       // const salt = await bcrypt.genSalt(10);
       // const hashedPassword = await bcrypt.hash(_args.telephone as string, salt);
-      if (_args.edit) {
+      if (_args?.edit) {
         const editedPerson = await prisma.person.update({
           where: {
             id: _args.edit,
           },
           data: {
-            id: _args.id as string,
+            // id: _args.id,
             firstNameAndLastName: _args.firstNameAndLastName,
             place: { connect: { id: _args.placeId } },
             role: { connect: { id: _args.roleId } },
@@ -642,7 +642,7 @@ const resolvers: Resolvers = {
             serialNumber,
             productionYear,
             installationYear,
-            terminologyCode,
+            // terminologyCode,
             hasInstructions,
             supportCompany: { connect: { id: supportCompanyId } },
             supportTelephone1,
