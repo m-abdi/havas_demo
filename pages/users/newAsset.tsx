@@ -17,7 +17,7 @@ import usePlaces from 'src/Logic/usePlaces';
 import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 
-const pageName = 'تجهیز جدید';
+const pageName = 'موجودی جدید';
 
 export default function newAsset() {
   // access to browser url input
