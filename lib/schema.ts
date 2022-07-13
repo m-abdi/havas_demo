@@ -155,6 +155,41 @@ const typeDefs = /* GraphQL */ `
     deleteRole: Boolean
     createdAt: String
   }
+  # type Level {
+  #   stageID     :           ID!
+  #   stageName     :         String!
+  #   byUser         :        Person
+  #   byUserId       :        String
+  #   byUsersWithRoles  :     [Person]
+  #   byUsersWithPermissions: [Role]
+  #   Process             :   Process
+  #   processProcessNumber  : String
+  # }
+
+  type Stage {
+    stageID: String
+    stageName: String
+    submittedByUser: Person
+    submittedFormData: String
+    dateCreated: String
+    dateModified: String
+  }
+
+  # model Process {
+  #   processNumber String  @id @default(uuid()) @map("_id")
+  #   processName   String
+  #   ignoreStage   Int
+  #   levels        Level[]
+  # }
+
+  type Workflow {
+    id: ID!
+    workflowNumber: Int
+    instanceOfProcess: Process
+    passedStageNames: String
+    nextStageName: String
+    passedStages: [Stage]
+  }
   input RelatedFieldFilter {
     name: ContainsSearchType!
   }

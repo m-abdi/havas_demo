@@ -34,6 +34,11 @@ model Person {
   fromLicenses         License[] @relation("fromLicenses")
   toLicenses           License[] @relation("toLicenses")
   password             String
+  // levels               Level     @relation("levelToPerson")
+
+
+  Havaleh Havaleh[]
+  Stage   Stage[]
 }
 
 model Place {
@@ -156,6 +161,64 @@ model Role {
   deleteRole      Boolean
   Person          Person[]
   createdAt       DateTime @default(now())
+
+}
+
+// model Level {
+//   stageID             String   @id @map("_id")
+//   stageName           String
+//   byUser              Person   @relation("levelToPerson", references: [id], fields: [byUserId])
+//   byUserId            String
+//   byUsersWithRoles    Role[]   @relation(references: [id], fields: [byUsersWithRolesIds])
+//   byUsersWithRolesIds String[]
+
+//   Process              Process? @relation(fields: [processProcessNumber], references: [processNumber])
+//   processProcessNumber String?
+// }
+
+model Havaleh {
+  id                          String   @id @map("_id")
+  date                        DateTime @default(now())
+  corporationRepresentative   Person   @relation(references: [id], fields: [corporationRepresentativeId])
+  corporationRepresentativeId String
+  deliverer                   String
+  transportationName          String
+  transportationTelephone     String
+  transportationTelephone2    String
+  description          String
+  receivingDescription        String
+
+}
+
+model Stage {
+  stageID           String    @id @map("_id")
+  stageName         String
+  submittedByUser   Person    @relation(fields: [submittedByUserId], references: [id])
+  submittedByUserId String
+  havalehData       String
+  dateCreated       DateTime  @default(now())
+  dateModified      DateTime  @updatedAt
+  Workflow          Workflow? @relation(fields: [workflowId], references: [id])
+  workflowId        String?
+}
+
+model Process {
+  processNumber String     @id @default(uuid()) @map("_id")
+  processName   String
+  ignoreStage   Int
+  // levels        Level[]    @relation(references: [stageID], fields: [levelsIds])
+  // levelsIds     String[]
+  workflows     Workflow[]
+}
+
+model Workflow {
+  id                  String   @id @default(uuid()) @map("_id")
+  workflowNumber      Int
+  instanceOfProcess   Process  @relation(fields: [instanceOfProcessId], references: [processNumber])
+  instanceOfProcessId String
+  passedStageNames    String[]
+  nextStageName       String
+  passedStages        Stage[]
 }
 
 enum LicenseType {
