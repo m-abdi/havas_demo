@@ -8,6 +8,7 @@ import {
   styled,
 } from '@mui/material';
 
+import { Button } from '../../Components/Button';
 import { DatePicker } from 'jalali-react-datepicker';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
@@ -83,10 +84,14 @@ const columns = [
 export default function EnterExitCorporation({
   loading,
   sending,
+  workflowNumber,
+  corporationRepresentative,
   existingEnterWorkflow,
 }: {
   loading: boolean;
   sending: boolean;
+  workflowNumber: number;
+  corporationRepresentative: { id: string; label: string };
   existingEnterWorkflow: any;
 }) {
   // react-form-hooks
@@ -100,6 +105,10 @@ export default function EnterExitCorporation({
     'گاز بیهوشی',
   ]);
   const [date, setDate] = useState(Date.now());
+  // handlers
+  const submitHandler = (data: any) => {
+    console.log({ ...data, date, corporationRepresentativeId: corporationRepresentative?.id });
+  };
 
   const handleChange = (event: any) => {
     const {
@@ -121,11 +130,31 @@ export default function EnterExitCorporation({
           </Input1> */}
           <Input1>
             <Label1>شماره گردش کار</Label1>
-            <TextField size='small' disabled />
+            <TextField
+              size='small'
+              disabled
+              id='workflowNumber'
+              inputProps={{
+                ...register('workflowNumber', {
+                  required: true,
+                  value: workflowNumber,
+                }),
+              }}
+            />
           </Input1>
           <Input1>
             <Label1>نماینده شرکت</Label1>
-            <TextField size='small' disabled />
+            <TextField
+              size='small'
+              disabled
+              id='corporationRepresentative'
+              inputProps={{
+                ...register('corporationRepresentative', {
+                  required: true,
+                  value: corporationRepresentative?.label,
+                }),
+              }}
+            />
           </Input1>
           <Input1>
             <Label1>تاریخ ثبت حواله</Label1>
@@ -148,7 +177,6 @@ export default function EnterExitCorporation({
                 value={date}
                 onClickSubmitButton={({ value }) => {
                   setDate(new Date(value).getTime());
-                  
                 }}
               />
             </Box>
@@ -1263,7 +1291,7 @@ export default function EnterExitCorporation({
   }
 
   return (
-    <Form1 action=''>
+    <Form1 onSubmit={handleSubmit(submitHandler)}>
       <ExitCorporationForm />
       <Input1>
         <Label1>مشاهده ستون های جدول</Label1>
@@ -1293,6 +1321,15 @@ export default function EnterExitCorporation({
       <Row1 sx={{ justifyContent: 'center' }}>
         <EditableHtmlTable />
       </Row1>
+      <Box>
+        <Button
+          id='submitButton'
+          label='ارسال'
+          size='large'
+          color='success'
+          variant='contained'
+        />
+      </Box>
     </Form1>
   );
 }
