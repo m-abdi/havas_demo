@@ -411,7 +411,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='oxygen_50l_factory'
                   inputProps={{
                     ...register('oxygen_50l_factory', {
@@ -431,7 +432,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='bihoshi_50l_factory'
                   inputProps={{
                     ...register('bihoshi_50l_factory', {
@@ -451,7 +453,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='shaft_50l_factory'
                   inputProps={{
                     ...register('shaft_50l_factory', {
@@ -471,7 +474,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='controlValve_50l_factory'
                   inputProps={{
                     ...register('controlValve_50l_factory', {
@@ -489,7 +493,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='co2_50l_factory'
                   inputProps={{
                     ...register('co2_50l_factory', {
@@ -509,7 +514,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='argon_50l_factory'
                   inputProps={{
                     ...register('argon_50l_factory', {
@@ -527,7 +533,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='azete_50l_factory'
                   inputProps={{
                     ...register('azete_50l_factory', {
@@ -547,7 +554,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='dryAir_50l_factory'
                   inputProps={{
                     ...register('dryAir_50l_factory', {
@@ -567,7 +575,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='entonox_50l_factory'
                   inputProps={{
                     ...register('entonox_50l_factory', {
@@ -587,7 +596,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='acetylene_50l_factory'
                   inputProps={{
                     ...register('acetylene_50l_factory', {
@@ -607,7 +617,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='lpg_50l_factory'
                   inputProps={{
                     ...register('lpg_50l_factory', {
@@ -632,7 +643,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='oxygen_50l_customer'
                   inputProps={{
                     ...register('oxygen_50l_customer', {
@@ -652,7 +664,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='bihoshi_50l_customer'
                   inputProps={{
                     ...register('bihoshi_50l_customer', {
@@ -672,7 +685,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='shaft_50l_customer'
                   inputProps={{
                     ...register('shaft_50l_customer', {
@@ -692,7 +706,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='controlValve_50l_customer'
                   inputProps={{
                     ...register('controlValve_50l_customer', {
@@ -710,7 +725,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='co2_50l_customer'
                   inputProps={{
                     ...register('co2_50l_customer', {
@@ -730,7 +746,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='argon_50l_customer'
                   inputProps={{
                     ...register('argon_50l_customer', {
@@ -748,7 +765,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='azete_50l_customer'
                   inputProps={{
                     ...register('azete_50l_customer', {
@@ -768,7 +786,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='dryAir_50l_customer'
                   inputProps={{
                     ...register('dryAir_50l_customer', {
@@ -788,7 +807,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='entonox_50l_customer'
                   inputProps={{
                     ...register('entonox_50l_customer', {
@@ -808,7 +828,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='acetylene_50l_customer'
                   inputProps={{
                     ...register('acetylene_50l_customer', {
@@ -828,7 +849,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='lpg_50l_customer'
                   inputProps={{
                     ...register('lpg_50l_customer', {
@@ -857,7 +879,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='oxygen_40l_factory'
                   inputProps={{
                     ...register('oxygen_40l_factory', {
@@ -877,7 +900,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='bihoshi_40l_factory'
                   inputProps={{
                     ...register('bihoshi_40l_factory', {
@@ -897,7 +921,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='shaft_40l_factory'
                   inputProps={{
                     ...register('shaft_40l_factory', {
@@ -917,7 +942,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='controlValve_40l_factory'
                   inputProps={{
                     ...register('controlValve_40l_factory', {
@@ -935,7 +961,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='co2_40l_factory'
                   inputProps={{
                     ...register('co2_40l_factory', {
@@ -955,7 +982,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='argon_40l_factory'
                   inputProps={{
                     ...register('argon_40l_factory', {
@@ -973,7 +1001,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='azete_40l_factory'
                   inputProps={{
                     ...register('azete_40l_factory', {
@@ -993,7 +1022,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='dryAir_40l_factory'
                   inputProps={{
                     ...register('dryAir_40l_factory', {
@@ -1013,7 +1043,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='entonox_40l_factory'
                   inputProps={{
                     ...register('entonox_40l_factory', {
@@ -1033,7 +1064,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='acetylene_40l_factory'
                   inputProps={{
                     ...register('acetylene_40l_factory', {
@@ -1053,7 +1085,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='lpg_40l_factory'
                   inputProps={{
                     ...register('lpg_40l_factory', {
@@ -1078,7 +1111,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='oxygen_40l_customer'
                   inputProps={{
                     ...register('oxygen_40l_customer', {
@@ -1098,7 +1132,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='bihoshi_40l_customer'
                   inputProps={{
                     ...register('bihoshi_40l_customer', {
@@ -1118,7 +1153,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='shaft_40l_customer'
                   inputProps={{
                     ...register('shaft_40l_customer', {
@@ -1138,7 +1174,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='controlValve_40l_customer'
                   inputProps={{
                     ...register('controlValve_40l_customer', {
@@ -1156,7 +1193,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='co2_40l_customer'
                   inputProps={{
                     ...register('co2_40l_customer', {
@@ -1176,7 +1214,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='argon_40l_customer'
                   inputProps={{
                     ...register('argon_40l_customer', {
@@ -1194,7 +1233,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='azete_40l_customer'
                   inputProps={{
                     ...register('azete_40l_customer', {
@@ -1214,7 +1254,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='dryAir_40l_customer'
                   inputProps={{
                     ...register('dryAir_40l_customer', {
@@ -1234,7 +1275,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='entonox_40l_customer'
                   inputProps={{
                     ...register('entonox_40l_customer', {
@@ -1254,7 +1296,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='acetylene_40l_customer'
                   inputProps={{
                     ...register('acetylene_40l_customer', {
@@ -1274,7 +1317,8 @@ export default function EnterExitCorporation({
               >
                 <TextField
                   size='small'
-                  sx={{ width: '100%' }}
+                                    type="number"
+sx={{ width: '100%' }}
                   id='lpg_40l_customer'
                   inputProps={{
                     ...register('lpg_40l_customer', {
