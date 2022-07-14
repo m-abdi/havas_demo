@@ -175,17 +175,17 @@ const typeDefs = /* GraphQL */ `
     dateModified: String
   }
 
-  # model Process {
-  #   processNumber String  @id @default(uuid()) @map("_id")
-  #   processName   String
-  #   ignoreStage   Int
-  #   levels        Level[]
+  # type Process {
+  #   processNumber: ID!
+  #   processName: String!
+  #   ignoreStage: Int
+  #   levels: [Level]
   # }
 
   type Workflow {
     id: ID!
     workflowNumber: Int
-    instanceOfProcess: Process
+    # instanceOfProcess: Process
     passedStageNames: String
     nextStageName: String
     passedStages: [Stage]
@@ -263,6 +263,7 @@ const typeDefs = /* GraphQL */ `
     roles(limit: Int!, offset: Int!): [Role!]
     hasNextRole(limit: Int!, offset: Int!): Boolean!
     countAllRoles(limit: Int!, offset: Int!): Int
+    getWorkflowNumber: String!
   }
   type Mutation {
     createRole(name: String!, permissions: Permissions!, edit: String): Role!

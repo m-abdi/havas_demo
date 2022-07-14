@@ -19,6 +19,7 @@ import {
   canDeleteRols,
   canViewAssets,
   canViewEquipments,
+  canViewLicenses,
   canViewPerson,
   canViewPlaces,
   canViewRoles,
@@ -418,6 +419,16 @@ const resolvers: Resolvers = {
       }
 
       return await prisma.role.count();
+    },
+    async getWorkflowNumber(_: any, __: any, _context: any): Promise<string> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canViewLicenses(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+
+      return ((await prisma.workflow.count()) + 1).toString();
     },
   },
   Mutation: {

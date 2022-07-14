@@ -46,6 +46,15 @@ export async function canViewAssets(session: Session) {
   });
   return user?.role.viewAsset;
 }
+export async function canViewLicenses(session: Session) {
+  const user = await prisma.person.findFirst({
+    where: {
+      id: session.user.id,
+    },
+    include: { role: true },
+  });
+  return user?.role.viewLicense;
+}
 export async function canCreateRole(session: Session) {
   const user = await prisma.person.findFirst({
     where: {

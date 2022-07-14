@@ -4,6 +4,7 @@ import {
   ListItemText,
   MenuItem,
   Select,
+  Skeleton,
   TextField,
   styled,
 } from '@mui/material';
@@ -11,7 +12,7 @@ import { memo, useCallback, useMemo, useState } from 'react';
 
 import { Button } from '../../Components/Button';
 import { DatePicker } from 'jalali-react-datepicker';
-import  EditableHtmlTable  from './EditableHtmlTable';
+import EditableHtmlTable from './EditableHtmlTable';
 import { useForm } from 'react-hook-form';
 
 const Form1 = styled('form', { name: 'form1' })(({ theme }) => ({
@@ -85,19 +86,19 @@ const columns = [
 export default function ExitCorporation({
   loading,
   sending,
-  
+
   workflowNumber,
   corporationRepresentative,
   existingWorkflow,
   createNewHandler,
-  dateT
+  dateT,
 }: {
   loading: boolean;
   sending: boolean;
   workflowNumber: string;
   corporationRepresentative: { id: string; label: string };
   existingWorkflow?: any;
-  dateT?:any
+  dateT?: any;
   createNewHandler: (
     workflowNumber: string,
     havalehId: string,
@@ -244,31 +245,49 @@ export default function ExitCorporation({
           </Input1> */}
           <Input1>
             <Label1>شماره گردش کار</Label1>
-            <TextField
-              size='small'
-              disabled
-              id='workflowNumber'
-              inputProps={{
-                ...register('workflowNumber', {
-                  required: true,
-                  value: workflowNumber,
-                }),
-              }}
-            />
+            {loading ? (
+              <Skeleton
+                variant='rectangular'
+                width={300}
+                height={40}
+                sx={{ borderRadius: '5px' }}
+              />
+            ) : (
+              <TextField
+                size='small'
+                disabled
+                id='workflowNumber'
+                inputProps={{
+                  ...register('workflowNumber', {
+                    required: true,
+                    value: workflowNumber,
+                  }),
+                }}
+              />
+            )}
           </Input1>
           <Input1>
             <Label1>نماینده شرکت</Label1>
-            <TextField
-              size='small'
-              disabled
-              id='corporationRepresentative'
-              inputProps={{
-                ...register('corporationRepresentative', {
-                  required: true,
-                  value: corporationRepresentative?.label,
-                }),
-              }}
-            />
+            {loading ? (
+              <Skeleton
+                variant='rectangular'
+                width={300}
+                height={40}
+                sx={{ borderRadius: '5px' }}
+              />
+            ) : (
+              <TextField
+                size='small'
+                disabled
+                id='corporationRepresentative'
+                inputProps={{
+                  ...register('corporationRepresentative', {
+                    required: true,
+                    value: corporationRepresentative?.label,
+                  }),
+                }}
+              />
+            )}
           </Input1>
           <Input1>
             <Label1>تاریخ ثبت حواله</Label1>
@@ -424,4 +443,3 @@ export default function ExitCorporation({
     </Form1>
   );
 }
-
