@@ -88,7 +88,7 @@ export default function ExitCorporation({
   editable = true,
   workflowNumber,
   corporationRepresentative,
-  existingWorkflow,
+  existingWorkflow = null,
   createNewHandler,
   dateT,
 }: {
@@ -497,7 +497,7 @@ export default function ExitCorporation({
         <Box
           sx={{
             position: 'absolute',
-            top: existingWorkflow ? -109 : -68,
+            top: existingWorkflow ? -187 : -68,
             right: '35px',
           }}
         >

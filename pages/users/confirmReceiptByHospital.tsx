@@ -1,6 +1,14 @@
-import { Autocomplete, Box, Container, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  Box,
+  Container,
+  Divider,
+  Stack,
+  TextField,
+} from '@mui/material';
 import React, { useMemo, useState } from 'react';
 
+import { Button } from 'src/Components/Button';
 import Head from 'next/head';
 import Layout from 'src/Components/Layout';
 import NewExitCorporation from 'src/Screens/NewExitCorporation';
@@ -26,6 +34,18 @@ export default function ConfirmReceiptByHospital() {
         <title>{`${pageName}`} | حواس</title>
       </Head>
       <Container maxWidth='lg' sx={{ position: 'relative' }}>
+        {existingWorkflow && (
+          <Box sx={{my: 2, mx: 5}}>
+            <Stack
+              direction='row'
+              alignItems={'center'}
+              justifyContent='flex-start'
+            >
+              <Button label='مغایرت' color='error' />
+            </Stack>
+            <Divider sx={{my: 1}} />
+          </Box>
+        )}
         {allEnterWorkflows && (
           <Autocomplete
             disablePortal
