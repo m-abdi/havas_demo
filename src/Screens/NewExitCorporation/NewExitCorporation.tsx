@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { memo, useCallback, useMemo, useState } from 'react';
 
+import AggregatedTable from 'src/Components/AggregatedTable';
 import { Button } from '../../Components/Button';
 import { DatePicker } from 'jalali-react-datepicker';
 import EditableHtmlTable from './EditableHtmlTable';
@@ -84,6 +85,7 @@ const columns = [
 export default function ExitCorporation({
   loading,
   sending,
+  editable = true,
   workflowNumber,
   corporationRepresentative,
   existingWorkflow,
@@ -92,6 +94,7 @@ export default function ExitCorporation({
 }: {
   loading: boolean;
   sending: boolean;
+  editable: boolean;
   workflowNumber?: string;
   corporationRepresentative?: { id: string; label: string };
   existingWorkflow?: any;
@@ -347,6 +350,7 @@ export default function ExitCorporation({
                   value: existingWorkflow?.passedStages?.[0]?.havaleh?.id,
                 }),
               }}
+              disabled={!editable}
               error={errors.havalehId?.type === 'required'}
               helperText={
                 errors.havalehId?.type === 'required' &&
@@ -359,6 +363,7 @@ export default function ExitCorporation({
             <TextField
               size='small'
               id='deliverer'
+              disabled={!editable}
               inputProps={{
                 ...register('deliverer', {
                   value:
@@ -372,6 +377,7 @@ export default function ExitCorporation({
             <TextField
               size='small'
               id='description'
+              disabled={!editable}
               inputProps={{
                 ...register('description', {
                   value:
@@ -387,6 +393,7 @@ export default function ExitCorporation({
             <TextField
               size='small'
               id='transportationName'
+              disabled={!editable}
               inputProps={{
                 ...register('transportationName', {
                   required: true,
@@ -407,6 +414,7 @@ export default function ExitCorporation({
             <TextField
               size='small'
               id='transportationTelephone'
+              disabled={!editable}
               inputProps={{
                 ...register('transportationTelephone', {
                   required: true,
@@ -427,6 +435,7 @@ export default function ExitCorporation({
             <TextField
               size='small'
               id='transportationTelephone2'
+              disabled={!editable}
               inputProps={{
                 ...register('transportationTelephone2', {
                   value:
@@ -471,16 +480,24 @@ export default function ExitCorporation({
           <TextField size='small' />
         </Input1>
         <Row1 sx={{ justifyContent: 'center' }}>
-          <EditableHtmlTable
-            selectedColumns={selectedColumns}
-            register={register}
-            existingEnterWorkflow={existingWorkflow}
-          />
+          {!existingWorkflow ? (
+            <EditableHtmlTable
+              selectedColumns={selectedColumns}
+              register={register}
+              existingEnterWorkflow={existingWorkflow}
+            />
+          ) : (
+            <AggregatedTable
+              editable={editable}
+              register={register}
+              assets={existingWorkflow?.passedStages?.[0]?.havaleh?.assets}
+            />
+          )}
         </Row1>
         <Box
           sx={{
             position: 'absolute',
-            top: existingWorkflow ?  -109 : -68 ,
+            top: existingWorkflow ? -109 : -68,
             right: '35px',
           }}
         >
