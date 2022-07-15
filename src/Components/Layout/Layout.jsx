@@ -268,9 +268,9 @@ function Layout({ children, pageName }) {
       icon: <WorkspacePremiumRoundedIcon />,
       sublists: [
         {
-          text: 'درخواست مجوز جدید',
+          text: 'ثبت خروج از شرکت',
           icon: <AddCircleOutlineOutlined />,
-          path: '/users/newLicense',
+          path: '/users/newExitCorporation',
           roleName: 'createLicense',
         },
         {

@@ -37,8 +37,7 @@ model Person {
   // levels               Level     @relation("levelToPerson")
 
 
-  Havaleh Havaleh[]
-  Stage   Stage[]
+  Stage Stage[]
 
 }
 
@@ -95,7 +94,7 @@ model Asset {
   id                 String    @id @default(uuid()) @map("_id")
   equipment          Equipment @relation(fields: [equipmentId], references: [terminologyCode])
   equipmentId        String
-  publicPropertyCode String?  @unique
+  publicPropertyCode String?   @unique
   place              Place     @relation("currentPlace", fields: [placeId], references: [id])
   placeId            String
   createdAt          DateTime  @default(now())
@@ -181,26 +180,75 @@ model Role {
 //   Process              Process? @relation(fields: [processProcessNumber], references: [processNumber])
 //   processProcessNumber String?
 // }
+type TransferedAssets {
+  oxygen_50l_factory        Int?
+  bihoshi_50l_factory       Int?
+  shaft_50l_factory         Int?
+  controlValve_50l_factory  Int?
+  co2_50l_factory           Int?
+  argon_50l_factory         Int?
+  azete_50l_factory         Int?
+  dryAir_50l_factory        Int?
+  entonox_50l_factory       Int?
+  acetylene_50l_factory     Int?
+  lpg_50l_factory           Int?
+  oxygen_50l_customer       Int?
+  bihoshi_50l_customer      Int?
+  shaft_50l_customer        Int?
+  controlValve_50l_customer Int?
+  co2_50l_customer          Int?
+  argon_50l_customer        Int?
+  azete_50l_customer        Int?
+  dryAir_50l_customer       Int?
+  entonox_50l_customer      Int?
+  acetylene_50l_customer    Int?
+  lpg_50l_customer          Int?
+  oxygen_40l_factory        Int?
+  bihoshi_40l_factory       Int?
+  shaft_40l_factory         Int?
+  controlValve_40l_factory  Int?
+  co2_40l_factory           Int?
+  argon_40l_factory         Int?
+  azete_40l_factory         Int?
+  dryAir_40l_factory        Int?
+  entonox_40l_factory       Int?
+  acetylene_40l_factory     Int?
+  lpg_40l_factory           Int?
+  oxygen_40l_customer       Int?
+  bihoshi_40l_customer      Int?
+  shaft_40l_customer        Int?
+  controlValve_40l_customer Int?
+  co2_40l_customer          Int?
+  argon_40l_customer        Int?
+  azete_40l_customer        Int?
+  dryAir_40l_customer       Int?
+  entonox_40l_customer      Int?
+  acetylene_40l_customer    Int?
+  lpg_40l_customer          Int?
+}
 
-model Havaleh {
-  id                          String  @id @map("_id")
-  date                        String
-  corporationRepresentative   Person  @relation(references: [id], fields: [corporationRepresentativeId])
-  corporationRepresentativeId String
-  deliverer                   String?
-  transportationName          String
-  transportationTelephone     String
-  transportationTelephone2    String?
-  description                 String?
-  receivingDescription        String?
+type Havaleh {
+  id                       String
+  date                     String
+  deliverer                String?
+  transportationName       String
+  transportationTelephone  String
+  transportationTelephone2 String?
+  description              String?
+  receivingDescription     String?
+  assets                   TransferedAssets
+}
 
+type UserData {
+  id                   String
+  firstNameAndLastName String
 }
 
 type Stage {
-  stageID           Int
-  stageName         String
-  submittedByUserId String
-  havalehDataId     String
+  stageID         Int
+  stageName       String
+  submittedByUser UserData
+  havaleh         Havaleh
 }
 
 model Process {

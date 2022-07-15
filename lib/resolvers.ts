@@ -354,6 +354,34 @@ const resolvers: Resolvers = {
       }
       return (await prisma.asset.count()) as number;
     },
+    async enterWorkflows(_, _args, _context): Promise<any> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canViewLicenses(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+      const { limit, offset } = _args;
+
+      const enterWorkflowsDB = await prisma.workflow.findMany({
+        take: limit ?? 2000000,
+        skip: offset ?? 0,
+      });
+
+      return enterWorkflowsDB as any;
+    },
+    async enterWorkflowsCount(_, _args, _context): Promise<number> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canViewEquipments(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+
+      return (await prisma.workflow.count({
+        where: { instanceOfProcess: { processNumber: 1 } },
+      })) as number;
+    },
     async role(_parent: any, _args: any, _context: any): Promise<any> {
       // check authentication and permission
       const { req } = _context;
@@ -701,7 +729,7 @@ const resolvers: Resolvers = {
             equipment: { connect: { terminologyCode: equipmentId } },
             publicPropertyCode,
             place: { connect: { id: placeId } },
-            status: "موجود در بیمارستان"
+            status: 'موجود در بیمارستان',
           },
         });
         return editedAsset;
@@ -711,7 +739,7 @@ const resolvers: Resolvers = {
           equipment: { connect: { terminologyCode: equipmentId } },
           publicPropertyCode,
           place: { connect: { id: placeId } },
-          status: "موجود در بیمارستان"
+          status: 'موجود در بیمارستان',
         },
       });
       return createdAsset;
@@ -886,7 +914,7 @@ const resolvers: Resolvers = {
         };
       },
       _context: any
-    ): Promise<boolean> {
+    ): Promise<string> {
       // check authentication and permission
       const { req } = _context;
       const session = await getSession({ req });
@@ -898,7 +926,7 @@ const resolvers: Resolvers = {
         /factory/.test(key)
       );
 
-      //
+      // hospital assets that have been borrowed by the corporation
       const customerAssets = Object.entries(assets).filter(([key, value]) =>
         /customer/.test(key)
       );
@@ -911,35 +939,14 @@ const resolvers: Resolvers = {
           },
           take: value,
         });
-        console.log(key.replace('_customer', ''));
-        console.log(session?.user?.place?.id);
-        
-        
         const resp = await prisma.asset.updateMany({
           where: { id: { in: borrowedAssets.map((a) => a.id) } },
           data: { status: 'در حال دریافت', deliverer },
         });
-        console.log(resp);
-        
       });
 
-      //  new havalah
-      const createdHavaleh = prisma.havaleh.create({
-        data: {
-          id: havalehId,
-          date,
-          corporationRepresentative: {
-            connect: { id: corporationRepresentativeId },
-          },
-          deliverer,
-          transportationName,
-          transportationTelephone,
-          transportationTelephone2,
-          description,
-        },
-      });
       // new enter workflow
-      const createdWorkflow = prisma.workflow.create({
+      const createdWorkflow = await prisma.workflow.create({
         data: {
           workflowNumber,
           instanceOfProcess: { connect: { processNumber: 1 } },
@@ -948,18 +955,25 @@ const resolvers: Resolvers = {
             {
               stageID: 1,
               stageName: 'ثبت خروج کپسول از شرکت',
-              submittedByUserId: session?.user?.id,
-              havalehDataId: havalehId,
+              submittedByUser: {
+                id: session?.user?.id,
+                firstNameAndLastName: session?.user?.firstNameAndLastName,
+              },
+              havaleh: {
+                id: havalehId,
+                date,
+                deliverer,
+                transportationName,
+                transportationTelephone,
+                transportationTelephone2,
+                description,
+                assets,
+              },
             },
           ],
         },
       });
-      const r = await prisma.$transaction([createdHavaleh, createdWorkflow]);
-      if (r?.[0]?.id && r?.[1]?.id) {
-        return true;
-      } else {
-        return false;
-      }
+      return createdWorkflow?.id ?? '';
     },
   },
   Person: {

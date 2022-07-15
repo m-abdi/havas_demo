@@ -2,6 +2,23 @@ query getWorkflowNumber {
   getWorkflowNumber
 }
 
+query allEnterWorkflows($limit: Int = 2000000, $offset: Int = 0) {
+  enterWorkflows(limit: $limit, offset: $offset) {
+    workflowNumber
+    passedStages {
+      havaleh {
+        id
+        description
+        deliverer
+        date
+        transportationName
+        transportationTelephone
+        transportationTelephone2
+      }
+    }
+  }
+}
+
 mutation createEnterWorkflow(
   $workflowNumber: String!
   $havalehId: String!

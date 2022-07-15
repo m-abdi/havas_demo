@@ -84,7 +84,6 @@ const columns = [
 export default function ExitCorporation({
   loading,
   sending,
-
   workflowNumber,
   corporationRepresentative,
   existingWorkflow,
@@ -93,8 +92,8 @@ export default function ExitCorporation({
 }: {
   loading: boolean;
   sending: boolean;
-  workflowNumber: string;
-  corporationRepresentative: { id: string; label: string };
+  workflowNumber?: string;
+  corporationRepresentative?: { id: string; label: string };
   existingWorkflow?: any;
   dateT?: any;
   createNewHandler: (
@@ -166,14 +165,18 @@ export default function ExitCorporation({
     'اکسیژن',
     'گاز بیهوشی',
   ]);
-  const [date, setDate] = useState(Date.now());
+  const [date, setDate] = useState(
+    existingWorkflow
+      ? parseInt(existingWorkflow?.passedStages?.[0]?.havaleh?.date)
+      : Date.now()
+  );
   // handlers
   const submitHandler = (data: any) => {
     createNewHandler(
-      workflowNumber,
+      workflowNumber as string,
       data?.havalehId,
       dateT || date.toString(),
-      corporationRepresentative?.id,
+      corporationRepresentative?.id as string,
       data?.deliverer,
       data?.description,
       data?.transportationName,
@@ -264,7 +267,7 @@ export default function ExitCorporation({
                 inputProps={{
                   ...register('workflowNumber', {
                     required: true,
-                    value: workflowNumber,
+                    value: workflowNumber || existingWorkflow?.workflowNumber,
                   }),
                 }}
                 error={errors.workflowNumber?.type === 'required'}
@@ -292,7 +295,10 @@ export default function ExitCorporation({
                 inputProps={{
                   ...register('corporationRepresentative', {
                     required: true,
-                    value: corporationRepresentative?.label,
+                    value:
+                      corporationRepresentative?.label ||
+                      existingWorkflow?.passedStages?.[0]?.submittedByUser
+                        ?.firstNameAndLastName,
                   }),
                 }}
                 error={errors.corporationRepresentative?.type === 'required'}
@@ -338,7 +344,7 @@ export default function ExitCorporation({
               inputProps={{
                 ...register('havalehId', {
                   required: true,
-                  value: existingWorkflow?.havalehId,
+                  value: existingWorkflow?.passedStages?.[0]?.havaleh?.id,
                 }),
               }}
               error={errors.havalehId?.type === 'required'}
@@ -355,7 +361,8 @@ export default function ExitCorporation({
               id='deliverer'
               inputProps={{
                 ...register('deliverer', {
-                  value: existingWorkflow?.deliverer,
+                  value:
+                    existingWorkflow?.passedStages?.[0]?.havaleh?.deliverer,
                 }),
               }}
             />
@@ -367,7 +374,8 @@ export default function ExitCorporation({
               id='description'
               inputProps={{
                 ...register('description', {
-                  value: existingWorkflow?.description,
+                  value:
+                    existingWorkflow?.passedStages?.[0]?.havaleh?.description,
                 }),
               }}
             />
@@ -382,7 +390,9 @@ export default function ExitCorporation({
               inputProps={{
                 ...register('transportationName', {
                   required: true,
-                  value: existingWorkflow?.transportationName,
+                  value:
+                    existingWorkflow?.passedStages?.[0]?.havaleh
+                      ?.transportationName,
                 }),
               }}
               error={errors.transportationName?.type === 'required'}
@@ -400,7 +410,9 @@ export default function ExitCorporation({
               inputProps={{
                 ...register('transportationTelephone', {
                   required: true,
-                  value: existingWorkflow?.transportationTelephone,
+                  value:
+                    existingWorkflow?.passedStages?.[0]?.havaleh
+                      ?.transportationTelephone,
                 }),
               }}
               error={errors.transportationTelephone?.type === 'required'}
@@ -417,7 +429,9 @@ export default function ExitCorporation({
               id='transportationTelephone2'
               inputProps={{
                 ...register('transportationTelephone2', {
-                  value: existingWorkflow?.transportationTelephone2,
+                  value:
+                    existingWorkflow?.passedStages?.[0]?.havaleh
+                      ?.transportationTelephone2,
                 }),
               }}
             />
@@ -466,7 +480,7 @@ export default function ExitCorporation({
         <Box
           sx={{
             position: 'absolute',
-            top: -68,
+            top: existingWorkflow ?  -109 : -68 ,
             right: '35px',
           }}
         >

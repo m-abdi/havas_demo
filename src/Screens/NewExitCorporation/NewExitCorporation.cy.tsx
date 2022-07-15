@@ -1,5 +1,5 @@
-import ExitCorporation from './ExitCorporation';
-import { Main } from './ExitCorporation.stories';
+import ExitCorporation from './NewExitCorporation';
+import { Main } from './NewExitCorporation.stories';
 export const testNewEnterWorkflowData = {
   workflowNumber: 'شماره گردش کاری',
   havalehId: 'شماره حواله',

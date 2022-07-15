@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import ExitCorporation from './ExitCorporation';
+import ExitCorporation from './NewExitCorporation';
 import StoriesDecorator from '../../StoriesDecorator';
 
 export default {

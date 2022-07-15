@@ -166,11 +166,23 @@ const typeDefs = /* GraphQL */ `
   #   processProcessNumber  : String
   # }
 
+  type Havaleh {
+    id: String
+    date: String
+    deliverer: String
+    transportationName: String
+    transportationTelephone: String
+    transportationTelephone2: String
+    description: String
+    receivingDescription: String
+    assets: TransferedAssetsOutput
+  }
+
   type Stage {
     stageID: String
     stageName: String
     submittedByUser: Person
-    submittedFormData: String
+    havaleh: Havaleh
     dateCreated: String
     dateModified: String
   }
@@ -186,7 +198,6 @@ const typeDefs = /* GraphQL */ `
     id: ID!
     workflowNumber: Int
     # instanceOfProcess: Process
-    passedStageNames: String
     nextStageName: String
     passedStages: [Stage]
   }
@@ -250,6 +261,52 @@ const typeDefs = /* GraphQL */ `
     publicPropertyCode: ContainsSearchType!
     place: RelatedFieldFilter!
   }
+  type TransferedAssetsOutput {
+    oxygen_50l_factory: Int
+    bihoshi_50l_factory: Int
+    shaft_50l_factory: Int
+    controlValve_50l_factory: Int
+    co2_50l_factory: Int
+    argon_50l_factory: Int
+    azete_50l_factory: Int
+    dryAir_50l_factory: Int
+    entonox_50l_factory: Int
+    acetylene_50l_factory: Int
+    lpg_50l_factory: Int
+    oxygen_50l_customer: Int
+    bihoshi_50l_customer: Int
+    shaft_50l_customer: Int
+    controlValve_50l_customer: Int
+    co2_50l_customer: Int
+    argon_50l_customer: Int
+    azete_50l_customer: Int
+    dryAir_50l_customer: Int
+    entonox_50l_customer: Int
+    acetylene_50l_customer: Int
+    lpg_50l_customer: Int
+    oxygen_40l_factory: Int
+    bihoshi_40l_factory: Int
+    shaft_40l_factory: Int
+    controlValve_40l_factory: Int
+    co2_40l_factory: Int
+    argon_40l_factory: Int
+    azete_40l_factory: Int
+    dryAir_40l_factory: Int
+    entonox_40l_factory: Int
+    acetylene_40l_factory: Int
+    lpg_40l_factory: Int
+    oxygen_40l_customer: Int
+    bihoshi_40l_customer: Int
+    shaft_40l_customer: Int
+    controlValve_40l_customer: Int
+    co2_40l_customer: Int
+    argon_40l_customer: Int
+    azete_40l_customer: Int
+    dryAir_40l_customer: Int
+    entonox_40l_customer: Int
+    acetylene_40l_customer: Int
+    lpg_40l_customer: Int
+  }
   input TransferedAssets {
     oxygen_50l_factory: Int
     bihoshi_50l_factory: Int
@@ -305,6 +362,8 @@ const typeDefs = /* GraphQL */ `
     equipmentsCount(filters: EquipmentFilter): Int
     assets(limit: Int, offset: Int, filters: AssetFilter): [Asset]!
     assetsCount(filters: AssetFilter): Int
+    enterWorkflows(limit: Int, offset: Int): [Workflow]!
+    enterWorkflowsCount: Int
     role(roleId: ID!): Role
     roles(limit: Int!, offset: Int!): [Role!]
     hasNextRole(limit: Int!, offset: Int!): Boolean!
@@ -384,7 +443,7 @@ const typeDefs = /* GraphQL */ `
       date: String!
       edit: String
       assets: TransferedAssets
-    ): Boolean
+    ): String
   }
 `;
 
