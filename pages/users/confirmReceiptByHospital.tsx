@@ -35,15 +35,19 @@ export default function ConfirmReceiptByHospital() {
       </Head>
       <Container maxWidth='lg' sx={{ position: 'relative' }}>
         {existingWorkflow && (
-          <Box sx={{my: 2, mx: 5}}>
+          <Box sx={{ my: 2, mx: 5 }}>
             <Stack
               direction='row'
               alignItems={'center'}
               justifyContent='flex-start'
             >
-              <Button label='مغایرت' color='error' />
+              <Button
+                label='مغایرت'
+                color='error'
+                onClick={() => setEditable(true)}
+              />
             </Stack>
-            <Divider sx={{my: 1}} />
+            <Divider sx={{ my: 1 }} />
           </Box>
         )}
         {allEnterWorkflows && (
