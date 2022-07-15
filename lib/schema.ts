@@ -250,6 +250,52 @@ const typeDefs = /* GraphQL */ `
     publicPropertyCode: ContainsSearchType!
     place: RelatedFieldFilter!
   }
+  input TransferedAssets {
+    oxygen_50l_factory: Int
+    bihoshi_50l_factory: Int
+    shaft_50l_factory: Int
+    controlValve_50l_factory: Int
+    co2_50l_factory: Int
+    argon_50l_factory: Int
+    azete_50l_factory: Int
+    dryAir_50l_factory: Int
+    entonox_50l_factory: Int
+    acetylene_50l_factory: Int
+    lpg_50l_factory: Int
+    oxygen_50l_customer: Int
+    bihoshi_50l_customer: Int
+    shaft_50l_customer: Int
+    controlValve_50l_customer: Int
+    co2_50l_customer: Int
+    argon_50l_customer: Int
+    azete_50l_customer: Int
+    dryAir_50l_customer: Int
+    entonox_50l_customer: Int
+    acetylene_50l_customer: Int
+    lpg_50l_customer: Int
+    oxygen_40l_factory: Int
+    bihoshi_40l_factory: Int
+    shaft_40l_factory: Int
+    controlValve_40l_factory: Int
+    co2_40l_factory: Int
+    argon_40l_factory: Int
+    azete_40l_factory: Int
+    dryAir_40l_factory: Int
+    entonox_40l_factory: Int
+    acetylene_40l_factory: Int
+    lpg_40l_factory: Int
+    oxygen_40l_customer: Int
+    bihoshi_40l_customer: Int
+    shaft_40l_customer: Int
+    controlValve_40l_customer: Int
+    co2_40l_customer: Int
+    argon_40l_customer: Int
+    azete_40l_customer: Int
+    dryAir_40l_customer: Int
+    entonox_40l_customer: Int
+    acetylene_40l_customer: Int
+    lpg_40l_customer: Int
+  }
   type Query {
     persons(limit: Int, offset: Int, filters: PersonFilter): [Person]!
     personsCount(filters: PersonFilter): Int
@@ -326,6 +372,19 @@ const typeDefs = /* GraphQL */ `
       edit: String
     ): Place!
     createCategory(name: String!, superPlaceId: String!): ID!
+    createEnterWorkflow(
+      workflowNumber: String!
+      havalehId: String!
+      deliverer: String
+      description: String
+      transportationName: String!
+      transportationTelephone: String!
+      transportationTelephone2: String
+      corporationRepresentativeId: String!
+      date: String!
+      edit: String
+      assets: TransferedAssets
+    ): Boolean
   }
 `;
 

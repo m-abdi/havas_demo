@@ -19,6 +19,7 @@ export default NextAuth({
           },
           include: {
             role: true,
+            place: {select: {id: true, name: true}}
           },
         });
         session.user = { ...session.user, ...userData, password: undefined };

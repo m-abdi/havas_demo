@@ -4,7 +4,7 @@ export function toEnglishDigit(oldString: string) {
   let tempString = oldString;
   for (let i = 0; i < find.length; i++) {
     const regex = new RegExp(find[i], 'g');
-    tempString = tempString.replace(regex, replace[i]);
+    tempString = tempString?.replace?.(regex, replace[i]);
   }
   return tempString;
 }

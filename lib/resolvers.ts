@@ -701,6 +701,7 @@ const resolvers: Resolvers = {
             equipment: { connect: { terminologyCode: equipmentId } },
             publicPropertyCode,
             place: { connect: { id: placeId } },
+            status: "موجود در بیمارستان"
           },
         });
         return editedAsset;
@@ -710,6 +711,7 @@ const resolvers: Resolvers = {
           equipment: { connect: { terminologyCode: equipmentId } },
           publicPropertyCode,
           place: { connect: { id: placeId } },
+          status: "موجود در بیمارستان"
         },
       });
       return createdAsset;
@@ -810,6 +812,154 @@ const resolvers: Resolvers = {
       });
 
       return deletedAssets?.count;
+    },
+    async createEnterWorkflow(
+      _,
+      {
+        workflowNumber,
+        havalehId,
+        deliverer,
+        description,
+        transportationName,
+        transportationTelephone,
+        transportationTelephone2,
+        corporationRepresentativeId,
+        date,
+        edit,
+        assets,
+      }: {
+        workflowNumber: string;
+        havalehId: string;
+        deliverer?: string;
+        description?: string;
+        transportationName: string;
+        transportationTelephone: string;
+        transportationTelephone2?: string;
+        corporationRepresentativeId: string;
+        date: string; // timestamp in miliseconds
+        edit: string; // existing workflow id for editing == else: empty string
+        assets: {
+          oxygen_50l_factory?: number;
+          bihoshi_50l_factory?: number;
+          shaft_50l_factory?: number;
+          controlValve_50l_factory?: number;
+          co2_50l_factory?: number;
+          argon_50l_factory?: number;
+          azete_50l_factory?: number;
+          dryAir_50l_factory?: number;
+          entonox_50l_factory?: number;
+          acetylene_50l_factory?: number;
+          lpg_50l_factory?: number;
+          oxygen_50l_customer?: number;
+          bihoshi_50l_customer?: number;
+          shaft_50l_customer?: number;
+          controlValve_50l_customer?: number;
+          co2_50l_customer?: number;
+          argon_50l_customer?: number;
+          azete_50l_customer?: number;
+          dryAir_50l_customer?: number;
+          entonox_50l_customer?: number;
+          acetylene_50l_customer?: number;
+          lpg_50l_customer?: number;
+          oxygen_40l_factory?: number;
+          bihoshi_40l_factory?: number;
+          shaft_40l_factory?: number;
+          controlValve_40l_factory?: number;
+          co2_40l_factory?: number;
+          argon_40l_factory?: number;
+          azete_40l_factory?: number;
+          dryAir_40l_factory?: number;
+          entonox_40l_factory?: number;
+          acetylene_40l_factory?: number;
+          lpg_40l_factory?: number;
+          oxygen_40l_customer?: number;
+          bihoshi_40l_customer?: number;
+          shaft_40l_customer?: number;
+          controlValve_40l_customer?: number;
+          co2_40l_customer?: number;
+          argon_40l_customer?: number;
+          azete_40l_customer?: number;
+          dryAir_40l_customer?: number;
+          entonox_40l_customer?: number;
+          acetylene_40l_customer?: number;
+          lpg_40l_customer?: number;
+        };
+      },
+      _context: any
+    ): Promise<boolean> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canCreateEquipment(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+      // new assets that must be created
+      const factoryAssets = Object.entries(assets).filter(([key, value]) =>
+        /factory/.test(key)
+      );
+
+      //
+      const customerAssets = Object.entries(assets).filter(([key, value]) =>
+        /customer/.test(key)
+      );
+      customerAssets.forEach(async ([key, value], index) => {
+        const borrowedAssets = await prisma.asset.findMany({
+          where: {
+            equipment: { terminologyCode: key.replace('_customer', '') },
+            place: { id: session?.user?.place?.id },
+            status: 'برون سپاری شده',
+          },
+          take: value,
+        });
+        console.log(key.replace('_customer', ''));
+        console.log(session?.user?.place?.id);
+        
+        
+        const resp = await prisma.asset.updateMany({
+          where: { id: { in: borrowedAssets.map((a) => a.id) } },
+          data: { status: 'در حال دریافت', deliverer },
+        });
+        console.log(resp);
+        
+      });
+
+      //  new havalah
+      const createdHavaleh = prisma.havaleh.create({
+        data: {
+          id: havalehId,
+          date,
+          corporationRepresentative: {
+            connect: { id: corporationRepresentativeId },
+          },
+          deliverer,
+          transportationName,
+          transportationTelephone,
+          transportationTelephone2,
+          description,
+        },
+      });
+      // new enter workflow
+      const createdWorkflow = prisma.workflow.create({
+        data: {
+          workflowNumber,
+          instanceOfProcess: { connect: { processNumber: 1 } },
+          nextStageName: 'تایید تحویل کپسول به بیمارستان',
+          passedStages: [
+            {
+              stageID: 1,
+              stageName: 'ثبت خروج کپسول از شرکت',
+              submittedByUserId: session?.user?.id,
+              havalehDataId: havalehId,
+            },
+          ],
+        },
+      });
+      const r = await prisma.$transaction([createdHavaleh, createdWorkflow]);
+      if (r?.[0]?.id && r?.[1]?.id) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
   Person: {

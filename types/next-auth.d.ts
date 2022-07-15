@@ -8,6 +8,7 @@ declare module 'next-auth' {
     user: {
       readonly id: string;
       readonly firstNameAndLastName: string;
+      readonly place: { id: string; name: string };
       readonly role: {
         readonly id: string;
         readonly name: string;

@@ -1,6 +1,7 @@
 import {
   Box,
   Checkbox,
+  Container,
   ListItemText,
   MenuItem,
   Select,
@@ -17,12 +18,9 @@ import { useForm } from 'react-hook-form';
 
 const Form1 = styled('form', { name: 'form1' })(({ theme }) => ({
   flexBasis: '100%',
-  maxWidth: '1100px',
   display: 'flex',
   flexWrap: 'wrap',
   justifyContent: 'center',
-
-  padding: theme.spacing(2),
 }));
 
 // هر کدوم رو که خواستیم حتما یک ردیف کامل برا خودش بگیره
@@ -109,50 +107,53 @@ export default function ExitCorporation({
     transportationName: string,
     transportationTelephone: string,
     transportationTelephone2: string,
-    oxygen_50l_factory: number,
-    bihoshi_50l_factory: number,
-    shaft_50l_factory: number,
-    controlValve_50l_factory: number,
-    co2_50l_factory: number,
-    argon_50l_factory: number,
-    azete_50l_factory: number,
-    dryAir_50l_factory: number,
-    entonox_50l_factory: number,
-    acetylene_50l_factory: number,
-    lpg_50l_factory: number,
-    oxygen_50l_customer: number,
-    bihoshi_50l_customer: number,
-    shaft_50l_customer: number,
-    controlValve_50l_customer: number,
-    co2_50l_customer: number,
-    argon_50l_customer: number,
-    azete_50l_customer: number,
-    dryAir_50l_customer: number,
-    entonox_50l_customer: number,
-    acetylene_50l_customer: number,
-    lpg_50l_customer: number,
-    oxygen_40l_factory: number,
-    bihoshi_40l_factory: number,
-    shaft_40l_factory: number,
-    controlValve_40l_factory: number,
-    co2_40l_factory: number,
-    argon_40l_factory: number,
-    azete_40l_factory: number,
-    dryAir_40l_factory: number,
-    entonox_40l_factory: number,
-    acetylene_40l_factory: number,
-    lpg_40l_factory: number,
-    oxygen_40l_customer: number,
-    bihoshi_40l_customer: number,
-    shaft_40l_customer: number,
-    controlValve_40l_customer: number,
-    co2_40l_customer: number,
-    argon_40l_customer: number,
-    azete_40l_customer: number,
-    dryAir_40l_customer: number,
-    entonox_40l_customer: number,
-    acetylene_40l_customer: number,
-    lpg_40l_customer: number
+    edit: string,
+    assets: {
+      oxygen_50l_factory: number;
+      bihoshi_50l_factory: number;
+      shaft_50l_factory: number;
+      controlValve_50l_factory: number;
+      co2_50l_factory: number;
+      argon_50l_factory: number;
+      azete_50l_factory: number;
+      dryAir_50l_factory: number;
+      entonox_50l_factory: number;
+      acetylene_50l_factory: number;
+      lpg_50l_factory: number;
+      oxygen_50l_customer: number;
+      bihoshi_50l_customer: number;
+      shaft_50l_customer: number;
+      controlValve_50l_customer: number;
+      co2_50l_customer: number;
+      argon_50l_customer: number;
+      azete_50l_customer: number;
+      dryAir_50l_customer: number;
+      entonox_50l_customer: number;
+      acetylene_50l_customer: number;
+      lpg_50l_customer: number;
+      oxygen_40l_factory: number;
+      bihoshi_40l_factory: number;
+      shaft_40l_factory: number;
+      controlValve_40l_factory: number;
+      co2_40l_factory: number;
+      argon_40l_factory: number;
+      azete_40l_factory: number;
+      dryAir_40l_factory: number;
+      entonox_40l_factory: number;
+      acetylene_40l_factory: number;
+      lpg_40l_factory: number;
+      oxygen_40l_customer: number;
+      bihoshi_40l_customer: number;
+      shaft_40l_customer: number;
+      controlValve_40l_customer: number;
+      co2_40l_customer: number;
+      argon_40l_customer: number;
+      azete_40l_customer: number;
+      dryAir_40l_customer: number;
+      entonox_40l_customer: number;
+      acetylene_40l_customer: number;
+      lpg_40l_customer: number;
+    }
   ) => Promise<void>;
 }) {
   // react-form-hooks
@@ -178,50 +179,53 @@ export default function ExitCorporation({
       data?.transportationName,
       data?.transportationTelephone,
       data?.transportationTelephone2,
-      parseInt(data?.oxygen_50l_factory),
-      parseInt(data?.bihoshi_50l_factory),
-      parseInt(data?.shaft_50l_factory),
-      parseInt(data?.controlValve_50l_factory),
-      parseInt(data?.co2_50l_factory),
-      parseInt(data?.argon_50l_factory),
-      parseInt(data?.azete_50l_factory),
-      parseInt(data?.dryAir_50l_factory),
-      parseInt(data?.entonox_50l_factory),
-      parseInt(data?.acetylene_50l_factory),
-      parseInt(data?.lpg_50l_factory),
-      parseInt(data?.oxygen_50l_customer),
-      parseInt(data?.bihoshi_50l_customer),
-      parseInt(data?.shaft_50l_customer),
-      parseInt(data?.controlValve_50l_customer),
-      parseInt(data?.co2_50l_customer),
-      parseInt(data?.argon_50l_customer),
-      parseInt(data?.azete_50l_customer),
-      parseInt(data?.dryAir_50l_customer),
-      parseInt(data?.entonox_50l_customer),
-      parseInt(data?.acetylene_50l_customer),
-      parseInt(data?.lpg_50l_customer),
-      parseInt(data?.oxygen_40l_factory),
-      parseInt(data?.bihoshi_40l_factory),
-      parseInt(data?.shaft_40l_factory),
-      parseInt(data?.controlValve_40l_factory),
-      parseInt(data?.co2_40l_factory),
-      parseInt(data?.argon_40l_factory),
-      parseInt(data?.azete_40l_factory),
-      parseInt(data?.dryAir_40l_factory),
-      parseInt(data?.entonox_40l_factory),
-      parseInt(data?.acetylene_40l_factory),
-      parseInt(data?.lpg_40l_factory),
-      parseInt(data?.oxygen_40l_customer),
-      parseInt(data?.bihoshi_40l_customer),
-      parseInt(data?.shaft_40l_customer),
-      parseInt(data?.controlValve_40l_customer),
-      parseInt(data?.co2_40l_customer),
-      parseInt(data?.argon_40l_customer),
-      parseInt(data?.azete_40l_customer),
-      parseInt(data?.dryAir_40l_customer),
-      parseInt(data?.entonox_40l_customer),
-      parseInt(data?.acetylene_40l_customer),
-      parseInt(data?.lpg_40l_customer)
+      existingWorkflow ? existingWorkflow?.id : '',
+      {
+        oxygen_50l_factory: parseInt(data?.oxygen_50l_factory),
+        bihoshi_50l_factory: parseInt(data?.bihoshi_50l_factory),
+        shaft_50l_factory: parseInt(data?.shaft_50l_factory),
+        controlValve_50l_factory: parseInt(data?.controlValve_50l_factory),
+        co2_50l_factory: parseInt(data?.co2_50l_factory),
+        argon_50l_factory: parseInt(data?.argon_50l_factory),
+        azete_50l_factory: parseInt(data?.azete_50l_factory),
+        dryAir_50l_factory: parseInt(data?.dryAir_50l_factory),
+        entonox_50l_factory: parseInt(data?.entonox_50l_factory),
+        acetylene_50l_factory: parseInt(data?.acetylene_50l_factory),
+        lpg_50l_factory: parseInt(data?.lpg_50l_factory),
+        oxygen_50l_customer: parseInt(data?.oxygen_50l_customer),
+        bihoshi_50l_customer: parseInt(data?.bihoshi_50l_customer),
+        shaft_50l_customer: parseInt(data?.shaft_50l_customer),
+        controlValve_50l_customer: parseInt(data?.controlValve_50l_customer),
+        co2_50l_customer: parseInt(data?.co2_50l_customer),
+        argon_50l_customer: parseInt(data?.argon_50l_customer),
+        azete_50l_customer: parseInt(data?.azete_50l_customer),
+        dryAir_50l_customer: parseInt(data?.dryAir_50l_customer),
+        entonox_50l_customer: parseInt(data?.entonox_50l_customer),
+        acetylene_50l_customer: parseInt(data?.acetylene_50l_customer),
+        lpg_50l_customer: parseInt(data?.lpg_50l_customer),
+        oxygen_40l_factory: parseInt(data?.oxygen_40l_factory),
+        bihoshi_40l_factory: parseInt(data?.bihoshi_40l_factory),
+        shaft_40l_factory: parseInt(data?.shaft_40l_factory),
+        controlValve_40l_factory: parseInt(data?.controlValve_40l_factory),
+        co2_40l_factory: parseInt(data?.co2_40l_factory),
+        argon_40l_factory: parseInt(data?.argon_40l_factory),
+        azete_40l_factory: parseInt(data?.azete_40l_factory),
+        dryAir_40l_factory: parseInt(data?.dryAir_40l_factory),
+        entonox_40l_factory: parseInt(data?.entonox_40l_factory),
+        acetylene_40l_factory: parseInt(data?.acetylene_40l_factory),
+        lpg_40l_factory: parseInt(data?.lpg_40l_factory),
+        oxygen_40l_customer: parseInt(data?.oxygen_40l_customer),
+        bihoshi_40l_customer: parseInt(data?.bihoshi_40l_customer),
+        shaft_40l_customer: parseInt(data?.shaft_40l_customer),
+        controlValve_40l_customer: parseInt(data?.controlValve_40l_customer),
+        co2_40l_customer: parseInt(data?.co2_40l_customer),
+        argon_40l_customer: parseInt(data?.argon_40l_customer),
+        azete_40l_customer: parseInt(data?.azete_40l_customer),
+        dryAir_40l_customer: parseInt(data?.dryAir_40l_customer),
+        entonox_40l_customer: parseInt(data?.entonox_40l_customer),
+        acetylene_40l_customer: parseInt(data?.acetylene_40l_customer),
+        lpg_40l_customer: parseInt(data?.lpg_40l_customer),
+      }
     );
   };
 
@@ -263,6 +267,11 @@ export default function ExitCorporation({
                     value: workflowNumber,
                   }),
                 }}
+                error={errors.workflowNumber?.type === 'required'}
+                helperText={
+                  errors.workflowNumber?.type === 'required' &&
+                  'لطفا این فیلد را پر کنید'
+                }
               />
             )}
           </Input1>
@@ -286,6 +295,11 @@ export default function ExitCorporation({
                     value: corporationRepresentative?.label,
                   }),
                 }}
+                error={errors.corporationRepresentative?.type === 'required'}
+                helperText={
+                  errors.corporationRepresentative?.type === 'required' &&
+                  'لطفا این فیلد را پر کنید'
+                }
               />
             )}
           </Input1>
@@ -327,6 +341,11 @@ export default function ExitCorporation({
                   value: existingWorkflow?.havalehId,
                 }),
               }}
+              error={errors.havalehId?.type === 'required'}
+              helperText={
+                errors.havalehId?.type === 'required' &&
+                'لطفا این فیلد را پر کنید'
+              }
             />
           </Input1>
           <Input1>
@@ -362,9 +381,15 @@ export default function ExitCorporation({
               id='transportationName'
               inputProps={{
                 ...register('transportationName', {
+                  required: true,
                   value: existingWorkflow?.transportationName,
                 }),
               }}
+              error={errors.transportationName?.type === 'required'}
+              helperText={
+                errors.transportationName?.type === 'required' &&
+                'لطفا این فیلد را پر کنید'
+              }
             />
           </Input1>
           <Input1>
@@ -374,9 +399,15 @@ export default function ExitCorporation({
               id='transportationTelephone'
               inputProps={{
                 ...register('transportationTelephone', {
+                  required: true,
                   value: existingWorkflow?.transportationTelephone,
                 }),
               }}
+              error={errors.transportationTelephone?.type === 'required'}
+              helperText={
+                errors.transportationTelephone?.type === 'required' &&
+                'لطفا این فیلد را پر کنید'
+              }
             />
           </Input1>
           <Input1>
@@ -397,49 +428,57 @@ export default function ExitCorporation({
   }
 
   return (
-    <Form1 onSubmit={handleSubmit(submitHandler)}>
-      <ExitCorporationForm />
-      <Input1>
-        <Label1>مشاهده ستون های جدول</Label1>
-        <S1>
-          <Select
-            id='SelectColumns1'
-            size='small'
-            multiple
-            value={selectedColumns}
-            onChange={handleChange}
-            renderValue={(selected) => selected.join(', ')}
-            MenuProps={MenuProps}
-          >
-            {columns.map((name) => (
-              <MenuItem key={name} value={name}>
-                <Checkbox checked={selectedColumns.indexOf(name) > -1} />
-                <ListItemText primary={name} />
-              </MenuItem>
-            ))}
-          </Select>
-        </S1>
-      </Input1>
-      <Input1 sx={{ marginBottom: 3 }}>
-        <Label1>جمع ثبت شده</Label1>
-        <TextField size='small' />
-      </Input1>
-      <Row1 sx={{ justifyContent: 'center' }}>
-        <EditableHtmlTable
-          selectedColumns={selectedColumns}
-          register={register}
-          existingEnterWorkflow={existingWorkflow}
-        />
-      </Row1>
-      <Box>
-        <Button
-          id='submitButton'
-          label='ارسال'
-          size='large'
-          color='success'
-          variant='contained'
-        />
-      </Box>
-    </Form1>
+    <Container maxWidth='lg' sx={{ position: 'relative' }}>
+      <Form1 onSubmit={handleSubmit(submitHandler)}>
+        <ExitCorporationForm />
+        <Input1>
+          <Label1>مشاهده ستون های جدول</Label1>
+          <S1>
+            <Select
+              id='SelectColumns1'
+              size='small'
+              multiple
+              value={selectedColumns}
+              onChange={handleChange}
+              renderValue={(selected) => selected.join(', ')}
+              MenuProps={MenuProps}
+            >
+              {columns.map((name) => (
+                <MenuItem key={name} value={name}>
+                  <Checkbox checked={selectedColumns.indexOf(name) > -1} />
+                  <ListItemText primary={name} />
+                </MenuItem>
+              ))}
+            </Select>
+          </S1>
+        </Input1>
+        <Input1 sx={{ marginBottom: 3 }}>
+          <Label1>جمع ثبت شده</Label1>
+          <TextField size='small' />
+        </Input1>
+        <Row1 sx={{ justifyContent: 'center' }}>
+          <EditableHtmlTable
+            selectedColumns={selectedColumns}
+            register={register}
+            existingEnterWorkflow={existingWorkflow}
+          />
+        </Row1>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: -68,
+            right: '35px',
+          }}
+        >
+          <Button
+            id='submitButton'
+            label='ارسال'
+            size='large'
+            color='success'
+            variant='contained'
+          />
+        </Box>
+      </Form1>
+    </Container>
   );
 }

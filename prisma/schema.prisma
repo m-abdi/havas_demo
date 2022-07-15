@@ -39,38 +39,40 @@ model Person {
 
   Havaleh Havaleh[]
   Stage   Stage[]
+
 }
 
 model Place {
-  id               String      @id @default(uuid()) @map("_id")
-  name             String      @unique
-  superPlace       Place?      @relation("SuperPlaceSubset", fields: [superPlaceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  superPlaceId     String?
-  subset           Place[]     @relation("SuperPlaceSubset")
-  isCategory       Boolean     @default(false)
-  representative   Person?
-  typeOfWork       String?
-  state            String?
-  city             String?
-  postalCode       String?
-  address          String?
-  telephone        String?
-  mobileNumber     String?
-  website          String?
-  nationalId       String?
-  economicalCode   String?
-  registeredNumber String?
-  description      String?
-  createdAt        String?
-  editedAt         String?
-  fromLicenses     License[]   @relation("fromLicensesPlace")
-  toLicenses       License[]   @relation("toLicensesPlace")
-  Asset            Asset[]
-  Equipment        Equipment[]
+  id                String      @id @default(uuid()) @map("_id")
+  name              String      @unique
+  superPlace        Place?      @relation("SuperPlaceSubset", fields: [superPlaceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  superPlaceId      String?
+  subset            Place[]     @relation("SuperPlaceSubset")
+  isCategory        Boolean     @default(false)
+  representative    Person?
+  typeOfWork        String?
+  state             String?
+  city              String?
+  postalCode        String?
+  address           String?
+  telephone         String?
+  mobileNumber      String?
+  website           String?
+  nationalId        String?
+  economicalCode    String?
+  registeredNumber  String?
+  description       String?
+  createdAt         String?
+  editedAt          String?
+  fromLicenses      License[]   @relation("fromLicensesPlace")
+  toLicenses        License[]   @relation("toLicensesPlace")
+  assets            Asset[]     @relation("currentPlace")
+  Equipment         Equipment[]
+  corporationAssets Asset[]     @relation("corporationPlace")
 }
 
 model Equipment {
-  name              String
+  name              String   @unique
   model             String?
   factory           String?
   serialNumber      String
@@ -93,12 +95,16 @@ model Asset {
   id                 String    @id @default(uuid()) @map("_id")
   equipment          Equipment @relation(fields: [equipmentId], references: [terminologyCode])
   equipmentId        String
-  publicPropertyCode String
-  place              Place     @relation(fields: [placeId], references: [id])
+  publicPropertyCode String?  @unique
+  place              Place     @relation("currentPlace", fields: [placeId], references: [id])
   placeId            String
   createdAt          DateTime  @default(now())
   editedAt           DateTime  @updatedAt
   tag                Tag?
+  status             String?
+  corporation        Place?    @relation("corporationPlace", fields: [corporationId], references: [id])
+  corporationId      String?
+  deliverer          String?
 }
 
 model Tag {
@@ -177,35 +183,30 @@ model Role {
 // }
 
 model Havaleh {
-  id                          String   @id @map("_id")
-  date                        DateTime @default(now())
-  corporationRepresentative   Person   @relation(references: [id], fields: [corporationRepresentativeId])
+  id                          String  @id @map("_id")
+  date                        String
+  corporationRepresentative   Person  @relation(references: [id], fields: [corporationRepresentativeId])
   corporationRepresentativeId String
-  deliverer                   String
+  deliverer                   String?
   transportationName          String
   transportationTelephone     String
-  transportationTelephone2    String
-  description          String
-  receivingDescription        String
+  transportationTelephone2    String?
+  description                 String?
+  receivingDescription        String?
 
 }
 
-model Stage {
-  stageID           String    @id @map("_id")
+type Stage {
+  stageID           Int
   stageName         String
-  submittedByUser   Person    @relation(fields: [submittedByUserId], references: [id])
   submittedByUserId String
-  havalehData       String
-  dateCreated       DateTime  @default(now())
-  dateModified      DateTime  @updatedAt
-  Workflow          Workflow? @relation(fields: [workflowId], references: [id])
-  workflowId        String?
+  havalehDataId     String
 }
 
 model Process {
-  processNumber String     @id @default(uuid()) @map("_id")
+  processNumber Int        @id @map("_id")
   processName   String
-  ignoreStage   Int
+  ignoreStage   Int?
   // levels        Level[]    @relation(references: [stageID], fields: [levelsIds])
   // levelsIds     String[]
   workflows     Workflow[]
@@ -213,12 +214,13 @@ model Process {
 
 model Workflow {
   id                  String   @id @default(uuid()) @map("_id")
-  workflowNumber      Int
+  workflowNumber      String
   instanceOfProcess   Process  @relation(fields: [instanceOfProcessId], references: [processNumber])
-  instanceOfProcessId String
-  passedStageNames    String[]
+  instanceOfProcessId Int
   nextStageName       String
   passedStages        Stage[]
+  dateCreated         DateTime @default(now())
+  dateModified        DateTime @updatedAt
 }
 
 enum LicenseType {

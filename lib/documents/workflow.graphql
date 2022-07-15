@@ -1,3 +1,31 @@
 query getWorkflowNumber {
-    getWorkflowNumber
+  getWorkflowNumber
+}
+
+mutation createEnterWorkflow(
+  $workflowNumber: String!
+  $havalehId: String!
+  $deliverer: String
+  $description: String
+  $transportationName: String!
+  $transportationTelephone: String!
+  $transportationTelephone2: String
+  $corporationRepresentativeId: String!
+  $date: String!
+  $edit: String
+  $assets: TransferedAssets!
+) {
+  createEnterWorkflow(
+    workflowNumber: $workflowNumber
+    havalehId: $havalehId
+    deliverer: $deliverer
+    description: $description
+    transportationName: $transportationName
+    transportationTelephone: $transportationTelephone
+    transportationTelephone2: $transportationTelephone2
+    corporationRepresentativeId: $corporationRepresentativeId
+    date: $date
+    edit: $edit
+    assets: $assets
+  )
 }
