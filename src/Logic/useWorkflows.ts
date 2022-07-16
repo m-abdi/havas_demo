@@ -216,7 +216,7 @@ export default function useWorkflows(
             setSnackbarMessage,
             setSnackbarOpen
           );
-          router.push('/users/enterWarehouseRFID');
+          router.push(`/users/enterWarehouseRFID?workflow=${updatedEnterWorkflow?.data}`);
         } else {
           useNotification(
             'error',

@@ -1,10 +1,12 @@
 import {
+  Asset,
   Person,
   PersonFilter,
   Place,
   PlaceFilter,
   Resolvers,
   Role,
+  Tag,
 } from './resolvers-types';
 import {
   canCreateAsset,
@@ -459,6 +461,22 @@ const resolvers: Resolvers = {
 
       return ((await prisma.workflow.count()) + 1).toString();
     },
+    async tagData(
+      _: any,
+      { tagId }: { tagId: string },
+      _context: any
+    ): Promise<any> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canViewAssets(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+      return await prisma.tag.findUnique({
+        where: { id: tagId },
+        include: { asset: { include: { equipment: true } } },
+      });
+    },
   },
   Mutation: {
     async createRole(_parent, _args, _context, _info): Promise<any> {
@@ -854,7 +872,6 @@ const resolvers: Resolvers = {
         transportationTelephone2,
         corporationRepresentativeId,
         date,
-        edit,
         assets,
       }: {
         workflowNumber: string;
@@ -1022,7 +1039,7 @@ const resolvers: Resolvers = {
         };
       },
       _context: any
-    ): Promise<string> {
+    ): Promise<any> {
       // check authentication and permission
       const { req } = _context;
       const session = await getSession({ req });
@@ -1066,7 +1083,7 @@ const resolvers: Resolvers = {
             ],
           },
         });
-        return updatedWorkflow?.id ?? '';
+        return updatedWorkflow;
       } else {
         const updatedWorkflow = await prisma.workflow.update({
           where: {
@@ -1087,7 +1104,7 @@ const resolvers: Resolvers = {
             ],
           },
         });
-        return updatedWorkflow?.id ?? '';
+        return updatedWorkflow;
       }
     },
   },

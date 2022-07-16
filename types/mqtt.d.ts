@@ -1,0 +1,5 @@
+enum MqttStatusType {
+  CONNECTING,
+  CONNECTED,
+  DISCONNECTED,
+}

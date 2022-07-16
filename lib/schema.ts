@@ -175,7 +175,7 @@ const typeDefs = /* GraphQL */ `
     transportationTelephone2: String
     description: String
     receivingDescription: String
-    assets: TransferedAssetsOutput
+    assets: AggregatedTransferedAssetsOutput
   }
 
   type Stage {
@@ -354,6 +354,30 @@ const typeDefs = /* GraphQL */ `
     acetylene_40l_customer: Int
     lpg_40l_customer: Int
   }
+  type AggregatedTransferedAssetsOutput {
+    oxygen_50l: Int
+    bihoshi_50l: Int
+    shaft_50l: Int
+    controlValve_50l: Int
+    co2_50l: Int
+    argon_50l: Int
+    azete_50l: Int
+    dryAir_50l: Int
+    entonox_50l: Int
+    acetylene_50l: Int
+    lpg_50l: Int
+    oxygen_40l: Int
+    bihoshi_40l: Int
+    shaft_40l: Int
+    controlValve_40l: Int
+    co2_40l: Int
+    argon_40l: Int
+    azete_40l: Int
+    dryAir_40l: Int
+    entonox_40l: Int
+    acetylene_40l: Int
+    lpg_40l: Int
+  }
   input AggregatedTransferedAssets {
     oxygen_50l: Int
     bihoshi_50l: Int
@@ -394,6 +418,7 @@ const typeDefs = /* GraphQL */ `
     hasNextRole(limit: Int!, offset: Int!): Boolean!
     countAllRoles(limit: Int!, offset: Int!): Int
     getWorkflowNumber: String!
+    tagData(tagId: ID!): Tag
   }
   type Mutation {
     createRole(name: String!, permissions: Permissions!, edit: String): Role!
@@ -478,7 +503,7 @@ const typeDefs = /* GraphQL */ `
       transportationTelephone2: String
       date: String
       assets: AggregatedTransferedAssets
-    ): String
+    ): Workflow
   }
 `;
 

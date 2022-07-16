@@ -279,6 +279,12 @@ function Layout({ children, pageName }) {
           path: '/users/confirmReceiptByHospital',
           roleName: 'createLicense',
         },
+        {
+          text: 'RFID ثبت ورود کپسول به انبار توسط',
+          icon: <SearchRoundedIcon />,
+          path: '/users/enterWarehouseRFID',
+          roleName: 'createLicense',
+        },
       ],
     },
   ];

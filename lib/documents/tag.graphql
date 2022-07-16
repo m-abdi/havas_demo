@@ -1,0 +1,10 @@
+query getTagData($tagId: ID!) {
+  tagData(tagId: $tagId) {
+    id
+    asset {
+      equipment {
+        terminologyCode
+      }
+    }
+  }
+}

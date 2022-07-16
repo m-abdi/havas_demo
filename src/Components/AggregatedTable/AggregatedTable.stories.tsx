@@ -1,7 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import AggregatedTable from './AggregatedTable';
-import ReactHookDecorator from 'src/ReactHookDecorator';
 import StoriesDecorator from '../../StoriesDecorator';
 
 export default {
@@ -25,8 +24,8 @@ Main.args = {
   editable: false,
   selectedColumns: ['اکسیژن', 'گاز بیهوشی'],
   assets: {
-    oxygen_50l_customer: 10,
-    oxygen_50l_factory: 5,
+    oxygen_50l: 10,
+    oxygen_40l: 5,
   },
 };
 

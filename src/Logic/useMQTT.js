@@ -1,6 +1,6 @@
-import { Client as MqttClient } from './paho-mqtt';
+import { Client as MqttClient } from '../paho-mqtt';
 
-export function PahoClient(setMessage, setConnectionStatus) {
+export function useMQTT(setMessage, setConnectionStatus) {
   // Create a client instance
   const client = new MqttClient(
     process.env.NEXT_PUBLIC_MQTT_BROKER_URL,

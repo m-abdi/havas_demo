@@ -22,52 +22,31 @@ export default memo(function AggregatedTable({
   assets,
 }: {
   editable: boolean;
+  register?: any;
   selectedColumns?: string[];
   assets: {
-    oxygen_50l_factory?: number;
-    bihoshi_50l_factory?: number;
-    shaft_50l_factory?: number;
-    controlValve_50l_factory?: number;
-    co2_50l_factory?: number;
-    argon_50l_factory?: number;
-    azete_50l_factory?: number;
-    dryAir_50l_factory?: number;
-    entonox_50l_factory?: number;
-    acetylene_50l_factory?: number;
-    lpg_50l_factory?: number;
-    oxygen_50l_customer?: number;
-    bihoshi_50l_customer?: number;
-    shaft_50l_customer?: number;
-    controlValve_50l_customer?: number;
-    co2_50l_customer?: number;
-    argon_50l_customer?: number;
-    azete_50l_customer?: number;
-    dryAir_50l_customer?: number;
-    entonox_50l_customer?: number;
-    acetylene_50l_customer?: number;
-    lpg_50l_customer?: number;
-    oxygen_40l_factory?: number;
-    bihoshi_40l_factory?: number;
-    shaft_40l_factory?: number;
-    controlValve_40l_factory?: number;
-    co2_40l_factory?: number;
-    argon_40l_factory?: number;
-    azete_40l_factory?: number;
-    dryAir_40l_factory?: number;
-    entonox_40l_factory?: number;
-    acetylene_40l_factory?: number;
-    lpg_40l_factory?: number;
-    oxygen_40l_customer?: number;
-    bihoshi_40l_customer?: number;
-    shaft_40l_customer?: number;
-    controlValve_40l_customer?: number;
-    co2_40l_customer?: number;
-    argon_40l_customer?: number;
-    azete_40l_customer?: number;
-    dryAir_40l_customer?: number;
-    entonox_40l_customer?: number;
-    acetylene_40l_customer?: number;
-    lpg_40l_customer?: number;
+    oxygen_50l?: number;
+    bihoshi_50l?: number;
+    shaft_50l?: number;
+    controlValve_50l?: number;
+    co2_50l?: number;
+    argon_50l?: number;
+    azete_50l?: number;
+    dryAir_50l?: number;
+    entonox_50l?: number;
+    acetylene_50l?: number;
+    lpg_50l?: number;
+    oxygen_40l?: number;
+    bihoshi_40l?: number;
+    shaft_40l?: number;
+    controlValve_40l?: number;
+    co2_40l?: number;
+    argon_40l?: number;
+    azete_40l?: number;
+    dryAir_40l?: number;
+    entonox_40l?: number;
+    acetylene_40l?: number;
+    lpg_40l?: number;
   };
 }) {
   return (
@@ -209,8 +188,8 @@ export default memo(function AggregatedTable({
               inputProps={{
                 ...register?.('oxygen_50l', {
                   value:
-                    assets?.oxygen_50l_factory + assets?.oxygen_50l_customer ||
-                    '',
+                    assets?.oxygen_50l 
+                    
                 }),
               }}
               sx={{ width: '100%', textAlign: 'center !important' }}
@@ -234,8 +213,7 @@ export default memo(function AggregatedTable({
               inputProps={{
                 ...register?.('bihoshi_50l', {
                   value:
-                    assets?.bihoshi_50l_factory +
-                      assets?.bihoshi_50l_customer || '',
+                    assets?.bihoshi_50l  
                 }),
               }}
             />
@@ -258,8 +236,8 @@ export default memo(function AggregatedTable({
               inputProps={{
                 ...register?.('shaft_50l', {
                   value:
-                    assets?.shaft_50l_factory + assets?.shaft_50l_customer ||
-                    '',
+                    assets?.shaft_50l 
+                    
                 }),
               }}
             />
@@ -282,8 +260,7 @@ export default memo(function AggregatedTable({
               inputProps={{
                 ...register?.('controlValve_50l', {
                   value:
-                    assets?.controlValve_50l_factory +
-                      assets?.controlValve_50l_customer || '',
+                    assets?.controlValve_50l  
                 }),
               }}
             />
@@ -304,7 +281,7 @@ export default memo(function AggregatedTable({
               inputProps={{
                 ...register?.('co2_50l', {
                   value:
-                    assets?.co2_50l_factory + assets?.co2_50l_customer || '',
+                    assets?.co2_50l  
                 }),
               }}
             />
@@ -325,8 +302,8 @@ export default memo(function AggregatedTable({
               inputProps={{
                 ...register?.('argon_50l', {
                   value:
-                    assets?.argon_50l_factory + assets?.argon_50l_customer ||
-                    '',
+                    assets?.argon_50l 
+                    
                 }),
               }}
             />
@@ -345,10 +322,10 @@ export default memo(function AggregatedTable({
               id='azete_50l'
               disabled={!editable}
               inputProps={{
-                ...register?.('azete_50l_factory', {
+                ...register?.('azete_50l', {
                   value:
-                    assets?.azete_50l_factory + assets?.azete_50l_customer ||
-                    '',
+                    assets?.azete_50l 
+                    
                 }),
               }}
             />
@@ -371,8 +348,8 @@ export default memo(function AggregatedTable({
               inputProps={{
                 ...register?.('dryAir_50l', {
                   value:
-                    assets?.dryAir_50l_factory + assets?.dryAir_50l_customer ||
-                    '',
+                    assets?.dryAir_50l 
+                    
                 }),
               }}
             />
@@ -393,8 +370,7 @@ export default memo(function AggregatedTable({
               inputProps={{
                 ...register?.('entonox_50l', {
                   value:
-                    assets?.entonox_50l_factory +
-                      assets?.entonox_50l_customer || '',
+                    assets?.entonox_50l  
                 }),
               }}
             />
@@ -410,13 +386,12 @@ export default memo(function AggregatedTable({
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
-              id='acetylene_50l_factory'
+              id='acetylene_50l'
               disabled={!editable}
               inputProps={{
                 ...register?.('acetylene_50l', {
                   value:
-                    assets?.acetylene_50l_factory +
-                      assets?.acetylene_50l_customer || '',
+                    assets?.acetylene_50l  
                 }),
               }}
             />
@@ -439,7 +414,7 @@ export default memo(function AggregatedTable({
               inputProps={{
                 ...register?.('lpg_50l', {
                   value:
-                    assets?.lpg_50l_factory + assets?.lpg_50l_customer || '',
+                    assets?.lpg_50l  
                 }),
               }}
             />
@@ -465,8 +440,8 @@ export default memo(function AggregatedTable({
               inputProps={{
                 ...register?.('oxygen_40l', {
                   value:
-                    assets?.oxygen_40l_factory + assets?.oxygen_40l_customer ||
-                    '',
+                    assets?.oxygen_40l 
+                    
                 }),
               }}
             />
@@ -489,8 +464,7 @@ export default memo(function AggregatedTable({
               inputProps={{
                 ...register?.('bihoshi_40l', {
                   value:
-                    assets?.bihoshi_40l_factory +
-                      assets?.bihoshi_40l_customer || '',
+                    assets?.bihoshi_40l  
                 }),
               }}
             />
@@ -513,8 +487,8 @@ export default memo(function AggregatedTable({
               inputProps={{
                 ...register?.('shaft_40l', {
                   value:
-                    assets?.shaft_40l_factory + assets?.shaft_40l_customer ||
-                    '',
+                    assets?.shaft_40l 
+                    
                 }),
               }}
             />
@@ -537,8 +511,7 @@ export default memo(function AggregatedTable({
               inputProps={{
                 ...register?.('controlValve_40l', {
                   value:
-                    assets?.controlValve_40l_factory +
-                      assets?.controlValve_40l_customer || '',
+                    assets?.controlValve_40l  
                 }),
               }}
             />
@@ -559,7 +532,7 @@ export default memo(function AggregatedTable({
               inputProps={{
                 ...register?.('co2_40l', {
                   value:
-                    assets?.co2_40l_factory + assets?.co2_40l_customer || '',
+                    assets?.co2_40l  
                 }),
               }}
             />
@@ -580,8 +553,8 @@ export default memo(function AggregatedTable({
               inputProps={{
                 ...register?.('argon_40l', {
                   value:
-                    assets?.argon_40l_factory + assets?.argon_40l_customer ||
-                    '',
+                    assets?.argon_40l 
+                    
                 }),
               }}
             />
@@ -602,8 +575,8 @@ export default memo(function AggregatedTable({
               inputProps={{
                 ...register?.('azete_40l', {
                   value:
-                    assets?.azete_40l_factory + assets?.azete_40l_customer ||
-                    '',
+                    assets?.azete_40l 
+                    
                 }),
               }}
             />
@@ -626,8 +599,8 @@ export default memo(function AggregatedTable({
               inputProps={{
                 ...register?.('dryAir_40l', {
                   value:
-                    assets?.dryAir_40l_factory + assets?.dryAir_40l_customer ||
-                    '',
+                    assets?.dryAir_40l 
+                    
                 }),
               }}
             />
@@ -648,8 +621,7 @@ export default memo(function AggregatedTable({
               inputProps={{
                 ...register?.('entonox_40l', {
                   value:
-                    assets?.entonox_40l_factory +
-                      assets?.entonox_40l_customer || '',
+                    assets?.entonox_40l  
                 }),
               }}
             />
@@ -670,8 +642,7 @@ export default memo(function AggregatedTable({
               inputProps={{
                 ...register?.('acetylene_40l', {
                   value:
-                    assets?.acetylene_40l_factory +
-                      assets?.acetylene_40l_customer || '',
+                    assets?.acetylene_40l  
                 }),
               }}
             />
@@ -694,7 +665,7 @@ export default memo(function AggregatedTable({
               inputProps={{
                 ...register?.('lpg_40l', {
                   value:
-                    assets?.lpg_40l_factory + assets?.lpg_40l_customer || '',
+                    assets?.lpg_40l  
                 }),
               }}
             />

@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { memo, useCallback, useMemo, useState } from 'react';
 
-import AggregatedTable from 'src/Components/AggregatedTable';
+import AggregatedTable from '../../Components/AggregatedTable';
 import { Button } from '../../Components/Button';
 import { DatePicker } from 'jalali-react-datepicker';
 import EditableHtmlTable from './EditableHtmlTable';
@@ -212,8 +212,8 @@ export default function ExitCorporation({
   // handlers
   const submitHandler = async (data: any) => {
     if (existingWorkflow) {
-      console.log("mehdi---");
-      
+      console.log('mehdi---');
+
       await confirmEnterHandler(
         existingWorkflow?.workflowNumber,
         editable
