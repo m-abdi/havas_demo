@@ -21,7 +21,7 @@ export default function ConfirmReceiptByHospital() {
   const [existingWorkflow, setExistingWorkflow] = useState();
   const [editable, setEditable] = useState(false);
   const _ = undefined;
-  const { allEnterWorkflows, loading, sending, createNewEnter } = useWorkflows(
+  const { allEnterWorkflows, loading, sending, confirmEnterHandler } = useWorkflows(
     _,
     _,
     _,
@@ -103,7 +103,7 @@ export default function ConfirmReceiptByHospital() {
             loading={loading}
             sending={sending}
             editable={editable}
-            createNewHandler={createNewEnter}
+            confirmEnterHandler = {confirmEnterHandler}
             existingWorkflow={existingWorkflow}
           />
         )}

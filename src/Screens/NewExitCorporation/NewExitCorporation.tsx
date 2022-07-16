@@ -90,6 +90,7 @@ export default function ExitCorporation({
   corporationRepresentative,
   existingWorkflow = null,
   createNewHandler,
+  confirmEnterHandler,
   dateT,
 }: {
   loading: boolean;
@@ -99,7 +100,7 @@ export default function ExitCorporation({
   corporationRepresentative?: { id: string; label: string };
   existingWorkflow?: any;
   dateT?: any;
-  createNewHandler: (
+  createNewHandler?: (
     workflowNumber: string,
     havalehId: string,
     date: string,
@@ -109,7 +110,6 @@ export default function ExitCorporation({
     transportationName: string,
     transportationTelephone: string,
     transportationTelephone2: string,
-    edit: string,
     assets: {
       oxygen_50l_factory: number;
       bihoshi_50l_factory: number;
@@ -157,6 +157,42 @@ export default function ExitCorporation({
       lpg_40l_customer: number;
     }
   ) => Promise<void>;
+  confirmEnterHandler?: (
+    workflowNumber: string,
+    editedHavalehData: {
+      havalehId: string;
+      date: string;
+      deliverer: string;
+      description: string;
+      transportationName: string;
+      transportationTelephone: string;
+      transportationTelephone2: string;
+      assets: {
+        oxygen_50l?: number;
+        bihoshi_50l?: number;
+        shaft_50l?: number;
+        controlValve_50l?: number;
+        co2_50l?: number;
+        argon_50l?: number;
+        azete_50l?: number;
+        dryAir_50l?: number;
+        entonox_50l?: number;
+        acetylene_50l?: number;
+        lpg_50l?: number;
+        oxygen_40l?: number;
+        bihoshi_40l?: number;
+        shaft_40l?: number;
+        controlValve_40l?: number;
+        co2_40l?: number;
+        argon_40l?: number;
+        azete_40l?: number;
+        dryAir_40l?: number;
+        entonox_40l?: number;
+        acetylene_40l?: number;
+        lpg_40l?: number;
+      };
+    } | null
+  ) => Promise<void>;
 }) {
   // react-form-hooks
   const {
@@ -174,65 +210,107 @@ export default function ExitCorporation({
       : Date.now()
   );
   // handlers
-  const submitHandler = (data: any) => {
-    createNewHandler(
-      workflowNumber as string,
-      data?.havalehId,
-      dateT || date.toString(),
-      corporationRepresentative?.id as string,
-      data?.deliverer,
-      data?.description,
-      data?.transportationName,
-      data?.transportationTelephone,
-      data?.transportationTelephone2,
-      existingWorkflow ? existingWorkflow?.id : '',
-      {
-        oxygen_50l_factory: parseInt(data?.oxygen_50l_factory),
-        bihoshi_50l_factory: parseInt(data?.bihoshi_50l_factory),
-        shaft_50l_factory: parseInt(data?.shaft_50l_factory),
-        controlValve_50l_factory: parseInt(data?.controlValve_50l_factory),
-        co2_50l_factory: parseInt(data?.co2_50l_factory),
-        argon_50l_factory: parseInt(data?.argon_50l_factory),
-        azete_50l_factory: parseInt(data?.azete_50l_factory),
-        dryAir_50l_factory: parseInt(data?.dryAir_50l_factory),
-        entonox_50l_factory: parseInt(data?.entonox_50l_factory),
-        acetylene_50l_factory: parseInt(data?.acetylene_50l_factory),
-        lpg_50l_factory: parseInt(data?.lpg_50l_factory),
-        oxygen_50l_customer: parseInt(data?.oxygen_50l_customer),
-        bihoshi_50l_customer: parseInt(data?.bihoshi_50l_customer),
-        shaft_50l_customer: parseInt(data?.shaft_50l_customer),
-        controlValve_50l_customer: parseInt(data?.controlValve_50l_customer),
-        co2_50l_customer: parseInt(data?.co2_50l_customer),
-        argon_50l_customer: parseInt(data?.argon_50l_customer),
-        azete_50l_customer: parseInt(data?.azete_50l_customer),
-        dryAir_50l_customer: parseInt(data?.dryAir_50l_customer),
-        entonox_50l_customer: parseInt(data?.entonox_50l_customer),
-        acetylene_50l_customer: parseInt(data?.acetylene_50l_customer),
-        lpg_50l_customer: parseInt(data?.lpg_50l_customer),
-        oxygen_40l_factory: parseInt(data?.oxygen_40l_factory),
-        bihoshi_40l_factory: parseInt(data?.bihoshi_40l_factory),
-        shaft_40l_factory: parseInt(data?.shaft_40l_factory),
-        controlValve_40l_factory: parseInt(data?.controlValve_40l_factory),
-        co2_40l_factory: parseInt(data?.co2_40l_factory),
-        argon_40l_factory: parseInt(data?.argon_40l_factory),
-        azete_40l_factory: parseInt(data?.azete_40l_factory),
-        dryAir_40l_factory: parseInt(data?.dryAir_40l_factory),
-        entonox_40l_factory: parseInt(data?.entonox_40l_factory),
-        acetylene_40l_factory: parseInt(data?.acetylene_40l_factory),
-        lpg_40l_factory: parseInt(data?.lpg_40l_factory),
-        oxygen_40l_customer: parseInt(data?.oxygen_40l_customer),
-        bihoshi_40l_customer: parseInt(data?.bihoshi_40l_customer),
-        shaft_40l_customer: parseInt(data?.shaft_40l_customer),
-        controlValve_40l_customer: parseInt(data?.controlValve_40l_customer),
-        co2_40l_customer: parseInt(data?.co2_40l_customer),
-        argon_40l_customer: parseInt(data?.argon_40l_customer),
-        azete_40l_customer: parseInt(data?.azete_40l_customer),
-        dryAir_40l_customer: parseInt(data?.dryAir_40l_customer),
-        entonox_40l_customer: parseInt(data?.entonox_40l_customer),
-        acetylene_40l_customer: parseInt(data?.acetylene_40l_customer),
-        lpg_40l_customer: parseInt(data?.lpg_40l_customer),
-      }
-    );
+  const submitHandler = async (data: any) => {
+    if (existingWorkflow) {
+      console.log("mehdi---");
+      
+      await confirmEnterHandler(
+        existingWorkflow?.workflowNumber,
+        editable
+          ? {
+              havalehId: data?.havalehId,
+              date: date.toString(),
+              deliverer: data?.deliverer,
+              description: data?.description,
+              transportationName: data?.transportationName,
+              transportationTelephone: data?.transportationTelephone,
+              transportationTelephone2: data?.transportationTelephone2,
+              assets: {
+                oxygen_50l: parseInt(data?.oxygen_50l),
+                bihoshi_50l: parseInt(data?.bihoshi_50l),
+                shaft_50l: parseInt(data?.shaft_50l),
+                controlValve_50l: parseInt(data?.controlValve_50l),
+                co2_50l: parseInt(data?.co2_50l),
+                argon_50l: parseInt(data?.argon_50l),
+                azete_50l: parseInt(data?.azete_50l),
+                dryAir_50l: parseInt(data?.dryAir_50l),
+                entonox_50l: parseInt(data?.entonox_50l),
+                acetylene_50l: parseInt(data?.acetylene_50l),
+                lpg_50l: parseInt(data?.lpg_50l),
+                oxygen_40l: parseInt(data?.oxygen_40l),
+                bihoshi_40l: parseInt(data?.bihoshi_40l),
+                shaft_40l: parseInt(data?.shaft_40l),
+                controlValve_40l: parseInt(data?.controlValve_40l),
+                co2_40l: parseInt(data?.co2_40l),
+                argon_40l: parseInt(data?.argon_40l),
+                azete_40l: parseInt(data?.azete_40l),
+                dryAir_40l: parseInt(data?.dryAir_40l),
+                entonox_40l: parseInt(data?.entonox_40l),
+                acetylene_40l: parseInt(data?.acetylene_40l),
+                lpg_40l: parseInt(data?.lpg_40l),
+              },
+            }
+          : null
+      );
+    } else {
+      await createNewHandler(
+        workflowNumber as string,
+        data?.havalehId,
+        dateT || date.toString(),
+        corporationRepresentative?.id as string,
+        data?.deliverer,
+        data?.description,
+        data?.transportationName,
+        data?.transportationTelephone,
+        data?.transportationTelephone2,
+        {
+          oxygen_50l_factory: parseInt(data?.oxygen_50l_factory),
+          bihoshi_50l_factory: parseInt(data?.bihoshi_50l_factory),
+          shaft_50l_factory: parseInt(data?.shaft_50l_factory),
+          controlValve_50l_factory: parseInt(data?.controlValve_50l_factory),
+          co2_50l_factory: parseInt(data?.co2_50l_factory),
+          argon_50l_factory: parseInt(data?.argon_50l_factory),
+          azete_50l_factory: parseInt(data?.azete_50l_factory),
+          dryAir_50l_factory: parseInt(data?.dryAir_50l_factory),
+          entonox_50l_factory: parseInt(data?.entonox_50l_factory),
+          acetylene_50l_factory: parseInt(data?.acetylene_50l_factory),
+          lpg_50l_factory: parseInt(data?.lpg_50l_factory),
+          oxygen_50l_customer: parseInt(data?.oxygen_50l_customer),
+          bihoshi_50l_customer: parseInt(data?.bihoshi_50l_customer),
+          shaft_50l_customer: parseInt(data?.shaft_50l_customer),
+          controlValve_50l_customer: parseInt(data?.controlValve_50l_customer),
+          co2_50l_customer: parseInt(data?.co2_50l_customer),
+          argon_50l_customer: parseInt(data?.argon_50l_customer),
+          azete_50l_customer: parseInt(data?.azete_50l_customer),
+          dryAir_50l_customer: parseInt(data?.dryAir_50l_customer),
+          entonox_50l_customer: parseInt(data?.entonox_50l_customer),
+          acetylene_50l_customer: parseInt(data?.acetylene_50l_customer),
+          lpg_50l_customer: parseInt(data?.lpg_50l_customer),
+          oxygen_40l_factory: parseInt(data?.oxygen_40l_factory),
+          bihoshi_40l_factory: parseInt(data?.bihoshi_40l_factory),
+          shaft_40l_factory: parseInt(data?.shaft_40l_factory),
+          controlValve_40l_factory: parseInt(data?.controlValve_40l_factory),
+          co2_40l_factory: parseInt(data?.co2_40l_factory),
+          argon_40l_factory: parseInt(data?.argon_40l_factory),
+          azete_40l_factory: parseInt(data?.azete_40l_factory),
+          dryAir_40l_factory: parseInt(data?.dryAir_40l_factory),
+          entonox_40l_factory: parseInt(data?.entonox_40l_factory),
+          acetylene_40l_factory: parseInt(data?.acetylene_40l_factory),
+          lpg_40l_factory: parseInt(data?.lpg_40l_factory),
+          oxygen_40l_customer: parseInt(data?.oxygen_40l_customer),
+          bihoshi_40l_customer: parseInt(data?.bihoshi_40l_customer),
+          shaft_40l_customer: parseInt(data?.shaft_40l_customer),
+          controlValve_40l_customer: parseInt(data?.controlValve_40l_customer),
+          co2_40l_customer: parseInt(data?.co2_40l_customer),
+          argon_40l_customer: parseInt(data?.argon_40l_customer),
+          azete_40l_customer: parseInt(data?.azete_40l_customer),
+          dryAir_40l_customer: parseInt(data?.dryAir_40l_customer),
+          entonox_40l_customer: parseInt(data?.entonox_40l_customer),
+          acetylene_40l_customer: parseInt(data?.acetylene_40l_customer),
+          lpg_40l_customer: parseInt(data?.lpg_40l_customer),
+        }
+      );
+    }
   };
 
   const handleChange = (event: any) => {

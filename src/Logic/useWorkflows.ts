@@ -1,6 +1,13 @@
+/* eslint-disable no-var */
+import {
+  AggregatedTransferedAssets,
+  EquipmentFilter,
+  PersonFilter,
+} from 'lib/resolvers-types';
 import {
   AllEnterWorkflowsDocument,
   AllPersonsDocument,
+  ConfirmReceiptByHospitalDocument,
   CreateEnterWorkflowDocument,
   CreateEquipmentDocument,
   CreateNewPersonDocument,
@@ -8,11 +15,11 @@ import {
   DeletePersonsDocument,
   EquipmentsDocument,
 } from 'lib/graphql-operations';
-import { EquipmentFilter, PersonFilter } from 'lib/resolvers-types';
 import { useCallback, useContext } from 'react';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 
 import { SnackbarContext } from 'pages/_app';
+import { TransferedAssets } from '../../lib/resolvers-types';
 import useNotification from './useNotification';
 import { useRouter } from 'next/router';
 
@@ -41,10 +48,15 @@ export default function useWorkflows(
     },
   });
 
-  // new person mutation to server
+  // new enter worflow mutation to server
   const [createEnterWorkflowMutation, { loading: sending }] = useMutation(
     CreateEnterWorkflowDocument
   );
+  // confirm existing enter worflow mutation to server
+  const [
+    confirmReceiptByHospitalMutation,
+    { loading: confirmReceiptByHospitalSending },
+  ] = useMutation(ConfirmReceiptByHospitalDocument);
   // delete
   const [deleteEquipmentsMutation, { loading: deleting }] = useMutation(
     DeleteEquipmentsDocument
@@ -73,6 +85,7 @@ export default function useWorkflows(
     },
     [itemsPerPage, pageNumber]
   );
+  // handlers
   // creation handler
   const createNewEnter = useCallback(
     async (
@@ -85,53 +98,7 @@ export default function useWorkflows(
       transportationName: string,
       transportationTelephone: string,
       transportationTelephone2: string,
-      edit: string,
-      assets: {
-        oxygen_50l_factory: number;
-        bihoshi_50l_factory: number;
-        shaft_50l_factory: number;
-        controlValve_50l_factory: number;
-        co2_50l_factory: number;
-        argon_50l_factory: number;
-        azete_50l_factory: number;
-        dryAir_50l_factory: number;
-        entonox_50l_factory: number;
-        acetylene_50l_factory: number;
-        lpg_50l_factory: number;
-        oxygen_50l_customer: number;
-        bihoshi_50l_customer: number;
-        shaft_50l_customer: number;
-        controlValve_50l_customer: number;
-        co2_50l_customer: number;
-        argon_50l_customer: number;
-        azete_50l_customer: number;
-        dryAir_50l_customer: number;
-        entonox_50l_customer: number;
-        acetylene_50l_customer: number;
-        lpg_50l_customer: number;
-        oxygen_40l_factory: number;
-        bihoshi_40l_factory: number;
-        shaft_40l_factory: number;
-        controlValve_40l_factory: number;
-        co2_40l_factory: number;
-        argon_40l_factory: number;
-        azete_40l_factory: number;
-        dryAir_40l_factory: number;
-        entonox_40l_factory: number;
-        acetylene_40l_factory: number;
-        lpg_40l_factory: number;
-        oxygen_40l_customer: number;
-        bihoshi_40l_customer: number;
-        shaft_40l_customer: number;
-        controlValve_40l_customer: number;
-        co2_40l_customer: number;
-        argon_40l_customer: number;
-        azete_40l_customer: number;
-        dryAir_40l_customer: number;
-        entonox_40l_customer: number;
-        acetylene_40l_customer: number;
-        lpg_40l_customer: number;
-      }
+      assets: TransferedAssets
     ) => {
       useNotification(
         'sending',
@@ -156,7 +123,6 @@ export default function useWorkflows(
             transportationTelephone2,
             description,
             deliverer,
-            edit,
             assets: filteredAssets,
           },
         });
@@ -187,8 +153,92 @@ export default function useWorkflows(
     },
     []
   );
+  // confirming handler
+  const confirmEnterHandler = useCallback(
+    async (workflowNumber: string, editedHavalehData: any) => {
+      useNotification(
+        'sending',
+        setSnackbarColor,
+        setSnackbarMessage,
+        setSnackbarOpen
+      );
+      try {
+        if (editedHavalehData) {
+          const {
+            havalehId,
+            date,
+            deliverer,
+            description,
+            transportationName,
+            transportationTelephone,
+            transportationTelephone2,
+            assets,
+          }: {
+            havalehId: string;
+            date: string;
+            deliverer: string;
+            description: string;
+            transportationName: string;
+            transportationTelephone: string;
+            transportationTelephone2: string;
+            assets: AggregatedTransferedAssets;
+          } = editedHavalehData;
+          // drop NaN values
+          const filteredAssets = Object?.fromEntries(
+            Object?.entries(assets as any)?.filter(([key, value]) => value)
+          );
 
-  // handlers
+          var updatedEnterWorkflow = await confirmReceiptByHospitalMutation({
+            variables: {
+                  workflowNumber,
+                  havalehId,
+                  date,
+                  transportationName,
+                  transportationTelephone,
+                  transportationTelephone2,
+                  description,
+                  deliverer,
+                  assets: filteredAssets,
+                }
+          });
+        } else {
+          var updatedEnterWorkflow = await confirmReceiptByHospitalMutation({
+            variables: {
+              workflowNumber,
+            },
+          });
+        }
+        
+        if (updatedEnterWorkflow) {
+          useNotification(
+            'success',
+            setSnackbarColor,
+            setSnackbarMessage,
+            setSnackbarOpen
+          );
+          router.push('/users/enterWarehouseRFID');
+        } else {
+          useNotification(
+            'error',
+            setSnackbarColor,
+            setSnackbarMessage,
+            setSnackbarOpen
+          );
+        }
+      } catch (e) {
+        console.log(e.message);
+        
+        useNotification(
+          'error',
+          setSnackbarColor,
+          setSnackbarMessage,
+          setSnackbarOpen
+        );
+      }
+    },
+    []
+  );
+
   const deleteHandler = useCallback(
     async (equipmentIds: string[]): Promise<any> => {
       // provide a response for user interaction(sending...)
@@ -236,14 +286,12 @@ export default function useWorkflows(
   );
   return {
     allEnterWorkflows,
-    allHavaleh: allEnterWorkflows?.enterWorkflows.map(
-      (ew) => ew?.passedStages?.[0]?.havaleh
-    ),
     error,
     loading,
     fetchMore,
     sending,
     createNewEnter,
+    confirmEnterHandler,
     deleting,
     deleteHandler,
   };

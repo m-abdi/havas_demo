@@ -11,7 +11,7 @@ import Head from 'next/head';
 import Layout from 'src/Components/Layout';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import useWorkflows from 'src/Logic/useWorkflow';
+import useWorkflows from 'src/Logic/useWorkflows';
 
 const pageName = 'ثبت خروج از شرکت';
 
@@ -30,6 +30,7 @@ export default function newExitCorporation() {
         <title>{`${pageName}`} | حواس</title>
       </Head>
       <ExitCorporation
+        editable={true}
         loading={loading || status === 'loading'}
         sending={sending}
         createNewHandler={createNewEnter}

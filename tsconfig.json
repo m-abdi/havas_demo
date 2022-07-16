@@ -16,6 +16,9 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "baseUrl": ".",
+    "paths": {
+      "@/src/*": ["src/*"]
+    },
     "incremental": true,
     "types": ["axe-playwright"]
   },
@@ -24,7 +27,6 @@
     "next-env.d.ts",
     "graphql.d.ts",
     "types/**/*.ts",
-    "**/*.ts",
-    "**/*.tsx",
+  
  "src/Screens/Persons/Persons.tsx"  ]
 }

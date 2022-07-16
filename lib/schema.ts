@@ -196,7 +196,7 @@ const typeDefs = /* GraphQL */ `
 
   type Workflow {
     id: ID!
-    workflowNumber: Int
+    workflowNumber: String
     # instanceOfProcess: Process
     nextStageName: String
     passedStages: [Stage]
@@ -307,6 +307,7 @@ const typeDefs = /* GraphQL */ `
     acetylene_40l_customer: Int
     lpg_40l_customer: Int
   }
+  
   input TransferedAssets {
     oxygen_50l_factory: Int
     bihoshi_50l_factory: Int
@@ -352,6 +353,30 @@ const typeDefs = /* GraphQL */ `
     entonox_40l_customer: Int
     acetylene_40l_customer: Int
     lpg_40l_customer: Int
+  }
+  input AggregatedTransferedAssets {
+    oxygen_50l: Int
+    bihoshi_50l: Int
+    shaft_50l: Int
+    controlValve_50l: Int
+    co2_50l: Int
+    argon_50l: Int
+    azete_50l: Int
+    dryAir_50l: Int
+    entonox_50l: Int
+    acetylene_50l: Int
+    lpg_50l: Int
+    oxygen_40l: Int
+    bihoshi_40l: Int
+    shaft_40l: Int
+    controlValve_40l: Int
+    co2_40l: Int
+    argon_40l: Int
+    azete_40l: Int
+    dryAir_40l: Int
+    entonox_40l: Int
+    acetylene_40l: Int
+    lpg_40l: Int
   }
   type Query {
     persons(limit: Int, offset: Int, filters: PersonFilter): [Person]!
@@ -441,8 +466,18 @@ const typeDefs = /* GraphQL */ `
       transportationTelephone2: String
       corporationRepresentativeId: String!
       date: String!
-      edit: String
       assets: TransferedAssets
+    ): String
+    confirmReceiptByHospital(
+      workflowNumber: String!
+      havalehId: String
+      deliverer: String
+      description: String
+      transportationName: String
+      transportationTelephone: String
+      transportationTelephone2: String
+      date: String
+      assets: AggregatedTransferedAssets
     ): String
   }
 `;

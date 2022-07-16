@@ -274,10 +274,10 @@ function Layout({ children, pageName }) {
           roleName: 'createLicense',
         },
         {
-          text: 'مجوزهای ثبت شده',
+          text: 'تایید تحویل کپسول به بیمارستان',
           icon: <SearchRoundedIcon />,
-          path: '/users/licenses',
-          roleName: 'viewLicense',
+          path: '/users/confirmReceiptByHospital',
+          roleName: 'createLicense',
         },
       ],
     },

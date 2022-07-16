@@ -9,6 +9,7 @@ import {
 import {
   canCreateAsset,
   canCreateEquipment,
+  canCreateLicense,
   canCreatePerson,
   canCreatePlace,
   canCreateRole,
@@ -865,7 +866,6 @@ const resolvers: Resolvers = {
         transportationTelephone2?: string;
         corporationRepresentativeId: string;
         date: string; // timestamp in miliseconds
-        edit: string; // existing workflow id for editing == else: empty string
         assets: {
           oxygen_50l_factory?: number;
           bihoshi_50l_factory?: number;
@@ -974,6 +974,121 @@ const resolvers: Resolvers = {
         },
       });
       return createdWorkflow?.id ?? '';
+    },
+    async confirmReceiptByHospital(
+      _,
+      {
+        workflowNumber,
+        havalehId,
+        deliverer,
+        description,
+        transportationName,
+        transportationTelephone,
+        transportationTelephone2,
+        date,
+        assets,
+      }: {
+        workflowNumber: string;
+        havalehId?: string;
+        deliverer?: string;
+        description?: string;
+        transportationName?: string;
+        transportationTelephone?: string;
+        transportationTelephone2?: string;
+        date?: string; // timestamp in miliseconds
+        assets?: {
+          oxygen_50l?: number;
+          bihoshi_50l?: number;
+          shaft_50l?: number;
+          controlValve_50l?: number;
+          co2_50l?: number;
+          argon_50l?: number;
+          azete_50l?: number;
+          dryAir_50l?: number;
+          entonox_50l?: number;
+          acetylene_50l?: number;
+          lpg_50l?: number;
+          oxygen_40l?: number;
+          bihoshi_40l?: number;
+          shaft_40l?: number;
+          controlValve_40l?: number;
+          co2_40l?: number;
+          argon_40l?: number;
+          azete_40l?: number;
+          dryAir_40l?: number;
+          entonox_40l?: number;
+          acetylene_40l?: number;
+          lpg_40l?: number;
+        };
+      },
+      _context: any
+    ): Promise<string> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canCreateLicense(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+      const existingWorkflow = await prisma.workflow.findUnique({
+        where: { workflowNumber },
+      });
+
+      // update enter workflow
+      if (havalehId) {
+        const updatedWorkflow = await prisma.workflow.update({
+          where: {
+            workflowNumber,
+          },
+          data: {
+            nextStageName: 'RFID ثبت ورود کپسول به انبار توسط',
+            passedStages: [
+              ...(existingWorkflow?.passedStages as any),
+              {
+                stageID: 2,
+                stageName: 'تایید تحویل کپسول به بیمارستان',
+                submittedByUser: {
+                  id: session?.user?.id,
+                  firstNameAndLastName: session?.user?.firstNameAndLastName,
+                },
+                havaleh: {
+                  id: havalehId,
+                  date,
+                  deliverer,
+                  transportationName,
+                  transportationTelephone,
+                  transportationTelephone2,
+                  description,
+                  assets:
+                    assets ||
+                    existingWorkflow?.passedStages?.[0]?.havaleh?.assets,
+                },
+              },
+            ],
+          },
+        });
+        return updatedWorkflow?.id ?? '';
+      } else {
+        const updatedWorkflow = await prisma.workflow.update({
+          where: {
+            workflowNumber,
+          },
+          data: {
+            nextStageName: 'RFID ثبت ورود کپسول به انبار توسط',
+            passedStages: [
+              ...(existingWorkflow?.passedStages as any),
+              {
+                stageID: 2,
+                stageName: 'تایید تحویل کپسول به بیمارستان',
+                submittedByUser: {
+                  id: session?.user?.id,
+                  firstNameAndLastName: session?.user?.firstNameAndLastName,
+                },
+              },
+            ],
+          },
+        });
+        return updatedWorkflow?.id ?? '';
+      }
     },
   },
   Person: {
