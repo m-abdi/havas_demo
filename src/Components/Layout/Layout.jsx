@@ -386,7 +386,7 @@ function Layout({ children, pageName }) {
               <Typography
                 component='h1'
                 variant='h5'
-                sx={{ fontSize: '1.2rem' }}
+                sx={{ fontSize: '1.2rem', direction: "rtl" }}
               >
                 {' '}
                 {infoContext?.pageName}

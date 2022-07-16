@@ -307,7 +307,7 @@ const typeDefs = /* GraphQL */ `
     acetylene_40l_customer: Int
     lpg_40l_customer: Int
   }
-  
+
   input TransferedAssets {
     oxygen_50l_factory: Int
     bihoshi_50l_factory: Int
@@ -504,6 +504,7 @@ const typeDefs = /* GraphQL */ `
       date: String
       assets: AggregatedTransferedAssets
     ): Workflow
+    updateAssetsStates(ids: [String], status: String!): Int
   }
 `;
 

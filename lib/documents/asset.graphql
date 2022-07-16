@@ -35,3 +35,8 @@ mutation createAsset(
 mutation deleteAssets($assetIds: [String!]!) {
   deleteAssets(assetIds: $assetIds)
 }
+
+
+mutation updateAssetsStates ($ids: [String], $status: String!) {
+  updateAssetsStates(ids: $ids, status: $status) 
+}

@@ -20,6 +20,7 @@ import {
   canDeletePersons,
   canDeletePlaces,
   canDeleteRols,
+  canEditAssets,
   canViewAssets,
   canViewEquipments,
   canViewLicenses,
@@ -1105,6 +1106,26 @@ const resolvers: Resolvers = {
           },
         });
         return updatedWorkflow;
+      }
+    },
+    async updateAssetsStates(
+      _,
+      { ids, status }: { ids?: string[], status: string },
+      _context
+    ): Promise<any> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canEditAssets(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+      if (ids) {
+        return (await prisma.asset.updateMany({
+          where: { id: { in: ids } },
+          data: {
+            status
+          },
+        })).count;
       }
     },
   },

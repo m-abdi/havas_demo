@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 
 import AggregatedTable from '../../Components/AggregatedTable';
+import { Button } from '../../Components/Button';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import useWorkflows from '../../Logic/useWorkflows';
@@ -16,6 +17,7 @@ export default function EnterWarehouseRFID({
   loading,
   assets,
   checkedAssets = {},
+  submitHandler,
 }: {
   loading: boolean;
   assets: {
@@ -66,6 +68,7 @@ export default function EnterWarehouseRFID({
     acetylene_40l?: number;
     lpg_40l?: number;
   };
+  submitHandler: (status: string) => Promise<void>;
 }) {
   // react-form-hooks
   const { register, setValue } = useForm();
@@ -105,6 +108,22 @@ export default function EnterWarehouseRFID({
           </TableContainer>
         </Box>
       </Stack>
+      <Box
+        sx={{
+          position: 'absolute',
+          top: -68,
+          right: '35px',
+        }}
+      >
+        <Button
+          id='submitButton'
+          label='ارسال'
+          size='large'
+          color='success'
+          variant='contained'
+          onClick={async () => await submitHandler('موجود در بیمارستان')}
+        />
+      </Box>
     </Container>
   );
 }

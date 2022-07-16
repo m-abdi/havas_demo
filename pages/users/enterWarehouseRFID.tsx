@@ -3,8 +3,10 @@ import React, { useEffect, useState } from 'react';
 import EnterWarehouseRFID from '../../src/Screens/EnterWarehouseRFID';
 import Head from 'next/head';
 import Layout from '../../src/Components/Layout';
+import { UpdateAssetsStatesDocument } from 'lib/graphql-operations';
 import { getQueryDefinition } from '@apollo/client/utilities';
 import useMQTT from '../../src/Logic/useMQTT';
+import { useMutation } from '@apollo/client';
 import useTags from '../../src/Logic/useTags';
 
 const pageName = 'RFID ثبت ورود کپسول به انبار توسط';
@@ -35,13 +37,10 @@ export default function enterWarehouseRFID() {
     lpg_40l: null,
   });
   const { mqttMessage, mqttStatus } = useMQTT();
+  const [checkedAssetsIds, setCheckedAssetsIds] = useState([]);
   const { getTagDataQuery, tagData, tagDataLoading } = useTags();
 
-  
-  
-  //   handlers
   useEffect(() => {
-      console.log('sldfjo');
     const updateCheckedAssets = () => {
       //   fetch tag data
       getTagDataQuery({ variables: { tagId: mqttMessage } });
@@ -50,12 +49,9 @@ export default function enterWarehouseRFID() {
       const terminologyCode =
         tagData?.tagData?.asset?.equipment?.terminologyCode;
 
-    console.log(terminologyCode);
-    
       // checking to see  if equipment id exists in the table
       if (checkedAssetsNames?.includes(terminologyCode)) {
-          console.log('ok');
-          
+        setCheckedAssetsIds([...checkedAssetsIds, tagData?.tagData?.asset?.id]);
         setCheckedAssets({
           ...checkedAssets,
           [terminologyCode]: !checkedAssets[terminologyCode]
@@ -67,6 +63,15 @@ export default function enterWarehouseRFID() {
     updateCheckedAssets();
   }, [mqttMessage, tagData]);
 
+  const [updateAssetsStatesMutation, { data }] = useMutation(
+    UpdateAssetsStatesDocument
+  );
+  const updateAssetsState = async (status: string) => {
+    await updateAssetsStatesMutation({
+      variables: { ids: checkedAssetsIds, status },
+    });
+  };
+
   return (
     <Layout pageName={pageName}>
       <Head>
@@ -76,6 +81,7 @@ export default function enterWarehouseRFID() {
         loading={false}
         assets={checkedAssets}
         checkedAssets={checkedAssets}
+        submitHandler={updateAssetsState}
       />
     </Layout>
   );
