@@ -9,6 +9,7 @@ import {
 
 import AggregatedTable from '../../Components/AggregatedTable';
 import React from 'react';
+import { useForm } from 'react-hook-form';
 import useWorkflows from '../../Logic/useWorkflows';
 
 export default function EnterWarehouseRFID({
@@ -66,6 +67,8 @@ export default function EnterWarehouseRFID({
     lpg_40l?: number;
   };
 }) {
+  // react-form-hooks
+  const { register, setValue } = useForm();
   return (
     <Container maxWidth='lg' sx={{ position: 'relative' }}>
       <Stack alignItems={'center'} spacing={3}>
@@ -93,7 +96,12 @@ export default function EnterWarehouseRFID({
             تجهیزات خوانده شده
           </Typography>
           <TableContainer>
-            <AggregatedTable editable={false} assets={checkedAssets} />
+            <AggregatedTable
+              register={register}
+              setValue={setValue}
+              editable={false}
+              assets={checkedAssets}
+            />
           </TableContainer>
         </Box>
       </Stack>

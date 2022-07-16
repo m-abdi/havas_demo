@@ -1,0 +1,185 @@
+import {
+  AllPersonsDocument,
+  AssetsDocument,
+  CreateAssetDocument,
+  CreateNewPersonDocument,
+  DeleteAssetsDocument,
+  DeleteEquipmentsDocument,
+  DeletePersonsDocument,
+  EquipmentsDocument,
+  GetTagDataDocument,
+} from 'lib/graphql-operations';
+import {
+  AssetFilter,
+  EquipmentFilter,
+  PersonFilter,
+} from 'lib/resolvers-types';
+import { useCallback, useContext } from 'react';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
+
+import { SnackbarContext } from 'pages/_app';
+import useNotification from './useNotification';
+import { useRouter } from 'next/router';
+
+export default function useTags(
+  offset = 0,
+  pageNumber?: number,
+  itemsPerPage = 10,
+  filters?: AssetFilter,
+  setPageNumber?: React.Dispatch<React.SetStateAction<number>>,
+  setOffset?: React.Dispatch<React.SetStateAction<number>>
+) {
+  const router = useRouter();
+  const { setSnackbarOpen, setSnackbarMessage, setSnackbarColor } =
+    useContext(SnackbarContext);
+  // fetch a specific tag
+  const [
+    getTagDataQuery,
+    {
+      data: tagData,
+      error: tagDataError,
+      loading: tagDataLoading,
+    },
+  ] = useLazyQuery(GetTagDataDocument, {
+    fetchPolicy: 'cache-and-network',
+  });
+  // new asset mutation to server
+  const [createAssetMutation, { loading: sending }] =
+    useMutation(CreateAssetDocument);
+  // delete
+  const [deleteAssetMutation, { loading: deleting }] =
+    useMutation(DeleteAssetsDocument);
+  // handlers
+  // pagination handler
+  const fetchMore = useCallback(
+    function (
+      event: any,
+      page: number
+      // itemsPerPage: number
+    ) {
+      try {
+        fetchMoreRows({
+          variables: {
+            offset: itemsPerPage * page,
+            limit: itemsPerPage,
+            filters,
+          },
+        });
+      } catch {
+        console.log('');
+      }
+      setPageNumber?.(page);
+      setOffset?.(itemsPerPage * page);
+    },
+    [itemsPerPage, pageNumber]
+  );
+  // creation handler
+  const createNew = useCallback(
+    async (
+      equipmentId: string,
+      publicPropertyCode: string,
+      placeId: string,
+      edit: string
+    ) => {
+      useNotification(
+        'sending',
+        setSnackbarColor,
+        setSnackbarMessage,
+        setSnackbarOpen
+      );
+      try {
+        const createdAsset = await createAssetMutation({
+          variables: {
+            equipmentId,
+            publicPropertyCode,
+            placeId,
+            edit,
+          },
+        });
+        if (createdAsset) {
+          useNotification(
+            'success',
+            setSnackbarColor,
+            setSnackbarMessage,
+            setSnackbarOpen
+          );
+          router.push('/users/assets');
+        } else {
+          useNotification(
+            'error',
+            setSnackbarColor,
+            setSnackbarMessage,
+            setSnackbarOpen
+          );
+        }
+      } catch (e) {
+        useNotification(
+          'error',
+          setSnackbarColor,
+          setSnackbarMessage,
+          setSnackbarOpen
+        );
+      }
+    },
+    []
+  );
+
+  // handlers
+  const deleteHandler = useCallback(
+    async (assetIds: string[]): Promise<any> => {
+      // provide a response for user interaction(sending...)
+      useNotification(
+        'sending',
+        setSnackbarColor,
+        setSnackbarMessage,
+        setSnackbarOpen
+      );
+      try {
+        const resp = await deleteAssetMutation({
+          variables: { assetIds },
+          refetchQueries: [{ query: AssetsDocument }, 'assets'],
+        });
+
+        if (resp?.data) {
+          useNotification(
+            'success',
+            setSnackbarColor,
+            setSnackbarMessage,
+            setSnackbarOpen
+          );
+        } else if (resp?.errors) {
+          useNotification(
+            'error',
+            setSnackbarColor,
+            setSnackbarMessage,
+            setSnackbarOpen
+          );
+        }
+      } catch (e) {
+        useNotification(
+          'error',
+          setSnackbarColor,
+          setSnackbarMessage,
+          setSnackbarOpen
+        );
+      }
+      // setOffset(0);
+      // setPageNumber(0);
+      // setLoading(false);
+      // setDeleteRoleDialog(false);
+    },
+    []
+  );
+  
+  return {
+    getTagDataQuery,
+    tagData,
+    tagDataError,
+    tagDataLoading,
+    fetchMore,
+    sending,
+    createNew,
+    deleting,
+    deleteHandler,
+  };
+}

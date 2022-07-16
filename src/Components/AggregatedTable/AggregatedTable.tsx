@@ -1,6 +1,6 @@
 import { TableBody, TextField } from '@mui/material';
+import { memo, useEffect } from 'react';
 
-import { memo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 export default memo(function AggregatedTable({
@@ -19,10 +19,12 @@ export default memo(function AggregatedTable({
     'گاز مایع',
   ],
   register,
+  setValue,
   assets,
 }: {
   editable: boolean;
   register?: any;
+  setValue?: any;
   selectedColumns?: string[];
   assets: {
     oxygen_50l?: number;
@@ -49,8 +51,34 @@ export default memo(function AggregatedTable({
     lpg_40l?: number;
   };
 }) {
+  // update react-hook-form state after rfid operation
+  useEffect(() => {
+    setValue?.('oxygen_50l', assets?.oxygen_50l);
+    setValue?.('bihoshi_50l', assets?.bihoshi_50l);
+    setValue?.('shaft_50l', assets?.shaft_50l);
+    setValue?.('controlValve_50l', assets?.controlValve_50l);
+    setValue?.('co2_50l', assets?.co2_50l);
+    setValue?.('argon_50l', assets?.argon_50l);
+    setValue?.('azete_50l', assets?.azete_50l);
+    setValue?.('dryAir_50l', assets?.dryAir_50l);
+    setValue?.('entonox_50l', assets?.entonox_50l);
+    setValue?.('acetylene_50l', assets?.acetylene_50l);
+    setValue?.('lpg_50l', assets?.lpg_50l);
+    setValue?.('oxygen_40l', assets?.oxygen_40l);
+    setValue?.('bihoshi_40l', assets?.bihoshi_40l);
+    setValue?.('shaft_40l', assets?.shaft_40l);
+    setValue?.('controlValve_40l', assets?.controlValve_40l);
+    setValue?.('co2_40l', assets?.co2_40l);
+    setValue?.('argon_40l', assets?.argon_40l);
+    setValue?.('azete_40l', assets?.azete_40l);
+    setValue?.('dryAir_40l', assets?.dryAir_40l);
+    setValue?.('entonox_40l', assets?.entonox_40l);
+    setValue?.('acetylene_40l', assets?.acetylene_40l);
+    setValue?.('lpg_40l', assets?.lpg_40l);
+  }, [assets]);
+
   return (
-    <table border={2} style={{marginInline: "16px"}}>
+    <table border={2} style={{ marginInline: '16px' }}>
       <thead>
         <tr>
           <th>نوع سیلندر</th>
@@ -177,22 +205,20 @@ export default memo(function AggregatedTable({
             style={{
               display:
                 selectedColumns.indexOf('اکسیژن') > -1 ? 'table-cell' : 'none',
-              textAlign: 'center',
             }}
           >
             <TextField
               size='small'
+              fullWidth
+              variant='standard'
               type='number'
               id='oxygen_50l'
               disabled={!editable}
               inputProps={{
                 ...register?.('oxygen_50l', {
-                  value:
-                    assets?.oxygen_50l 
-                    
+                  value: assets?.oxygen_50l,
                 }),
               }}
-              sx={{ width: '100%', textAlign: 'center !important' }}
             />
           </td>
           {/* گاز بیهوشی */}
@@ -205,6 +231,8 @@ export default memo(function AggregatedTable({
             }}
           >
             <TextField
+              fullWidth
+              variant='standard'
               size='small'
               type='number'
               disabled={!editable}
@@ -212,8 +240,7 @@ export default memo(function AggregatedTable({
               id='bihoshi_50l'
               inputProps={{
                 ...register?.('bihoshi_50l', {
-                  value:
-                    assets?.bihoshi_50l  
+                  value: assets?.bihoshi_50l,
                 }),
               }}
             />
@@ -228,6 +255,8 @@ export default memo(function AggregatedTable({
             }}
           >
             <TextField
+              fullWidth
+              variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
@@ -235,9 +264,7 @@ export default memo(function AggregatedTable({
               disabled={!editable}
               inputProps={{
                 ...register?.('shaft_50l', {
-                  value:
-                    assets?.shaft_50l 
-                    
+                  value: assets?.shaft_50l,
                 }),
               }}
             />
@@ -251,7 +278,8 @@ export default memo(function AggregatedTable({
                   : 'none',
             }}
           >
-            <TextField
+            <TextField     fullWidth
+              variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
@@ -259,8 +287,7 @@ export default memo(function AggregatedTable({
               disabled={!editable}
               inputProps={{
                 ...register?.('controlValve_50l', {
-                  value:
-                    assets?.controlValve_50l  
+                  value: assets?.controlValve_50l,
                 }),
               }}
             />
@@ -272,7 +299,8 @@ export default memo(function AggregatedTable({
                 selectedColumns.indexOf('Co2') > -1 ? 'table-cell' : 'none',
             }}
           >
-            <TextField
+            <TextField     fullWidth
+              variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
@@ -280,8 +308,7 @@ export default memo(function AggregatedTable({
               disabled={!editable}
               inputProps={{
                 ...register?.('co2_50l', {
-                  value:
-                    assets?.co2_50l  
+                  value: assets?.co2_50l,
                 }),
               }}
             />
@@ -293,7 +320,8 @@ export default memo(function AggregatedTable({
                 selectedColumns.indexOf('آرگون') > -1 ? 'table-cell' : 'none',
             }}
           >
-            <TextField
+            <TextField     fullWidth
+              variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
@@ -301,9 +329,7 @@ export default memo(function AggregatedTable({
               disabled={!editable}
               inputProps={{
                 ...register?.('argon_50l', {
-                  value:
-                    assets?.argon_50l 
-                    
+                  value: assets?.argon_50l,
                 }),
               }}
             />
@@ -315,7 +341,8 @@ export default memo(function AggregatedTable({
                 selectedColumns.indexOf('ازت') > -1 ? 'table-cell' : 'none',
             }}
           >
-            <TextField
+            <TextField     fullWidth
+              variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
@@ -323,9 +350,7 @@ export default memo(function AggregatedTable({
               disabled={!editable}
               inputProps={{
                 ...register?.('azete_50l', {
-                  value:
-                    assets?.azete_50l 
-                    
+                  value: assets?.azete_50l,
                 }),
               }}
             />
@@ -339,7 +364,8 @@ export default memo(function AggregatedTable({
                   : 'none',
             }}
           >
-            <TextField
+            <TextField     fullWidth
+              variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
@@ -347,9 +373,7 @@ export default memo(function AggregatedTable({
               disabled={!editable}
               inputProps={{
                 ...register?.('dryAir_50l', {
-                  value:
-                    assets?.dryAir_50l 
-                    
+                  value: assets?.dryAir_50l,
                 }),
               }}
             />
@@ -361,7 +385,8 @@ export default memo(function AggregatedTable({
                 selectedColumns.indexOf('آنتونکس') > -1 ? 'table-cell' : 'none',
             }}
           >
-            <TextField
+            <TextField     fullWidth
+              variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
@@ -369,8 +394,7 @@ export default memo(function AggregatedTable({
               disabled={!editable}
               inputProps={{
                 ...register?.('entonox_50l', {
-                  value:
-                    assets?.entonox_50l  
+                  value: assets?.entonox_50l,
                 }),
               }}
             />
@@ -382,7 +406,8 @@ export default memo(function AggregatedTable({
                 selectedColumns.indexOf('استیلن') > -1 ? 'table-cell' : 'none',
             }}
           >
-            <TextField
+            <TextField     fullWidth
+              variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
@@ -390,8 +415,7 @@ export default memo(function AggregatedTable({
               disabled={!editable}
               inputProps={{
                 ...register?.('acetylene_50l', {
-                  value:
-                    assets?.acetylene_50l  
+                  value: assets?.acetylene_50l,
                 }),
               }}
             />
@@ -405,7 +429,8 @@ export default memo(function AggregatedTable({
                   : 'none',
             }}
           >
-            <TextField
+            <TextField     fullWidth
+              variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
@@ -413,8 +438,7 @@ export default memo(function AggregatedTable({
               disabled={!editable}
               inputProps={{
                 ...register?.('lpg_50l', {
-                  value:
-                    assets?.lpg_50l  
+                  value: assets?.lpg_50l,
                 }),
               }}
             />
@@ -431,7 +455,8 @@ export default memo(function AggregatedTable({
                 selectedColumns.indexOf('اکسیژن') > -1 ? 'table-cell' : 'none',
             }}
           >
-            <TextField
+            <TextField     fullWidth
+              variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
@@ -439,9 +464,7 @@ export default memo(function AggregatedTable({
               disabled={!editable}
               inputProps={{
                 ...register?.('oxygen_40l', {
-                  value:
-                    assets?.oxygen_40l 
-                    
+                  value: assets?.oxygen_40l,
                 }),
               }}
             />
@@ -455,7 +478,8 @@ export default memo(function AggregatedTable({
                   : 'none',
             }}
           >
-            <TextField
+            <TextField     fullWidth
+              variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
@@ -463,8 +487,7 @@ export default memo(function AggregatedTable({
               disabled={!editable}
               inputProps={{
                 ...register?.('bihoshi_40l', {
-                  value:
-                    assets?.bihoshi_40l  
+                  value: assets?.bihoshi_40l,
                 }),
               }}
             />
@@ -478,7 +501,8 @@ export default memo(function AggregatedTable({
                   : 'none',
             }}
           >
-            <TextField
+            <TextField     fullWidth
+              variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
@@ -486,9 +510,7 @@ export default memo(function AggregatedTable({
               disabled={!editable}
               inputProps={{
                 ...register?.('shaft_40l', {
-                  value:
-                    assets?.shaft_40l 
-                    
+                  value: assets?.shaft_40l,
                 }),
               }}
             />
@@ -502,7 +524,8 @@ export default memo(function AggregatedTable({
                   : 'none',
             }}
           >
-            <TextField
+            <TextField     fullWidth
+              variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
@@ -510,8 +533,7 @@ export default memo(function AggregatedTable({
               disabled={!editable}
               inputProps={{
                 ...register?.('controlValve_40l', {
-                  value:
-                    assets?.controlValve_40l  
+                  value: assets?.controlValve_40l,
                 }),
               }}
             />
@@ -523,7 +545,8 @@ export default memo(function AggregatedTable({
                 selectedColumns.indexOf('Co2') > -1 ? 'table-cell' : 'none',
             }}
           >
-            <TextField
+            <TextField     fullWidth
+              variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
@@ -531,8 +554,7 @@ export default memo(function AggregatedTable({
               disabled={!editable}
               inputProps={{
                 ...register?.('co2_40l', {
-                  value:
-                    assets?.co2_40l  
+                  value: assets?.co2_40l,
                 }),
               }}
             />
@@ -544,7 +566,8 @@ export default memo(function AggregatedTable({
                 selectedColumns.indexOf('آرگون') > -1 ? 'table-cell' : 'none',
             }}
           >
-            <TextField
+            <TextField     fullWidth
+              variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
@@ -552,9 +575,7 @@ export default memo(function AggregatedTable({
               disabled={!editable}
               inputProps={{
                 ...register?.('argon_40l', {
-                  value:
-                    assets?.argon_40l 
-                    
+                  value: assets?.argon_40l,
                 }),
               }}
             />
@@ -566,7 +587,8 @@ export default memo(function AggregatedTable({
                 selectedColumns.indexOf('ازت') > -1 ? 'table-cell' : 'none',
             }}
           >
-            <TextField
+            <TextField     fullWidth
+              variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
@@ -574,9 +596,7 @@ export default memo(function AggregatedTable({
               disabled={!editable}
               inputProps={{
                 ...register?.('azete_40l', {
-                  value:
-                    assets?.azete_40l 
-                    
+                  value: assets?.azete_40l,
                 }),
               }}
             />
@@ -590,7 +610,8 @@ export default memo(function AggregatedTable({
                   : 'none',
             }}
           >
-            <TextField
+            <TextField     fullWidth
+              variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
@@ -598,9 +619,7 @@ export default memo(function AggregatedTable({
               disabled={!editable}
               inputProps={{
                 ...register?.('dryAir_40l', {
-                  value:
-                    assets?.dryAir_40l 
-                    
+                  value: assets?.dryAir_40l,
                 }),
               }}
             />
@@ -612,7 +631,8 @@ export default memo(function AggregatedTable({
                 selectedColumns.indexOf('آنتونکس') > -1 ? 'table-cell' : 'none',
             }}
           >
-            <TextField
+            <TextField     fullWidth
+              variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
@@ -620,8 +640,7 @@ export default memo(function AggregatedTable({
               disabled={!editable}
               inputProps={{
                 ...register?.('entonox_40l', {
-                  value:
-                    assets?.entonox_40l  
+                  value: assets?.entonox_40l,
                 }),
               }}
             />
@@ -633,7 +652,8 @@ export default memo(function AggregatedTable({
                 selectedColumns.indexOf('استیلن') > -1 ? 'table-cell' : 'none',
             }}
           >
-            <TextField
+            <TextField     fullWidth
+              variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
@@ -641,8 +661,7 @@ export default memo(function AggregatedTable({
               disabled={!editable}
               inputProps={{
                 ...register?.('acetylene_40l', {
-                  value:
-                    assets?.acetylene_40l  
+                  value: assets?.acetylene_40l,
                 }),
               }}
             />
@@ -656,7 +675,8 @@ export default memo(function AggregatedTable({
                   : 'none',
             }}
           >
-            <TextField
+            <TextField     fullWidth
+              variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
@@ -664,8 +684,7 @@ export default memo(function AggregatedTable({
               disabled={!editable}
               inputProps={{
                 ...register?.('lpg_40l', {
-                  value:
-                    assets?.lpg_40l  
+                  value: assets?.lpg_40l,
                 }),
               }}
             />
