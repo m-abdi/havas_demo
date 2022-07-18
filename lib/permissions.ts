@@ -101,6 +101,15 @@ export async function canCreateAsset(session: Session) {
   });
   return user?.role.createAsset;
 }
+export async function canCreateTags(session: Session) {
+  const user = await prisma.person.findFirst({
+    where: {
+      id: session.user.id,
+    },
+    include: { role: true },
+  });
+  return user?.role.createTag;
+}
 export async function canCreateLicense(session: Session) {
   const user = await prisma.person.findFirst({
     where: {

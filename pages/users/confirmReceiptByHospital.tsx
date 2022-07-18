@@ -8,10 +8,10 @@ import {
 } from '@mui/material';
 import React, { useMemo, useState } from 'react';
 
-import { Button } from 'src/Components/Button';
+import { Button } from '../../src/Components/Button';
 import Head from 'next/head';
-import Layout from 'src/Components/Layout';
-import NewExitCorporation from 'src/Screens/NewExitCorporation';
+import Layout from '../../src/Components/Layout';
+import NewExitCorporation from '../../src/Screens/NewExitCorporation';
 import useWorkflows from '../../src/Logic/useWorkflows';
 
 const pageName = 'تحویل کپسول به بیمارستان';
@@ -21,12 +21,8 @@ export default function ConfirmReceiptByHospital() {
   const [existingWorkflow, setExistingWorkflow] = useState();
   const [editable, setEditable] = useState(false);
   const _ = undefined;
-  const { allEnterWorkflows, loading, sending, confirmEnterHandler } = useWorkflows(
-    _,
-    _,
-    _,
-    false
-  );
+  const { allEnterWorkflows, loading, sending, confirmEnterHandler } =
+    useWorkflows(_, _, _, false);
 
   return (
     <Layout pageName={pageName}>
@@ -67,24 +63,11 @@ export default function ConfirmReceiptByHospital() {
               setHavaleh(newValue as any);
               setExistingWorkflow(
                 allEnterWorkflows?.enterWorkflows?.find(
-                  (ew) => ew?.passedStages?.[0]?.havaleh?.id === newValue?.id
+                  (ew) =>
+                    ew?.passedStages?.[0]?.havaleh?.id ===
+                    (newValue?.id as any)
                 )
               );
-            }}
-            onInputChange={(event, newInput) => {
-              if (
-                allHavaleh.length > 0 &&
-                allHavaleh.some((r) => r.label === newInput)
-              ) {
-                setHavaleh(
-                  allHavaleh?.find((r) => r.label === newInput) as any
-                );
-                setExistingWorkflow(
-                  allEnterWorkflows?.enterWorkflows?.find(
-                    (ew) => ew?.passedStages?.[0]?.havaleh?.id === newValue?.id
-                  )
-                );
-              }
             }}
             sx={{ px: 5 }}
             renderInput={(params) => (
@@ -103,7 +86,7 @@ export default function ConfirmReceiptByHospital() {
             loading={loading}
             sending={sending}
             editable={editable}
-            confirmEnterHandler = {confirmEnterHandler}
+            confirmEnterHandler={confirmEnterHandler}
             existingWorkflow={existingWorkflow}
           />
         )}

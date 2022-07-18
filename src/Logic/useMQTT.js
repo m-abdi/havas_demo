@@ -1,15 +1,31 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { Client as MqttClient } from '../paho-mqtt';
+import { SnackbarContext } from '../../pages/_app';
+import useNotification from './useNotification';
 
 export default function useMQTT(channel = 'rfid') {
   // states
   const [mqttMessage, setMqttMessage] = useState();
   const [mqttStatus, setMqttStatus] = useState('DISCONNECTED');
+  //
+  const { setSnackbarOpen, setSnackbarMessage, setSnackbarColor } =
+    useContext(SnackbarContext);
+
   // start mqtt websocket connection in browser
   useEffect(() => {
     startConnection();
   }, []);
+  // show notification every time a new mqtt message is received
+  useEffect(() => {
+    useNotification(
+      'تگ جدید',
+      setSnackbarColor,
+      setSnackbarMessage,
+      setSnackbarOpen
+    );
+  }, [mqttMessage]);
+
   // connection manager
   function startConnection() {
     const client = new MqttClient(
@@ -41,10 +57,12 @@ export default function useMQTT(channel = 'rfid') {
     // connect the client
     client.connect({
       onSuccess: onConnect,
-      useSSL: true,
+      useSSL:
+        process.env.NEXT_PUBLIC_MQTT_BROKER_URL === 'localhost' ? false : true,
       userName: process.env.NEXT_PUBLIC_MQTT_BROKER_USERNAME,
       password: process.env.NEXT_PUBLIC_MQTT_BROKER_PASSWORD,
     });
   }
+
   return { mqttMessage, mqttStatus };
 }

@@ -20,6 +20,7 @@ const Template: ComponentStory<typeof EnterWarehouseRFID> = (args) => (
 );
 export const Main = Template.bind({});
 Main.args = {
+  mqttStatus: "CONNECTED",
   assets: {
     oxygen_50l: 55,
     co2_40l: 9,

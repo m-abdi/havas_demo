@@ -9,7 +9,8 @@ export default function useNotification(
   setSnackbarOpen: any,
   sendingMessage = 'در حال ارسال',
   successMessage = 'انجام شد',
-  errorMessage = 'خطا'
+  errorMessage = 'خطا',
+  tagMessage = 'تگ جدید'
 ) {
   if (type === 'sending') {
     setSnackbarColor('info');
@@ -22,6 +23,10 @@ export default function useNotification(
   } else if (type === 'error') {
     setSnackbarColor('error');
     setSnackbarMessage(errorMessage);
+    setSnackbarOpen(true);
+  } else if (type === 'newTag') {
+    setSnackbarColor('info');
+    setSnackbarMessage(tagMessage);
     setSnackbarOpen(true);
   }
 }

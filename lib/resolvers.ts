@@ -1,5 +1,6 @@
 import {
   Asset,
+  NewTag,
   Person,
   PersonFilter,
   Place,
@@ -15,6 +16,7 @@ import {
   canCreatePerson,
   canCreatePlace,
   canCreateRole,
+  canCreateTags,
   canDeleteAssets,
   canDeleteEquipments,
   canDeletePersons,
@@ -1110,7 +1112,7 @@ const resolvers: Resolvers = {
     },
     async updateAssetsStates(
       _,
-      { ids, status }: { ids?: string[], status: string },
+      { ids, status }: { ids?: string[]; status: string },
       _context
     ): Promise<any> {
       // check authentication and permission
@@ -1120,13 +1122,51 @@ const resolvers: Resolvers = {
         throw new GraphQLYogaError('Unauthorized');
       }
       if (ids) {
-        return (await prisma.asset.updateMany({
-          where: { id: { in: ids } },
-          data: {
-            status
-          },
-        })).count;
+        return (
+          await prisma.asset.updateMany({
+            where: { id: { in: ids } },
+            data: {
+              status,
+            },
+          })
+        ).count;
       }
+    },
+    async createTags(
+      _,
+      { tags }: { tags: NewTag[] },
+      _context
+    ): Promise<number> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (
+        !session ||
+        !(await canCreateAsset(session)) ||
+        !(await canCreateTags(session))
+      ) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+     
+      
+      const createdTags = await prisma.tag.createMany({
+        data: tags.map((tag) => ({
+          id: tag?.tagId,
+          asset: tag?.assetId
+            ? { connect: { id: tag?.assetId } }
+            : tag?.newAsset && {
+                create: {
+                  equipment: {
+                    connect: { terminologyCode: tag?.newAsset?.equipmentId },
+                  },
+                  place: {
+                    connect: { id: tag?.newAsset?.placeId },
+                  },
+                },
+              },
+        })),
+      });
+      return createdTags?.count;
     },
   },
   Person: {

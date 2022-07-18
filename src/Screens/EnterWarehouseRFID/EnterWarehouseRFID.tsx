@@ -1,25 +1,46 @@
 import {
   Box,
   Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Divider,
+  IconButton,
   Stack,
   TableContainer,
+  TextField,
   Typography,
 } from '@mui/material';
+import React, { useState } from 'react';
 
 import AggregatedTable from '../../Components/AggregatedTable';
 import { Button } from '../../Components/Button';
-import React from 'react';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import NewTag from '../NewTag/NewTag';
+import { NewTag as NewTagType } from '../../../lib/resolvers-types';
 import { useForm } from 'react-hook-form';
-import useWorkflows from '../../Logic/useWorkflows';
 
 export default function EnterWarehouseRFID({
-  loading,
+  equipmentsLoading,
+  placesLoading,
+  newTagSending,
   assets,
   checkedAssets = {},
+  places,
+  equipments,
+  mqttMessage,
+  mqttStatus,
   submitHandler,
+  createTagHandler,
 }: {
-  loading: boolean;
+  equipmentsLoading?: boolean;
+  placesLoading?: boolean;
+  newTagSending: boolean;
+  places?: { id: string; label: string }[];
+  equipments?: { id: string; label: string }[];
+  mqttMessage: string;
+  mqttStatus: any;
   assets: {
     oxygen_50l?: number;
     bihoshi_50l?: number;
@@ -69,11 +90,26 @@ export default function EnterWarehouseRFID({
     lpg_40l?: number;
   };
   submitHandler: (status: string) => Promise<void>;
+  createTagHandler: (tags: NewTagType[]) => Promise<boolean>;
 }) {
+  // states
+  const [newTagDialogIsOpened, setNewTagDialogIsOpened] = useState(false);
   // react-form-hooks
   const { register, setValue } = useForm();
   return (
     <Container maxWidth='lg' sx={{ position: 'relative' }}>
+      <Stack
+        direction='row'
+        alignItems={'center'}
+        justifyContent='space-between'
+      >
+        <TextField size='small' />
+        <Button
+          label='تگ جدید'
+          color='info'
+          onClick={() => setNewTagDialogIsOpened(true)}
+        />
+      </Stack>
       <Stack alignItems={'center'} spacing={3}>
         <Box>
           <Typography
@@ -108,6 +144,52 @@ export default function EnterWarehouseRFID({
           </TableContainer>
         </Box>
       </Stack>
+      <Dialog
+        sx={{ zIndex: 7000 }}
+        open={newTagDialogIsOpened}
+        onClose={() => setNewTagDialogIsOpened(false)}
+      >
+        <DialogTitle sx={{ textAlign: 'center', display: mqttStatus!=="CONNECTED" ? "none" :"block" }}>
+          <Stack
+            direction='row'
+            alignItems='center'
+            justifyContent={'space-between'}
+          >
+            <span style={{ inlineSize: '10%' }}>
+              <IconButton onClick={() => setNewTagDialogIsOpened(false)}>
+                <CloseRoundedIcon />
+              </IconButton>
+            </span>
+            <Typography
+              variant='h5'
+              component='h2'
+              sx={{ flexGrow: 1, textAlign: 'center' }}
+            >
+              تگ جدید
+            </Typography>
+            <span style={{ inlineSize: '10%' }}></span>
+          </Stack>
+        </DialogTitle>
+        <DialogContent sx={{ position: 'relative', p: '1px' }}>
+          <NewTag
+            equipmentsLoading={equipmentsLoading}
+            placesLoading={placesLoading}
+            sending={newTagSending}
+            equipments={equipments}
+            places={places}
+            mqttMessage={mqttMessage}
+            mqttStatus={mqttStatus}
+            newAsset={true}
+            createTagHandler={async (tags: NewTagType[]) => {
+              const resp = await createTagHandler(tags);
+              if (resp) {
+                setNewTagDialogIsOpened(false);
+              }
+            }}
+          />
+        </DialogContent>
+        
+      </Dialog>
       <Box
         sx={{
           position: 'absolute',

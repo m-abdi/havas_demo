@@ -7,16 +7,17 @@ import {
   DeleteEquipmentsDocument,
   DeletePersonsDocument,
   EquipmentsDocument,
-} from 'lib/graphql-operations';
+  UpdateAssetsStatesDocument,
+} from '../../lib/graphql-operations';
 import {
   AssetFilter,
   EquipmentFilter,
   PersonFilter,
-} from 'lib/resolvers-types';
+} from '../../lib/resolvers-types';
 import { useCallback, useContext } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
-import { SnackbarContext } from 'pages/_app';
+import { SnackbarContext } from '../../pages/_app';
 import useNotification from './useNotification';
 import { useRouter } from 'next/router';
 
@@ -46,10 +47,10 @@ export default function useAssets(
     },
   });
   // new asset mutation to server
-  const [
-    createAssetMutation,
-    {  loading: sending },
-  ] = useMutation(CreateAssetDocument);
+  const [createAssetMutation, { loading: sending }] =
+    useMutation(CreateAssetDocument);
+  // state update mutation
+  const [updateAssetsStatesMutation] = useMutation(UpdateAssetsStatesDocument);
   // delete
   const [deleteAssetMutation, { loading: deleting }] =
     useMutation(DeleteAssetsDocument);
@@ -79,7 +80,12 @@ export default function useAssets(
   );
   // creation handler
   const createNew = useCallback(
-    async (equipmentId: string, publicPropertyCode: string, placeId: string, edit: string) => {
+    async (
+      equipmentId: string,
+      publicPropertyCode: string,
+      placeId: string,
+      edit: string
+    ) => {
       useNotification(
         'sending',
         setSnackbarColor,
@@ -122,7 +128,43 @@ export default function useAssets(
     },
     []
   );
-
+  // update state handler
+  const updateStateHandler = async (status: string, ids?: string[]) => {
+    useNotification(
+      'sending',
+      setSnackbarColor,
+      setSnackbarMessage,
+      setSnackbarOpen
+    );
+    try {
+      const updatedAssetsCount = await updateAssetsStatesMutation({
+        variables: { ids, status },
+      });
+      if (updatedAssetsCount.data) {
+        useNotification(
+          'success',
+          setSnackbarColor,
+          setSnackbarMessage,
+          setSnackbarOpen
+        );
+        router.push('/users/dashboard');
+      } else {
+        useNotification(
+          'error',
+          setSnackbarColor,
+          setSnackbarMessage,
+          setSnackbarOpen
+        );
+      }
+    } catch (e) {
+      useNotification(
+        'error',
+        setSnackbarColor,
+        setSnackbarMessage,
+        setSnackbarOpen
+      );
+    }
+  };
   // handlers
   const deleteHandler = useCallback(
     async (assetIds: string[]): Promise<any> => {
@@ -178,5 +220,6 @@ export default function useAssets(
     createNew,
     deleting,
     deleteHandler,
+    updateStateHandler,
   };
 }

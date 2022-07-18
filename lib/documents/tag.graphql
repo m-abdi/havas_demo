@@ -9,3 +9,7 @@ query getTagData($tagId: ID!) {
     }
   }
 }
+
+mutation createTags($tags: [NewTag!]!) {
+  createTags(tags: $tags)
+}

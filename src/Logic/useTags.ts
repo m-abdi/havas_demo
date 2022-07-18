@@ -3,26 +3,28 @@ import {
   AssetsDocument,
   CreateAssetDocument,
   CreateNewPersonDocument,
+  CreateTagsDocument,
   DeleteAssetsDocument,
   DeleteEquipmentsDocument,
   DeletePersonsDocument,
   EquipmentsDocument,
   GetTagDataDocument,
-} from 'lib/graphql-operations';
+} from '../../lib/graphql-operations';
 import {
   AssetFilter,
   EquipmentFilter,
+  NewTag,
   PersonFilter,
-} from 'lib/resolvers-types';
+} from '../../lib/resolvers-types';
 import { useCallback, useContext } from 'react';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 
-import { SnackbarContext } from 'pages/_app';
+import { SnackbarContext } from '../../pages/_app';
 import useNotification from './useNotification';
 import { useRouter } from 'next/router';
 
 export default function useTags(
-  offset = 0,
+  redirect=true,
   pageNumber?: number,
   itemsPerPage = 10,
   filters?: AssetFilter,
@@ -35,17 +37,13 @@ export default function useTags(
   // fetch a specific tag
   const [
     getTagDataQuery,
-    {
-      data: tagData,
-      error: tagDataError,
-      loading: tagDataLoading,
-    },
+    { data: tagData, error: tagDataError, loading: tagDataLoading },
   ] = useLazyQuery(GetTagDataDocument, {
     fetchPolicy: 'cache-and-network',
   });
-  // new asset mutation to server
-  const [createAssetMutation, { loading: sending }] =
-    useMutation(CreateAssetDocument);
+  // new tag mutation to server
+  const [createTagMutation, { loading: sending }] =
+    useMutation(CreateTagsDocument);
   // delete
   const [deleteAssetMutation, { loading: deleting }] =
     useMutation(DeleteAssetsDocument);
@@ -74,55 +72,48 @@ export default function useTags(
     [itemsPerPage, pageNumber]
   );
   // creation handler
-  const createNew = useCallback(
-    async (
-      equipmentId: string,
-      publicPropertyCode: string,
-      placeId: string,
-      edit: string
-    ) => {
-      useNotification(
-        'sending',
-        setSnackbarColor,
-        setSnackbarMessage,
-        setSnackbarOpen
-      );
-      try {
-        const createdAsset = await createAssetMutation({
-          variables: {
-            equipmentId,
-            publicPropertyCode,
-            placeId,
-            edit,
-          },
-        });
-        if (createdAsset) {
-          useNotification(
-            'success',
-            setSnackbarColor,
-            setSnackbarMessage,
-            setSnackbarOpen
-          );
-          router.push('/users/assets');
-        } else {
-          useNotification(
-            'error',
-            setSnackbarColor,
-            setSnackbarMessage,
-            setSnackbarOpen
-          );
-        }
-      } catch (e) {
+  const createNew = useCallback(async (tags: NewTag[]) => {
+    useNotification(
+      'sending',
+      setSnackbarColor,
+      setSnackbarMessage,
+      setSnackbarOpen
+    );
+    try {
+      const createdTag = await createTagMutation({
+        variables: {
+          tags,
+        },
+      });
+      if (createdTag?.data) {
+        useNotification(
+          'success',
+          setSnackbarColor,
+          setSnackbarMessage,
+          setSnackbarOpen
+        );
+        return true
+        // router.push('/users/tags');
+      } else {
         useNotification(
           'error',
           setSnackbarColor,
           setSnackbarMessage,
           setSnackbarOpen
         );
+        return false
       }
-    },
-    []
-  );
+    } catch (e) {
+      useNotification(
+        'error',
+        setSnackbarColor,
+        setSnackbarMessage,
+        setSnackbarOpen
+      );
+              return false;
+
+    }
+  }, []);
 
   // handlers
   const deleteHandler = useCallback(
@@ -170,7 +161,7 @@ export default function useTags(
     },
     []
   );
-  
+
   return {
     getTagDataQuery,
     tagData,

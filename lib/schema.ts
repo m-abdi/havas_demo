@@ -402,6 +402,15 @@ const typeDefs = /* GraphQL */ `
     acetylene_40l: Int
     lpg_40l: Int
   }
+  input NewAsset {
+    equipmentId: String!
+    placeId: String!
+  }
+  input NewTag {
+    tagId: String!
+    assetId: String
+    newAsset: NewAsset
+  }
   type Query {
     persons(limit: Int, offset: Int, filters: PersonFilter): [Person]!
     personsCount(filters: PersonFilter): Int
@@ -420,6 +429,7 @@ const typeDefs = /* GraphQL */ `
     getWorkflowNumber: String!
     tagData(tagId: ID!): Tag
   }
+
   type Mutation {
     createRole(name: String!, permissions: Permissions!, edit: String): Role!
     createPerson(
@@ -505,6 +515,7 @@ const typeDefs = /* GraphQL */ `
       assets: AggregatedTransferedAssets
     ): Workflow
     updateAssetsStates(ids: [String], status: String!): Int
+    createTags(tags: [NewTag!]!): Int
   }
 `;
 

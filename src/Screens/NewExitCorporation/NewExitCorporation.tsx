@@ -9,12 +9,15 @@ import {
   TextField,
   styled,
 } from '@mui/material';
-import { memo, useCallback, useMemo, useState } from 'react';
+import DatePicker, { DateObject } from 'react-multi-date-picker';
+import { memo, useCallback, useId, useMemo, useState } from 'react';
 
 import AggregatedTable from '../../Components/AggregatedTable';
+import AnalogTimePicker from 'react-multi-date-picker/plugins/analog_time_picker';
 import { Button } from '../../Components/Button';
-import { DatePicker } from 'jalali-react-datepicker';
 import EditableHtmlTable from './EditableHtmlTable';
+import SolarHijri from 'react-date-object/calendars/persian';
+import SolarHijriFarsi from 'react-date-object/locales/persian_fa';
 import { useForm } from 'react-hook-form';
 
 const Form1 = styled('form', { name: 'form1' })(({ theme }) => ({
@@ -204,10 +207,10 @@ export default function ExitCorporation({
     'اکسیژن',
     'گاز بیهوشی',
   ]);
-  const [date, setDate] = useState(
+  const [date, setDate] = useState<any>(
     existingWorkflow
       ? parseInt(existingWorkflow?.passedStages?.[0]?.havaleh?.date)
-      : Date.now()
+      : new DateObject()
   );
   // handlers
   const submitHandler = async (data: any) => {
@@ -256,7 +259,7 @@ export default function ExitCorporation({
       await createNewHandler(
         workflowNumber as string,
         data?.havalehId,
-        dateT || date.toString(),
+        dateT || new Date(date?.toDate()).getTime().toString(),
         corporationRepresentative?.id as string,
         data?.deliverer,
         data?.description,
@@ -392,28 +395,22 @@ export default function ExitCorporation({
           </Input1>
           <Input1>
             <Label1>تاریخ ثبت حواله</Label1>
-            {/* <TextField
-              size='small'
-              disabled
-              value={new Intl.DateTimeFormat('fa-IR', {
-                dateStyle: 'medium',
-                timeStyle: 'full',
-              }).format(Date.now())}
-            /> */}
-            <Box
-              sx={{
-                '& input': { blockSize: 35, inlineSize: '100%', m: 0, p: 0 },
-                p: 0,
-                m: 0,
-              }}
-            >
+           
               <DatePicker
+                calendar={SolarHijri}
+                locale={SolarHijriFarsi}
+                plugins={[<AnalogTimePicker key={useId()} />]}
                 value={date}
-                onClickSubmitButton={({ value }) => {
-                  setDate(new Date(value).getTime());
+                onChange={(value) => {
+                  setDate(value);
+                }}
+                style={{
+                  blockSize: "35px",
+                  inlineSize: '100%',
+                  textAlign: "center",
+                  fontSize: "15pt"
                 }}
               />
-            </Box>
           </Input1>
         </Row1>
         <Row1>

@@ -93,15 +93,16 @@ export default function NewAsset({
   equipments = [],
   existingAsset = '',
   createHandler,
+  submitOnChange = false,
 }: {
   loading: boolean;
   sending: boolean;
   places: { id: string; label: string }[];
   equipments: { id: string; label: string }[];
   existingAsset?: any;
+  submitOnChange?: boolean;
   createHandler: (
     equipmentId: string,
-    publicPropertyCode: string,
     placeId: string,
     edit: string
   ) => Promise<void>;
@@ -113,6 +114,7 @@ export default function NewAsset({
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
   //
@@ -124,20 +126,26 @@ export default function NewAsset({
       setPlace(places.find((p) => p.id === existingAsset?.place?.id));
     }
   }, [existingAsset, places, equipments]);
+  useEffect(() => {
+    if (submitOnChange) {
+      submitHandler();
+    }
+  }, [equipment, place]);
+
   // handlers
-  const submitHandler = async (data: any) => {
+  const submitHandler = async () => {
     await createHandler(
       equipment?.id as string,
-      data?.publicPropertyCode,
       place?.id as string,
       existingAsset?.id ?? ''
     );
   };
   if (sending) {
-    return <Loader center/>
+    return <Loader center />;
   }
+
   return (
-    <Container maxWidth='lg' sx={{ position: 'relative', p: '8px' }}>
+    <Container maxWidth='sm' sx={{ position: 'relative', p: '8px' }}>
       <Form1 onSubmit={handleSubmit(submitHandler)}>
         <Row1>
           <Input1>
@@ -164,7 +172,6 @@ export default function NewAsset({
                 value={equipment}
                 onChange={(event, newValue) => {
                   setEquipment(newValue as any);
-                  // setFactoryError(false);
                 }}
                 onInputChange={(event, newInput) => {
                   if (
@@ -174,7 +181,6 @@ export default function NewAsset({
                     setEquipment(
                       equipments.find((r) => r.label === newInput) as any
                     );
-                    // setFactory(false);
                   }
                 }}
                 renderInput={(params) => (
@@ -188,7 +194,7 @@ export default function NewAsset({
               />
             )}
           </Input1>
-          <Input1>
+          {/* <Input1>
             <Label1>کد بیت المال</Label1>
             <TextField
               size='small'
@@ -204,7 +210,9 @@ export default function NewAsset({
                 errors.model?.type === 'required' && 'لطفا این فیلد را پر کنید'
               }
             />
-          </Input1>
+          </Input1> */}
+        </Row1>
+        <Row1>
           <Input1>
             <Label1>محل استقرار</Label1>
             {loading ? (
@@ -227,7 +235,6 @@ export default function NewAsset({
                 value={place}
                 onChange={(event, newValue) => {
                   setPlace(newValue as any);
-                  // setFactoryError(false);
                 }}
                 onInputChange={(event, newInput) => {
                   if (
@@ -235,7 +242,6 @@ export default function NewAsset({
                     places.some((r) => r.label === newInput)
                   ) {
                     setPlace(places.find((r) => r.label === newInput) as any);
-                    // setFactory(false);
                   }
                 }}
                 renderInput={(params) => (
@@ -250,23 +256,24 @@ export default function NewAsset({
             )}
           </Input1>
         </Row1>
-
-        <Box
-          sx={{
-            position: 'absolute',
-            top: -68,
-            right: 'min(10%, 105px)',
-          }}
-        >
-          <Button
-            id='submitButton'
-            label='ارسال'
-            size='large'
-            color='success'
-            variant='contained'
-            disabled={sending}
-          />
-        </Box>
+        {!submitOnChange && (
+          <Box
+            sx={{
+              position: 'absolute',
+              top: -68,
+              right: 'min(10%, 105px)',
+            }}
+          >
+            <Button
+              id='submitButton'
+              label='ارسال'
+              size='large'
+              color='success'
+              variant='contained'
+              disabled={sending}
+            />
+          </Box>
+        )}
       </Form1>
     </Container>
   );

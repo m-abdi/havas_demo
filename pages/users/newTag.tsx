@@ -9,19 +9,19 @@ import {
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useContext, useEffect, useState } from 'react';
 
-import AuthenticationRequired from 'src/AuthenticationRequired';
+import AuthenticationRequired from '../../src/AuthenticationRequired';
 import Box from '@mui/material/Box';
-import { Button } from 'src/Components/Button';
+import { Button } from '../../src/Components/Button';
 import Container from '@mui/material/Container';
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import Head from 'next/head';
-import HeartBeat from 'src/Components/HeartBeat/HeartBeat';
-import { InfoContext } from 'pages/_app';
+import HeartBeat from '../../src/Components/HeartBeat/HeartBeat';
+import { InfoContext } from '../../pages/_app';
 import Layout from '../../src/Components/Layout/Layout';
 import type { NextPage } from 'next';
-import { PahoClient } from 'src/PahoClient';
-import RFID from 'src/Components/RFID';
+import RFID from '../../src/Components/RFID';
 import Typography from '@mui/material/Typography';
+import useMQTT from '../../src/Logic/useMQTT';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
@@ -66,35 +66,27 @@ function TagField(
 }
 const NewTag: NextPage = () => {
   // states
-  const [message, setMessage] = useState<string>('');
+
   const [assetId, setAssetId] = useState<string>('');
-  const [connectionStatus, setConnectionStatus] =
-    useState<'Disconnected' | 'Connecting'>('Disconnected');
+
   const [tags, setTags] = useState([{ content: '', assetId: '' }]);
+  const { mqttMessage, mqttStatus } = useMQTT();
 
-  //
-  useEffect(() => {
-    if (connectionStatus === 'Disconnected') {
-      PahoClient(setMessage, setConnectionStatus);
-      setConnectionStatus('Connecting');
-    }
-  }, [connectionStatus]);
 
   useEffect(() => {
-    if (message && (tags.length === 0 || tags?.[0].content.length === 0)) {
-      setTags([{ content: message, assetId: '' }]);
-    } else if (message && tags[0].content.length > 0) {
-      setTags([...tags, { content: message, assetId: '' }]);
+    if (mqttMessage && (tags.length === 0 || tags?.[0].content.length === 0)) {
+      setTags([{ content: mqttMessage, assetId: '' }]);
+    } else if (mqttMessage && tags[0].content.length > 0) {
+      setTags([...tags, { content: mqttMessage, assetId: '' }]);
     }
-  }, [message]);
+  }, [mqttMessage]);
 
   return (
     <Layout pageName={pageName}>
       <Head>
         <title>{`${pageName}`} | حواس</title>
       </Head>
-      {connectionStatus === 'Disconnected' ||
-      connectionStatus === 'Connecting' ? (
+      {mqttStatus === 'DISCONNECTED' || mqttStatus === 'CONNECTING' ? (
         <RFID status='CONNECTING' />
       ) : (
         <Container maxWidth='md' sx={{ position: 'relative' }}>

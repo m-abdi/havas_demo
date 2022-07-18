@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { useMutation, useQuery } from '@apollo/client';
 
 import EnterWarehouseRFID from '../../src/Screens/EnterWarehouseRFID';
+import { EquipmentsAndPlacesDocument } from '../../lib/graphql-operations';
 import Head from 'next/head';
 import Layout from '../../src/Components/Layout';
 import { UpdateAssetsStatesDocument } from 'lib/graphql-operations';
 import { getQueryDefinition } from '@apollo/client/utilities';
+import useAssets from '../../src/Logic/useAssets';
 import useMQTT from '../../src/Logic/useMQTT';
-import { useMutation } from '@apollo/client';
 import useTags from '../../src/Logic/useTags';
 
 const pageName = 'RFID ثبت ورود کپسول به انبار توسط';
@@ -36,10 +38,21 @@ export default function enterWarehouseRFID() {
     acetylene_40l: null,
     lpg_40l: null,
   });
+  //   states
   const { mqttMessage, mqttStatus } = useMQTT();
   const [checkedAssetsIds, setCheckedAssetsIds] = useState([]);
-  const { getTagDataQuery, tagData, tagDataLoading } = useTags();
-
+  //   data hooks
+  const {
+    getTagDataQuery,
+    createNew: createTagHandler,
+    sending: newTagSending,
+    tagData,
+    tagDataLoading,
+  } = useTags();
+  const { updateStateHandler } = useAssets();
+  // graphql operations for getting equipments and places
+  const { data, loading } = useQuery(EquipmentsAndPlacesDocument);
+  // rfid operation
   useEffect(() => {
     const updateCheckedAssets = () => {
       //   fetch tag data
@@ -63,25 +76,25 @@ export default function enterWarehouseRFID() {
     updateCheckedAssets();
   }, [mqttMessage, tagData]);
 
-  const [updateAssetsStatesMutation, { data }] = useMutation(
-    UpdateAssetsStatesDocument
-  );
-  const updateAssetsState = async (status: string) => {
-    await updateAssetsStatesMutation({
-      variables: { ids: checkedAssetsIds, status },
-    });
-  };
-
   return (
     <Layout pageName={pageName}>
       <Head>
         <title>{`${pageName}`} | حواس</title>
       </Head>
       <EnterWarehouseRFID
-        loading={false}
+        mqttMessage={mqttMessage}
+        mqttStatus={mqttStatus}
+        equipmentsLoading={loading}
+        placesLoading={loading}
+        newTagSending={newTagSending}
+        equipments={data?.equipments as any}
+        places={data?.places}
         assets={checkedAssets}
         checkedAssets={checkedAssets}
-        submitHandler={updateAssetsState}
+        submitHandler={async (status: string) => {
+          await updateStateHandler(status, checkedAssetsIds);
+        }}
+        createTagHandler={createTagHandler}
       />
     </Layout>
   );
