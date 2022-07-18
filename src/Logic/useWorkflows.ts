@@ -42,6 +42,7 @@ export default function useWorkflows(
     fetchMore: fetchMoreRows,
   } = useQuery(AllEnterWorkflowsDocument, {
     fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'cache-and-network',
     variables: {
       offset,
       limit: itemsPerPage,
@@ -56,7 +57,9 @@ export default function useWorkflows(
   const [
     confirmReceiptByHospitalMutation,
     { loading: confirmReceiptByHospitalSending },
-  ] = useMutation(ConfirmReceiptByHospitalDocument);
+  ] = useMutation(ConfirmReceiptByHospitalDocument, {
+    refetchQueries: [{ query: AllEnterWorkflowsDocument }, 'allEnterWorkflows'],
+  });
   // delete
   const [deleteEquipmentsMutation, { loading: deleting }] = useMutation(
     DeleteEquipmentsDocument
@@ -190,16 +193,16 @@ export default function useWorkflows(
 
           var updatedEnterWorkflow = await confirmReceiptByHospitalMutation({
             variables: {
-                  workflowNumber,
-                  havalehId,
-                  date,
-                  transportationName,
-                  transportationTelephone,
-                  transportationTelephone2,
-                  description,
-                  deliverer,
-                  assets: filteredAssets,
-                }
+              workflowNumber,
+              havalehId,
+              date,
+              transportationName,
+              transportationTelephone,
+              transportationTelephone2,
+              description,
+              deliverer,
+              assets: filteredAssets,
+            },
           });
         } else {
           var updatedEnterWorkflow = await confirmReceiptByHospitalMutation({
@@ -208,7 +211,7 @@ export default function useWorkflows(
             },
           });
         }
-        
+
         if (updatedEnterWorkflow) {
           useNotification(
             'success',
@@ -216,7 +219,9 @@ export default function useWorkflows(
             setSnackbarMessage,
             setSnackbarOpen
           );
-          router.push(`/users/enterWarehouseRFID?workflow=${updatedEnterWorkflow?.data}`);
+          router.push(
+            `/users/enterWarehouseRFID?workflow=${updatedEnterWorkflow?.data}`
+          );
         } else {
           useNotification(
             'error',
@@ -227,7 +232,7 @@ export default function useWorkflows(
         }
       } catch (e) {
         console.log(e.message);
-        
+
         useNotification(
           'error',
           setSnackbarColor,

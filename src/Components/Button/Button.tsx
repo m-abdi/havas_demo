@@ -40,6 +40,7 @@ interface ButtonProps {
    */
   onClick?: () => void;
   startIcon?: any;
+  backgroundColor?: string;
 }
 
 /**
@@ -51,6 +52,7 @@ export default memo(function Button({
   color = 'primary',
   label = 'ارسال',
   disabled = false,
+  backgroundColor,
   startIcon,
   ...props
 }: ButtonProps) {
@@ -62,7 +64,7 @@ export default memo(function Button({
       color={color}
       disabled={disabled}
       {...props}
-      sx={{ borderRadius: '13px' }}
+      sx={{ borderRadius: '13px', backgroundColor}}
       startIcon={startIcon}
     >
       {label}

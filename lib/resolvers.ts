@@ -963,6 +963,7 @@ const resolvers: Resolvers = {
           where: { id: { in: borrowedAssets.map((a) => a.id) } },
           data: { status: 'در حال دریافت', deliverer },
         });
+        
       });
       const aggregatedAssets = {};
       Object.entries(assets)
@@ -1073,7 +1074,7 @@ const resolvers: Resolvers = {
           data: {
             nextStageName: 'RFID ثبت ورود کپسول به انبار توسط',
             passedStages: [
-              ...(existingWorkflow?.passedStages as any),
+              existingWorkflow?.passedStages?.[0],
               {
                 stageID: 2,
                 stageName: 'تایید تحویل کپسول به بیمارستان',
@@ -1106,7 +1107,7 @@ const resolvers: Resolvers = {
           data: {
             nextStageName: 'RFID ثبت ورود کپسول به انبار توسط',
             passedStages: [
-              ...(existingWorkflow?.passedStages as any),
+              existingWorkflow?.passedStages?.[0],
               {
                 stageID: 2,
                 stageName: 'تایید تحویل کپسول به بیمارستان',

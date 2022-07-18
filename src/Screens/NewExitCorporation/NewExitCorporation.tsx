@@ -202,6 +202,7 @@ export default function ExitCorporation({
     register,
     watch,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
   const [selectedColumns, setSelectedColumns] = useState([
@@ -227,6 +228,14 @@ export default function ExitCorporation({
       setSum(r);
     });
   }, [watch]);
+  useEffect(() => {
+    if (existingWorkflow) {
+      Object.entries(
+        existingWorkflow?.passedStages?.[0]?.havaleh?.assets
+      ).forEach(([key, value]) => setValue(key, value));
+      setDate(parseInt(existingWorkflow?.passedStages?.[0]?.havaleh?.date));
+    }
+  }, [existingWorkflow]);
 
   // handlers
   const submitHandler = async (data: any) => {

@@ -51,7 +51,7 @@ export default function enterWarehouseRFID() {
   } = useTags();
   const { updateStateHandler } = useAssets();
   // graphql operations for getting equipments and places
-  const { data, loading } = useQuery(EquipmentsAndPlacesDocument);
+  const { data, loading } = useQuery(EquipmentsAndPlacesDocument, {fetchPolicy: "cache-and-network"});
   // rfid operation
   useEffect(() => {
     const updateCheckedAssets = () => {

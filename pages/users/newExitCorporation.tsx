@@ -22,7 +22,7 @@ export default function newExitCorporation() {
   const { data: session, status } = useSession();
   //
   // get workflow number from server
-  const { data, loading } = useQuery(GetWorkflowNumberDocument);
+  const { data, loading } = useQuery(GetWorkflowNumberDocument, {fetchPolicy: "cache-and-network"});
   const { sending, createNewEnter } = useWorkflows();
   return (
     <Layout pageName={pageName}>

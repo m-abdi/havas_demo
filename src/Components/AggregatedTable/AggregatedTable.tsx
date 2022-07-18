@@ -3,7 +3,7 @@ import { memo, useEffect } from 'react';
 
 import { useFormContext } from 'react-hook-form';
 
-export default memo(function AggregatedTable({
+export default function AggregatedTable({
   editable = false,
   selectedColumns = [
     'اکسیژن',
@@ -240,6 +240,7 @@ export default memo(function AggregatedTable({
               id='bihoshi_50l'
               inputProps={{
                 ...register?.('bihoshi_50l', {
+           
                   value: assets?.bihoshi_50l,
                 }),
               }}
@@ -693,4 +694,4 @@ export default memo(function AggregatedTable({
       </TableBody>
     </table>
   );
-});
+}

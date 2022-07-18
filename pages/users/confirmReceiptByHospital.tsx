@@ -12,6 +12,7 @@ import { Button } from '../../src/Components/Button';
 import Head from 'next/head';
 import Layout from '../../src/Components/Layout';
 import NewExitCorporation from '../../src/Screens/NewExitCorporation';
+import { useRouter } from 'next/router';
 import useWorkflows from '../../src/Logic/useWorkflows';
 
 const pageName = 'تحویل کپسول به بیمارستان';
@@ -20,32 +21,41 @@ export default function ConfirmReceiptByHospital() {
   const [havaleh, setHavaleh] = useState<{ id: string; label: string }>();
   const [existingWorkflow, setExistingWorkflow] = useState();
   const [editable, setEditable] = useState(false);
+
   const _ = undefined;
   const { allEnterWorkflows, loading, sending, confirmEnterHandler } =
     useWorkflows(_, _, _, false);
-
+  //
+  const router = useRouter();
   return (
     <Layout pageName={pageName}>
       <Head>
         <title>{`${pageName}`} | حواس</title>
       </Head>
       <Container maxWidth='lg' sx={{ position: 'relative' }}>
-        {existingWorkflow && (
-          <Box sx={{ my: 2, mx: 5 }}>
-            <Stack
-              direction='row'
-              alignItems={'center'}
-              justifyContent='flex-start'
-            >
+        <Box sx={{ my: 2, mx: 5 }}>
+          <Stack
+            direction='row'
+            alignItems={'center'}
+            justifyContent='flex-start'
+            spacing={2}
+          >
+            {existingWorkflow && (
               <Button
                 label='مغایرت'
                 color='error'
                 onClick={() => setEditable(true)}
               />
-            </Stack>
-            <Divider sx={{ my: 1 }} />
-          </Box>
-        )}
+            )}
+            <Button
+              label='حواله در سامانه موجود نیست'
+              backgroundColor='purple'
+              onClick={() => router.push('/users/newExitCorporation')}
+            />
+          </Stack>
+          <Divider sx={{ my: 1 }} />
+        </Box>
+
         {allEnterWorkflows && (
           <Autocomplete
             disablePortal
@@ -64,8 +74,7 @@ export default function ConfirmReceiptByHospital() {
               setExistingWorkflow(
                 allEnterWorkflows?.enterWorkflows?.find(
                   (ew) =>
-                    ew?.passedStages?.[0]?.havaleh?.id ===
-                    (newValue?.id as any)
+                    ew?.passedStages?.[0]?.havaleh?.id === (newValue?.id as any)
                 )
               );
             }}
