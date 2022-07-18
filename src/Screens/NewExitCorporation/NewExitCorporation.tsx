@@ -209,7 +209,6 @@ export default function ExitCorporation({
     'گاز بیهوشی',
   ]);
   const [sum, setSum] = useState(0);
-  watch();
   const [date, setDate] = useState<any>(
     existingWorkflow
       ? parseInt(existingWorkflow?.passedStages?.[0]?.havaleh?.date)
@@ -567,7 +566,25 @@ export default function ExitCorporation({
         </Input1>
         <Input1 sx={{ marginBottom: 3 }}>
           <Label1>جمع ثبت شده</Label1>
-          <TextField size='small' value={sum} />
+          <TextField
+            size='small'
+            value={
+              existingWorkflow
+                ? Object.entries(
+                    existingWorkflow?.passedStages?.[0]?.havaleh?.assets
+                  )
+                    .filter(
+                      ([key, value]) =>
+                        !/_customer/.test(key) &&
+                        !/_factory/.test(key) &&
+                        !/type/.test(key) &&
+                        value
+                    )
+                    .map(([key, value]) => value)
+                    .reduce((pv, cv) => pv + cv, 0)
+                : sum
+            }
+          />
         </Input1>
         <Row1 sx={{ justifyContent: 'center' }}>
           {!existingWorkflow ? (

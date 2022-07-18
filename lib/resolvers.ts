@@ -964,7 +964,18 @@ const resolvers: Resolvers = {
           data: { status: 'در حال دریافت', deliverer },
         });
       });
-
+      const aggregatedAssets = {};
+      Object.entries(assets)
+        .map(([key, value]) => [
+          key.replace('_factory', '').replace('_customer', ''),
+          value,
+        ])
+        .forEach(
+          ([k, v]) =>
+            (aggregatedAssets[k] = aggregatedAssets[k]
+              ? aggregatedAssets[k] + v
+              : v)
+        );
       // new enter workflow
       const createdWorkflow = await prisma.workflow.create({
         data: {
@@ -987,7 +998,7 @@ const resolvers: Resolvers = {
                 transportationTelephone,
                 transportationTelephone2,
                 description,
-                assets,
+                assets: { ...assets, ...aggregatedAssets },
               },
             },
           ],
@@ -1147,8 +1158,7 @@ const resolvers: Resolvers = {
       ) {
         throw new GraphQLYogaError('Unauthorized');
       }
-     
-      
+
       const createdTags = await prisma.tag.createMany({
         data: tags.map((tag) => ({
           id: tag?.tagId,
