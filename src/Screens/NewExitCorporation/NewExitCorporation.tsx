@@ -10,7 +10,7 @@ import {
   styled,
 } from '@mui/material';
 import DatePicker, { DateObject } from 'react-multi-date-picker';
-import { memo, useCallback, useId, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useId, useMemo, useState } from 'react';
 
 import AggregatedTable from '../../Components/AggregatedTable';
 import AnalogTimePicker from 'react-multi-date-picker/plugins/analog_time_picker';
@@ -200,6 +200,7 @@ export default function ExitCorporation({
   // react-form-hooks
   const {
     register,
+    watch,
     handleSubmit,
     formState: { errors },
   } = useForm();
@@ -207,16 +208,30 @@ export default function ExitCorporation({
     'اکسیژن',
     'گاز بیهوشی',
   ]);
+  const [sum, setSum] = useState(0);
+  watch();
   const [date, setDate] = useState<any>(
     existingWorkflow
       ? parseInt(existingWorkflow?.passedStages?.[0]?.havaleh?.date)
       : new DateObject()
   );
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) => {
+      const r = Object.entries(value)
+        .filter(
+          ([key, value]) =>
+            (/_customer/.test(key) || /_factory/.test(key)) && value
+        )
+        .map(([key, value]) => value)
+        .reduce((pv, cv) => pv + parseInt(cv), 0);
+
+      setSum(r);
+    });
+  }, [watch]);
+
   // handlers
   const submitHandler = async (data: any) => {
     if (existingWorkflow) {
-      console.log('mehdi---');
-
       await confirmEnterHandler(
         existingWorkflow?.workflowNumber,
         editable
@@ -395,22 +410,22 @@ export default function ExitCorporation({
           </Input1>
           <Input1>
             <Label1>تاریخ ثبت حواله</Label1>
-           
-              <DatePicker
-                calendar={SolarHijri}
-                locale={SolarHijriFarsi}
-                plugins={[<AnalogTimePicker key={useId()} />]}
-                value={date}
-                onChange={(value) => {
-                  setDate(value);
-                }}
-                style={{
-                  blockSize: "35px",
-                  inlineSize: '100%',
-                  textAlign: "center",
-                  fontSize: "15pt"
-                }}
-              />
+
+            <DatePicker
+              calendar={SolarHijri}
+              locale={SolarHijriFarsi}
+              plugins={[<AnalogTimePicker key={useId()} />]}
+              value={date}
+              onChange={(value) => {
+                setDate(value);
+              }}
+              style={{
+                blockSize: '35px',
+                inlineSize: '100%',
+                textAlign: 'center',
+                fontSize: '15pt',
+              }}
+            />
           </Input1>
         </Row1>
         <Row1>
@@ -552,7 +567,7 @@ export default function ExitCorporation({
         </Input1>
         <Input1 sx={{ marginBottom: 3 }}>
           <Label1>جمع ثبت شده</Label1>
-          <TextField size='small' />
+          <TextField size='small' value={sum} />
         </Input1>
         <Row1 sx={{ justifyContent: 'center' }}>
           {!existingWorkflow ? (
