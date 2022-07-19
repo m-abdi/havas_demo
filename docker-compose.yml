@@ -40,14 +40,15 @@ services:
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs" ]
   nextjs:
     container_name: nextjs
-    build: .
+    image: abdimehdi/havas:latest
     networks:
       - mongo-network
     ports:
       - 3000:3000
     depends_on:
       - mongo1
-    restart: always
+    env_file:
+      - .env.docker
   mqttBroker:
     container_name: mqttBroker
     image: hivemq/hivemq-ce
@@ -55,6 +56,8 @@ services:
       - 1883:1883
       - 8000:8000
     restart: always
+
+
 
 networks:
   mongo-network:
