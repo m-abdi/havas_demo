@@ -45,6 +45,7 @@ export default function useWorkflows(
     nextFetchPolicy: 'cache-and-network',
     variables: {
       offset,
+      limit: itemsPerPage,
     },
   });
 

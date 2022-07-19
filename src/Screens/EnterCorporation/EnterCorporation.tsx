@@ -11,7 +11,6 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 
-import { DatePicker } from 'jalali-react-datepicker';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
 
@@ -164,11 +163,11 @@ export default function EnterExitCorporation({
           </Input1>
           <Input1>
             <Label1>تاریخ درخواست مجوز</Label1>
-            <DatePicker
+            {/* <DatePicker
               onClickSubmitButton={(args) => {
                 console.log(args.value);
               }}
-            />
+            /> */}
           </Input1>
         </Row1>
         <Row1>
@@ -265,11 +264,11 @@ export default function EnterExitCorporation({
           </Input1>
           <Input1>
             <Label1>تاریخ ورود/خروج</Label1>
-            <DatePicker
+            {/* <DatePicker
               onClickSubmitButton={(args) => {
                 console.log(args.value);
               }}
-            />
+            /> */}
           </Input1>
         </Row1>
         <Row1>

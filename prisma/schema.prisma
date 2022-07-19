@@ -266,6 +266,11 @@ type TransferedAssets {
   lpg_40l                   Int?
 }
 
+type Corporation {
+  id   String
+  name String
+}
+
 type Havaleh {
   id                       String
   date                     String
@@ -275,6 +280,7 @@ type Havaleh {
   transportationTelephone2 String?
   description              String?
   receivingDescription     String?
+  corporation              Corporation?
   assets                   TransferedAssets
 }
 

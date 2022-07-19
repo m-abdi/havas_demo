@@ -5,6 +5,7 @@ query getWorkflowNumber {
 query allEnterWorkflows($limit: Int = 2000000, $offset: Int = 0) {
   enterWorkflows(limit: $limit, offset: $offset) {
     workflowNumber
+    dateCreated
     passedStages {
       submittedByUser {
         id
@@ -19,6 +20,10 @@ query allEnterWorkflows($limit: Int = 2000000, $offset: Int = 0) {
         transportationName
         transportationTelephone
         transportationTelephone2
+        corporation {
+          id
+          name
+        }
         assets {
           oxygen_50l
           bihoshi_50l
@@ -46,6 +51,7 @@ query allEnterWorkflows($limit: Int = 2000000, $offset: Int = 0) {
       }
     }
   }
+  enterWorkflowsCount
 }
 
 mutation createEnterWorkflow(

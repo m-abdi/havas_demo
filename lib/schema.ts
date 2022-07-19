@@ -166,6 +166,11 @@ const typeDefs = /* GraphQL */ `
   #   processProcessNumber  : String
   # }
 
+  type CorporationData {
+    id: String
+    name: String
+  }
+
   type Havaleh {
     id: String
     date: String
@@ -175,6 +180,7 @@ const typeDefs = /* GraphQL */ `
     transportationTelephone2: String
     description: String
     receivingDescription: String
+    corporation: CorporationData
     assets: AggregatedTransferedAssetsOutput
   }
 
@@ -197,6 +203,8 @@ const typeDefs = /* GraphQL */ `
   type Workflow {
     id: ID!
     workflowNumber: String
+    dateCreated: String
+    dateModified: String
     # instanceOfProcess: Process
     nextStageName: String
     passedStages: [Stage]

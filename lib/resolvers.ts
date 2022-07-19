@@ -373,6 +373,8 @@ const resolvers: Resolvers = {
       const enterWorkflowsDB = await prisma.workflow.findMany({
         take: limit ?? 2000000,
         skip: offset ?? 0,
+        where: { instanceOfProcess: { processNumber: 1 } },
+        orderBy: { dateCreated: 'desc' },
       });
 
       return enterWorkflowsDB as any;
@@ -1059,6 +1061,10 @@ const resolvers: Resolvers = {
                 transportationTelephone,
                 transportationTelephone2,
                 description,
+                corporation: {
+                  id: session?.user?.place?.id,
+                  name: session?.user?.place?.name,
+                },
                 assets: { ...assets, ...aggregatedAssets },
               },
             },
@@ -1219,7 +1225,7 @@ const resolvers: Resolvers = {
       ) {
         throw new GraphQLYogaError('Unauthorized');
       }
-      
+
       let operations = [];
       tags.forEach(async (tag) => {
         let w = prisma.tag.create({
@@ -1235,9 +1241,9 @@ const resolvers: Resolvers = {
             },
           },
         });
-        operations.push(w)
+        operations.push(w);
       });
-      await prisma.$transaction(operations)
+      await prisma.$transaction(operations);
       // const createdTags = await prisma.tag.createMany({
       //   data: tags.map((tag) => ({
       //     id: tag?.tagId,

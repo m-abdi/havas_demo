@@ -1,10 +1,11 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import ExitCorporation from './NewExitCorporation';
+import React from 'react';
 import StoriesDecorator from '../../StoriesDecorator';
 
 export default {
-  title: 'Pages/ExitCorporation',
+  title: 'Pages/NewExitCorporation',
   component: ExitCorporation,
   decorators: [
     (Story) => (

@@ -274,14 +274,20 @@ function Layout({ children, pageName }) {
           roleName: 'createLicense',
         },
         {
-          text: 'تایید تحویل کپسول به بیمارستان',
+          text: 'جدول حواله ها',
           icon: <SearchRoundedIcon />,
+          path: '/users/exitCorporations',
+          roleName: 'viewLicense',
+        },
+        {
+          text: 'تایید تحویل کپسول به بیمارستان',
+          icon: <AddCircleOutlineOutlined />,
           path: '/users/confirmReceiptByHospital',
           roleName: 'createLicense',
         },
         {
           text: 'RFID ثبت ورود کپسول به انبار توسط',
-          icon: <SearchRoundedIcon />,
+          icon: <AddCircleOutlineOutlined />,
           path: '/users/enterWarehouseRFID',
           roleName: 'createLicense',
         },
