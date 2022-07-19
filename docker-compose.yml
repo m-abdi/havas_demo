@@ -38,6 +38,25 @@ services:
       - 27019:27017
     restart: always
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs" ]
+  nextjs:
+    container_name: nextjs
+    build: .
+    networks:
+      - mongo-network
+    environment:
+      - DATABASE_URL=mongodb://mongo1:27017/havas?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.0
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongo1
+    restart: always
+  mqttBroker:
+    container_name: mqtt
+    image: hivemq/hivemq-ce
+    ports:
+      - 1883:1883
+      - 8000:8000
+    restart: always
 
 networks:
   mongo-network:
