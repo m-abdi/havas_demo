@@ -45,7 +45,6 @@ export default function useWorkflows(
     nextFetchPolicy: 'cache-and-network',
     variables: {
       offset,
-      limit: itemsPerPage,
     },
   });
 
@@ -220,7 +219,9 @@ export default function useWorkflows(
             setSnackbarOpen
           );
           router.push(
-            `/users/enterWarehouseRFID?workflow=${updatedEnterWorkflow?.data}`
+            `/users/enterWarehouseRFID?workflow=${JSON.stringify(
+              updatedEnterWorkflow?.data?.confirmReceiptByHospital
+            )}`
           );
         } else {
           useNotification(

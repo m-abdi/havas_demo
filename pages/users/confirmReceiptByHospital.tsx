@@ -26,6 +26,7 @@ export default function ConfirmReceiptByHospital() {
   const { allEnterWorkflows, loading, sending, confirmEnterHandler } =
     useWorkflows(_, _, _, false);
   //
+  
   const router = useRouter();
   return (
     <Layout pageName={pageName}>

@@ -34,6 +34,7 @@ import {
 import { Equipment } from '@prisma/client';
 import { GraphQLYogaError } from '@graphql-yoga/node';
 import { RelatedFieldFilter } from './resolvers-types';
+import { Session } from 'inspector';
 import { getSession } from 'next-auth/react';
 import prisma from '../prisma/client';
 
@@ -726,6 +727,11 @@ const resolvers: Resolvers = {
           supportCompany: { connect: { id: supportCompanyId } },
           supportTelephone1,
           supportTelephone2,
+          state: {
+            outsourced: { own: 0 },
+            insideHospital: { own: 0 },
+            sendOrReceive: { own: 0 },
+          },
         },
       });
       return createdEquipment;
@@ -942,28 +948,82 @@ const resolvers: Resolvers = {
         throw new GraphQLYogaError('Unauthorized');
       }
       // new assets that must be created
-      const factoryAssets = Object.entries(assets).filter(([key, value]) =>
-        /factory/.test(key)
-      );
+      const factoryAssets = Object.entries(assets)
+        .filter(([key, value]) => /factory/.test(key))
+        .map(([key, value]) => [key.replace('_factory', ''), value]);
 
-      // hospital assets that have been borrowed by the corporation
-      const customerAssets = Object.entries(assets).filter(([key, value]) =>
-        /customer/.test(key)
-      );
-      customerAssets.forEach(async ([key, value], index) => {
-        const borrowedAssets = await prisma.asset.findMany({
+      factoryAssets.forEach(async ([key, value]) => {
+        const existingEquipment = await prisma.equipment.findUnique({
+          where: { terminologyCode: key as string },
+        });
+
+        const ur = await prisma.equipment.update({
           where: {
-            equipment: { terminologyCode: key.replace('_customer', '') },
-            place: { id: session?.user?.place?.id },
-            status: 'برون سپاری شده',
+            terminologyCode: key as string,
           },
-          take: value,
+          data: {
+            state: {
+              ...existingEquipment?.state,
+              sendOrReceive: {
+                ...existingEquipment?.state?.sendOrReceive,
+                trust: existingEquipment?.state?.sendOrReceive?.trust
+                  ? [
+                      ...existingEquipment?.state?.sendOrReceive?.trust.filter(
+                        (t) =>
+                          t.debatorCorportionId !== session?.user?.place?.id
+                      ),
+                      {
+                        debatorCorportionId: session?.user?.place?.id,
+                        sum:
+                          (existingEquipment?.state?.sendOrReceive?.trust?.find(
+                            (t) =>
+                              t.debatorCorportionId === session?.user?.place?.id
+                          )?.sum ?? 0) + (value as number),
+                      },
+                    ]
+                  : [
+                      {
+                        debatorCorportionId: session?.user?.place?.id,
+                        sum: value,
+                      },
+                    ],
+              },
+            },
+          },
         });
-        const resp = await prisma.asset.updateMany({
-          where: { id: { in: borrowedAssets.map((a) => a.id) } },
-          data: { status: 'در حال دریافت', deliverer },
+        console.log(ur);
+      });
+      // hospital assets that have been borrowed by the corporation
+      const customerAssets = Object.entries(assets)
+        .filter(([key, value]) => /customer/.test(key))
+        .map(([key, value]) => [key.replace('_customer', ''), value]);
+      customerAssets.forEach(async ([key, value]) => {
+        const existingEquipment = await prisma.equipment.findUnique({
+          where: { terminologyCode: key as string },
         });
-        
+        await prisma.equipment.update({
+          where: {
+            terminologyCode: key as string,
+          },
+          data: {
+            state: {
+              ...existingEquipment?.state,
+              sendOrReceive: {
+                ...existingEquipment?.state?.sendOrReceive,
+                own: existingEquipment?.state?.sendOrReceive?.own
+                  ? existingEquipment?.state?.sendOrReceive?.own +
+                    (value as number)
+                  : (value as number),
+              },
+              outsourced: {
+                own: existingEquipment?.state?.outsourced?.own
+                  ? existingEquipment?.state?.outsourced?.own -
+                    (value as number)
+                  : 0,
+              },
+            },
+          },
+        });
       });
       const aggregatedAssets = {};
       Object.entries(assets)
@@ -1159,25 +1219,43 @@ const resolvers: Resolvers = {
       ) {
         throw new GraphQLYogaError('Unauthorized');
       }
-
-      const createdTags = await prisma.tag.createMany({
-        data: tags.map((tag) => ({
-          id: tag?.tagId,
-          asset: tag?.assetId
-            ? { connect: { id: tag?.assetId } }
-            : tag?.newAsset && {
-                create: {
-                  equipment: {
-                    connect: { terminologyCode: tag?.newAsset?.equipmentId },
-                  },
-                  place: {
-                    connect: { id: tag?.newAsset?.placeId },
-                  },
+      
+      let operations = [];
+      tags.forEach(async (tag) => {
+        let w = prisma.tag.create({
+          data: {
+            id: tag?.tagId,
+            asset: {
+              create: {
+                equipment: {
+                  connect: { terminologyCode: tag?.newAsset?.equipmentId },
                 },
+                place: { connect: { id: tag?.newAsset?.placeId } },
               },
-        })),
+            },
+          },
+        });
+        operations.push(w)
       });
-      return createdTags?.count;
+      await prisma.$transaction(operations)
+      // const createdTags = await prisma.tag.createMany({
+      //   data: tags.map((tag) => ({
+      //     id: tag?.tagId,
+      //     asset: tag?.assetId
+      //       ? { connect: { id: tag?.assetId } }
+      //       : tag?.newAsset && {
+      //           create: {
+      //             equipment: {
+      //               connect: { terminologyCode: tag?.newAsset?.equipmentId },
+      //             },
+      //             place: {
+      //               connect: { id: tag?.newAsset?.placeId },
+      //             },
+      //           },
+      //         },
+      //   })),
+      // });
+      return 2;
     },
   },
   Person: {

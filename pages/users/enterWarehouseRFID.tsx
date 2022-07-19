@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
 import EnterWarehouseRFID from '../../src/Screens/EnterWarehouseRFID';
@@ -9,6 +9,7 @@ import { UpdateAssetsStatesDocument } from 'lib/graphql-operations';
 import { getQueryDefinition } from '@apollo/client/utilities';
 import useAssets from '../../src/Logic/useAssets';
 import useMQTT from '../../src/Logic/useMQTT';
+import { useRouter } from 'next/router';
 import useTags from '../../src/Logic/useTags';
 
 const pageName = 'RFID ثبت ورود کپسول به انبار توسط';
@@ -51,7 +52,10 @@ export default function enterWarehouseRFID() {
   } = useTags();
   const { updateStateHandler } = useAssets();
   // graphql operations for getting equipments and places
-  const { data, loading } = useQuery(EquipmentsAndPlacesDocument, {fetchPolicy: "cache-and-network"});
+  const { data, loading } = useQuery(EquipmentsAndPlacesDocument, {
+    fetchPolicy: 'cache-and-network',
+  });
+  const router = useRouter();
   // rfid operation
   useEffect(() => {
     const updateCheckedAssets = () => {
@@ -75,27 +79,41 @@ export default function enterWarehouseRFID() {
     };
     updateCheckedAssets();
   }, [mqttMessage, tagData]);
+  // if editing => extract existing workflow data from query param
+  const existingWorkflow = useMemo(
+    () =>
+      router?.query?.workflow
+        ? JSON.parse(router?.query?.workflow as string)
+        : false,
+    [router?.isReady]
+  );
+  console.log('ee', existingWorkflow);
 
   return (
     <Layout pageName={pageName}>
       <Head>
         <title>{`${pageName}`} | حواس</title>
       </Head>
-      <EnterWarehouseRFID
-        mqttMessage={mqttMessage}
-        mqttStatus={mqttStatus}
-        equipmentsLoading={loading}
-        placesLoading={loading}
-        newTagSending={newTagSending}
-        equipments={data?.equipments as any}
-        places={data?.places}
-        assets={checkedAssets}
-        checkedAssets={checkedAssets}
-        submitHandler={async (status: string) => {
-          await updateStateHandler(status, checkedAssetsIds);
-        }}
-        createTagHandler={createTagHandler}
-      />
+      {existingWorkflow && (
+        <EnterWarehouseRFID
+          mqttMessage={mqttMessage as any}
+          mqttStatus={mqttStatus}
+          equipmentsLoading={loading}
+          placesLoading={loading}
+          newTagSending={newTagSending}
+          equipments={data?.equipments as any}
+          places={data?.places as any}
+          assets={
+            existingWorkflow?.passedStages?.[1]?.havaleh?.assets ??
+            existingWorkflow?.passedStages?.[0]?.havaleh?.assets
+          }
+          checkedAssets={checkedAssets as any}
+          submitHandler={async (status: string) => {
+            await updateStateHandler(status, checkedAssetsIds);
+          }}
+          createTagHandler={createTagHandler}
+        />
+      )}
     </Layout>
   );
 }

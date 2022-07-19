@@ -121,7 +121,7 @@ export default function EnterWarehouseRFID({
             تجهیزات ثبت شده
           </Typography>
           <TableContainer>
-            <AggregatedTable editable={false} assets={assets} />
+            <AggregatedTable editable={false} assets={assets}/>
           </TableContainer>
         </Box>
         <Divider flexItem variant='fullWidth' />
@@ -149,7 +149,12 @@ export default function EnterWarehouseRFID({
         open={newTagDialogIsOpened}
         onClose={() => setNewTagDialogIsOpened(false)}
       >
-        <DialogTitle sx={{ textAlign: 'center', display: mqttStatus!=="CONNECTED" ? "none" :"block" }}>
+        <DialogTitle
+          sx={{
+            textAlign: 'center',
+            display: mqttStatus !== 'CONNECTED' ? 'none' : 'block',
+          }}
+        >
           <Stack
             direction='row'
             alignItems='center'
@@ -188,7 +193,6 @@ export default function EnterWarehouseRFID({
             }}
           />
         </DialogContent>
-        
       </Dialog>
       <Box
         sx={{

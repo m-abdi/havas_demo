@@ -1,6 +1,7 @@
 import { TableBody, TextField } from '@mui/material';
 import { memo, useEffect } from 'react';
 
+import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
 export default function AggregatedTable({
@@ -214,6 +215,7 @@ export default function AggregatedTable({
               type='number'
               id='oxygen_50l'
               disabled={!editable}
+              defaultValue={assets?.oxygen_50l}
               inputProps={{
                 ...register?.('oxygen_50l', {
                   value: assets?.oxygen_50l,
@@ -238,9 +240,9 @@ export default function AggregatedTable({
               disabled={!editable}
               sx={{ width: '100%', textAlign: 'center' }}
               id='bihoshi_50l'
+              defaultValue={assets?.bihoshi_50l}
               inputProps={{
                 ...register?.('bihoshi_50l', {
-           
                   value: assets?.bihoshi_50l,
                 }),
               }}
@@ -263,6 +265,7 @@ export default function AggregatedTable({
               sx={{ width: '100%', textAlign: 'center' }}
               id='shaft_50l'
               disabled={!editable}
+              defaultValue={assets?.shaft_50l}
               inputProps={{
                 ...register?.('shaft_50l', {
                   value: assets?.shaft_50l,
@@ -279,13 +282,15 @@ export default function AggregatedTable({
                   : 'none',
             }}
           >
-            <TextField     fullWidth
+            <TextField
+              fullWidth
               variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
               id='controlValve_50l'
               disabled={!editable}
+              defaultValue={assets?.controlValve_50l}
               inputProps={{
                 ...register?.('controlValve_50l', {
                   value: assets?.controlValve_50l,
@@ -300,13 +305,15 @@ export default function AggregatedTable({
                 selectedColumns.indexOf('Co2') > -1 ? 'table-cell' : 'none',
             }}
           >
-            <TextField     fullWidth
+            <TextField
+              fullWidth
               variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
               id='co2_50l'
               disabled={!editable}
+              defaultValue={assets?.co2_50l}
               inputProps={{
                 ...register?.('co2_50l', {
                   value: assets?.co2_50l,
@@ -321,13 +328,15 @@ export default function AggregatedTable({
                 selectedColumns.indexOf('آرگون') > -1 ? 'table-cell' : 'none',
             }}
           >
-            <TextField     fullWidth
+            <TextField
+              fullWidth
               variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
               id='argon_50l'
               disabled={!editable}
+              defaultValue={assets?.argon_50l}
               inputProps={{
                 ...register?.('argon_50l', {
                   value: assets?.argon_50l,
@@ -342,13 +351,15 @@ export default function AggregatedTable({
                 selectedColumns.indexOf('ازت') > -1 ? 'table-cell' : 'none',
             }}
           >
-            <TextField     fullWidth
+            <TextField
+              fullWidth
               variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
               id='azete_50l'
               disabled={!editable}
+              defaultValue={assets?.azete_50l}
               inputProps={{
                 ...register?.('azete_50l', {
                   value: assets?.azete_50l,
@@ -365,13 +376,15 @@ export default function AggregatedTable({
                   : 'none',
             }}
           >
-            <TextField     fullWidth
+            <TextField
+              fullWidth
               variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
               id='dryAir_50l'
               disabled={!editable}
+              defaultValue={assets?.dryAir_50l}
               inputProps={{
                 ...register?.('dryAir_50l', {
                   value: assets?.dryAir_50l,
@@ -386,13 +399,15 @@ export default function AggregatedTable({
                 selectedColumns.indexOf('آنتونکس') > -1 ? 'table-cell' : 'none',
             }}
           >
-            <TextField     fullWidth
+            <TextField
+              fullWidth
               variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
               id='entonox_50l'
               disabled={!editable}
+              defaultValue={assets?.entonox_50l}
               inputProps={{
                 ...register?.('entonox_50l', {
                   value: assets?.entonox_50l,
@@ -407,13 +422,15 @@ export default function AggregatedTable({
                 selectedColumns.indexOf('استیلن') > -1 ? 'table-cell' : 'none',
             }}
           >
-            <TextField     fullWidth
+            <TextField
+              fullWidth
               variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
               id='acetylene_50l'
               disabled={!editable}
+              defaultValue={assets?.acetylene_50l}
               inputProps={{
                 ...register?.('acetylene_50l', {
                   value: assets?.acetylene_50l,
@@ -430,13 +447,15 @@ export default function AggregatedTable({
                   : 'none',
             }}
           >
-            <TextField     fullWidth
+            <TextField
+              fullWidth
               variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
               id='lpg_50l'
               disabled={!editable}
+              defaultValue={assets?.lpg_50l}
               inputProps={{
                 ...register?.('lpg_50l', {
                   value: assets?.lpg_50l,
@@ -456,13 +475,15 @@ export default function AggregatedTable({
                 selectedColumns.indexOf('اکسیژن') > -1 ? 'table-cell' : 'none',
             }}
           >
-            <TextField     fullWidth
+            <TextField
+              fullWidth
               variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
               id='oxygen_40l'
               disabled={!editable}
+              defaultValue={assets?.oxygen_40l}
               inputProps={{
                 ...register?.('oxygen_40l', {
                   value: assets?.oxygen_40l,
@@ -479,13 +500,15 @@ export default function AggregatedTable({
                   : 'none',
             }}
           >
-            <TextField     fullWidth
+            <TextField
+              fullWidth
               variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
               id='bihoshi_40l'
               disabled={!editable}
+              defaultValue={assets?.bihoshi_40l}
               inputProps={{
                 ...register?.('bihoshi_40l', {
                   value: assets?.bihoshi_40l,
@@ -502,13 +525,15 @@ export default function AggregatedTable({
                   : 'none',
             }}
           >
-            <TextField     fullWidth
+            <TextField
+              fullWidth
               variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
               id='shaft_40l'
               disabled={!editable}
+              defaultValue={assets?.shaft_40l}
               inputProps={{
                 ...register?.('shaft_40l', {
                   value: assets?.shaft_40l,
@@ -525,13 +550,15 @@ export default function AggregatedTable({
                   : 'none',
             }}
           >
-            <TextField     fullWidth
+            <TextField
+              fullWidth
               variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
               id='controlValve_40l'
               disabled={!editable}
+              defaultValue={assets?.controlValve_40l}
               inputProps={{
                 ...register?.('controlValve_40l', {
                   value: assets?.controlValve_40l,
@@ -546,13 +573,15 @@ export default function AggregatedTable({
                 selectedColumns.indexOf('Co2') > -1 ? 'table-cell' : 'none',
             }}
           >
-            <TextField     fullWidth
+            <TextField
+              fullWidth
               variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
               id='co2_40l'
               disabled={!editable}
+              defaultValue={assets?.co2_40l}
               inputProps={{
                 ...register?.('co2_40l', {
                   value: assets?.co2_40l,
@@ -567,13 +596,15 @@ export default function AggregatedTable({
                 selectedColumns.indexOf('آرگون') > -1 ? 'table-cell' : 'none',
             }}
           >
-            <TextField     fullWidth
+            <TextField
+              fullWidth
               variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
               id='argon_40l'
               disabled={!editable}
+              defaultValue={assets?.argon_40l}
               inputProps={{
                 ...register?.('argon_40l', {
                   value: assets?.argon_40l,
@@ -588,13 +619,15 @@ export default function AggregatedTable({
                 selectedColumns.indexOf('ازت') > -1 ? 'table-cell' : 'none',
             }}
           >
-            <TextField     fullWidth
+            <TextField
+              fullWidth
               variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
               id='azete_40l'
               disabled={!editable}
+              defaultValue={assets?.azete_40l}
               inputProps={{
                 ...register?.('azete_40l', {
                   value: assets?.azete_40l,
@@ -611,13 +644,15 @@ export default function AggregatedTable({
                   : 'none',
             }}
           >
-            <TextField     fullWidth
+            <TextField
+              fullWidth
               variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
               id='dryAir_40l'
               disabled={!editable}
+              defaultValue={assets?.dryAir_40l}
               inputProps={{
                 ...register?.('dryAir_40l', {
                   value: assets?.dryAir_40l,
@@ -632,13 +667,15 @@ export default function AggregatedTable({
                 selectedColumns.indexOf('آنتونکس') > -1 ? 'table-cell' : 'none',
             }}
           >
-            <TextField     fullWidth
+            <TextField
+              fullWidth
               variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
               id='entonox_40l'
               disabled={!editable}
+              defaultValue={assets?.entonox_40l}
               inputProps={{
                 ...register?.('entonox_40l', {
                   value: assets?.entonox_40l,
@@ -653,13 +690,15 @@ export default function AggregatedTable({
                 selectedColumns.indexOf('استیلن') > -1 ? 'table-cell' : 'none',
             }}
           >
-            <TextField     fullWidth
+            <TextField
+              fullWidth
               variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
               id='acetylene_40l'
               disabled={!editable}
+              defaultValue={assets?.acetylene_40l}
               inputProps={{
                 ...register?.('acetylene_40l', {
                   value: assets?.acetylene_40l,
@@ -676,13 +715,15 @@ export default function AggregatedTable({
                   : 'none',
             }}
           >
-            <TextField     fullWidth
+            <TextField
+              fullWidth
               variant='standard'
               size='small'
               type='number'
               sx={{ width: '100%', textAlign: 'center' }}
               id='lpg_40l'
               disabled={!editable}
+              defaultValue={assets?.lpg_40l}
               inputProps={{
                 ...register?.('lpg_40l', {
                   value: assets?.lpg_40l,
