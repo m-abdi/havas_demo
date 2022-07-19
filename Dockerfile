@@ -5,7 +5,7 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+COPY package.json yarn.lock ./
 RUN yarn --frozen-lockfile --prod
 
 
@@ -20,6 +20,7 @@ COPY . .
 # Uncomment the following line in case you want to disable telemetry during the build.
 ENV NEXT_TELEMETRY_DISABLED 1
 RUN yarn prisma generate
+RUN yarn add typescript
 RUN yarn build
 
 # If using npm comment out above and use below instead

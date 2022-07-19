@@ -1,11 +1,11 @@
 {
-  "name": "nextjs-with-typescript",
+  "name": "havas",
   "version": "5.0.0",
   "private": true,
   "scripts": {
     "codegen": "graphql-codegen -r ts-node/register",
     "dev": "yarn codegen && next",
-    "build": "next build",
+    "build": "yarn codegen && next build",
     "start": "next start",
     "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest",
     "cypress:open": "cypress open",
