@@ -2,7 +2,7 @@
 
 
 rs.initiate( {
-   _id : "rs0",
+   _id : "dbrs",
    members: [
       { _id: 0, host: "mongodb0.example.net:27017" },
       { _id: 1, host: "mongodb1.example.net:27017" },

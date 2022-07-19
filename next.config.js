@@ -9,6 +9,9 @@ module.exports = {
           }
         : false,
   },
+  experimental: {
+    output: true,
+  },
   async redirects() {
     return [
       {
