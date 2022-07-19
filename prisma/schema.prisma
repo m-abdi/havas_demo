@@ -72,13 +72,13 @@ model Place {
 }
 
 type Trust {
-  debatorCorportionId String
-  sum                 Int
+  debatorCorportionId String?
+  sum                 Int?
 }
 
 type TrustOrOwn {
   trust Trust[]
-  own   Int
+  own   Int?
 }
 
 type EquipmentState {

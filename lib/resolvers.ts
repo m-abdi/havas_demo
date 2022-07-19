@@ -949,84 +949,84 @@ const resolvers: Resolvers = {
       if (!session || !(await canCreateEquipment(session))) {
         throw new GraphQLYogaError('Unauthorized');
       }
-      // new assets that must be created
-      const factoryAssets = Object.entries(assets)
-        .filter(([key, value]) => /factory/.test(key))
-        .map(([key, value]) => [key.replace('_factory', ''), value]);
+      // // new assets that must be created
+      // const factoryAssets = Object.entries(assets)
+      //   .filter(([key, value]) => /factory/.test(key))
+      //   .map(([key, value]) => [key.replace('_factory', ''), value]);
 
-      factoryAssets.forEach(async ([key, value]) => {
-        const existingEquipment = await prisma.equipment.findUnique({
-          where: { terminologyCode: key as string },
-        });
+      // factoryAssets.forEach(async ([key, value]) => {
+      //   const existingEquipment = await prisma.equipment.findUnique({
+      //     where: { terminologyCode: key as string },
+      //   });
 
-        const ur = await prisma.equipment.update({
-          where: {
-            terminologyCode: key as string,
-          },
-          data: {
-            state: {
-              ...existingEquipment?.state,
-              sendOrReceive: {
-                ...existingEquipment?.state?.sendOrReceive,
-                trust: existingEquipment?.state?.sendOrReceive?.trust
-                  ? [
-                      ...existingEquipment?.state?.sendOrReceive?.trust.filter(
-                        (t) =>
-                          t.debatorCorportionId !== session?.user?.place?.id
-                      ),
-                      {
-                        debatorCorportionId: session?.user?.place?.id,
-                        sum:
-                          (existingEquipment?.state?.sendOrReceive?.trust?.find(
-                            (t) =>
-                              t.debatorCorportionId === session?.user?.place?.id
-                          )?.sum ?? 0) + (value as number),
-                      },
-                    ]
-                  : [
-                      {
-                        debatorCorportionId: session?.user?.place?.id,
-                        sum: value,
-                      },
-                    ],
-              },
-            },
-          },
-        });
-        console.log(ur);
-      });
-      // hospital assets that have been borrowed by the corporation
-      const customerAssets = Object.entries(assets)
-        .filter(([key, value]) => /customer/.test(key))
-        .map(([key, value]) => [key.replace('_customer', ''), value]);
-      customerAssets.forEach(async ([key, value]) => {
-        const existingEquipment = await prisma.equipment.findUnique({
-          where: { terminologyCode: key as string },
-        });
-        await prisma.equipment.update({
-          where: {
-            terminologyCode: key as string,
-          },
-          data: {
-            state: {
-              ...existingEquipment?.state,
-              sendOrReceive: {
-                ...existingEquipment?.state?.sendOrReceive,
-                own: existingEquipment?.state?.sendOrReceive?.own
-                  ? existingEquipment?.state?.sendOrReceive?.own +
-                    (value as number)
-                  : (value as number),
-              },
-              outsourced: {
-                own: existingEquipment?.state?.outsourced?.own
-                  ? existingEquipment?.state?.outsourced?.own -
-                    (value as number)
-                  : 0,
-              },
-            },
-          },
-        });
-      });
+      //   const ur = await prisma.equipment.update({
+      //     where: {
+      //       terminologyCode: key as string,
+      //     },
+      //     data: {
+      //       state: {
+      //         ...existingEquipment?.state,
+      //         sendOrReceive: {
+      //           ...existingEquipment?.state?.sendOrReceive,
+      //           trust: existingEquipment?.state?.sendOrReceive?.trust
+      //             ? [
+      //                 ...existingEquipment?.state?.sendOrReceive?.trust.filter(
+      //                   (t) =>
+      //                     t.debatorCorportionId !== session?.user?.place?.id
+      //                 ),
+      //                 {
+      //                   debatorCorportionId: session?.user?.place?.id,
+      //                   sum:
+      //                     (existingEquipment?.state?.sendOrReceive?.trust?.find(
+      //                       (t) =>
+      //                         t.debatorCorportionId === session?.user?.place?.id
+      //                     )?.sum ?? 0) + (value as number),
+      //                 },
+      //               ]
+      //             : [
+      //                 {
+      //                   debatorCorportionId: session?.user?.place?.id,
+      //                   sum: value,
+      //                 },
+      //               ],
+      //         },
+      //       },
+      //     },
+      //   });
+      //   console.log(ur);
+      // });
+      // // hospital assets that have been borrowed by the corporation
+      // const customerAssets = Object.entries(assets)
+      //   .filter(([key, value]) => /customer/.test(key))
+      //   .map(([key, value]) => [key.replace('_customer', ''), value]);
+      // customerAssets.forEach(async ([key, value]) => {
+      //   const existingEquipment = await prisma.equipment.findUnique({
+      //     where: { terminologyCode: key as string },
+      //   });
+      //   await prisma.equipment.update({
+      //     where: {
+      //       terminologyCode: key as string,
+      //     },
+      //     data: {
+      //       state: {
+      //         ...existingEquipment?.state,
+      //         sendOrReceive: {
+      //           ...existingEquipment?.state?.sendOrReceive,
+      //           own: existingEquipment?.state?.sendOrReceive?.own
+      //             ? existingEquipment?.state?.sendOrReceive?.own +
+      //               (value as number)
+      //             : (value as number),
+      //         },
+      //         outsourced: {
+      //           own: existingEquipment?.state?.outsourced?.own
+      //             ? existingEquipment?.state?.outsourced?.own -
+      //               (value as number)
+      //             : 0,
+      //         },
+      //       },
+      //     },
+      //   });
+      // });
       const aggregatedAssets = {};
       Object.entries(assets)
         .map(([key, value]) => [
@@ -1039,6 +1039,8 @@ const resolvers: Resolvers = {
               ? aggregatedAssets[k] + v
               : v)
         );
+      console.log(session);
+
       // new enter workflow
       const createdWorkflow = await prisma.workflow.create({
         data: {
