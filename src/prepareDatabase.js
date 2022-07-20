@@ -85,6 +85,14 @@ var client_1 = require("../prisma/client");
                     })];
             case 2:
                 _a.sent();
+                return [4 /*yield*/, client_1["default"].process.createMany({
+                        data: [
+                            { processName: 'فرایند ورود کپسول به انبار بیمارستان', processNumber: 1 },
+                            { processName: 'فرایند خروج کپسول از انبار بیمارستان', processNumber: 2 },
+                        ]
+                    })];
+            case 3:
+                _a.sent();
                 //   complete it
                 return [4 /*yield*/, client_1["default"].equipment.create({
                         data: {
@@ -94,7 +102,7 @@ var client_1 = require("../prisma/client");
                             hasInstructions: false
                         }
                     })];
-            case 3:
+            case 4:
                 //   complete it
                 _a.sent();
                 return [2 /*return*/];

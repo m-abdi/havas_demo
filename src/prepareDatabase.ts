@@ -42,6 +42,12 @@ import prisma from '../prisma/client';
       password: '123456',
     },
   });
+  await prisma.process.createMany({
+    data: [
+      { processName: 'فرایند ورود کپسول به انبار بیمارستان', processNumber: 1 },
+      { processName: 'فرایند خروج کپسول از انبار بیمارستان', processNumber: 2 },
+    ],
+  });
   //   complete it
   await prisma.equipment.create({
     data: {
