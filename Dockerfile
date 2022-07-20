@@ -21,6 +21,7 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED 1
 RUN yarn prisma generate
 RUN yarn add typescript
+RUN export DATABASE_URL="mongodb+srv://mehdi:JGcfN2Il0YeY0WwI@cluster0.j57ml.mongodb.net/havas?retryWrites=true&w=majority"
 RUN yarn build
 
 # If using npm comment out above and use below instead
