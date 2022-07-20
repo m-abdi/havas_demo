@@ -10,15 +10,7 @@ declare const global: CustomNodeJsGlobal;
 const prisma =
   global.prisma ||
   (typeof window === 'undefined' &&
-    new PrismaClient({
-      datasources: {
-        db: {
-          url:
-            process?.env?.DATABASE_URL ||
-            'mongodb+srv://mehdi:JGcfN2Il0YeY0WwI@cluster0.j57ml.mongodb.net/havas?retryWrites=true&w=majority',
-        },
-      },
-    }));
+    new PrismaClient());
 
 if (process.env.NODE_ENV === 'development') global.prisma = prisma;
 

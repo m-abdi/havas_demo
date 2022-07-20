@@ -16,6 +16,6 @@
 5. node ./src/prepareDatabase.js
 
 
-
-
+run this to update your local image
+docker pull abdimehdi/havas:latest
 

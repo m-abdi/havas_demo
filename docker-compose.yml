@@ -20,6 +20,7 @@ services:
     restart: always
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs" ]
 
+
   mongo2:
     container_name: mongo2
     image: mongo:5.0.9
@@ -56,6 +57,8 @@ services:
       - 1883:1883
       - 8000:8000
     restart: always
+
+
 
 
 
