@@ -12,11 +12,10 @@
       { _id: 2, host: "mongo3:27017" }
    ]
 })
+<!-- result should be:  { ok: 1 } -->
 5. node ./src/prepareDatabase.js
 
 
 
 
 
-
-<!-- result should be:  { ok: 1 } -->
