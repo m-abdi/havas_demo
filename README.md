@@ -1,20 +1,22 @@
+## Start app with docker-compose ##
 
 
-1. docker login -u abdimehdi -p <ACCES_TOKEN>
-2. docker compose up 
-3. docker compose exec mongo1 mongosh
-4. rs.initiate( {
-   _id : "dbrs",
-   members: [
-      { _id: 0, host: "mongo1:27017" },
-      { _id: 1, host: "mongo2:27017" },
-      { _id: 2, host: "mongo3:27017" }
-   ]
-})
-<!-- result should be:  { ok: 1 } -->
-5. node ./src/prepareDatabase.js
+***replace <ACCESS_TOKEN> with access token of docker hub***
+```sh
 
+docker login -u abdimehdi -p <ACCESS_TOKEN> && \
+chmod +x ./scripts/startReplicaSetEnvironment.sh && \
+chmod +x ./scripts/rs-init.sh && \
+./scripts/startReplicaSetEnvironment.sh && \
+yarn && yarn prisma generate &&
+node src/prepareDatabase.js
 
-run this to update your local image
+```
+
+------
+*run this frequently to update your local image*
+```sh
+
 docker pull abdimehdi/havas:latest
 
+```
