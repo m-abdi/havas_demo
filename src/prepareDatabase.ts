@@ -49,12 +49,20 @@ import prisma from '../prisma/client';
     ],
   });
   //   complete it
-  await prisma.equipment.create({
-    data: {
-      name: 'اکسیژن ۵۰ لیتری',
-      terminologyCode: 'oxygen_50l',
-      serialNumber: 'سریال',
-      hasInstructions: false,
-    },
+  await prisma.equipment.createMany({
+    data: [
+      {
+        name: 'اکسیژن ۵۰ لیتری',
+        terminologyCode: 'oxygen_50l',
+        serialNumber: 'سریال',
+        hasInstructions: false,
+      },
+      {
+        name: 'اکسیژن ۴۰ لیتری',
+        terminologyCode: 'oxygen_40l',
+        serialNumber: 'سریال',
+        hasInstructions: false,
+      },
+    ],
   });
 })();

@@ -1,7 +1,6 @@
 
 
-1. docker login -p <ACCESS_TOKEN> 
-<!-- DOCKER_ID: abdimehdi -->
+1. docker login -u abdimehdi -p <ACCES_TOKEN>
 2. docker compose up 
 3. docker compose exec mongo1 mongosh
 4. rs.initiate( {

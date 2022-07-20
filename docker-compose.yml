@@ -59,9 +59,6 @@ services:
     restart: always
 
 
-
-
-
 networks:
   mongo-network:
     driver: bridge

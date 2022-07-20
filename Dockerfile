@@ -52,5 +52,5 @@ USER nextjs
 EXPOSE 3000
 
 ENV PORT 3000
-ENV DATABASE_URL="mongodb://mongo1:27017/havas?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.0"
+ENV DATABASE_URL "mongodb://mongo1:27017/havas?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.0"
 CMD ["node", "server.js"]
