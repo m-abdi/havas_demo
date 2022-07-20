@@ -48,7 +48,7 @@ services:
     depends_on:
       - mongo1
     env_file:
-      - env.docker
+      - .env.docker
   mqttBroker:
     container_name: mqttBroker
     image: hivemq/hivemq-ce
