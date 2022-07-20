@@ -21,7 +21,7 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED 1
 RUN yarn prisma generate
 RUN yarn add typescript
-RUN export DATABASE_URL="mongodb+srv://mehdi:JGcfN2Il0YeY0WwI@cluster0.j57ml.mongodb.net/havas?retryWrites=true&w=majority"
+ENV DATABASE_URL "mongodb+srv://mehdi:JGcfN2Il0YeY0WwI@cluster0.j57ml.mongodb.net/havas?retryWrites=true&w=majority"
 RUN yarn build
 
 # If using npm comment out above and use below instead
@@ -52,4 +52,5 @@ USER nextjs
 EXPOSE 3000
 
 ENV PORT 3000
+ENV DATABASE_URL="mongodb://mongo1:27017/havas?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.0"
 CMD ["node", "server.js"]
