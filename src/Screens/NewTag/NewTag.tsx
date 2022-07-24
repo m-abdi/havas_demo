@@ -57,13 +57,13 @@ export default memo(function NewTag({
       : [{ tagId: '', assetId: '' }]
   );
   const [tagError, setTagError] = useState(false);
-  // useEffect(() => {
-  //   if (newAsset) {
-  //     setTags([{ tagId: '', newAsset: { equipmentId: '', placeId: '' } }]);
-  //   } else {
-  //     setTags([{ tagId: '', newAsset: { equipmentId: '', placeId: '' } }]);
-  //   }
-  // }, [newAsset]);
+  useEffect(() => {
+    if (newAsset) {
+      setTags([{ tagId: '', newAsset: { equipmentId: '', placeId: '' } }]);
+    } else {
+      setTags([{ tagId: '', assetId: '' }]);
+    }
+  }, [newAsset]);
 
   useEffect(() => {
     if (mqttMessage && (tags?.length === 0 || tags?.[0].tagId.length === 0)) {
@@ -203,10 +203,17 @@ export default memo(function NewTag({
                   : null
               }
               value={assetId}
-              noOptionsText={"هیچ موجودی ثبت نشده است"}
+              noOptionsText={'هیچ موجودی ثبت نشده است'}
               onChange={(event, newValue) => {
                 setAssetId(newValue as any);
                 setAssetIdError(false);
+                setTags([
+                  ...(tags.filter((t) => t?.tagId !== tag?.tagId) as any),
+                  {
+                    tagId: tag?.tagId,
+                    assetId: newValue?.id,
+                  },
+                ]);
               }}
               onInputChange={(event, newInput) => {
                 if (
@@ -217,6 +224,13 @@ export default memo(function NewTag({
                     assetIds?.find((r) => r.label === newInput) as any
                   );
                   setAssetIdError(false);
+                  setTags([
+                    ...(tags.filter((t) => t?.tagId !== tag?.tagId) as any),
+                    {
+                      tagId: tag?.tagId,
+                      assetId: newInput,
+                    },
+                  ]);
                 }
               }}
               renderInput={(params) => (

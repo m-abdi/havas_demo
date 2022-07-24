@@ -24,6 +24,7 @@ import { NewTag as NewTagType } from '../../lib/resolvers-types';
 import type { NextPage } from 'next';
 import RFID from '../../src/Components/RFID';
 import Typography from '@mui/material/Typography';
+import useAssets from '../../src/Logic/useAssets';
 import useEquipments from '../../src/Logic/useEquipments';
 import useMQTT from '../../src/Logic/useMQTT';
 import usePlaces from '../../src/Logic/usePlaces';
@@ -40,8 +41,10 @@ const newTag: NextPage = () => {
   // mqtt hook
   const { mqttMessage, mqttStatus } = useMQTT();
   // data hooks
-  const { data: equipments, loading: equipmentsLoading } = useEquipments();
-  const { data: places, loading: placesLoading } = usePlaces();
+  const { equipmentsList: equipments, equipmentsListLoading: equipmentsLoading } =
+    useEquipments();
+  const { placesList: places, placesListLoading: placesLoading } = usePlaces();
+  const { assetsList: assets } = useAssets();
   const { sending: newTagSending, createNew: createTagHandler } = useTags();
   //
 
@@ -87,7 +90,8 @@ const newTag: NextPage = () => {
             equipmentsLoading={equipmentsLoading}
             placesLoading={placesLoading}
             sending={newTagSending}
-            equipments={equipments}
+            equipments={equipments as { id: string; label: string }[]}
+            assetIds={assets as { id: string; label: string }[]}
             places={places}
             mqttMessage={mqttMessage as any}
             mqttStatus={mqttStatus as any}

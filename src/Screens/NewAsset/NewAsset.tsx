@@ -134,6 +134,12 @@ export default function NewAsset({
 
   // handlers
   const submitHandler = async () => {
+    console.log([
+      equipment?.id as string,
+      place?.id as string,
+      existingAsset?.id ?? '',
+    ]);
+    
     await createHandler(
       equipment?.id as string,
       place?.id as string,

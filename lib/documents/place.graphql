@@ -30,6 +30,13 @@ query allPlaces($limit: Int, $offset: Int, $filters: PlaceFilter) {
   count: placesCount(filters: $filters)
 }
 
+query placesList {
+  places(limit: 2000000, offset: 0) {
+    id
+    label: name
+  }
+}
+
 mutation createPlace(
   $name: String!
   $superPlaceId: String

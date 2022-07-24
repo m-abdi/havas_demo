@@ -5,12 +5,13 @@ import {
   DeleteEquipmentsDocument,
   DeletePersonsDocument,
   EquipmentsDocument,
-} from 'lib/graphql-operations';
-import { EquipmentFilter, PersonFilter } from 'lib/resolvers-types';
+} from '../../lib/graphql-operations';
+import { EquipmentFilter, PersonFilter } from '../../lib/resolvers-types';
 import { useCallback, useContext } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
-import { SnackbarContext } from 'pages/_app';
+import { EquipmentsListDocument } from '../../lib/graphql-operations';
+import { SnackbarContext } from '../../pages/_app';
 import useNotification from './useNotification';
 import { useRouter } from 'next/router';
 
@@ -25,7 +26,15 @@ export default function useEquipments(
   const router = useRouter();
   const { setSnackbarOpen, setSnackbarMessage, setSnackbarColor } =
     useContext(SnackbarContext);
-  // fetch All persons
+  // equipments list for autocomplete fileds
+  const {
+    data: equipmentsList,
+    error: equipmentsListError,
+    loading: equipmentsListLoading,
+  } = useQuery(EquipmentsListDocument, {
+    fetchPolicy: 'cache-and-network',
+  });
+  // fetch All equipments
   const {
     data,
     error,
@@ -184,7 +193,11 @@ export default function useEquipments(
     },
     []
   );
+  equipmentsList?.equipments
   return {
+    equipmentsList: equipmentsList?.equipments,
+    equipmentsListLoading,
+    equipmentsListError,
     data,
     error,
     loading,

@@ -9,6 +9,7 @@ import React, { useCallback, useContext } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
 import { PlaceFilter } from 'lib/resolvers-types';
+import { PlacesListDocument } from '../../lib/graphql-operations';
 import { SnackbarContext } from 'pages/_app';
 import useNotification from './useNotification';
 
@@ -20,8 +21,16 @@ export default function usePlaces(
   setPageNumber?: React.Dispatch<React.SetStateAction<number>>,
   setOffset?: React.Dispatch<React.SetStateAction<number>>
 ) {
-      const { setSnackbarOpen, setSnackbarMessage, setSnackbarColor } =
-        useContext(SnackbarContext);
+  const { setSnackbarOpen, setSnackbarMessage, setSnackbarColor } =
+    useContext(SnackbarContext);
+  // places list for autocomplete fields
+  const {
+    data: placesList,
+    loading: placesListLoading,
+    error: placesListError,
+  } = useQuery(PlacesListDocument, {
+    fetchPolicy: 'cache-and-network',
+  });
   // fetch query
   const {
     data,
@@ -140,7 +149,6 @@ export default function usePlaces(
           return false;
         }
       } catch (e) {
-          
         useNotification(
           'error',
           setSnackbarColor,
@@ -247,6 +255,9 @@ export default function usePlaces(
     []
   );
   return {
+    placesList: placesList?.places,
+    placesListError,
+    placesListLoading,
     sending,
     deleting,
     loading,

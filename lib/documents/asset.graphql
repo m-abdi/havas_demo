@@ -16,18 +16,15 @@ query assets($limit: Int = 1000000, $offset: Int = 0, $filters: AssetFilter) {
   count: assetsCount(filters: $filters)
 }
 
-mutation createAsset(
-  $equipmentId: String!
-  $publicPropertyCode: String!
-  $placeId: String!
-  $edit: String
-) {
-  createAsset(
-    equipmentId: $equipmentId
-    publicPropertyCode: $publicPropertyCode
-    placeId: $placeId
-    edit: $edit
-  ) {
+query assetsList {
+  assets(limit: 2000000, offset: 0) {
+    id
+    label: id
+  }
+}
+
+mutation createAsset($equipmentId: String!, $placeId: String!, $edit: String) {
+  createAsset(equipmentId: $equipmentId, placeId: $placeId, edit: $edit) {
     id
   }
 }
@@ -36,7 +33,6 @@ mutation deleteAssets($assetIds: [String!]!) {
   deleteAssets(assetIds: $assetIds)
 }
 
-
-mutation updateAssetsStates ($ids: [String], $status: String!) {
-  updateAssetsStates(ids: $ids, status: $status) 
+mutation updateAssetsStates($ids: [String], $status: String!) {
+  updateAssetsStates(ids: $ids, status: $status)
 }

@@ -760,7 +760,7 @@ const resolvers: Resolvers = {
     },
     async createAsset(
       _,
-      { equipmentId, publicPropertyCode, placeId, edit }: any,
+      { equipmentId, placeId, edit }: any,
       _context: any
     ): Promise<any> {
       // check authentication and permission
@@ -777,7 +777,6 @@ const resolvers: Resolvers = {
           },
           data: {
             equipment: { connect: { terminologyCode: equipmentId } },
-            publicPropertyCode,
             place: { connect: { id: placeId } },
             status: 'موجود در بیمارستان',
           },
@@ -787,7 +786,6 @@ const resolvers: Resolvers = {
       const createdAsset = await prisma.asset.create({
         data: {
           equipment: { connect: { terminologyCode: equipmentId } },
-          publicPropertyCode,
           place: { connect: { id: placeId } },
           status: 'موجود در بیمارستان',
         },
@@ -1277,7 +1275,7 @@ const resolvers: Resolvers = {
           operations.push(w);
         }
       });
-      await prisma.$transaction(operations);
+      console.log(await prisma.$transaction(operations))
 
       return 2;
     },

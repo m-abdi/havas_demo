@@ -494,7 +494,6 @@ const typeDefs = /* GraphQL */ `
     ): Equipment!
     createAsset(
       equipmentId: String!
-      publicPropertyCode: String!
       placeId: String!
       edit: String
     ): Place!

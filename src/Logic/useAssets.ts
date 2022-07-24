@@ -1,6 +1,7 @@
 import {
   AllPersonsDocument,
   AssetsDocument,
+  AssetsListDocument,
   CreateAssetDocument,
   CreateNewPersonDocument,
   DeleteAssetsDocument,
@@ -32,6 +33,14 @@ export default function useAssets(
   const router = useRouter();
   const { setSnackbarOpen, setSnackbarMessage, setSnackbarColor } =
     useContext(SnackbarContext);
+  // assets list for autocomplete fields
+  const {
+    data: assetsList,
+    error: assetsListError,
+    loading: assetsListLoading,
+  } = useQuery(AssetsListDocument, {
+    fetchPolicy: 'cache-and-network',
+  });
   // fetch All assets
   const {
     data,
@@ -80,12 +89,7 @@ export default function useAssets(
   );
   // creation handler
   const createNew = useCallback(
-    async (
-      equipmentId: string,
-      publicPropertyCode: string,
-      placeId: string,
-      edit: string
-    ) => {
+    async (equipmentId: string, placeId: string, edit: string) => {
       useNotification(
         'sending',
         setSnackbarColor,
@@ -96,7 +100,6 @@ export default function useAssets(
         const createdAsset = await createAssetMutation({
           variables: {
             equipmentId,
-            publicPropertyCode,
             placeId,
             edit,
           },
@@ -212,6 +215,9 @@ export default function useAssets(
     []
   );
   return {
+    assetsList: assetsList?.assets,
+    assetsListLoading,
+    assetsListError,
     data,
     error,
     loading,
