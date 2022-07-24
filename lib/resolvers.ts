@@ -649,26 +649,46 @@ const resolvers: Resolvers = {
         });
         return editedPlace;
       }
-      const createdPlace = await prisma.place.create({
-        data: {
-          name,
-          typeOfWork,
-          superPlace: { connect: { id: superPlaceId } },
-          // representative: { connect: { id: representativeId } },
-          state,
-          city,
-          postalCode,
-          address,
-          telephone,
-          mobileNumber,
-          website,
-          nationalId,
-          economicalCode,
-          registeredNumber,
-          description,
-        },
-      });
-      return createdPlace;
+     if (superPlaceId) {
+       const createdPlace = await prisma.place.create({
+         data: {
+           name,
+           typeOfWork,
+           superPlace: { connect: { id: superPlaceId } },
+           state,
+           city,
+           postalCode,
+           address,
+           telephone,
+           mobileNumber,
+           website,
+           nationalId,
+           economicalCode,
+           registeredNumber,
+           description,
+         },
+       });
+       return createdPlace;
+     } else {
+       const createdPlace = await prisma.place.create({
+         data: {
+           name,
+           typeOfWork,
+           state,
+           city,
+           postalCode,
+           address,
+           telephone,
+           mobileNumber,
+           website,
+           nationalId,
+           economicalCode,
+           registeredNumber,
+           description,
+         },
+       });
+       return createdPlace;
+     }
     },
     async createEquipment(
       _,
@@ -1230,39 +1250,35 @@ const resolvers: Resolvers = {
 
       let operations = [];
       tags.forEach(async (tag) => {
-        let w = prisma.tag.create({
-          data: {
-            id: tag?.tagId,
-            asset: {
-              create: {
-                equipment: {
-                  connect: { terminologyCode: tag?.newAsset?.equipmentId },
+        if (tag?.newAsset) {
+          let w = prisma.tag.create({
+            data: {
+              id: tag?.tagId,
+              asset: {
+                create: {
+                  equipment: {
+                    connect: { terminologyCode: tag?.newAsset?.equipmentId },
+                  },
+                  place: { connect: { id: tag?.newAsset?.placeId } },
                 },
-                place: { connect: { id: tag?.newAsset?.placeId } },
               },
             },
-          },
-        });
-        operations.push(w);
+          });
+          operations.push(w);
+        } else if (tag?.assetId) {
+          let w = prisma.tag.create({
+            data: {
+              id: tag?.tagId,
+              asset: {
+                connect: { id: tag?.assetId },
+              },
+            },
+          });
+          operations.push(w);
+        }
       });
       await prisma.$transaction(operations);
-      // const createdTags = await prisma.tag.createMany({
-      //   data: tags.map((tag) => ({
-      //     id: tag?.tagId,
-      //     asset: tag?.assetId
-      //       ? { connect: { id: tag?.assetId } }
-      //       : tag?.newAsset && {
-      //           create: {
-      //             equipment: {
-      //               connect: { terminologyCode: tag?.newAsset?.equipmentId },
-      //             },
-      //             place: {
-      //               connect: { id: tag?.newAsset?.placeId },
-      //             },
-      //           },
-      //         },
-      //   })),
-      // });
+
       return 2;
     },
   },

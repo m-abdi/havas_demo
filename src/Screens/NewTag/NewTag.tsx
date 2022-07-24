@@ -16,8 +16,9 @@ import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import Head from 'next/head';
 import HeartBeat from '../../Components/HeartBeat/HeartBeat';
 import NewAsset from '../NewAsset';
-import { NewTag } from '../../../lib/resolvers-types';
+import { NewTag as NewTagType } from '../../../lib/resolvers-types';
 import RFID from '../../Components/RFID';
+import React from 'react';
 import Typography from '@mui/material/Typography';
 import useMQTT from '../../Logic/useMQTT';
 
@@ -26,11 +27,13 @@ export default memo(function NewTag({
   mqttStatus,
   newAsset = false,
   equipmentsLoading,
-  placesLoading,
-  sending,
+
   places,
   equipments,
+  assetIds = [],
+  existingTag,
   createTagHandler,
+  modal = true,
 }: {
   mqttMessage: string;
   mqttStatus: 'CONNECTING' | 'CONNECTED' | 'DISCONNECTED';
@@ -40,25 +43,46 @@ export default memo(function NewTag({
   sending: boolean;
   places?: { id: string; label: string }[];
   equipments?: { id: string; label: string }[];
-  createTagHandler: (tags: NewTag[]) => Promise<void>;
+  assetIds?: { id: string; label: string }[];
+  existingTag?: any;
+  modal?: boolean;
+  createTagHandler: (tags: NewTagType[]) => Promise<void>;
 }) {
   // states
-  const [assetId, setAssetId] = useState<string>('');
-  const [tags, setTags] = useState([
-    { tagId: '', newAsset: { equipmentId: '', placeId: '' } },
-  ]);
+  const [assetId, setAssetId] = useState<{ id: string; label: string }>();
+  const [assetIdError, setAssetIdError] = useState(false);
+  const [tags, setTags] = useState<NewTagType[]>(
+    newAsset
+      ? [{ tagId: '', newAsset: { equipmentId: '', placeId: '' } }]
+      : [{ tagId: '', assetId: '' }]
+  );
   const [tagError, setTagError] = useState(false);
+  // useEffect(() => {
+  //   if (newAsset) {
+  //     setTags([{ tagId: '', newAsset: { equipmentId: '', placeId: '' } }]);
+  //   } else {
+  //     setTags([{ tagId: '', newAsset: { equipmentId: '', placeId: '' } }]);
+  //   }
+  // }, [newAsset]);
 
   useEffect(() => {
-    if (mqttMessage && (tags.length === 0 || tags?.[0].tagId.length === 0)) {
-      setTags([
-        { tagId: mqttMessage, newAsset: { equipmentId: '', placeId: '' } },
-      ]);
-    } else if (mqttMessage && tags[0].tagId.length > 0) {
-      setTags([
-        ...tags,
-        { tagId: mqttMessage, newAsset: { equipmentId: '', placeId: '' } },
-      ]);
+    if (mqttMessage && (tags?.length === 0 || tags?.[0].tagId.length === 0)) {
+      if (newAsset) {
+        setTags([
+          { tagId: mqttMessage, newAsset: { equipmentId: '', placeId: '' } },
+        ]);
+      } else {
+        setTags([{ tagId: mqttMessage, assetId: '' }]);
+      }
+    } else if (mqttMessage && tags?.[0].tagId.length > 0) {
+      if (newAsset) {
+        setTags([
+          ...tags,
+          { tagId: mqttMessage, newAsset: { equipmentId: '', placeId: '' } },
+        ]);
+      } else {
+        setTags([...tags, { tagId: mqttMessage, assetId: '' }]);
+      }
     }
   }, [mqttMessage]);
 
@@ -73,7 +97,7 @@ export default memo(function NewTag({
     return <RFID status='CONNECTING' />;
   }
   return (
-    <Container maxWidth='lg' sx={{ position: 'relative', p: 1 }}>
+    <Container maxWidth='sm' sx={{ position: 'relative', p: 1 }}>
       <Typography
         variant='h4'
         component='h1'
@@ -83,7 +107,12 @@ export default memo(function NewTag({
           color: mqttStatus === 'CONNECTED' ? 'green' : 'red',
         }}
       >
-        وضعیت : {mqttStatus === 'CONNECTED' ? 'متصل': mqttStatus === "CONNECTING" ? "در حال اتصال" : mqttStatus === "DISCONNECTED" && "عدم اتصال"}
+        وضعیت :{' '}
+        {mqttStatus === 'CONNECTED'
+          ? 'متصل'
+          : mqttStatus === 'CONNECTING'
+          ? 'در حال اتصال'
+          : mqttStatus === 'DISCONNECTED' && 'عدم اتصال'}
       </Typography>
       {/* <RFID status='CONNECTED' /> */}
       <Divider flexItem />
@@ -94,7 +123,7 @@ export default memo(function NewTag({
             direction='column'
             alignItems='center'
             justifyContent={'center'}
-            spacing={.5}
+            spacing={0.5}
             sx={{ flexWrap: 'wrap' }}
           >
             <Typography
@@ -144,12 +173,13 @@ export default memo(function NewTag({
                 <AssetField assetId={assetId} setAssetId={setAssetId} />
               )} */}
           </Stack>
+          {/* new asset or existing asset */}
           {newAsset ? (
             <NewAsset
-              loading={equipmentsLoading}
+              loading={equipmentsLoading as boolean}
               sending={false}
-              equipments={equipments}
-              places={places}
+              equipments={equipments as any}
+              places={places as any}
               submitOnChange={true}
               createHandler={async (equipmentId: string, placeId: string) => {
                 setTags([
@@ -161,7 +191,45 @@ export default memo(function NewTag({
                 ]);
               }}
             />
-          ) : null}
+          ) : (
+            <Autocomplete
+              disablePortal
+              id='assetIdInput'
+              options={assetIds as any}
+              sx={{ my: 3 }}
+              defaultValue={
+                existingTag?.asset
+                  ? assetIds?.find((p) => p?.id === existingTag?.asset?.id)
+                  : null
+              }
+              value={assetId}
+              noOptionsText={"هیچ موجودی ثبت نشده است"}
+              onChange={(event, newValue) => {
+                setAssetId(newValue as any);
+                setAssetIdError(false);
+              }}
+              onInputChange={(event, newInput) => {
+                if (
+                  assetIds?.length > 0 &&
+                  assetIds?.some((r) => r.label === newInput)
+                ) {
+                  setAssetId(
+                    assetIds?.find((r) => r.label === newInput) as any
+                  );
+                  setAssetIdError(false);
+                }
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  size='small'
+                  label='کد موجودی'
+                  error={assetIdError}
+                  helperText={assetIdError && 'لطفا این فیلد را پر کنید'}
+                />
+              )}
+            />
+          )}
           <IconButton
             sx={{ color: 'error.main', inlineSize: 100, mx: 'auto' }}
             size='large'
@@ -176,7 +244,8 @@ export default memo(function NewTag({
       ))}
       <Box
         sx={{
-          top: -68,
+          position: modal ? 'static' : 'absolute',
+          top: -105,
           right: '35px',
         }}
       >
@@ -192,7 +261,6 @@ export default memo(function NewTag({
               return false;
             }
             await createTagHandler(tags);
-         
           }}
         />
       </Box>

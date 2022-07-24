@@ -124,7 +124,7 @@ export default function newPerson({
   ) => Promise<void>;
   createNewPlaceHandler: (
     name: string,
-    superPlaceId: string,
+    superPlaceId: string | null,
     representativeId: string | null,
     typeOfWork: string,
     state: string,

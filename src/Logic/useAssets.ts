@@ -32,7 +32,7 @@ export default function useAssets(
   const router = useRouter();
   const { setSnackbarOpen, setSnackbarMessage, setSnackbarColor } =
     useContext(SnackbarContext);
-  // fetch All persons
+  // fetch All assets
   const {
     data,
     error,

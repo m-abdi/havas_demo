@@ -498,7 +498,7 @@ const typeDefs = /* GraphQL */ `
       placeId: String!
       edit: String
     ): Place!
-    createCategory(name: String!, superPlaceId: String!): ID!
+    createCategory(name: String!, superPlaceId: String): ID!
     createEnterWorkflow(
       workflowNumber: String!
       havalehId: String!
