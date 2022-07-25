@@ -1,11 +1,13 @@
 import { TableBody, TextField } from '@mui/material';
 
+import React from 'react';
 import { memo } from 'react';
 
 export default memo(function EditableHtmlTable({
   selectedColumns,
   register,
   existingEnterWorkflow,
+  editable = true,
 }) {
   return (
     <>
@@ -155,8 +157,9 @@ export default memo(function EditableHtmlTable({
                 size='small'
                 type='number'
                 id='oxygen_50l_factory'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('oxygen_50l_factory', {
+                  ...register?.('oxygen_50l_factory', {
                     value: existingEnterWorkflow?.oxygen_50l_factory,
                   }),
                 }}
@@ -177,8 +180,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='bihoshi_50l_factory'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('bihoshi_50l_factory', {
+                  ...register?.('bihoshi_50l_factory', {
                     value: existingEnterWorkflow?.bihoshi_50l_factory,
                   }),
                 }}
@@ -198,8 +202,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='shaft_50l_factory'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('shaft_50l_factory', {
+                  ...register?.('shaft_50l_factory', {
                     value: existingEnterWorkflow?.shaft_50l_factory,
                   }),
                 }}
@@ -219,8 +224,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='controlValve_50l_factory'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('controlValve_50l_factory', {
+                  ...register?.('controlValve_50l_factory', {
                     value: existingEnterWorkflow?.controlValve_50l_factory,
                   }),
                 }}
@@ -238,8 +244,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='co2_50l_factory'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('co2_50l_factory', {
+                  ...register?.('co2_50l_factory', {
                     value: existingEnterWorkflow?.co2_50l_factory,
                   }),
                 }}
@@ -257,8 +264,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='argon_50l_factory'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('argon_50l_factory', {
+                  ...register?.('argon_50l_factory', {
                     value: existingEnterWorkflow?.argon_50l_factory,
                   }),
                 }}
@@ -276,8 +284,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='azete_50l_factory'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('azete_50l_factory', {
+                  ...register?.('azete_50l_factory', {
                     value: existingEnterWorkflow?.azete_50l_factory,
                   }),
                 }}
@@ -297,8 +306,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='dryAir_50l_factory'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('dryAir_50l_factory', {
+                  ...register?.('dryAir_50l_factory', {
                     value: existingEnterWorkflow?.dryAir_50l_factory,
                   }),
                 }}
@@ -318,8 +328,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='entonox_50l_factory'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('entonox_50l_factory', {
+                  ...register?.('entonox_50l_factory', {
                     value: existingEnterWorkflow?.entonox_50l_factory,
                   }),
                 }}
@@ -339,8 +350,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='acetylene_50l_factory'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('acetylene_50l_factory', {
+                  ...register?.('acetylene_50l_factory', {
                     value: existingEnterWorkflow?.acetylene_50l_factory,
                   }),
                 }}
@@ -360,8 +372,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='lpg_50l_factory'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('lpg_50l_factory', {
+                  ...register?.('lpg_50l_factory', {
                     value: existingEnterWorkflow?.lpg_50l_factory,
                   }),
                 }}
@@ -386,8 +399,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='oxygen_50l_customer'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('oxygen_50l_customer', {
+                  ...register?.('oxygen_50l_customer', {
                     value: existingEnterWorkflow?.oxygen_50l_customer,
                   }),
                 }}
@@ -407,8 +421,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='bihoshi_50l_customer'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('bihoshi_50l_customer', {
+                  ...register?.('bihoshi_50l_customer', {
                     value: existingEnterWorkflow?.bihoshi_50l_customer,
                   }),
                 }}
@@ -428,8 +443,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='shaft_50l_customer'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('shaft_50l_customer', {
+                  ...register?.('shaft_50l_customer', {
                     value: existingEnterWorkflow?.shaft_50l_customer,
                   }),
                 }}
@@ -449,8 +465,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='controlValve_50l_customer'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('controlValve_50l_customer', {
+                  ...register?.('controlValve_50l_customer', {
                     value: existingEnterWorkflow?.controlValve_50l_customer,
                   }),
                 }}
@@ -468,8 +485,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='co2_50l_customer'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('co2_50l_customer', {
+                  ...register?.('co2_50l_customer', {
                     value: existingEnterWorkflow?.co2_50l_customer,
                   }),
                 }}
@@ -487,8 +505,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='argon_50l_customer'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('argon_50l_customer', {
+                  ...register?.('argon_50l_customer', {
                     value: existingEnterWorkflow?.argon_50l_customer,
                   }),
                 }}
@@ -506,8 +525,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='azete_50l_customer'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('azete_50l_customer', {
+                  ...register?.('azete_50l_customer', {
                     value: existingEnterWorkflow?.azete_50l_customer,
                   }),
                 }}
@@ -527,8 +547,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='dryAir_50l_customer'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('dryAir_50l_customer', {
+                  ...register?.('dryAir_50l_customer', {
                     value: existingEnterWorkflow?.dryAir_50l_customer,
                   }),
                 }}
@@ -548,8 +569,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='entonox_50l_customer'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('entonox_50l_customer', {
+                  ...register?.('entonox_50l_customer', {
                     value: existingEnterWorkflow?.entonox_50l_customer,
                   }),
                 }}
@@ -569,8 +591,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='acetylene_50l_customer'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('acetylene_50l_customer', {
+                  ...register?.('acetylene_50l_customer', {
                     value: existingEnterWorkflow?.acetylene_50l_customer,
                   }),
                 }}
@@ -590,8 +613,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='lpg_50l_customer'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('lpg_50l_customer', {
+                  ...register?.('lpg_50l_customer', {
                     value: existingEnterWorkflow?.lpg_50l_customer,
                   }),
                 }}
@@ -620,8 +644,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='oxygen_40l_factory'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('oxygen_40l_factory', {
+                  ...register?.('oxygen_40l_factory', {
                     value: existingEnterWorkflow?.oxygen_40l_factory,
                   }),
                 }}
@@ -641,8 +666,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='bihoshi_40l_factory'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('bihoshi_40l_factory', {
+                  ...register?.('bihoshi_40l_factory', {
                     value: existingEnterWorkflow?.bihoshi_40l_factory,
                   }),
                 }}
@@ -662,8 +688,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='shaft_40l_factory'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('shaft_40l_factory', {
+                  ...register?.('shaft_40l_factory', {
                     value: existingEnterWorkflow?.shaft_40l_factory,
                   }),
                 }}
@@ -683,8 +710,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='controlValve_40l_factory'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('controlValve_40l_factory', {
+                  ...register?.('controlValve_40l_factory', {
                     value: existingEnterWorkflow?.controlValve_40l_factory,
                   }),
                 }}
@@ -702,8 +730,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='co2_40l_factory'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('co2_40l_factory', {
+                  ...register?.('co2_40l_factory', {
                     value: existingEnterWorkflow?.co2_40l_factory,
                   }),
                 }}
@@ -721,8 +750,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='argon_40l_factory'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('argon_40l_factory', {
+                  ...register?.('argon_40l_factory', {
                     value: existingEnterWorkflow?.argon_40l_factory,
                   }),
                 }}
@@ -740,8 +770,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='azete_40l_factory'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('azete_40l_factory', {
+                  ...register?.('azete_40l_factory', {
                     value: existingEnterWorkflow?.azete_40l_factory,
                   }),
                 }}
@@ -761,8 +792,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='dryAir_40l_factory'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('dryAir_40l_factory', {
+                  ...register?.('dryAir_40l_factory', {
                     value: existingEnterWorkflow?.dryAir_40l_factory,
                   }),
                 }}
@@ -782,8 +814,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='entonox_40l_factory'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('entonox_40l_factory', {
+                  ...register?.('entonox_40l_factory', {
                     value: existingEnterWorkflow?.entonox_40l_factory,
                   }),
                 }}
@@ -803,8 +836,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='acetylene_40l_factory'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('acetylene_40l_factory', {
+                  ...register?.('acetylene_40l_factory', {
                     value: existingEnterWorkflow?.acetylene_40l_factory,
                   }),
                 }}
@@ -824,8 +858,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='lpg_40l_factory'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('lpg_40l_factory', {
+                  ...register?.('lpg_40l_factory', {
                     value: existingEnterWorkflow?.lpg_40l_factory,
                   }),
                 }}
@@ -850,8 +885,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='oxygen_40l_customer'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('oxygen_40l_customer', {
+                  ...register?.('oxygen_40l_customer', {
                     value: existingEnterWorkflow?.oxygen_40l_customer,
                   }),
                 }}
@@ -871,8 +907,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='bihoshi_40l_customer'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('bihoshi_40l_customer', {
+                  ...register?.('bihoshi_40l_customer', {
                     value: existingEnterWorkflow?.bihoshi_40l_customer,
                   }),
                 }}
@@ -892,8 +929,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='shaft_40l_customer'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('shaft_40l_customer', {
+                  ...register?.('shaft_40l_customer', {
                     value: existingEnterWorkflow?.shaft_40l_customer,
                   }),
                 }}
@@ -913,8 +951,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='controlValve_40l_customer'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('controlValve_40l_customer', {
+                  ...register?.('controlValve_40l_customer', {
                     value: existingEnterWorkflow?.controlValve_40l_customer,
                   }),
                 }}
@@ -932,8 +971,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='co2_40l_customer'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('co2_40l_customer', {
+                  ...register?.('co2_40l_customer', {
                     value: existingEnterWorkflow?.co2_40l_customer,
                   }),
                 }}
@@ -951,8 +991,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='argon_40l_customer'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('argon_40l_customer', {
+                  ...register?.('argon_40l_customer', {
                     value: existingEnterWorkflow?.argon_40l_customer,
                   }),
                 }}
@@ -970,8 +1011,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='azete_40l_customer'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('azete_40l_customer', {
+                  ...register?.('azete_40l_customer', {
                     value: existingEnterWorkflow?.azete_40l_customer,
                   }),
                 }}
@@ -991,8 +1033,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='dryAir_40l_customer'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('dryAir_40l_customer', {
+                  ...register?.('dryAir_40l_customer', {
                     value: existingEnterWorkflow?.dryAir_40l_customer,
                   }),
                 }}
@@ -1012,8 +1055,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='entonox_40l_customer'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('entonox_40l_customer', {
+                  ...register?.('entonox_40l_customer', {
                     value: existingEnterWorkflow?.entonox_40l_customer,
                   }),
                 }}
@@ -1033,8 +1077,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='acetylene_40l_customer'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('acetylene_40l_customer', {
+                  ...register?.('acetylene_40l_customer', {
                     value: existingEnterWorkflow?.acetylene_40l_customer,
                   }),
                 }}
@@ -1054,8 +1099,9 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='lpg_40l_customer'
+                disabled={editable ? false : true}
                 inputProps={{
-                  ...register('lpg_40l_customer', {
+                  ...register?.('lpg_40l_customer', {
                     value: existingEnterWorkflow?.lpg_40l_customer,
                   }),
                 }}

@@ -5,6 +5,9 @@ import {
   Box,
   Checkbox,
   Container,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   Divider,
   FormControl,
   FormControlLabel,
@@ -40,17 +43,20 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import DeleteDialog from '../../Components/DeleteRolesDialog';
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import EditableHtmlTable from '../../Components/EditableHtmlTable';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import { Satellite } from '@mui/icons-material';
 import { Session } from 'next-auth';
+import { flushSync } from 'react-dom';
 import matchSorter from 'match-sorter';
 /* eslint-disable react/jsx-filename-extension */
 import { memo } from 'react';
 import persianCalender from 'react-date-object/calendars/persian';
 import persianLocale from 'react-date-object/locales/persian_fa';
 import styled from 'styled-components';
+import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
@@ -173,8 +179,10 @@ export default memo(function ExitCorporations({
   const [hasInstructions, setHasInstructions] = useState<boolean>();
   const rowOptionsOpen = Boolean(rowOptionsAnchorElement);
   const [deleteDialog, setDeleteDialog] = useState(false);
+  const [detailsDialog, setDetailsDialog] = useState(false);
 
-  // const [value, setValue] = React.useState(globalFilter);
+  //
+  const { register } = useForm();
 
   // other hooks
   const { data: session } = useSession();
@@ -240,11 +248,34 @@ export default memo(function ExitCorporations({
       },
       {
         Header: 'جزيیات حواله',
-        accessor: 'terminologyCode', // accessor is the "key" in the data
+        accessor: (d: any) => {
+          return (
+            <Button
+              label='مشاهده'
+              color='info'
+              onClick={(e) => {
+                flushSync(() => {
+                  setChoosedRow(d);
+                });
+                setDetailsDialog(true);
+              }}
+            />
+          );
+        },
       },
       {
         Header: 'امانتی',
-        accessor: 'ee', // accessor is the "key" in the data
+        accessor: (d: any) => {
+          if (
+            Object.entries(d?.passedStages?.[0].havaleh?.assets ?? {})?.some(
+              ([key, value]) => value && /_factory/.test(key)
+            )
+          ) {
+            return <Button variant='contained' label='دارد' color='error' />;
+          } else {
+            return <Button variant='contained' label='ندارد' />;
+          }
+        },
       },
       {
         Header: 'توضیحات ارسال',
@@ -477,7 +508,6 @@ export default memo(function ExitCorporations({
           ),
         },
         ...columns,
-      
       ]);
     }
   );
@@ -826,6 +856,56 @@ export default memo(function ExitCorporations({
           setDeleteDialog(false);
         }}
       />
+      <Dialog
+        sx={{ zIndex: 7000 }}
+        open={detailsDialog}
+        maxWidth='lg'
+        onClose={() => setDetailsDialog(false)}
+      >
+        <DialogTitle sx={{ textAlign: 'center' }}>
+          <Stack
+            direction='row'
+            alignItems='center'
+            justifyContent={'space-between'}
+          >
+            <span style={{ inlineSize: '10%' }}>
+              <IconButton onClick={() => setDetailsDialog(false)}>
+                <CloseRoundedIcon />
+              </IconButton>
+            </span>
+            <Typography
+              variant='h5'
+              component='h2'
+              sx={{ flexGrow: 1, textAlign: 'center' }}
+            >
+              جزئیات حواله
+            </Typography>
+            <span style={{ inlineSize: '10%' }}></span>
+          </Stack>
+        </DialogTitle>
+        <DialogContent sx={{ position: 'relative', p: 5 }}>
+          <EditableHtmlTable
+            selectedColumns={[
+              'اکسیژن',
+              'گاز بیهوشی',
+              'شفت-فلکه',
+              'شیر کنترل',
+              'Co2',
+              'آرگون',
+              'ازت',
+              'هوای خشک',
+              'آنتونکس',
+              'استیلن',
+              'گاز مایع',
+            ]}
+            register={register}
+            existingEnterWorkflow={
+              choosedRow?.passedStages?.[0]?.havaleh?.assets
+            }
+            editable={false}
+          />
+        </DialogContent>
+      </Dialog>
       {session?.user?.role?.editPerson ? (
         <Menu
           anchorEl={rowOptionsAnchorElement}

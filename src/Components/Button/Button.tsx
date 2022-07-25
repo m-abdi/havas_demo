@@ -38,7 +38,7 @@ interface ButtonProps {
   /**
    * Optional click handler
    */
-  onClick?: () => void;
+  onClick?: (e?:any) => void;
   startIcon?: any;
   backgroundColor?: string;
 }

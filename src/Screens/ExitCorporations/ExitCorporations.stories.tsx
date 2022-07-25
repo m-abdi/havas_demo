@@ -27,7 +27,7 @@ Main.args = {
     {
       _id: 'b0106817-d981-4b00-977e-ed235828bd5c',
       workflowNumber: '1',
-      instanceOfProcessId: { $numberLong: '1' },
+      instanceOfProcessId: 1,
       nextStageName: 'RFID ثبت ورود کپسول به انبار توسط',
       dateCreated: '1657952937261',
       dateModified: '1657967683902',
@@ -51,7 +51,7 @@ Main.args = {
             corporation: {id: "234", name: "324"},
             receivingDescription: null,
             assets: {
-              oxygen_50l_factory: { $numberLong: '2' },
+              oxygen_50l_factory: 2,
               bihoshi_50l_factory: null,
               shaft_50l_factory: null,
               controlValve_50l_factory: null,
