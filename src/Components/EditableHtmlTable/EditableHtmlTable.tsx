@@ -1,6 +1,6 @@
+import React, { useEffect } from 'react';
 import { TableBody, TextField } from '@mui/material';
 
-import React from 'react';
 import { memo } from 'react';
 
 export default memo(function EditableHtmlTable({
@@ -8,7 +8,12 @@ export default memo(function EditableHtmlTable({
   register,
   existingEnterWorkflow,
   editable = true,
+  reset
 }) {
+  useEffect(() => {
+    reset?.()
+  }, [existingEnterWorkflow])
+  
   return (
     <>
       <table border={2}>

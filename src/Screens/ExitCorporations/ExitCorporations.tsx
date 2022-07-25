@@ -182,7 +182,7 @@ export default memo(function ExitCorporations({
   const [detailsDialog, setDetailsDialog] = useState(false);
 
   //
-  const { register } = useForm();
+  const { register, reset } = useForm();
 
   // other hooks
   const { data: session } = useSession();
@@ -243,7 +243,16 @@ export default memo(function ExitCorporations({
       },
       {
         Header: 'شماره تماس ترابری',
-        accessor: 'passedStages[0].havaleh.transportationTelephone',
+        accessor: (data: any) => {
+          return (
+            <>
+              <div>{data?.passedStages[0].havaleh.transportationTelephone}</div>
+              <div>
+                {data?.passedStages[0].havaleh.transportationTelephone2}
+              </div>
+            </>
+          );
+        },
         width: 200,
       },
       {
@@ -903,6 +912,7 @@ export default memo(function ExitCorporations({
               choosedRow?.passedStages?.[0]?.havaleh?.assets
             }
             editable={false}
+            reset={reset}
           />
         </DialogContent>
       </Dialog>
