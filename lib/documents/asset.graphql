@@ -16,6 +16,8 @@ query assets($limit: Int = 1000000, $offset: Int = 0, $filters: AssetFilter) {
   count: assetsCount(filters: $filters)
 }
 
+
+
 query assetsList {
   assets(limit: 2000000, offset: 0) {
     id

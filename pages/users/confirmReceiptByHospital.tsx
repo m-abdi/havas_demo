@@ -24,15 +24,12 @@ export default function ConfirmReceiptByHospital() {
 
   const _ = undefined;
   const { allEnterWorkflows, loading, sending, confirmEnterHandler } =
-    useWorkflows(_, _, 2000000, false);
+    useWorkflows(_, _, 2000000, null, null, null, true);
   //
-  
+
   const router = useRouter();
   return (
     <Layout pageName={pageName}>
-      <Head>
-        <title>{`${pageName}`} | حواس</title>
-      </Head>
       <Container maxWidth='lg' sx={{ position: 'relative' }}>
         <Box sx={{ my: 2, mx: 5 }}>
           <Stack

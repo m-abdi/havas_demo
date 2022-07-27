@@ -47,13 +47,7 @@ function createApolloClient(context?: ResolverContext) {
             roles: {
               ...offsetLimitPagination(),
               keyArgs: false,
-              read(
-                existing,
-                {
-                  args,
-                }
-              ) :any {
-       
+              read(existing, { args }): any {
                 return (
                   existing &&
                   existing.slice(args?.offset, args?.offset + args?.limit)
@@ -62,14 +56,8 @@ function createApolloClient(context?: ResolverContext) {
             },
             persons: {
               ...offsetLimitPagination(),
-              keyArgs: ["filters"],
-              read(
-                existing,
-                {
-                  args,
-                }
-              ) :any {
-       
+              keyArgs: ['filters'],
+              read(existing, { args }): any {
                 return (
                   existing &&
                   existing.slice(args?.offset, args?.offset + args?.limit)
@@ -78,14 +66,18 @@ function createApolloClient(context?: ResolverContext) {
             },
             places: {
               ...offsetLimitPagination(),
-              keyArgs: ["filters"],
-              read(
-                existing,
-                {
-                  args,
-                }
-              ) :any {
-       
+              keyArgs: ['filters'],
+              read(existing, { args }): any {
+                return (
+                  existing &&
+                  existing.slice(args?.offset, args?.offset + args?.limit)
+                );
+              },
+            },
+            enterWorkflows: {
+              ...offsetLimitPagination(),
+              keyArgs: ['filters'],
+              read(existing, { args }): any {
                 return (
                   existing &&
                   existing.slice(args?.offset, args?.offset + args?.limit)

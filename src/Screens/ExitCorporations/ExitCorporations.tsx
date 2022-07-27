@@ -629,14 +629,7 @@ export default memo(function ExitCorporations({
                               delayTimer = setTimeout(function () {
                                 setFilters({
                                   ...filters,
-                                  [column.id === 'supportCompany.name'
-                                    ? 'supportCompany'
-                                    : column.id]:
-                                    column.id === 'supportCompany.name'
-                                      ? { name: { contains: e.target.value } }
-                                      : column.id === 'hasInstructions'
-                                      ? hasInstructions
-                                      : { contains: e.target.value },
+                                  [column.id]:{ contains: e.target.value },
                                 });
                                 fetchMoreRows(e, 0);
                               }, 1000);
@@ -685,18 +678,7 @@ export default memo(function ExitCorporations({
                                     delayTimer = setTimeout(function () {
                                       setFilters({
                                         ...filters,
-                                        [column.id === 'supportCompany.name'
-                                          ? 'supportCompany'
-                                          : column.id]:
-                                          column.id === 'supportCompany.name'
-                                            ? {
-                                                name: {
-                                                  contains: e.target.value,
-                                                },
-                                              }
-                                            : column.id === 'hasInstructions'
-                                            ? !hasInstructions
-                                            : { contains: e.target.value },
+                                        [column.id]:{ contains: e.target.value },
                                       });
                                       fetchMoreRows(e, 0);
                                     }, 1000);

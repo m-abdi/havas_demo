@@ -286,6 +286,12 @@ function Layout({ children, pageName }) {
           roleName: 'createLicense',
         },
         {
+          text: 'حواله های ورودی تایید شده',
+          icon: <SearchRoundedIcon />,
+          path: '/users/confirmReceiptByHospitals',
+          roleName: 'viewLicense',
+        },
+        {
           text: 'RFID ثبت ورود کپسول به انبار توسط',
           icon: <AddCircleOutlineOutlined />,
           path: '/users/enterWarehouseRFID',

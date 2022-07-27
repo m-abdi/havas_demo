@@ -5,7 +5,7 @@ import EnterWarehouseRFID from '../../src/Screens/EnterWarehouseRFID';
 import { EquipmentsAndPlacesDocument } from '../../lib/graphql-operations';
 import Head from 'next/head';
 import Layout from '../../src/Components/Layout';
-import { UpdateAssetsStatesDocument } from 'lib/graphql-operations';
+import { UpdateAssetsStatesDocument } from '../../lib/graphql-operations';
 import { getQueryDefinition } from '@apollo/client/utilities';
 import useAssets from '../../src/Logic/useAssets';
 import useMQTT from '../../src/Logic/useMQTT';
@@ -91,9 +91,6 @@ export default function enterWarehouseRFID() {
 
   return (
     <Layout pageName={pageName}>
-      <Head>
-        <title>{`${pageName}`} | حواس</title>
-      </Head>
       {existingWorkflow && (
         <EnterWarehouseRFID
           mqttMessage={mqttMessage as any}

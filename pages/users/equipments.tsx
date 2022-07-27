@@ -4,21 +4,21 @@ import {
   DeletePersonsDocument,
   DeletePlacesDocument,
   PlaceFilter,
-} from 'lib/graphql-operations';
+} from '../../lib/graphql-operations';
 import React, { useCallback, useContext, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
-import AuthenticationRequired from 'src/AuthenticationRequired';
-import { EquipmentFilter } from 'lib/resolvers-types';
-import Equipments from 'src/Screens/Equipments';
+import AuthenticationRequired from '../../src/AuthenticationRequired';
+import { EquipmentFilter } from '../../lib/resolvers-types';
+import Equipments from '../../src/Screens/Equipments';
 import Head from 'next/head';
-import Layout from 'src/Components/Layout';
-import Persons from 'src/Screens/Persons';
-import Places from 'src/Screens/Places';
-import Snackbar from 'src/Components/Snackbar';
-import { SnackbarContext } from 'pages/_app';
-import useEquipments from 'src/Logic/useEquipments';
-import usePlaces from 'src/Logic/usePlaces';
+import Layout from '../../src/Components/Layout';
+import Persons from '../../src/Screens/Persons';
+import Places from '../../src/Screens/Places';
+import Snackbar from '../../src/Components/Snackbar';
+import { SnackbarContext } from '../../pages/_app';
+import useEquipments from '../../src/Logic/useEquipments';
+import usePlaces from '../../src/Logic/usePlaces';
 
 const pageName = 'تجهیزات';
 export default function equipments() {
@@ -45,7 +45,10 @@ export default function equipments() {
     itemsPerPage,
     filters,
     setPageNumber,
-    setOffset
+    setOffset,
+    false,
+    true,
+    
   );
 
   return (

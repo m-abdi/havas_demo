@@ -368,12 +368,16 @@ const resolvers: Resolvers = {
       if (!session || !(await canViewLicenses(session))) {
         throw new GraphQLYogaError('Unauthorized');
       }
-      const { limit, offset } = _args;
+      const {
+        limit,
+        offset,
+        filters,
+      }: { limit?: any; offset?: any; filters?: any } = _args;
 
       const enterWorkflowsDB = await prisma.workflow.findMany({
         take: limit ?? 2000000,
         skip: offset ?? 0,
-        where: { instanceOfProcess: { processNumber: 1 } },
+        where: { instanceOfProcess: { processNumber: 1 }, ...filters },
         orderBy: { dateCreated: 'desc' },
       });
 
@@ -386,9 +390,10 @@ const resolvers: Resolvers = {
       if (!session || !(await canViewEquipments(session))) {
         throw new GraphQLYogaError('Unauthorized');
       }
+      const { filters }: { filters?: any } = _args;
 
       return (await prisma.workflow.count({
-        where: { instanceOfProcess: { processNumber: 1 } },
+        where: { instanceOfProcess: { processNumber: 1 }, ...filters },
       })) as number;
     },
     async role(_parent: any, _args: any, _context: any): Promise<any> {
@@ -649,46 +654,46 @@ const resolvers: Resolvers = {
         });
         return editedPlace;
       }
-     if (superPlaceId) {
-       const createdPlace = await prisma.place.create({
-         data: {
-           name,
-           typeOfWork,
-           superPlace: { connect: { id: superPlaceId } },
-           state,
-           city,
-           postalCode,
-           address,
-           telephone,
-           mobileNumber,
-           website,
-           nationalId,
-           economicalCode,
-           registeredNumber,
-           description,
-         },
-       });
-       return createdPlace;
-     } else {
-       const createdPlace = await prisma.place.create({
-         data: {
-           name,
-           typeOfWork,
-           state,
-           city,
-           postalCode,
-           address,
-           telephone,
-           mobileNumber,
-           website,
-           nationalId,
-           economicalCode,
-           registeredNumber,
-           description,
-         },
-       });
-       return createdPlace;
-     }
+      if (superPlaceId) {
+        const createdPlace = await prisma.place.create({
+          data: {
+            name,
+            typeOfWork,
+            superPlace: { connect: { id: superPlaceId } },
+            state,
+            city,
+            postalCode,
+            address,
+            telephone,
+            mobileNumber,
+            website,
+            nationalId,
+            economicalCode,
+            registeredNumber,
+            description,
+          },
+        });
+        return createdPlace;
+      } else {
+        const createdPlace = await prisma.place.create({
+          data: {
+            name,
+            typeOfWork,
+            state,
+            city,
+            postalCode,
+            address,
+            telephone,
+            mobileNumber,
+            website,
+            nationalId,
+            economicalCode,
+            registeredNumber,
+            description,
+          },
+        });
+        return createdPlace;
+      }
     },
     async createEquipment(
       _,
@@ -1169,7 +1174,7 @@ const resolvers: Resolvers = {
                   firstNameAndLastName: session?.user?.firstNameAndLastName,
                 },
                 havaleh: {
-                  id: havalehId,
+                  id: havalehId + "edited",
                   date,
                   deliverer,
                   transportationName,
@@ -1275,7 +1280,7 @@ const resolvers: Resolvers = {
           operations.push(w);
         }
       });
-      console.log(await prisma.$transaction(operations))
+      console.log(await prisma.$transaction(operations));
 
       return 2;
     },

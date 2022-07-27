@@ -8,6 +8,7 @@ import React, { useState } from 'react';
 import { ApolloProvider } from '@apollo/client';
 import { AppProps } from 'next/app';
 import CssBaseline from '@mui/material/CssBaseline';
+import { Equipment } from '../lib/resolvers-types';
 import Head from 'next/head';
 import { SessionProvider } from 'next-auth/react';
 import { ThemeProvider } from '@mui/material/styles';
@@ -45,20 +46,27 @@ interface MyAppProps extends AppProps {
 }
 export const InfoContext = createContext({
   pageName: "داشبورد", 
-  changePageName: (newName: string)=>{}
+  changePageName: (newName: string)=>{},
+  equipments: null,
+  setEquipments: (e: any)=>{}
 });
 
 export default function MyApp(props: MyAppProps) {
   // custom context
   const [info, setInfo] = React.useState({
     pageName: 'داشبورد',
+    equipments: null
   });
-  const infoContext: {pageName: string, changePageName: (newName: string)=>void} = React.useMemo(
+  const infoContext: {pageName: string, changePageName: (newName: string)=>void, equipments: any, setEquipments: (e: any)=>void} = React.useMemo(
     () => ({
       pageName: info.pageName,
       changePageName: (newName: string) => {
         setInfo({ ...info, pageName: newName });
       },
+      equipments: info?.equipments,
+      setEquipments: (e: any) =>{
+        setInfo({...info, equipments: e})
+      }
     }),
     [info]
   );

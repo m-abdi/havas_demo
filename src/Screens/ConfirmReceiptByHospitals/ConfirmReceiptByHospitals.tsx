@@ -5,6 +5,9 @@ import {
   Box,
   Checkbox,
   Container,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   Divider,
   FormControl,
   FormControlLabel,
@@ -37,6 +40,7 @@ import {
 
 import { Button } from '../../Components/Button';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import ContradictionTable from '../../Components/ContradictionTable/ContradictionTable';
 import DeleteDialog from '../../Components/DeleteRolesDialog';
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
@@ -45,6 +49,7 @@ import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRound
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import { Satellite } from '@mui/icons-material';
 import { Session } from 'next-auth';
+import { Workflow } from '../../../lib/resolvers-types';
 import matchSorter from 'match-sorter';
 /* eslint-disable react/jsx-filename-extension */
 import { memo } from 'react';
@@ -58,21 +63,7 @@ interface Props {
   indeterminate?: boolean;
   name?: string;
 }
-interface DataType {
-  name: string;
-  model: string;
-  factory: string;
-  serialNumber: string;
-  productionYear: string;
-  installationYear: string;
-  terminologyCode: string;
-  hasInstructions: boolean;
-  supportCompany: { name: string };
-  supportTelephone1: string;
-  supportTelephone2: string;
-  createdAt: string;
-  editedAt: string;
-}
+
 const Styles = styled.div`
   padding: 1rem;
 
@@ -139,7 +130,7 @@ const Styles = styled.div`
   }
 `;
 var delayTimer: any;
-export default memo(function ConfirmReceiptByHospitals({
+export default function ConfirmReceiptByHospitals({
   loading,
   deleting,
   data = [],
@@ -150,21 +141,21 @@ export default memo(function ConfirmReceiptByHospitals({
   offset,
   setFilters,
   fetchMoreRows,
-  allEquipmentsCount: allequipmentsCount,
-  deleteEquipmentsHandler,
+  allWorkflowsCount,
+  deleteWorkflowsHandler,
 }: {
   loading: boolean;
   deleting: boolean;
-  data: DataType[];
+  data: Workflow[];
   offset: number;
   pageNumber: number;
   itemsPerPage: number;
   setItemsPerPage: any;
   filters: any;
   setFilters: any;
-  allEquipmentsCount: number;
+  allWorkflowsCount: number;
   fetchMoreRows: (e: any, page: number) => void;
-  deleteEquipmentsHandler: (placeIds: string[]) => Promise<void>;
+  deleteWorkflowsHandler: (workflowIds: string[]) => Promise<void>;
 }) {
   //  states
   const [rowOptionsAnchorElement, setRowOptionsAnchorElement] =
@@ -173,6 +164,7 @@ export default memo(function ConfirmReceiptByHospitals({
   const [hasInstructions, setHasInstructions] = useState<boolean>();
   const rowOptionsOpen = Boolean(rowOptionsAnchorElement);
   const [deleteDialog, setDeleteDialog] = useState(false);
+  const [detailsDialog, setDetailsDialog] = useState(false);
 
   // const [value, setValue] = React.useState(globalFilter);
 
@@ -195,41 +187,75 @@ export default memo(function ConfirmReceiptByHospitals({
     () => [
       {
         Header: 'نوع',
-        accessor: 'type', // accessor is the "key" in the data
+        width: 230,
+        accessor: (d: any) => {
+          // عدم مغایرت و ثبت توسط شرکت
+          if (
+            !d?.passedStages?.[1].havaleh &&
+            d?.passedStages?.[0].submittedByUser?.id !==
+              d?.passedStages?.[1].submittedByUser?.id
+          ) {
+            return <Button label='ثبت حواله توسط شرکت' color='success' />;
+          } else if (d?.passedStages?.[1].havaleh) {
+            return (
+              <Button label='مغایرت حواله شرکت با دریافتی' color='error' />
+            );
+          } else if (
+            d?.passedStages?.[0].submittedByUser?.id ===
+            d?.passedStages?.[1].submittedByUser?.id
+          ) {
+            return (
+              <Button
+                label='ثبت حواله توسط انباردار'
+                backgroundColor='purple'
+              />
+            );
+          }
+        },
       },
 
       {
         Header: 'تحویل گیرنده',
-        accessor: 'passedStages[0].havaleh.corporation.name', // accessor is the "key" in the data
+        accessor: 'passedStages[1].submittedByUser.firstNameAndLastName', // accessor is the "key" in the data
         width: 200,
       },
 
       {
         Header: 'اسم شرکت',
-        accessor: 'passedStages[0].submittedByUser.firstNameAndLastName',
+        accessor: 'passedStages[0].havaleh.corporation.name',
       },
 
       {
         Header: 'نماینده شرکت',
-        accessor: 'passedStages[0].havaleh.id',
+        accessor: 'passedStages[0].submittedByUser.firstNameAndLastName',
       },
 
       {
         Header: 'شماره حواله',
-        accessor: 'passedStages[0].havaleh.deliverer', // accessor is the "key" in the data
+        accessor: 'passedStages[0].havaleh.id', // accessor is the "key" in the data
       },
       {
         Header: 'تحویل دهنده',
-        accessor: 'passedStages[0].havaleh.transportationName', // accessor is the "key" in the data
+        accessor: 'passedStages[0].havaleh.deliverer', // accessor is the "key" in the data
       },
       {
         Header: 'نام ترابری',
-        accessor: 'passedStages[0].havaleh.transportationTelephone',
+        accessor: 'passedStages[0].havaleh.transportationName',
         width: 200,
       },
       {
         Header: 'شماره تماس ترابری',
-        accessor: 'terminologyCode', // accessor is the "key" in the data
+        width: 200,
+        accessor: (d: any) => {
+          return (
+            <>
+              <div>{d?.passedStages[0].havaleh.transportationTelephone}</div>
+              <div>
+                {d?.passedStages[0].havaleh.transportationTelephone2}
+              </div>
+            </>
+          );
+        },
       },
       {
         Header: 'جزییات حواله',
@@ -237,13 +263,38 @@ export default memo(function ConfirmReceiptByHospitals({
       },
       {
         Header: 'امانتی',
-        accessor: 'passedStages[0].havaleh.description',
-        width: 300,
+        accessor: (d: any) => {
+          if (
+            Object.entries(d?.passedStages?.[0].havaleh?.assets ?? {})?.some(
+              ([key, value]) => value && /_factory/.test(key)
+            )
+          ) {
+            return <Button variant='contained' label='دارد' color='error' />;
+          } else {
+            return <Button variant='contained' label='ندارد' />;
+          }
+        },
+        width: 200,
       },
       {
         Header: 'جزییات مغایرت',
-        accessor: 'passedStages[0].havaleh.description',
-        width: 300,
+        accessor: (d: any) => {
+          if (d?.passedStages?.[1]?.havaleh) {
+            return (
+              <Button
+                label='مشاهده'
+                color='info'
+                onClick={() => {
+                  setChoosedRow(d);
+                  console.log(d);
+                  
+                  setDetailsDialog(true);
+                }}
+              />
+            );
+          }
+        },
+        width: 200,
       },
       {
         Header: 'توضیحات ارسال',
@@ -252,7 +303,7 @@ export default memo(function ConfirmReceiptByHospitals({
       },
       {
         Header: 'توضیحات دریافت',
-        accessor: 'passedStages[0].havaleh.description',
+        accessor: 'passedStages[0].havaleh.receivingDescription',
         width: 300,
       },
     ],
@@ -283,83 +334,19 @@ export default memo(function ConfirmReceiptByHospitals({
     }),
     []
   );
-  // // Define a default UI for filtering
-  // function GlobalFilter({
-  //   preGlobalFilteredRows,
-  //   globalFilter,
-  //   setGlobalFilter,
-  // }) {
-  //   const count = preGlobalFilteredRows.length;
-  //   const onChange = useAsyncDebounce((value) => {
-  //     setGlobalFilter(value || undefined);
-  //   }, 200);
-
-  //   return (
-  //     <span>
-  //       Search:{' '}
-  //       <input
-  //         value={value || ''}
-  //         onChange={(e) => {
-  //           setValue(e.target.value);
-  //           onChange(e.target.value);
-  //         }}
-  //         placeholder={`${count} records...`}
-  //         style={{
-  //           fontSize: '1.1rem',
-  //           border: '0',
-  //         }}
-  //       />
-  //     </span>
-  //   );
-  // }
-  // Define a default UI for filtering
-  // function DefaultColumnFilter({
-  //   column: { filterValue, preFilteredRows, setFilter, id },
-  // }) {
-  //   const count = preFilteredRows.length;
-
-  //   return (
-  //     <TextField
-  //       size='small'
-  //       color='secondary'
-  //       variant='standard'
-  //       // value={filterValue || ''}
-  //       value={filters[id]}
-  //       onChange={(e) => {
-  //         setFilters({ ...filters, [id]: e.target.value });
-  //         // setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
-  //       }}
-  //       onClick={(e) => {
-  //         e.preventDefault();
-  //         e.stopPropagation();
-  //       }}
-  //       sx={{
-  //         color: 'whitesmoke',
-  //         inlineSize: '90%',
-  //         backgroundColor: 'whitesmoke',
-  //         borderRadius: '20px',
-  //         px: 1,
-  //       }}
-  //       InputProps={{
-  //         disableUnderline: true,
-  //       }}
-  //       placeholder={`جستجو ...`}
-  //     />
-  //   );
-  // }
+ 
   const defaultColumn = useMemo(
     () => ({
       minWidth: 30,
       width: 148,
       maxWidth: 400,
-      // Filter: DefaultColumnFilter,
     }),
     []
   );
   const useCombinedRefs = (...refs: any): React.MutableRefObject<any> => {
     const targetRef = React.useRef();
 
-    React.useEffect(() => {
+    useEffect(() => {
       refs.forEach((ref: any) => {
         if (!ref) return;
 
@@ -470,39 +457,11 @@ export default memo(function ConfirmReceiptByHospitals({
           ),
         },
         ...columns,
-      
       ]);
     }
   );
 
-  // if (false) {
-  //   return (
-  //     <Box sx={{ maxInlineSize: '100%', position: 'relative' }}>
-  //       <Styles>
-  //         <TableContainer>
-  //           <Stack spacing={0.3}>
-  //             <Stack direction={'row'} alignItems='center' spacing={0.5}>
-  //               <Skeleton width={35} height={109} variant='rectangular' />
-  //               <Skeleton width={35} height={109} variant='rectangular' />
-  //               <Skeleton width={35} height={109} variant='rectangular' />
-  //               <Skeleton width={148} height={109} variant='rectangular' />
-  //               <Skeleton width={148} height={109} variant='rectangular' />
-  //               <Skeleton width={148} height={109} variant='rectangular' />
-  //               <Skeleton width={148} height={109} variant='rectangular' />
-  //               <Skeleton width={148} height={109} variant='rectangular' />
-  //               <Skeleton width={148} height={109} variant='rectangular' />
-  //               <Skeleton width={148} height={109} variant='rectangular' />
-  //               <Skeleton width={148} height={109} variant='rectangular' />
-  //               <Skeleton width={148} height={109} variant='rectangular' />
-  //               <Skeleton width={148} height={109} variant='rectangular' />
-  //               <Skeleton width={148} height={109} variant='rectangular' />
-  //             </Stack>
-  //           </Stack>
-  //         </TableContainer>
-  //       </Styles>
-  //     </Box>
-  //   );
-  // }
+ 
   return (
     <Box sx={{ maxInlineSize: '100%', position: 'relative' }}>
       {/* <button onClick={resetResizing}>Reset Resizing</button> */}
@@ -687,16 +646,18 @@ export default memo(function ConfirmReceiptByHospitals({
                     <Skeleton width={34} height={42} variant='rectangular' />
                     <Skeleton width={34} height={42} variant='rectangular' />
                     <Skeleton width={34} height={42} variant='rectangular' />
+                    <Skeleton width={229} height={42} variant='rectangular' />
+                    <Skeleton width={199} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
+                    <Skeleton width={148} height={42} variant='rectangular' />
+                    <Skeleton width={148} height={42} variant='rectangular' />
+                    <Skeleton width={199} height={42} variant='rectangular' />
                     <Skeleton width={198} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
                     <Skeleton width={146} height={42} variant='rectangular' />
-                    <Skeleton width={198} height={42} variant='rectangular' />
-                    <Skeleton width={146} height={42} variant='rectangular' />
-                    <Skeleton width={146} height={42} variant='rectangular' />
+                    <Skeleton width={199} height={42} variant='rectangular' />
+                    <Skeleton width={199} height={42} variant='rectangular' />
+                    <Skeleton width={298} height={42} variant='rectangular' />
                     <Skeleton width={298} height={42} variant='rectangular' />
                   </Stack>
                 ))}
@@ -721,47 +682,13 @@ export default memo(function ConfirmReceiptByHospitals({
             )}
           </div>
 
-          {/* <div>
-            <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-              Previous Page
-            </button>
-            <button onClick={() => nextPage()} disabled={!canNextPage}>
-              Next Page
-            </button>
-            <div>
-              Page{' '}
-              <em>
-                {pageIndex + 1} of {pageOptions.length}
-              </em>
-            </div>
-            <div>Go to page:</div>
-            <input
-              type='number'
-              defaultValue={pageIndex + 1 || 1}
-              onChange={(e) => {
-                const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                gotoPage(page);
-              }}
-            />
-          </div> */}
-          {/* <select
-         value={pageSize}
-         onChange={e => {
-           setPageSize(Number(e.target.value))
-         }}
-       >
-         {pageSizeOptions.map(pageSize => (
-           <option key={pageSize} value={pageSize}>
-             Show {pageSize}
-           </option>
-         ))}
-       </select> */}
+        
         </TableContainer>
         <TablePagination
           component={'div'}
           rowsPerPageOptions={[5, 10, 15, 20, 30, 50]}
           page={pageNumber}
-          count={allequipmentsCount}
+          count={allWorkflowsCount}
           onPageChange={fetchMoreRows}
           onRowsPerPageChange={(
             event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -819,6 +746,37 @@ export default memo(function ConfirmReceiptByHospitals({
           setDeleteDialog(false);
         }}
       />
+      <Dialog
+        sx={{ zIndex: 7000 }}
+        open={detailsDialog}
+        maxWidth='md'
+        onClose={() => setDetailsDialog(false)}
+      >
+        <DialogTitle sx={{ textAlign: 'center' }}>
+          <Stack
+            direction='row'
+            alignItems='center'
+            justifyContent={'space-between'}
+          >
+            <span style={{ inlineSize: '10%' }}>
+              <IconButton onClick={() => setDetailsDialog(false)}>
+                <CloseRoundedIcon />
+              </IconButton>
+            </span>
+            <Typography
+              variant='h5'
+              component='h2'
+              sx={{ flexGrow: 1, textAlign: 'center' }}
+            >
+              جزئیات مغایرت
+            </Typography>
+            <span style={{ inlineSize: '10%' }}></span>
+          </Stack>
+        </DialogTitle>
+        <DialogContent sx={{ position: 'relative', p: 5 }}>
+          <ContradictionTable data={choosedRow} />
+        </DialogContent>
+      </Dialog>
       {session?.user?.role?.editPerson ? (
         <Menu
           anchorEl={rowOptionsAnchorElement}
@@ -846,19 +804,6 @@ export default memo(function ConfirmReceiptByHospitals({
       ) : null}
     </Box>
   );
-});
+};
 
-//  <tr>
-//    <th
-//      colSpan={visibleColumns.length}
-//      style={{
-//        textAlign: 'left',
-//      }}
-//    >
-//      <GlobalFilter
-//        preGlobalFilteredRows={preGlobalFilteredRows}
-//        globalFilter={state.globalFilter}
-//        setGlobalFilter={setGlobalFilter}
-//      />
-//    </th>
-//  </tr>;
+

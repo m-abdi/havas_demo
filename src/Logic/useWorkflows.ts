@@ -1,24 +1,24 @@
 /* eslint-disable no-var */
 import {
   AggregatedTransferedAssets,
-  EquipmentFilter,
-  PersonFilter,
-} from 'lib/resolvers-types';
+  EnterWorkflowFilter,
+} from '../../lib/resolvers-types';
 import {
   AllEnterWorkflowsDocument,
   AllPersonsDocument,
   ConfirmReceiptByHospitalDocument,
+  ConfirmedEnterWorkflowsDocument,
   CreateEnterWorkflowDocument,
   CreateEquipmentDocument,
   CreateNewPersonDocument,
   DeleteEquipmentsDocument,
   DeletePersonsDocument,
   EquipmentsDocument,
-} from 'lib/graphql-operations';
-import { useCallback, useContext } from 'react';
+} from '../../lib/graphql-operations';
+import { useCallback, useContext, useEffect } from 'react';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 
-import { SnackbarContext } from 'pages/_app';
+import { SnackbarContext } from '../../pages/_app';
 import { TransferedAssets } from '../../lib/resolvers-types';
 import useNotification from './useNotification';
 import { useRouter } from 'next/router';
@@ -27,27 +27,58 @@ export default function useWorkflows(
   offset = 0,
   pageNumber?: number,
   itemsPerPage = 10,
-  fetchEnterWorkflows = false,
+  filters?: EnterWorkflowFilter,
   setPageNumber?: React.Dispatch<React.SetStateAction<number>>,
-  setOffset?: React.Dispatch<React.SetStateAction<number>>
+  setOffset?: React.Dispatch<React.SetStateAction<number>>,
+  fetchNewEnterWorkflows = false,
+  fetchConfirmedEnterWorkflows = false
 ) {
   const router = useRouter();
   const { setSnackbarOpen, setSnackbarMessage, setSnackbarColor } =
     useContext(SnackbarContext);
   // fetch All enter workflows
-  const {
-    data: allEnterWorkflows,
-    error,
-    loading,
-    fetchMore: fetchMoreRows,
-  } = useQuery(AllEnterWorkflowsDocument, {
+  const [
+    allEnterWorkflowsQuery,
+    { data: allEnterWorkflows, error, loading, fetchMore: fetchMoreRows },
+  ] = useLazyQuery(AllEnterWorkflowsDocument, {
     fetchPolicy: 'cache-and-network',
-    nextFetchPolicy: 'cache-and-network',
     variables: {
       offset,
       limit: itemsPerPage,
+      filters,
     },
   });
+
+  // enter workflows that are confirmed by hospital
+  const [
+    confirmedEnterWorkflowsQuery,
+    {
+      data: confirmedEnterWorkflowsData,
+      loading: confirmedEnterWorkflowsLoading,
+      error: confirmedEnterWorkflowsError,
+      fetchMore: fetchMoreConfirmedEnterWorkflows,
+    },
+  ] = useLazyQuery(ConfirmedEnterWorkflowsDocument, {
+    fetchPolicy: 'cache-and-network',
+    variables: {
+      filters: {
+        nextStageName: {
+          contains: 'RFID ثبت ورود کپسول به انبار توسط',
+        },
+      },
+    },
+  });
+
+  // fetch queries that are requested
+  useEffect(() => {
+    (async () => {
+      if (fetchNewEnterWorkflows) {
+        await allEnterWorkflowsQuery();
+      } else if (fetchConfirmedEnterWorkflows) {
+        await confirmedEnterWorkflowsQuery();
+      }
+    })();
+  }, []);
 
   // new enter worflow mutation to server
   const [createEnterWorkflowMutation, { loading: sending }] = useMutation(
@@ -293,6 +324,12 @@ export default function useWorkflows(
   );
   return {
     allEnterWorkflows,
+    confirmedEnterWorkflows: confirmedEnterWorkflowsData?.enterWorkflows,
+    confirmedEnterWorkflowsCount:
+      confirmedEnterWorkflowsData?.enterWorkflowsCount,
+    fetchMoreConfirmedEnterWorkflows,
+    confirmedEnterWorkflowsLoading,
+    confirmedEnterWorkflowsError,
     error,
     loading,
     fetchMore,

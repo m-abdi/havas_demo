@@ -7,10 +7,11 @@ import {
   EquipmentsDocument,
 } from '../../lib/graphql-operations';
 import { EquipmentFilter, PersonFilter } from '../../lib/resolvers-types';
-import { useCallback, useContext } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
+import { useCallback, useContext, useEffect } from 'react';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 
 import { EquipmentsListDocument } from '../../lib/graphql-operations';
+import { InfoContext } from '../../pages/_app';
 import { SnackbarContext } from '../../pages/_app';
 import useNotification from './useNotification';
 import { useRouter } from 'next/router';
@@ -21,26 +22,29 @@ export default function useEquipments(
   itemsPerPage = 10,
   filters?: EquipmentFilter,
   setPageNumber?: React.Dispatch<React.SetStateAction<number>>,
-  setOffset?: React.Dispatch<React.SetStateAction<number>>
+  setOffset?: React.Dispatch<React.SetStateAction<number>>,
+  fetchEquipmentsList = false,
+  fetchAllEquipments = false
 ) {
   const router = useRouter();
   const { setSnackbarOpen, setSnackbarMessage, setSnackbarColor } =
     useContext(SnackbarContext);
   // equipments list for autocomplete fileds
-  const {
-    data: equipmentsList,
-    error: equipmentsListError,
-    loading: equipmentsListLoading,
-  } = useQuery(EquipmentsListDocument, {
+  const [
+    equipmentsListQuery,
+    {
+      data: equipmentsList,
+      error: equipmentsListError,
+      loading: equipmentsListLoading,
+    },
+  ] = useLazyQuery(EquipmentsListDocument, {
     fetchPolicy: 'cache-and-network',
   });
   // fetch All equipments
-  const {
-    data,
-    error,
-    loading,
-    fetchMore: fetchMoreRows,
-  } = useQuery(EquipmentsDocument, {
+  const [
+    allEquipmentsQuery,
+    { data, error, loading, fetchMore: fetchMoreRows },
+  ] = useLazyQuery(EquipmentsDocument, {
     fetchPolicy: 'cache-and-network',
     variables: {
       offset,
@@ -48,6 +52,21 @@ export default function useEquipments(
       filters,
     },
   });
+  const infoContext = useContext(InfoContext);
+
+  // fetch queries that are requested
+  useEffect(() => {
+    (async () => {
+      if (fetchEquipmentsList) {
+        const { data } = await equipmentsListQuery();
+        if (data) {
+          infoContext.setEquipments(data?.equipments);
+        }
+      } else if (fetchAllEquipments) {
+         await allEquipmentsQuery();
+      }
+    })();
+  }, []);
   // new person mutation to server
   const [createEquipmentMutation, { loading: sending }] = useMutation(
     CreateEquipmentDocument
@@ -193,7 +212,7 @@ export default function useEquipments(
     },
     []
   );
-  equipmentsList?.equipments
+  equipmentsList?.equipments;
   return {
     equipmentsList: equipmentsList?.equipments,
     equipmentsListLoading,

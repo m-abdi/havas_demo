@@ -269,6 +269,23 @@ const typeDefs = /* GraphQL */ `
     publicPropertyCode: ContainsSearchType!
     place: RelatedFieldFilter!
   }
+  input Havalehfilter {
+    id: ContainsSearchType
+    deliverer: ContainsSearchType
+    transportationName: ContainsSearchType
+    transportationTelephone: ContainsSearchType
+    transportationTelephone2: ContainsSearchType
+    description: ContainsSearchType
+    receivingDescription: ContainsSearchType
+    corporation: RelatedFieldFilter
+  }
+  input EnterWorkflowFilter {
+    id: ContainsSearchType
+    workflowNumber: ContainsSearchType
+    dateCreated: ContainsSearchType
+    nextStageName: ContainsSearchType
+    passedStages: Havalehfilter
+  }
   type TransferedAssetsOutput {
     oxygen_50l_factory: Int
     bihoshi_50l_factory: Int
@@ -472,8 +489,8 @@ const typeDefs = /* GraphQL */ `
     equipmentsCount(filters: EquipmentFilter): Int
     assets(limit: Int, offset: Int, filters: AssetFilter): [Asset]!
     assetsCount(filters: AssetFilter): Int
-    enterWorkflows(limit: Int, offset: Int): [Workflow]!
-    enterWorkflowsCount: Int
+    enterWorkflows(limit: Int, offset: Int, filters: EnterWorkflowFilter): [Workflow]
+    enterWorkflowsCount(filters: EnterWorkflowFilter): Int
     role(roleId: ID!): Role
     roles(limit: Int!, offset: Int!): [Role!]
     hasNextRole(limit: Int!, offset: Int!): Boolean!
