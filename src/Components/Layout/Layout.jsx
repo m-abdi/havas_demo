@@ -268,6 +268,12 @@ function Layout({ children, pageName }) {
       icon: <WorkspacePremiumRoundedIcon />,
       sublists: [
         {
+          text: 'تاریخچه گردش کارها',
+          icon: <SearchRoundedIcon />,
+          path: '/users/workflows',
+          roleName: 'viewLicense',
+        },
+        {
           text: 'ثبت خروج از شرکت',
           icon: <AddCircleOutlineOutlined />,
           path: '/users/newExitCorporation',
