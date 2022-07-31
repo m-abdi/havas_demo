@@ -65,6 +65,7 @@ export default function useWorkflows(
         nextStageName: {
           contains: 'RFID ثبت ورود کپسول به انبار توسط',
         },
+        ...filters,
       },
     },
   });
@@ -78,7 +79,7 @@ export default function useWorkflows(
         await confirmedEnterWorkflowsQuery();
       }
     })();
-  }, []);
+  }, [filters]);
 
   // new enter worflow mutation to server
   const [createEnterWorkflowMutation, { loading: sending }] = useMutation(
@@ -324,7 +325,7 @@ export default function useWorkflows(
   );
   return {
     allEnterWorkflows,
-    confirmedEnterWorkflows: confirmedEnterWorkflowsData?.enterWorkflows,
+    confirmedEnterWorkflows: confirmedEnterWorkflowsData?.enterWorkflows ?? [],
     confirmedEnterWorkflowsCount:
       confirmedEnterWorkflowsData?.enterWorkflowsCount,
     fetchMoreConfirmedEnterWorkflows,

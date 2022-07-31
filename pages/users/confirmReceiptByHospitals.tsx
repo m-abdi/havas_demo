@@ -1,7 +1,7 @@
 import { EnterWorkflowFilter, Workflow } from '../../lib/resolvers-types';
 import React, { useCallback, useContext, useState } from 'react';
 
-import ConfirmReceiptByHospitalsStories from '../../src/Screens/ConfirmReceiptByHospitals';
+import ConfirmReceiptByHospitals from '../../src/Screens/ConfirmReceiptByHospitals';
 import Layout from '../../src/Components/Layout';
 import useEquipments from '../../src/Logic/useEquipments';
 import useWorkflows from '../../src/Logic/useWorkflows';
@@ -42,24 +42,22 @@ export default function confirmReceiptByHospitals() {
 
   return (
     <Layout pageName={pageName}>
-      {confirmedEnterWorkflows && (
-        <ConfirmReceiptByHospitalsStories
-          data={confirmedEnterWorkflows as any}
-          loading={confirmedEnterWorkflowsLoading}
-          deleting={false}
-          filters={filters}
-          setFilters={setFilters}
-          pageNumber={pageNumber}
-          itemsPerPage={itemsPerPage}
-          setItemsPerPage={setItemsPerPage}
-          offset={offset}
-          allWorkflowsCount={confirmedEnterWorkflowsCount as number}
-          fetchMoreRows={fetchMoreConfirmedEnterWorkflows}
-          deleteWorkflowsHandler={async (workflowIds) => {
-            return;
-          }}
-        />
-      )}
+      <ConfirmReceiptByHospitals
+        data={confirmedEnterWorkflows as any}
+        loading={confirmedEnterWorkflowsLoading}
+        deleting={false}
+        filters={filters}
+        setFilters={setFilters}
+        pageNumber={pageNumber}
+        itemsPerPage={itemsPerPage}
+        setItemsPerPage={setItemsPerPage}
+        offset={offset}
+        allWorkflowsCount={confirmedEnterWorkflowsCount as number}
+        fetchMoreRows={fetchMoreConfirmedEnterWorkflows}
+        deleteWorkflowsHandler={async (workflowIds) => {
+          return;
+        }}
+      />
     </Layout>
   );
 }

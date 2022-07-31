@@ -25,7 +25,7 @@ import {
 } from '@mui/material';
 import DatePicker, { Calendar } from 'react-multi-date-picker';
 /* eslint-disable react/jsx-key */
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useId, useMemo, useState } from 'react';
 import {
   TableInstance,
   useBlockLayout,
@@ -56,6 +56,7 @@ import { memo } from 'react';
 import persianCalender from 'react-date-object/calendars/persian';
 import persianLocale from 'react-date-object/locales/persian_fa';
 import styled from 'styled-components';
+import toNestedObject from '../../Logic/toNestedObject';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
@@ -130,7 +131,7 @@ const Styles = styled.div`
   }
 `;
 var delayTimer: any;
-export default function ConfirmReceiptByHospitals({
+export default memo(function ConfirmReceiptByHospitals({
   loading,
   deleting,
   data = [],
@@ -161,10 +162,10 @@ export default function ConfirmReceiptByHospitals({
   const [rowOptionsAnchorElement, setRowOptionsAnchorElement] =
     useState<null | HTMLElement>(null);
   const [choosedRow, setChoosedRow] = useState<any>('');
-  const [hasInstructions, setHasInstructions] = useState<boolean>();
   const rowOptionsOpen = Boolean(rowOptionsAnchorElement);
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [detailsDialog, setDetailsDialog] = useState(false);
+  const [rawFilters, setRawFilters] = useState({});
 
   // const [value, setValue] = React.useState(globalFilter);
 
@@ -187,6 +188,7 @@ export default function ConfirmReceiptByHospitals({
     () => [
       {
         Header: 'نوع',
+        id: 'type',
         width: 230,
         accessor: (d: any) => {
           // عدم مغایرت و ثبت توسط شرکت
@@ -250,9 +252,7 @@ export default function ConfirmReceiptByHospitals({
           return (
             <>
               <div>{d?.passedStages[0].havaleh.transportationTelephone}</div>
-              <div>
-                {d?.passedStages[0].havaleh.transportationTelephone2}
-              </div>
+              <div>{d?.passedStages[0].havaleh.transportationTelephone2}</div>
             </>
           );
         },
@@ -263,6 +263,7 @@ export default function ConfirmReceiptByHospitals({
       },
       {
         Header: 'امانتی',
+        id: 'borrowed',
         accessor: (d: any) => {
           if (
             Object.entries(d?.passedStages?.[0].havaleh?.assets ?? {})?.some(
@@ -278,6 +279,7 @@ export default function ConfirmReceiptByHospitals({
       },
       {
         Header: 'جزییات مغایرت',
+        id: 'details',
         accessor: (d: any) => {
           if (d?.passedStages?.[1]?.havaleh) {
             return (
@@ -287,7 +289,7 @@ export default function ConfirmReceiptByHospitals({
                 onClick={() => {
                   setChoosedRow(d);
                   console.log(d);
-                  
+
                   setDetailsDialog(true);
                 }}
               />
@@ -334,7 +336,7 @@ export default function ConfirmReceiptByHospitals({
     }),
     []
   );
- 
+
   const defaultColumn = useMemo(
     () => ({
       minWidth: 30,
@@ -461,7 +463,6 @@ export default function ConfirmReceiptByHospitals({
     }
   );
 
- 
   return (
     <Box sx={{ maxInlineSize: '100%', position: 'relative' }}>
       {/* <button onClick={resetResizing}>Reset Resizing</button> */}
@@ -470,7 +471,11 @@ export default function ConfirmReceiptByHospitals({
           <div {...getTableProps()} className='table'>
             <div className='thead'>
               {headerGroups.map((headerGroup) => (
-                <div {...headerGroup.getHeaderGroupProps()} className='tr'>
+                <div
+                  {...headerGroup.getHeaderGroupProps()}
+                  className='tr'
+                  key={useId()}
+                >
                   {headerGroup.headers.map((column) => (
                     <div className='th' {...column.getHeaderProps()}>
                       {/* column header & sort & filter search box */}
@@ -478,6 +483,7 @@ export default function ConfirmReceiptByHospitals({
                         spacing={2}
                         justifyContent='center'
                         alignItems='center'
+                        sx={{ blockSize: '100%' }}
                         {...column.getSortByToggleProps()}
                       >
                         {/* column header text and sort symbols */}
@@ -498,20 +504,18 @@ export default function ConfirmReceiptByHospitals({
                             ''
                           )}
                         </Stack>
-                        <Divider
-                          flexItem
-                          variant='fullWidth'
-                          sx={{
-                            display: [
-                              'index',
-                              'selectAll',
-                              'options',
-                              'downloads',
-                            ].includes(column?.id)
-                              ? 'none'
-                              : 'auto',
-                          }}
-                        />
+
+                        {![
+                          'index',
+                          'selectAll',
+                          'options',
+                          'downloads',
+                          'details',
+                          'borrowed',
+                          'type',
+                        ].includes(column?.id) && (
+                          <Divider flexItem variant='fullWidth' />
+                        )}
                         {/* Render the columns filter UI
                         {!['index', 'selectAll', 'options'].includes(
                           column?.id
@@ -524,32 +528,45 @@ export default function ConfirmReceiptByHospitals({
                           'index',
                           'hasInstructions',
                           'downloads',
+                          'details',
+                          'borrowed',
+                          'type',
                         ].includes(column?.id) && (
                           <TextField
                             size='small'
                             color='secondary'
                             variant='standard'
-                            // value={filterValue || ''}
-                            // value={
-                            //   column.id === 'role.name' ||
-                            //   column.id === 'place.name'
-                            //     ? filters[column.id.replace('.name', '')].name
-                            //         .contains
-                            //     : filters[column.id].contains
-                            // }
                             onChange={(e) => {
+                              const newRawFilters = {
+                                [column.id
+                                  .replace('[0]', '')
+                                  .replace('[1]', '')
+                                  .replace(
+                                    'passedStages.',
+                                    'passedStages.some.'
+                                  )
+                                  .replace('havaleh.', 'havaleh.is.')
+                                  .replace(
+                                    'submittedByUser.',
+                                    'submittedByUser.is.'
+                                  )
+                                  .replace('corporation.', 'corporation.is.')
+                                  .replace('assets.', 'assets.is.')]: {
+                                  contains: e.target.value,
+                                },
+                              };
+
+                              setRawFilters({
+                                ...rawFilters,
+                                ...newRawFilters,
+                              });
                               clearTimeout(delayTimer);
                               delayTimer = setTimeout(function () {
                                 setFilters({
-                                  ...filters,
-                                  [column.id === 'supportCompany.name'
-                                    ? 'supportCompany'
-                                    : column.id]:
-                                    column.id === 'supportCompany.name'
-                                      ? { name: { contains: e.target.value } }
-                                      : column.id === 'hasInstructions'
-                                      ? hasInstructions
-                                      : { contains: e.target.value },
+                                  ...toNestedObject({
+                                    ...rawFilters,
+                                    ...newRawFilters,
+                                  }),
                                 });
                                 fetchMoreRows(e, 0);
                               }, 1000);
@@ -584,7 +601,7 @@ export default function ConfirmReceiptByHospitals({
                                 alignItems='center'
                               >
                                 <Typography>ندارد</Typography>
-                                <Switch
+                                {/* <Switch
                                   id='hasInstructions'
                                   checked={hasInstructions}
                                   color='success'
@@ -614,7 +631,7 @@ export default function ConfirmReceiptByHospitals({
                                       fetchMoreRows(e, 0);
                                     }, 1000);
                                   }}
-                                />
+                                /> */}
                                 <Typography>دارد</Typography>
                               </Stack>
                             </Box>
@@ -642,7 +659,12 @@ export default function ConfirmReceiptByHospitals({
             {loading ? (
               <Stack spacing={0.5}>
                 {[...Array(itemsPerPage)].map((i) => (
-                  <Stack direction={'row'} alignItems='center' spacing={0.13}>
+                  <Stack
+                    direction={'row'}
+                    alignItems='center'
+                    spacing={0.13}
+                    key={i}
+                  >
                     <Skeleton width={34} height={42} variant='rectangular' />
                     <Skeleton width={34} height={42} variant='rectangular' />
                     <Skeleton width={34} height={42} variant='rectangular' />
@@ -681,14 +703,12 @@ export default function ConfirmReceiptByHospitals({
               </div>
             )}
           </div>
-
-        
         </TableContainer>
         <TablePagination
           component={'div'}
           rowsPerPageOptions={[5, 10, 15, 20, 30, 50]}
           page={pageNumber}
-          count={allWorkflowsCount}
+          count={allWorkflowsCount ?? 0}
           onPageChange={fetchMoreRows}
           onRowsPerPageChange={(
             event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -740,10 +760,11 @@ export default function ConfirmReceiptByHospitals({
         open={deleteDialog}
         closeDialog={() => setDeleteDialog(false)}
         confirmDelete={async () => {
-          await deleteEquipmentsHandler(
-            selectedFlatRows.map((p) => p?.original?.terminologyCode)
-          );
-          setDeleteDialog(false);
+          // await deleteEquipmentsHandler(
+          //   selectedFlatRows.map((p) => p?.original?.terminologyCode)
+          // );
+          // setDeleteDialog(false);
+          return false;
         }}
       />
       <Dialog
@@ -804,6 +825,4 @@ export default function ConfirmReceiptByHospitals({
       ) : null}
     </Box>
   );
-};
-
-
+});

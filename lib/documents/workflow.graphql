@@ -190,7 +190,7 @@ query confirmedEnterWorkflows($filters: EnterWorkflowFilter) {
       }
     }
   }
-  enterWorkflowsCount
+  enterWorkflowsCount(filters: $filters)
 }
 
 
