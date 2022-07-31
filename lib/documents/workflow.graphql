@@ -95,7 +95,7 @@ query allEnterWorkflows($limit: Int = 2000000, $offset: Int = 0, $filters: Enter
       }
     }
   }
-  enterWorkflowsCount
+  enterWorkflowsCount(filters: $filters)
 }
 
 
@@ -190,7 +190,7 @@ query confirmedEnterWorkflows($filters: EnterWorkflowFilter) {
       }
     }
   }
-  enterWorkflowsCount(filters: $filters)
+  enterWorkflowsCount
 }
 
 

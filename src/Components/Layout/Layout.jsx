@@ -303,6 +303,24 @@ function Layout({ children, pageName }) {
           path: '/users/enterWarehouseRFID',
           roleName: 'createLicense',
         },
+        {
+          text: 'ثبت خروج از بیمارستان',
+          icon: <AddCircleOutlineOutlined />,
+          path: '/users/requestExitCylinderWarehouse',
+          roleName: 'createLicense',
+        },
+        {
+          text: 'ثبت خروج کپسول توسط RFID',
+          icon: <AddCircleOutlineOutlined />,
+          path: '/users/exitWarehouseRFID',
+          roleName: 'createLicense',
+        },
+        {
+          text: 'تایید تحویل به شرکت',
+          icon: <AddCircleOutlineOutlined />,
+          path: '/users/confirmReceiptByCorporation',
+          roleName: 'createLicense',
+        },
       ],
     },
   ];
@@ -404,7 +422,7 @@ function Layout({ children, pageName }) {
               <Typography
                 component='h1'
                 variant='h5'
-                sx={{ fontSize: '1.2rem', direction: "rtl" }}
+                sx={{ fontSize: '1.2rem' }}
               >
                 {' '}
                 {infoContext?.pageName}

@@ -12,7 +12,7 @@ import useMQTT from '../../src/Logic/useMQTT';
 import { useRouter } from 'next/router';
 import useTags from '../../src/Logic/useTags';
 
-const pageName = 'RFID ثبت ورود کپسول به انبار توسط';
+const pageName = 'ثبت ورود کپسول به انبار توسط RFID';
 export default function enterWarehouseRFID() {
   //
   const [checkedAssets, setCheckedAssets] = useState({

@@ -56,6 +56,7 @@ import { memo } from 'react';
 import persianCalender from 'react-date-object/calendars/persian';
 import persianLocale from 'react-date-object/locales/persian_fa';
 import styled from 'styled-components';
+import toNestedObject from '../../Logic/toNestedObject';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
@@ -180,6 +181,7 @@ export default memo(function ExitCorporations({
   const rowOptionsOpen = Boolean(rowOptionsAnchorElement);
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [detailsDialog, setDetailsDialog] = useState(false);
+  const [rawFilters, setRawFilters] = useState({});
 
   //
   const { register, reset } = useForm();
@@ -208,6 +210,7 @@ export default memo(function ExitCorporations({
 
       {
         Header: 'تاریخ ثبت فرم',
+        id: 'date',
         accessor: (d: any) =>
           // <DatePicker
           //   calendar={persianCalender}
@@ -253,10 +256,14 @@ export default memo(function ExitCorporations({
             </>
           );
         },
+        id: 'passedStages[0].havaleh.transportationTelephone',
         width: 200,
       },
       {
         Header: 'جزيیات حواله',
+        id: 'details',
+        disableSortBy: true,
+        disableFilters: true,
         accessor: (d: any) => {
           return (
             <Button
@@ -274,6 +281,8 @@ export default memo(function ExitCorporations({
       },
       {
         Header: 'امانتی',
+        id: 'borrowed',
+
         accessor: (d: any) => {
           if (
             Object.entries(d?.passedStages?.[0].havaleh?.assets ?? {})?.some(
@@ -565,6 +574,7 @@ export default memo(function ExitCorporations({
                         spacing={2}
                         justifyContent='center'
                         alignItems='center'
+                        sx={{ blockSize: '100%' }}
                         {...column.getSortByToggleProps()}
                       >
                         {/* column header text and sort symbols */}
@@ -574,8 +584,9 @@ export default memo(function ExitCorporations({
                           justifyContent={'center'}
                         >
                           {column.render('Header')}
-                          {!['selectAll', 'options'].includes(column?.id) &&
-                          column.isSorted ? (
+                          {!['selectAll', 'options', 'details'].includes(
+                            column?.id
+                          ) && column.isSorted ? (
                             column.isSortedDesc ? (
                               <KeyboardArrowDownRoundedIcon />
                             ) : (
@@ -585,20 +596,17 @@ export default memo(function ExitCorporations({
                             ''
                           )}
                         </Stack>
-                        <Divider
-                          flexItem
-                          variant='fullWidth'
-                          sx={{
-                            display: [
-                              'index',
-                              'selectAll',
-                              'options',
-                              'downloads',
-                            ].includes(column?.id)
-                              ? 'none'
-                              : 'auto',
-                          }}
-                        />
+                        {![
+                          'index',
+                          'selectAll',
+                          'options',
+                          'downloads',
+                          'details',
+                          'date',
+                          'borrowed',
+                        ].includes(column?.id) && (
+                          <Divider flexItem variant='fullWidth' />
+                        )}
                         {/* Render the columns filter UI
                         {!['index', 'selectAll', 'options'].includes(
                           column?.id
@@ -611,6 +619,9 @@ export default memo(function ExitCorporations({
                           'index',
                           'hasInstructions',
                           'downloads',
+                          'date',
+                          'details',
+                          'borrowed',
                         ].includes(column?.id) && (
                           <TextField
                             size='small'
@@ -625,11 +636,37 @@ export default memo(function ExitCorporations({
                             //     : filters[column.id].contains
                             // }
                             onChange={(e) => {
+                              const newRawFilters = {
+                                [column.id
+                                  .replace('[0]', '')
+                                  .replace(
+                                    'passedStages.',
+                                    'passedStages.some.'
+                                  )
+                                  .replace('havaleh.', 'havaleh.is.')
+                                  .replace(
+                                    'submittedByUser.',
+                                    'submittedByUser.is.'
+                                  )
+                                  .replace('corporation.', 'corporation.is.')
+                                  .replace('assets.', 'assets.is.')]: {
+                                  contains: e.target.value,
+                                },
+                              };
+                              
+                              setRawFilters({
+                                ...rawFilters,
+                                ...newRawFilters,
+                              });
+                          
+                              
                               clearTimeout(delayTimer);
                               delayTimer = setTimeout(function () {
                                 setFilters({
-                                  ...filters,
-                                  [column.id]:{ contains: e.target.value },
+                                  ...toNestedObject({
+                                    ...rawFilters,
+                                    ...newRawFilters,
+                                  }),
                                 });
                                 fetchMoreRows(e, 0);
                               }, 1000);
@@ -651,7 +688,7 @@ export default memo(function ExitCorporations({
                             placeholder={`جستجو ...`}
                           />
                         )}
-                        {['hasInstructions'].includes(column.id) && (
+                        {/* {['hasInstructions'].includes(column.id) && (
                           <FormControl>
                             <Box
                               onClick={(e) => {
@@ -678,7 +715,27 @@ export default memo(function ExitCorporations({
                                     delayTimer = setTimeout(function () {
                                       setFilters({
                                         ...filters,
-                                        [column.id]:{ contains: e.target.value },
+                                        ...toNestedObject({
+                                          [column.id
+                                            .replace('[0]', '')
+                                            .replace(
+                                              'passedStages.',
+                                              'passedStages.some.'
+                                            )
+                                            .replace('havaleh.', 'havaleh.is.')
+                                            .replace(
+                                              'submittedByUser.',
+                                              'submittedByUser.is.'
+                                            )
+                                            .replace(
+                                              'corporation.',
+                                              'corporation.is.'
+                                            )
+                                            .replace('assets.', 'assets.is.')]:
+                                            {
+                                              contains: e.target.value,
+                                            },
+                                        }),
                                       });
                                       fetchMoreRows(e, 0);
                                     }, 1000);
@@ -688,7 +745,7 @@ export default memo(function ExitCorporations({
                               </Stack>
                             </Box>
                           </FormControl>
-                        )}
+                        )} */}
                       </Stack>
                       {/* Use column.getResizerProps to hook up the events correctly */}
                       <div

@@ -373,11 +373,15 @@ const resolvers: Resolvers = {
         offset,
         filters,
       }: { limit?: any; offset?: any; filters?: any } = _args;
+      console.log(filters);
 
       const enterWorkflowsDB = await prisma.workflow.findMany({
         take: limit ?? 2000000,
         skip: offset ?? 0,
-        where: { instanceOfProcess: { processNumber: 1 }, ...filters },
+        where: {
+          instanceOfProcess: { processNumber: 1 },
+          ...filters,
+        },
         orderBy: { dateCreated: 'desc' },
       });
 
@@ -1174,7 +1178,7 @@ const resolvers: Resolvers = {
                   firstNameAndLastName: session?.user?.firstNameAndLastName,
                 },
                 havaleh: {
-                  id: havalehId + "edited",
+                  id: havalehId + 'edited',
                   date,
                   deliverer,
                   transportationName,

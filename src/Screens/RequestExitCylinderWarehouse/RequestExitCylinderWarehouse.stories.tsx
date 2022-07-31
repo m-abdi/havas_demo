@@ -16,12 +16,14 @@ export default {
   ],
 } as ComponentMeta<typeof RequestExitCylinderWarehouse>;
 
-const Template: ComponentStory<typeof RequestExitCylinderWarehouse> = (args) => <RequestExitCylinderWarehouse {...args} />;
+const Template: ComponentStory<typeof RequestExitCylinderWarehouse> = (
+  args
+) => <RequestExitCylinderWarehouse />;
 let itemsPerPage = 10;
 export const Main = Template.bind({});
 Main.args = {
-  workflowNumber :234234,
-  corporationRepresentative: {id: "2123", label: "مهدی عبدی"}
+  workflowNumber: 234234,
+  corporationRepresentative: { id: '2123', label: 'مهدی عبدی' },
 };
 
 // export const Loading = Template.bind({});
