@@ -3,6 +3,7 @@ import {
   Box,
   Container,
   Divider,
+  Skeleton,
   Stack,
   TextField,
 } from '@mui/material';
@@ -54,7 +55,7 @@ export default function ConfirmReceiptByHospital() {
           <Divider sx={{ my: 1 }} />
         </Box>
 
-        {allEnterWorkflows && (
+        {allEnterWorkflows ? (
           <Autocomplete
             disablePortal
             id='allHavaleh'
@@ -86,6 +87,13 @@ export default function ConfirmReceiptByHospital() {
                 // helperText={roleError && 'لطفا این فیلد را پر کنید'}
               />
             )}
+          />
+        ) : loading && (
+          <Skeleton
+            variant='rectangular'
+            width={500}
+            height={40}
+            sx={{ borderRadius: '5px' }}
           />
         )}
         {existingWorkflow && (
