@@ -18,12 +18,12 @@ export default {
 
 const Template: ComponentStory<typeof RequestExitCylinderWarehouse> = (
   args
-) => <RequestExitCylinderWarehouse />;
+) => <RequestExitCylinderWarehouse {...args} />;
 let itemsPerPage = 10;
 export const Main = Template.bind({});
 Main.args = {
   workflowNumber: 234234,
-  corporationRepresentative: { id: '2123', label: 'مهدی عبدی' },
+  warehouseKeeper: { id: '2123', label: 'مهدی عبدی' },
 };
 
 // export const Loading = Template.bind({});

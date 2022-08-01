@@ -16,6 +16,7 @@ import AggregatedTable from '../../Components/AggregatedTable';
 import AnalogTimePicker from 'react-multi-date-picker/plugins/analog_time_picker';
 import { Button } from '../../Components/Button';
 import EditableHtmlTable from '../../Components/EditableHtmlTable';
+import React from 'react';
 import SolarHijri from 'react-date-object/calendars/persian';
 import SolarHijriFarsi from 'react-date-object/locales/persian_fa';
 import { useForm } from 'react-hook-form';

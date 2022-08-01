@@ -188,6 +188,72 @@ export default function useWorkflows(
     },
     []
   );
+  const createNewExit = useCallback(
+    async (
+      workflowNumber: string,
+      havalehId: string,
+      date: string,
+      warehouseKeeperId: string,
+      deliverer: string,
+      description: string,
+      transportationName: string,
+      transportationTelephone: string,
+      transportationTelephone2: string,
+      assets: TransferedAssets
+    ) => {
+      useNotification(
+        'sending',
+        setSnackbarColor,
+        setSnackbarMessage,
+        setSnackbarOpen
+      );
+      try {
+        // drop NaN values
+        const filteredAssets = Object.fromEntries(
+          Object.entries(assets).filter(([key, value]) => value)
+        );
+
+        const createdEnterWorkflow = await createEnterWorkflowMutation({
+          variables: {
+            workflowNumber,
+            havalehId,
+            date,
+            warehouseKeeperId,
+            transportationName,
+            transportationTelephone,
+            transportationTelephone2,
+            description,
+            deliverer,
+            assets: filteredAssets,
+          },
+        });
+        if (createdEnterWorkflow) {
+          useNotification(
+            'success',
+            setSnackbarColor,
+            setSnackbarMessage,
+            setSnackbarOpen
+          );
+          router.push('/users/exitWarehouseRFID');
+        } else {
+          useNotification(
+            'error',
+            setSnackbarColor,
+            setSnackbarMessage,
+            setSnackbarOpen
+          );
+        }
+      } catch (e) {
+        useNotification(
+          'error',
+          setSnackbarColor,
+          setSnackbarMessage,
+          setSnackbarOpen
+        );
+      }
+    },
+    []
+  );
   // confirming handler
   const confirmEnterHandler = useCallback(
     async (workflowNumber: string, editedHavalehData: any) => {
