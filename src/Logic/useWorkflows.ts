@@ -198,7 +198,6 @@ export default function useWorkflows(
       havalehId: string,
       date: string,
       warehouseKeeperId: string,
-      deliverer: string,
       description: string,
       transportationName: string,
       transportationTelephone: string,
@@ -227,7 +226,6 @@ export default function useWorkflows(
             transportationTelephone,
             transportationTelephone2,
             description,
-            deliverer,
             assets: filteredAssets,
           },
         });
@@ -406,6 +404,7 @@ export default function useWorkflows(
     fetchMore,
     sending,
     createNewEnter,
+    createNewExit,
     confirmEnterHandler,
     deleting,
     deleteHandler,

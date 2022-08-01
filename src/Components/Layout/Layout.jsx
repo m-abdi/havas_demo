@@ -306,7 +306,7 @@ function Layout({ children, pageName }) {
         {
           text: 'ثبت خروج از بیمارستان',
           icon: <AddCircleOutlineOutlined />,
-          path: '/users/requestExitCylinderWarehouse',
+          path: '/users/newExitHospital',
           roleName: 'createLicense',
         },
         {

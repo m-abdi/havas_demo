@@ -279,12 +279,11 @@ export default function NewExitHospital({
           : null
       );
     } else {
-      await createNewHandler(
+      await createNewHandler?.(
         workflowNumber as string,
         data?.havalehId,
         dateT || new Date(date?.toDate()).getTime().toString(),
         warehouseKeeper?.id as string,
-        data?.deliverer,
         data?.description,
         data?.transportationName,
         data?.transportationTelephone,
