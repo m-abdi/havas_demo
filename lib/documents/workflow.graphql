@@ -219,6 +219,29 @@ mutation createEnterWorkflow(
     assets: $assets
   )
 }
+mutation createExitWorkflow(
+  $workflowNumber: String!
+  $havalehId: String!
+  $description: String
+  $transportationName: String!
+  $transportationTelephone: String!
+  $transportationTelephone2: String
+  $warehouseKeeperId: String!
+  $date: String!
+  $assets: TransferedAssets!
+) {
+  createExitWorkflow(
+    havalehId: $havalehId
+    workflowNumber: $workflowNumber
+    description: $description
+    transportationName: $transportationName
+    transportationTelephone: $transportationTelephone
+    transportationTelephone2: $transportationTelephone2
+    warehouseKeeperId: $warehouseKeeperId
+    date: $date
+    assets: $assets
+  )
+}
 mutation confirmReceiptByHospital(
   $workflowNumber: String!
   $havalehId: String

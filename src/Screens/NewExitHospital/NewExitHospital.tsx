@@ -86,7 +86,7 @@ const columns = [
   'گاز مایع',
 ];
 
-export default function RequestExitCylinderWarehouse({
+export default function NewExitHospital({
   loading,
   sending,
   editable = true,
@@ -109,7 +109,6 @@ export default function RequestExitCylinderWarehouse({
     havalehId: string,
     date: string,
     warehouseKeeperId: string,
-    deliverer: string,
     description: string,
     transportationName: string,
     transportationTelephone: string,

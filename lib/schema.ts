@@ -590,6 +590,17 @@ const typeDefs = /* GraphQL */ `
       date: String!
       assets: TransferedAssets
     ): String
+    createExitWorkflow(
+      workflowNumber: String!
+      havalehId: String!
+      description: String
+      transportationName: String!
+      transportationTelephone: String!
+      transportationTelephone2: String
+      warehouseKeeperId: String!
+      date: String!
+      assets: TransferedAssets
+    ): String
     confirmReceiptByHospital(
       workflowNumber: String!
       havalehId: String

@@ -1,7 +1,7 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import React from 'react';
-import RequestExitCylinderWarehouse from './RequestExitCylinderWarehouse';
+import RequestExitCylinderWarehouse from './NewExitHospital';
 import StoriesDecorator from '../../StoriesDecorator';
 
 export default {

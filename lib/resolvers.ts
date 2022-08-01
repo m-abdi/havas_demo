@@ -1102,6 +1102,125 @@ const resolvers: Resolvers = {
       });
       return createdWorkflow?.id ?? '';
     },
+    async createExitWorkflow(
+      _,
+      {
+        workflowNumber,
+        havalehId,
+        description,
+        transportationName,
+        transportationTelephone,
+        transportationTelephone2,
+        warehouseKeeperId,
+        date,
+        assets,
+      }: {
+        workflowNumber: string;
+        havalehId: string;
+        description?: string;
+        transportationName: string;
+        transportationTelephone: string;
+        transportationTelephone2?: string;
+        warehouseKeeperId: string;
+        date: string; // timestamp in miliseconds
+        assets: {
+          oxygen_50l_factory?: number;
+          bihoshi_50l_factory?: number;
+          shaft_50l_factory?: number;
+          controlValve_50l_factory?: number;
+          co2_50l_factory?: number;
+          argon_50l_factory?: number;
+          azete_50l_factory?: number;
+          dryAir_50l_factory?: number;
+          entonox_50l_factory?: number;
+          acetylene_50l_factory?: number;
+          lpg_50l_factory?: number;
+          oxygen_50l_customer?: number;
+          bihoshi_50l_customer?: number;
+          shaft_50l_customer?: number;
+          controlValve_50l_customer?: number;
+          co2_50l_customer?: number;
+          argon_50l_customer?: number;
+          azete_50l_customer?: number;
+          dryAir_50l_customer?: number;
+          entonox_50l_customer?: number;
+          acetylene_50l_customer?: number;
+          lpg_50l_customer?: number;
+          oxygen_40l_factory?: number;
+          bihoshi_40l_factory?: number;
+          shaft_40l_factory?: number;
+          controlValve_40l_factory?: number;
+          co2_40l_factory?: number;
+          argon_40l_factory?: number;
+          azete_40l_factory?: number;
+          dryAir_40l_factory?: number;
+          entonox_40l_factory?: number;
+          acetylene_40l_factory?: number;
+          lpg_40l_factory?: number;
+          oxygen_40l_customer?: number;
+          bihoshi_40l_customer?: number;
+          shaft_40l_customer?: number;
+          controlValve_40l_customer?: number;
+          co2_40l_customer?: number;
+          argon_40l_customer?: number;
+          azete_40l_customer?: number;
+          dryAir_40l_customer?: number;
+          entonox_40l_customer?: number;
+          acetylene_40l_customer?: number;
+          lpg_40l_customer?: number;
+        };
+      },
+      _context: any
+    ): Promise<string> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canCreateEquipment(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+      const aggregatedAssets = {};
+      Object.entries(assets)
+        .map(([key, value]) => [
+          key.replace('_factory', '').replace('_customer', ''),
+          value,
+        ])
+        .forEach(
+          ([k, v]) =>
+            (aggregatedAssets[k] = aggregatedAssets[k]
+              ? aggregatedAssets[k] + v
+              : v)
+        );
+      console.log(session);
+
+      // new enter workflow
+      const createdWorkflow = await prisma.workflow.create({
+        data: {
+          workflowNumber,
+          instanceOfProcess: { connect: { processNumber: 2 } },
+          nextStageName: 'قبول درخواست توسط مدیریت',
+          passedStages: [
+            {
+              stageID: 1,
+              stageName: 'ثبت خروج کپسول از بیمارستان',
+              submittedByUser: {
+                id: session?.user?.id,
+                firstNameAndLastName: session?.user?.firstNameAndLastName,
+              },
+              havaleh: {
+                id: havalehId,
+                date,
+                transportationName,
+                transportationTelephone,
+                transportationTelephone2,
+                description,
+                assets: { ...assets, ...aggregatedAssets },
+              },
+            },
+          ],
+        },
+      });
+      return createdWorkflow?.id ?? '';
+    },
     async confirmReceiptByHospital(
       _,
       {

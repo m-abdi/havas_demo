@@ -9,7 +9,7 @@ import {
   ConfirmReceiptByHospitalDocument,
   ConfirmedEnterWorkflowsDocument,
   CreateEnterWorkflowDocument,
-  CreateEquipmentDocument,
+  CreateExitWorkflowDocument,
   CreateNewPersonDocument,
   DeleteEquipmentsDocument,
   DeletePersonsDocument,
@@ -84,6 +84,10 @@ export default function useWorkflows(
   // new enter worflow mutation to server
   const [createEnterWorkflowMutation, { loading: sending }] = useMutation(
     CreateEnterWorkflowDocument
+  );
+  // new exit worflow mutation to server
+  const [createExitWorkflowMutation, { loading: sendingNewExitWorkflow }] = useMutation(
+    CreateExitWorkflowDocument
   );
   // confirm existing enter worflow mutation to server
   const [
@@ -213,7 +217,7 @@ export default function useWorkflows(
           Object.entries(assets).filter(([key, value]) => value)
         );
 
-        const createdEnterWorkflow = await createEnterWorkflowMutation({
+        const createdEnterWorkflow = await createExitWorkflowMutation({
           variables: {
             workflowNumber,
             havalehId,
