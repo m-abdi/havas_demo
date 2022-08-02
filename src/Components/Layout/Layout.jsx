@@ -310,6 +310,12 @@ function Layout({ children, pageName }) {
           roleName: 'createLicense',
         },
         {
+          text: 'حواله های خروجی ثبت شده',
+          icon: <SearchRoundedIcon />,
+          path: '/users/exitHospitals',
+          roleName: 'viewLicense',
+        },
+        {
           text: 'ثبت خروج کپسول توسط RFID',
           icon: <AddCircleOutlineOutlined />,
           path: '/users/exitWarehouseRFID',

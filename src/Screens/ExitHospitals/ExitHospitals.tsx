@@ -207,6 +207,17 @@ export default memo(function ExitHospitals({
         Header: 'شماره پیگیری',
         accessor: 'workflowNumber', // accessor is the "key" in the data
       },
+      {
+        Header: 'وضعیت',
+        id: 'status',
+        accessor: (d: any) => {
+          if (d?.passedStages?.length === 2) {
+            return <Button label='تایید شده' color='success' />;
+          } else if (d?.passedStages?.length === 1) {
+            return <Button label='منتظر تایید' backgroundColor='gray' />;
+          }
+        },
+      },
 
       {
         Header: 'تاریخ ثبت فرم',
