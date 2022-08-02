@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl"]
 }
 
@@ -15,6 +15,12 @@ datasource db {
 //   provider = "sqlite"
 //   url      = "file:./dev.db"
 // }
+
+model Config {
+  id                    String  @id @default(uuid()) @map("_id")
+  ignoreManagerApproval Boolean
+  current               Boolean @default(false)
+}
 
 model Person {
   id                   String    @id @default(uuid()) @map("_id")
@@ -37,9 +43,7 @@ model Person {
   password             String
   // levels               Level     @relation("levelToPerson")
 
-
   Stage Stage[]
-
 }
 
 model Place {
@@ -184,7 +188,6 @@ model Role {
   deleteRole      Boolean
   Person          Person[]
   createdAt       DateTime @default(now())
-
 }
 
 // model Level {
@@ -300,7 +303,7 @@ type Stage {
 model Process {
   processNumber Int        @id @map("_id")
   processName   String
-  ignoreStage   Int?
+  skippedStage  Int?
   // levels        Level[]    @relation(references: [stageID], fields: [levelsIds])
   // levelsIds     String[]
   workflows     Workflow[]

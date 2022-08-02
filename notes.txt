@@ -1,0 +1,6 @@
+// reciviend description
+// equipments mapping 
+// fix context api
+//  bcrypt 
+//  preparedatabase equipments
+

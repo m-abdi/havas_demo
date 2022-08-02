@@ -379,7 +379,6 @@ const resolvers: Resolvers = {
         take: limit ?? 2000000,
         skip: offset ?? 0,
         where: {
-          instanceOfProcess: { processNumber: 1 },
           ...filters,
         },
         orderBy: { dateCreated: 'desc' },
@@ -397,7 +396,7 @@ const resolvers: Resolvers = {
       const { filters }: { filters?: any } = _args;
 
       return (await prisma.workflow.count({
-        where: { instanceOfProcess: { processNumber: 1 }, ...filters },
+        where: { ...filters },
       })) as number;
     },
     async role(_parent: any, _args: any, _context: any): Promise<any> {
@@ -1191,32 +1190,73 @@ const resolvers: Resolvers = {
               : v)
         );
       console.log(session);
-
-      // new enter workflow
+      const currentConfig = await prisma.config.findFirst({
+        where: { current: true },
+      });
+      // new exit workflow
       const createdWorkflow = await prisma.workflow.create({
         data: {
           workflowNumber,
           instanceOfProcess: { connect: { processNumber: 2 } },
           nextStageName: 'قبول درخواست توسط مدیریت',
-          passedStages: [
-            {
-              stageID: 1,
-              stageName: 'ثبت خروج کپسول از بیمارستان',
-              submittedByUser: {
-                id: session?.user?.id,
-                firstNameAndLastName: session?.user?.firstNameAndLastName,
-              },
-              havaleh: {
-                id: havalehId,
-                date,
-                transportationName,
-                transportationTelephone,
-                transportationTelephone2,
-                description,
-                assets: { ...assets, ...aggregatedAssets },
-              },
-            },
-          ],
+          // do we need to wait for manager approval or not ?
+          passedStages: currentConfig?.ignoreManagerApproval
+            ? [
+                {
+                  stageID: 1,
+                  stageName: 'ثبت خروج کپسول از بیمارستان',
+                  submittedByUser: {
+                    id: session?.user?.id,
+                    firstNameAndLastName: session?.user?.firstNameAndLastName,
+                  },
+                  havaleh: {
+                    id: havalehId,
+                    date,
+                    transportationName,
+                    transportationTelephone,
+                    transportationTelephone2,
+                    description,
+                    assets: { ...assets, ...aggregatedAssets },
+                  },
+                },
+                {
+                  stageID: 2,
+                  stageName: 'قبول درخواست توسط مدیریت',
+                  submittedByUser: {
+                    id:
+                      (
+                        await prisma.person.findFirst({
+                          where: { role: { name: 'مدیریت' } },
+                        })
+                      )?.id ?? 'unknown',
+                    firstNameAndLastName:
+                      (
+                        await prisma.person.findFirst({
+                          where: { role: { name: 'مدیریت' } },
+                        })
+                      )?.firstNameAndLastName ?? 'unknown',
+                  },
+                },
+              ]
+            : [
+                {
+                  stageID: 1,
+                  stageName: 'ثبت خروج کپسول از بیمارستان',
+                  submittedByUser: {
+                    id: session?.user?.id,
+                    firstNameAndLastName: session?.user?.firstNameAndLastName,
+                  },
+                  havaleh: {
+                    id: havalehId,
+                    date,
+                    transportationName,
+                    transportationTelephone,
+                    transportationTelephone2,
+                    description,
+                    assets: { ...assets, ...aggregatedAssets },
+                  },
+                },
+              ],
         },
       });
       return createdWorkflow?.id ?? '';
