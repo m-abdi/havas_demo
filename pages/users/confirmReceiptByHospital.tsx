@@ -12,7 +12,7 @@ import React, { useMemo, useState } from 'react';
 import { Button } from '../../src/Components/Button';
 import Head from 'next/head';
 import Layout from '../../src/Components/Layout';
-import NewExitCorporation from '../../src/Screens/NewExitCorporation';
+import NewExitHospital from '../../src/Screens/NewExitHospital';
 import { useRouter } from 'next/router';
 import useWorkflows from '../../src/Logic/useWorkflows';
 
@@ -97,7 +97,7 @@ export default function ConfirmReceiptByHospital() {
           />
         )}
         {existingWorkflow && (
-          <NewExitCorporation
+          <NewExitHospital
             loading={loading}
             sending={sending}
             editable={editable}

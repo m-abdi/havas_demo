@@ -27,7 +27,7 @@ export default function exitCorporations() {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [filters, setFilters] = useState<EnterWorkflowFilter>();
 
-  const { allEnterWorkflows, loading, sending, fetchMore } = useWorkflows(
+  const { allEnterWorkflows, allEnterWorkflowsCount, loading, sending, fetchMore } = useWorkflows(
     offset,
     pageNumber,
     itemsPerPage,
@@ -41,8 +41,8 @@ export default function exitCorporations() {
     <Layout pageName={pageName}>
       <ExitCorporations
         loading={loading}
-        data={allEnterWorkflows?.enterWorkflows ?? ([] as any)}
-        allEquipmentsCount={allEnterWorkflows?.enterWorkflowsCount as number}
+        data={allEnterWorkflows as any}
+        allEquipmentsCount={allEnterWorkflowsCount as number}
         pageNumber={pageNumber}
         offset={offset}
         itemsPerPage={itemsPerPage}

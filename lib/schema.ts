@@ -298,8 +298,9 @@ const typeDefs = /* GraphQL */ `
   input SomeStageFilter {
     some: SatgeFilter
   }
-  input EnterWorkflowFilter {
+  input AssetTransferWorkflowFilter {
     id: ContainsSearchType
+    instanceOfProcessId: Int
     workflowNumber: ContainsSearchType
     dateCreated: ContainsSearchType
     nextStageName: ContainsSearchType
@@ -508,12 +509,12 @@ const typeDefs = /* GraphQL */ `
     equipmentsCount(filters: EquipmentFilter): Int
     assets(limit: Int, offset: Int, filters: AssetFilter): [Asset]!
     assetsCount(filters: AssetFilter): Int
-    enterWorkflows(
+    assetTransferWorkflows(
       limit: Int
       offset: Int
-      filters: EnterWorkflowFilter
+      filters: AssetTransferWorkflowFilter
     ): [Workflow]
-    enterWorkflowsCount(filters: EnterWorkflowFilter): Int
+    assetTransferWorkflowsCount(filters: AssetTransferWorkflowFilter): Int
     role(roleId: ID!): Role
     roles(limit: Int!, offset: Int!): [Role!]
     hasNextRole(limit: Int!, offset: Int!): Boolean!

@@ -2,8 +2,12 @@ query getWorkflowNumber {
   getWorkflowNumber
 }
 
-query allEnterWorkflows($limit: Int = 2000000, $offset: Int = 0, $filters: EnterWorkflowFilter) {
-  enterWorkflows(limit: $limit, offset: $offset, filters: $filters) {
+query allWorkflows(
+  $limit: Int = 2000000
+  $offset: Int = 0
+  $filters: AssetTransferWorkflowFilter
+) {
+  assetTransferWorkflows(limit: $limit, offset: $offset, filters: $filters) {
     workflowNumber
     dateCreated
     passedStages {
@@ -47,60 +51,60 @@ query allEnterWorkflows($limit: Int = 2000000, $offset: Int = 0, $filters: Enter
           entonox_40l
           acetylene_40l
           lpg_40l
-           oxygen_50l_factory
-    bihoshi_50l_factory
-    shaft_50l_factory
-    controlValve_50l_factory
-    co2_50l_factory
-    argon_50l_factory
-    azete_50l_factory
-    dryAir_50l_factory
-    entonox_50l_factory
-    acetylene_50l_factory
-    lpg_50l_factory
-    oxygen_50l_customer
-    bihoshi_50l_customer
-    shaft_50l_customer
-    controlValve_50l_customer
-    co2_50l_customer
-    argon_50l_customer
-    azete_50l_customer
-    dryAir_50l_customer
-    entonox_50l_customer
-    acetylene_50l_customer
-    lpg_50l_customer
-    oxygen_40l_factory
-    bihoshi_40l_factory
-    shaft_40l_factory
-    controlValve_40l_factory
-    co2_40l_factory
-    argon_40l_factory
-    azete_40l_factory
-    dryAir_40l_factory
-    entonox_40l_factory
-    acetylene_40l_factory
-    lpg_40l_factory
-    oxygen_40l_customer
-    bihoshi_40l_customer
-    shaft_40l_customer
-    controlValve_40l_customer
-    co2_40l_customer
-    argon_40l_customer
-    azete_40l_customer
-    dryAir_40l_customer
-    entonox_40l_customer
-    acetylene_40l_customer
-    lpg_40l_customer
+          oxygen_50l_factory
+          bihoshi_50l_factory
+          shaft_50l_factory
+          controlValve_50l_factory
+          co2_50l_factory
+          argon_50l_factory
+          azete_50l_factory
+          dryAir_50l_factory
+          entonox_50l_factory
+          acetylene_50l_factory
+          lpg_50l_factory
+          oxygen_50l_customer
+          bihoshi_50l_customer
+          shaft_50l_customer
+          controlValve_50l_customer
+          co2_50l_customer
+          argon_50l_customer
+          azete_50l_customer
+          dryAir_50l_customer
+          entonox_50l_customer
+          acetylene_50l_customer
+          lpg_50l_customer
+          oxygen_40l_factory
+          bihoshi_40l_factory
+          shaft_40l_factory
+          controlValve_40l_factory
+          co2_40l_factory
+          argon_40l_factory
+          azete_40l_factory
+          dryAir_40l_factory
+          entonox_40l_factory
+          acetylene_40l_factory
+          lpg_40l_factory
+          oxygen_40l_customer
+          bihoshi_40l_customer
+          shaft_40l_customer
+          controlValve_40l_customer
+          co2_40l_customer
+          argon_40l_customer
+          azete_40l_customer
+          dryAir_40l_customer
+          entonox_40l_customer
+          acetylene_40l_customer
+          lpg_40l_customer
         }
       }
     }
   }
-  enterWorkflowsCount(filters: $filters)
+  assetTransferWorkflowsCount(filters: $filters)
 }
 
 
-query confirmedEnterWorkflows($filters: EnterWorkflowFilter) {
-  enterWorkflows(limit: 2000000, offset: 0, filters: $filters) {
+query confirmedEnterWorkflows($filters: AssetTransferWorkflowFilter) {
+  assetTransferWorkflows(limit: 2000000, offset: 0, filters: $filters) {
     passedStages {
       submittedByUser {
         id
@@ -190,7 +194,7 @@ query confirmedEnterWorkflows($filters: EnterWorkflowFilter) {
       }
     }
   }
-  enterWorkflowsCount(filters: $filters)
+  assetTransferWorkflowsCount(filters: $filters)
 }
 
 

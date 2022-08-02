@@ -6,6 +6,7 @@ import {
 import {
   AllEnterWorkflowsDocument,
   AllPersonsDocument,
+  AllWorkflowsDocument,
   ConfirmReceiptByHospitalDocument,
   ConfirmedEnterWorkflowsDocument,
   CreateEnterWorkflowDocument,
@@ -30,8 +31,9 @@ export default function useWorkflows(
   filters?: EnterWorkflowFilter,
   setPageNumber?: React.Dispatch<React.SetStateAction<number>>,
   setOffset?: React.Dispatch<React.SetStateAction<number>>,
-  fetchNewEnterWorkflows = false,
-  fetchConfirmedEnterWorkflows = false
+  fetchAllEnterWorkflows = false,
+  fetchConfirmedEnterWorkflows = false,
+  fetchAllExitWorkflows = false
 ) {
   const router = useRouter();
   const { setSnackbarOpen, setSnackbarMessage, setSnackbarColor } =
@@ -39,13 +41,30 @@ export default function useWorkflows(
   // fetch All enter workflows
   const [
     allEnterWorkflowsQuery,
-    { data: allEnterWorkflows, error, loading, fetchMore: fetchMoreRows },
-  ] = useLazyQuery(AllEnterWorkflowsDocument, {
+    { data: allEnterWorkflowsData, error, loading, fetchMore: fetchMoreRows },
+  ] = useLazyQuery(AllWorkflowsDocument, {
     fetchPolicy: 'cache-and-network',
     variables: {
       offset,
       limit: itemsPerPage,
-      filters,
+      filters: { ...filters, instanceOfProcessId: 1 },
+    },
+  });
+  // fetch All exit workflows
+  const [
+    allExitWorkflowsQuery,
+    {
+      data: allExitWorkflowsData,
+      error: allExitWorkflowsError,
+      loading: allExitWorkflowsLoading,
+      fetchMore: fetchMoreExitWorkflows,
+    },
+  ] = useLazyQuery(AllWorkflowsDocument, {
+    fetchPolicy: 'cache-and-network',
+    variables: {
+      offset,
+      limit: itemsPerPage,
+      filters: { ...filters, instanceOfProcessId: 2 },
     },
   });
 
@@ -58,13 +77,14 @@ export default function useWorkflows(
       error: confirmedEnterWorkflowsError,
       fetchMore: fetchMoreConfirmedEnterWorkflows,
     },
-  ] = useLazyQuery(ConfirmedEnterWorkflowsDocument, {
+  ] = useLazyQuery(AllWorkflowsDocument, {
     fetchPolicy: 'cache-and-network',
     variables: {
       filters: {
         nextStageName: {
           contains: 'RFID ثبت ورود کپسول به انبار توسط',
         },
+        instanceOfProcessId: 1,
         ...filters,
       },
     },
@@ -73,10 +93,12 @@ export default function useWorkflows(
   // fetch queries that are requested
   useEffect(() => {
     (async () => {
-      if (fetchNewEnterWorkflows) {
+      if (fetchAllEnterWorkflows) {
         await allEnterWorkflowsQuery();
       } else if (fetchConfirmedEnterWorkflows) {
         await confirmedEnterWorkflowsQuery();
+      } else if (fetchAllExitWorkflows) {
+        await allExitWorkflowsQuery();
       }
     })();
   }, [filters]);
@@ -86,9 +108,8 @@ export default function useWorkflows(
     CreateEnterWorkflowDocument
   );
   // new exit worflow mutation to server
-  const [createExitWorkflowMutation, { loading: sendingNewExitWorkflow }] = useMutation(
-    CreateExitWorkflowDocument
-  );
+  const [createExitWorkflowMutation, { loading: sendingNewExitWorkflow }] =
+    useMutation(CreateExitWorkflowDocument);
   // confirm existing enter worflow mutation to server
   const [
     confirmReceiptByHospitalMutation,
@@ -392,13 +413,19 @@ export default function useWorkflows(
     []
   );
   return {
-    allEnterWorkflows,
-    confirmedEnterWorkflows: confirmedEnterWorkflowsData?.enterWorkflows ?? [],
+    allEnterWorkflows: allEnterWorkflowsData?.assetTransferWorkflows ?? [],
+    allEnterWorkflowsCount: allEnterWorkflowsData?.assetTransferWorkflowsCount,
+    confirmedEnterWorkflows: confirmedEnterWorkflowsData?.assetTransferWorkflows ?? [],
     confirmedEnterWorkflowsCount:
-      confirmedEnterWorkflowsData?.enterWorkflowsCount,
+      confirmedEnterWorkflowsData?.assetTransferWorkflowsCount,
     fetchMoreConfirmedEnterWorkflows,
     confirmedEnterWorkflowsLoading,
     confirmedEnterWorkflowsError,
+    allExitWorkflows: allExitWorkflowsData?.assetTransferWorkflows ?? [],
+    allExitWorkflowsCount: allExitWorkflowsData?.assetTransferWorkflowsCount,
+    allExitWorkflowsError,
+    allExitWorkflowsLoading,
+    fetchMoreExitWorkflows,
     error,
     loading,
     fetchMore,

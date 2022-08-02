@@ -74,7 +74,7 @@ function createApolloClient(context?: ResolverContext) {
                 );
               },
             },
-            enterWorkflows: {
+            assetTransferWorkflows: {
               ...offsetLimitPagination(),
               keyArgs: ['filters'],
               read(existing, { args }): any {

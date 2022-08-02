@@ -361,7 +361,7 @@ const resolvers: Resolvers = {
       }
       return (await prisma.asset.count()) as number;
     },
-    async enterWorkflows(_, _args, _context): Promise<any> {
+    async assetTransferWorkflows(_, _args, _context): Promise<any> {
       // check authentication and permission
       const { req } = _context;
       const session = await getSession({ req });
@@ -387,7 +387,7 @@ const resolvers: Resolvers = {
 
       return enterWorkflowsDB as any;
     },
-    async enterWorkflowsCount(_, _args, _context): Promise<number> {
+    async assetTransferWorkflowsCount(_, _args, _context): Promise<number> {
       // check authentication and permission
       const { req } = _context;
       const session = await getSession({ req });
