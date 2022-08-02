@@ -118,6 +118,7 @@ export default function NewExitHospital({
     transportationName: string,
     transportationTelephone: string,
     transportationTelephone2: string,
+    corporationRepresentativeId: string,
     assets: {
       oxygen_50l_factory: number;
       bihoshi_50l_factory: number;
@@ -175,6 +176,7 @@ export default function NewExitHospital({
       transportationName: string;
       transportationTelephone: string;
       transportationTelephone2: string;
+      corporationRepresentativeId: string;
       assets: {
         oxygen_50l?: number;
         bihoshi_50l?: number;
@@ -301,6 +303,7 @@ export default function NewExitHospital({
         data?.transportationName,
         data?.transportationTelephone,
         data?.transportationTelephone2,
+        corporation?.id,
         {
           oxygen_50l_factory: parseInt(data?.oxygen_50l_factory),
           bihoshi_50l_factory: parseInt(data?.bihoshi_50l_factory),
@@ -491,7 +494,7 @@ export default function NewExitHospital({
                 value={corporation}
                 onChange={(event, newValue) => {
                   setCorporation(newValue as any);
-                  // setFactoryError(false);
+                  setCorporationError(false);
                 }}
                 onInputChange={(event, newInput) => {
                   if (
@@ -501,7 +504,7 @@ export default function NewExitHospital({
                     setCorporation(
                       corporations.find((r) => r.label === newInput) as any
                     );
-                    // setFactory(false);
+                  setCorporationError(false);
                   }
                 }}
                 noOptionsText={'هیچ شرکتی در سیستم ثبت نشده است'}

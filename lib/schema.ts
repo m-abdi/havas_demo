@@ -598,6 +598,7 @@ const typeDefs = /* GraphQL */ `
       transportationName: String!
       transportationTelephone: String!
       transportationTelephone2: String
+      corporationRepresentativeId: String!
       warehouseKeeperId: String!
       date: String!
       assets: TransferedAssets

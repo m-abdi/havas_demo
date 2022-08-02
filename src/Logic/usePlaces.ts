@@ -5,12 +5,12 @@ import {
   CreatePlaceDocument,
   DeletePlacesDocument,
 } from 'lib/graphql-operations';
-import React, { useCallback, useContext } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
+import React, { useCallback, useContext, useEffect } from 'react';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 
-import { PlaceFilter } from 'lib/resolvers-types';
+import { PlaceFilter } from '../../lib/resolvers-types';
 import { PlacesListDocument } from '../../lib/graphql-operations';
-import { SnackbarContext } from 'pages/_app';
+import { SnackbarContext } from '../../pages/_app';
 import useNotification from './useNotification';
 
 export default function usePlaces(
@@ -19,33 +19,40 @@ export default function usePlaces(
   itemsPerPage = 10,
   filters?: PlaceFilter,
   setPageNumber?: React.Dispatch<React.SetStateAction<number>>,
-  setOffset?: React.Dispatch<React.SetStateAction<number>>
+  setOffset?: React.Dispatch<React.SetStateAction<number>>,
+  fetchAllPlaces = false,
+  fetchPlacesList = false
 ) {
   const { setSnackbarOpen, setSnackbarMessage, setSnackbarColor } =
     useContext(SnackbarContext);
   // places list for autocomplete fields
-  const {
-    data: placesList,
-    loading: placesListLoading,
-    error: placesListError,
-  } = useQuery(PlacesListDocument, {
+  const [
+    placesListQuery,
+    { data: placesList, loading: placesListLoading, error: placesListError },
+  ] = useLazyQuery(PlacesListDocument, {
     fetchPolicy: 'cache-and-network',
   });
   // fetch query
-  const {
-    data,
-    loading,
-    error,
-    fetchMore: fetchMoreRows,
-  } = useQuery(AllPlacesDocument, {
-    fetchPolicy: 'cache-and-network',
-    nextFetchPolicy: 'cache-and-network',
-    variables: {
-      offset,
-      limit: itemsPerPage,
-      filters,
-    },
-  });
+  const [allPlacesQuery, { data, loading, error, fetchMore: fetchMoreRows }] =
+    useLazyQuery(AllPlacesDocument, {
+      fetchPolicy: 'cache-and-network',
+      nextFetchPolicy: 'cache-and-network',
+      variables: {
+        offset,
+        limit: itemsPerPage,
+        filters,
+      },
+    });
+  // fetch queries that are requested
+  useEffect(() => {
+    (async () => {
+      if (fetchAllPlaces) {
+        await allPlacesQuery();
+      } else if (fetchPlacesList) {
+        await placesListQuery();
+      }
+    })();
+  }, [filters]);
   // new place mutation
   const [createPlaceMutation, { loading: sending }] =
     useMutation(CreatePlaceDocument);

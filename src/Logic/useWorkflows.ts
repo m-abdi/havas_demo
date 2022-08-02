@@ -223,6 +223,7 @@ export default function useWorkflows(
       transportationName: string,
       transportationTelephone: string,
       transportationTelephone2: string,
+      corporationRepresentativeId: string,
       assets: TransferedAssets
     ) => {
       useNotification(
@@ -246,6 +247,7 @@ export default function useWorkflows(
             transportationName,
             transportationTelephone,
             transportationTelephone2,
+            corporationRepresentativeId,
             description,
             assets: filteredAssets,
           },

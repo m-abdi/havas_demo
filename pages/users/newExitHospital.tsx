@@ -10,6 +10,7 @@ import ExitCorporation from '../../src/Screens/NewExitCorporation';
 import Head from 'next/head';
 import Layout from '../../src/Components/Layout';
 import NewExitHospital from '../../src/Screens/NewExitHospital';
+import usePlaces from '../../src/Logic/usePlaces';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import useWorkflows from '../../src/Logic/useWorkflows';
@@ -25,12 +26,15 @@ export default function newExitCorporation() {
     fetchPolicy: 'cache-and-network',
   });
   const { sending, createNewExit } = useWorkflows();
+ const {placesList, placesListLoading} =  usePlaces(undefined, undefined, undefined, undefined, undefined, undefined, false, true)
   return (
     <Layout pageName={pageName}>
       <NewExitHospital
         editable={true}
         loading={loading || status === 'loading'}
         sending={sending}
+        corporations={placesList as any}
+        corporationsLoading={placesListLoading}
         createNewHandler={createNewExit}
         workflowNumber={data?.getWorkflowNumber as string}
         warehouseKeeper={{

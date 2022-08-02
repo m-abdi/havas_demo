@@ -1055,6 +1055,7 @@ const resolvers: Resolvers = {
         transportationName,
         transportationTelephone,
         transportationTelephone2,
+        corporationRepresentativeId,
         warehouseKeeperId,
         date,
         assets,
@@ -1106,6 +1107,12 @@ const resolvers: Resolvers = {
                     transportationTelephone,
                     transportationTelephone2,
                     description,
+                    corporation: {
+                      id: corporationRepresentativeId,
+                      name: await prisma.place.findFirst({
+                        where: { id: corporationRepresentativeId },
+                      }),
+                    },
                     assets: { ...assets, ...aggregatedAssets },
                   },
                 },
@@ -1143,6 +1150,12 @@ const resolvers: Resolvers = {
                     transportationTelephone,
                     transportationTelephone2,
                     description,
+                    corporation: {
+                      id: corporationRepresentativeId,
+                      name: await prisma.place.findFirst({
+                        where: { id: corporationRepresentativeId },
+                      }),
+                    },
                     assets: { ...assets, ...aggregatedAssets },
                   },
                 },
