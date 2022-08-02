@@ -245,7 +245,7 @@ mutation createExitWorkflow(
     date: $date
     assets: $assets
   ) {
-    id
+    
     passedStages {
       stageID
     }

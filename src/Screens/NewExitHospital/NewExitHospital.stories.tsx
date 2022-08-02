@@ -5,7 +5,7 @@ import RequestExitCylinderWarehouse from './NewExitHospital';
 import StoriesDecorator from '../../StoriesDecorator';
 
 export default {
-  title: 'Pages/NewRequestExitCylinderWarehouse',
+  title: 'Pages/NewExitHospital',
   component: RequestExitCylinderWarehouse,
   decorators: [
     (Story) => (
@@ -24,6 +24,7 @@ export const Main = Template.bind({});
 Main.args = {
   workflowNumber: 234234,
   warehouseKeeper: { id: '2123', label: 'مهدی عبدی' },
+  corporations : [{id: "3489", label: "بیتا"}]
 };
 
 // export const Loading = Template.bind({});

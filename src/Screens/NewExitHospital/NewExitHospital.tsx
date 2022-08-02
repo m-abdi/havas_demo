@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Box,
   Checkbox,
   Container,
@@ -96,6 +97,8 @@ export default function NewExitHospital({
   createNewHandler,
   confirmEnterHandler,
   dateT,
+  corporations = [],
+  corporationsLoading,
 }: {
   loading: boolean;
   sending: boolean;
@@ -104,6 +107,8 @@ export default function NewExitHospital({
   warehouseKeeper?: { id: string; label: string };
   existingWorkflow?: any;
   dateT?: any;
+  corporations: { id: string; label: string }[];
+  corporationsLoading: boolean;
   createNewHandler?: (
     workflowNumber: string,
     havalehId: string,
@@ -215,6 +220,10 @@ export default function NewExitHospital({
       ? parseInt(existingWorkflow?.passedStages?.[0]?.havaleh?.date)
       : new DateObject()
   );
+  const [corporation, setCorporation] =
+    useState<{ id: string; label: string }>();
+  const [corporationError, setCorporationError] = useState(false);
+  //
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
       const r = Object.entries(value)
@@ -279,6 +288,10 @@ export default function NewExitHospital({
           : null
       );
     } else {
+      if (!corporation) {
+        setCorporationError(true);
+        return;
+      }
       await createNewHandler?.(
         workflowNumber as string,
         data?.havalehId,
@@ -456,6 +469,55 @@ export default function NewExitHospital({
             />
           </Input1>
 
+          <Input1>
+            <Label1>شرکت</Label1>
+            {corporationsLoading ? (
+              <Skeleton
+                variant='rectangular'
+                width={300}
+                height={40}
+                sx={{ borderRadius: '5px' }}
+              />
+            ) : (
+              <Autocomplete
+                disablePortal
+                id='corporation'
+                options={corporations}
+                // defaultValue={
+                //   existingPerson?.role
+                //     ? roles.find((p) => p?.id === existingPerson?.role?.id)
+                //     : null
+                // }
+                value={corporation}
+                onChange={(event, newValue) => {
+                  setCorporation(newValue as any);
+                  // setFactoryError(false);
+                }}
+                onInputChange={(event, newInput) => {
+                  if (
+                    corporations.length > 0 &&
+                    corporations.some((r) => r.label === newInput)
+                  ) {
+                    setCorporation(
+                      corporations.find((r) => r.label === newInput) as any
+                    );
+                    // setFactory(false);
+                  }
+                }}
+                noOptionsText={'هیچ شرکتی در سیستم ثبت نشده است'}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    size='small'
+                    error={corporationError}
+                    helperText={corporationError && 'لطفا این فیلد را پر کنید'}
+                  />
+                )}
+              />
+            )}
+          </Input1>
+        </Row1>
+        <Row1>
           <Input1>
             <Label1>توضیحات ارسال</Label1>
             <TextField
