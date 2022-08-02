@@ -8,6 +8,7 @@ import {
   Resolvers,
   Role,
   Tag,
+  Workflow,
 } from './resolvers-types';
 import {
   canCreateAsset,
@@ -622,7 +623,7 @@ const resolvers: Resolvers = {
         registeredNumber,
         description,
         edit,
-      }: any,
+      },
       _context
     ): Promise<Place> {
       // check authentication and permission
@@ -910,62 +911,6 @@ const resolvers: Resolvers = {
         corporationRepresentativeId,
         date,
         assets,
-      }: {
-        workflowNumber: string;
-        havalehId: string;
-        deliverer?: string;
-        description?: string;
-        transportationName: string;
-        transportationTelephone: string;
-        transportationTelephone2?: string;
-        corporationRepresentativeId: string;
-        date: string; // timestamp in miliseconds
-        assets: {
-          oxygen_50l_factory?: number;
-          bihoshi_50l_factory?: number;
-          shaft_50l_factory?: number;
-          controlValve_50l_factory?: number;
-          co2_50l_factory?: number;
-          argon_50l_factory?: number;
-          azete_50l_factory?: number;
-          dryAir_50l_factory?: number;
-          entonox_50l_factory?: number;
-          acetylene_50l_factory?: number;
-          lpg_50l_factory?: number;
-          oxygen_50l_customer?: number;
-          bihoshi_50l_customer?: number;
-          shaft_50l_customer?: number;
-          controlValve_50l_customer?: number;
-          co2_50l_customer?: number;
-          argon_50l_customer?: number;
-          azete_50l_customer?: number;
-          dryAir_50l_customer?: number;
-          entonox_50l_customer?: number;
-          acetylene_50l_customer?: number;
-          lpg_50l_customer?: number;
-          oxygen_40l_factory?: number;
-          bihoshi_40l_factory?: number;
-          shaft_40l_factory?: number;
-          controlValve_40l_factory?: number;
-          co2_40l_factory?: number;
-          argon_40l_factory?: number;
-          azete_40l_factory?: number;
-          dryAir_40l_factory?: number;
-          entonox_40l_factory?: number;
-          acetylene_40l_factory?: number;
-          lpg_40l_factory?: number;
-          oxygen_40l_customer?: number;
-          bihoshi_40l_customer?: number;
-          shaft_40l_customer?: number;
-          controlValve_40l_customer?: number;
-          co2_40l_customer?: number;
-          argon_40l_customer?: number;
-          azete_40l_customer?: number;
-          dryAir_40l_customer?: number;
-          entonox_40l_customer?: number;
-          acetylene_40l_customer?: number;
-          lpg_40l_customer?: number;
-        };
       },
       _context: any
     ): Promise<string> {
@@ -1113,64 +1058,9 @@ const resolvers: Resolvers = {
         warehouseKeeperId,
         date,
         assets,
-      }: {
-        workflowNumber: string;
-        havalehId: string;
-        description?: string;
-        transportationName: string;
-        transportationTelephone: string;
-        transportationTelephone2?: string;
-        warehouseKeeperId: string;
-        date: string; // timestamp in miliseconds
-        assets: {
-          oxygen_50l_factory?: number;
-          bihoshi_50l_factory?: number;
-          shaft_50l_factory?: number;
-          controlValve_50l_factory?: number;
-          co2_50l_factory?: number;
-          argon_50l_factory?: number;
-          azete_50l_factory?: number;
-          dryAir_50l_factory?: number;
-          entonox_50l_factory?: number;
-          acetylene_50l_factory?: number;
-          lpg_50l_factory?: number;
-          oxygen_50l_customer?: number;
-          bihoshi_50l_customer?: number;
-          shaft_50l_customer?: number;
-          controlValve_50l_customer?: number;
-          co2_50l_customer?: number;
-          argon_50l_customer?: number;
-          azete_50l_customer?: number;
-          dryAir_50l_customer?: number;
-          entonox_50l_customer?: number;
-          acetylene_50l_customer?: number;
-          lpg_50l_customer?: number;
-          oxygen_40l_factory?: number;
-          bihoshi_40l_factory?: number;
-          shaft_40l_factory?: number;
-          controlValve_40l_factory?: number;
-          co2_40l_factory?: number;
-          argon_40l_factory?: number;
-          azete_40l_factory?: number;
-          dryAir_40l_factory?: number;
-          entonox_40l_factory?: number;
-          acetylene_40l_factory?: number;
-          lpg_40l_factory?: number;
-          oxygen_40l_customer?: number;
-          bihoshi_40l_customer?: number;
-          shaft_40l_customer?: number;
-          controlValve_40l_customer?: number;
-          co2_40l_customer?: number;
-          argon_40l_customer?: number;
-          azete_40l_customer?: number;
-          dryAir_40l_customer?: number;
-          entonox_40l_customer?: number;
-          acetylene_40l_customer?: number;
-          lpg_40l_customer?: number;
-        };
       },
       _context: any
-    ): Promise<string> {
+    ): Promise<any> {
       // check authentication and permission
       const { req } = _context;
       const session = await getSession({ req });
@@ -1178,7 +1068,7 @@ const resolvers: Resolvers = {
         throw new GraphQLYogaError('Unauthorized');
       }
       const aggregatedAssets = {};
-      Object.entries(assets)
+      Object.entries(assets as any)
         .map(([key, value]) => [
           key.replace('_factory', '').replace('_customer', ''),
           value,
@@ -1259,7 +1149,7 @@ const resolvers: Resolvers = {
               ],
         },
       });
-      return createdWorkflow?.id ?? '';
+      return createdWorkflow;
     },
     async confirmReceiptByHospital(
       _,
@@ -1273,39 +1163,6 @@ const resolvers: Resolvers = {
         transportationTelephone2,
         date,
         assets,
-      }: {
-        workflowNumber: string;
-        havalehId?: string;
-        deliverer?: string;
-        description?: string;
-        transportationName?: string;
-        transportationTelephone?: string;
-        transportationTelephone2?: string;
-        date?: string; // timestamp in miliseconds
-        assets?: {
-          oxygen_50l?: number;
-          bihoshi_50l?: number;
-          shaft_50l?: number;
-          controlValve_50l?: number;
-          co2_50l?: number;
-          argon_50l?: number;
-          azete_50l?: number;
-          dryAir_50l?: number;
-          entonox_50l?: number;
-          acetylene_50l?: number;
-          lpg_50l?: number;
-          oxygen_40l?: number;
-          bihoshi_40l?: number;
-          shaft_40l?: number;
-          controlValve_40l?: number;
-          co2_40l?: number;
-          argon_40l?: number;
-          azete_40l?: number;
-          dryAir_40l?: number;
-          entonox_40l?: number;
-          acetylene_40l?: number;
-          lpg_40l?: number;
-        };
       },
       _context: any
     ): Promise<any> {

@@ -244,7 +244,12 @@ mutation createExitWorkflow(
     warehouseKeeperId: $warehouseKeeperId
     date: $date
     assets: $assets
-  )
+  ) {
+    id
+    passedStages {
+      stageID
+    }
+  }
 }
 mutation confirmReceiptByHospital(
   $workflowNumber: String!

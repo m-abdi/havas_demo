@@ -601,7 +601,7 @@ const typeDefs = /* GraphQL */ `
       warehouseKeeperId: String!
       date: String!
       assets: TransferedAssets
-    ): String
+    ): Workflow
     confirmReceiptByHospital(
       workflowNumber: String!
       havalehId: String

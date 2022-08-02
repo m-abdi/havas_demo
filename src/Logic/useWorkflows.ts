@@ -237,7 +237,7 @@ export default function useWorkflows(
           Object.entries(assets).filter(([key, value]) => value)
         );
 
-        const createdEnterWorkflow = await createExitWorkflowMutation({
+        const createdExitWorkflow = await createExitWorkflowMutation({
           variables: {
             workflowNumber,
             havalehId,
@@ -250,14 +250,34 @@ export default function useWorkflows(
             assets: filteredAssets,
           },
         });
-        if (createdEnterWorkflow) {
-          useNotification(
-            'success',
-            setSnackbarColor,
-            setSnackbarMessage,
-            setSnackbarOpen
-          );
-          router.push('/users/exitWarehouseRFID');
+        if (createdExitWorkflow) {
+          // automatically approved by manager
+          if (
+            createdExitWorkflow?.data?.createExitWorkflow?.passedStages
+              ?.length === 2
+          ) {
+            useNotification(
+              'success',
+              setSnackbarColor,
+              setSnackbarMessage,
+              setSnackbarOpen
+            );
+            router.push('/users/exitWarehouseRFID');
+          }
+          // needs approval -> direct to dashboard
+          else if (
+            createdExitWorkflow?.data?.createExitWorkflow?.passedStages
+              ?.length === 1
+          ) {
+            useNotification(
+              'success',
+              setSnackbarColor,
+              setSnackbarMessage,
+              setSnackbarOpen,
+              "در حال ارسال", "منتظر تایید مدیریت"
+            );
+            router.push('/users/dashboard');
+          }
         } else {
           useNotification(
             'error',
@@ -415,7 +435,8 @@ export default function useWorkflows(
   return {
     allEnterWorkflows: allEnterWorkflowsData?.assetTransferWorkflows ?? [],
     allEnterWorkflowsCount: allEnterWorkflowsData?.assetTransferWorkflowsCount,
-    confirmedEnterWorkflows: confirmedEnterWorkflowsData?.assetTransferWorkflows ?? [],
+    confirmedEnterWorkflows:
+      confirmedEnterWorkflowsData?.assetTransferWorkflows ?? [],
     confirmedEnterWorkflowsCount:
       confirmedEnterWorkflowsData?.assetTransferWorkflowsCount,
     fetchMoreConfirmedEnterWorkflows,
