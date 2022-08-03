@@ -614,6 +614,17 @@ const typeDefs = /* GraphQL */ `
       date: String
       assets: AggregatedTransferedAssets
     ): Workflow
+    confirmReceiptByCorporation(
+      workflowNumber: String!
+      havalehId: String
+      deliverer: String
+      description: String
+      transportationName: String
+      transportationTelephone: String
+      transportationTelephone2: String
+      date: String
+      assets: AggregatedTransferedAssets
+    ): Workflow
     updateAssetsStates(ids: [String], status: String!): Int
     createTags(tags: [NewTag!]!): Int
     rfidCheckWorkflows(

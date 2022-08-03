@@ -312,6 +312,65 @@ mutation confirmReceiptByHospital(
     }
   }
 }
+mutation confirmReceiptByCorporation(
+  $workflowNumber: String!
+  $havalehId: String
+  $deliverer: String
+  $description: String
+  $transportationName: String
+  $transportationTelephone: String
+  $transportationTelephone2: String
+  $date: String
+  $assets: AggregatedTransferedAssets
+) {
+  confirmReceiptByCorporation(
+    workflowNumber: $workflowNumber
+    havalehId: $havalehId
+    deliverer: $deliverer
+    description: $description
+    transportationName: $transportationName
+    transportationTelephone: $transportationTelephone
+    transportationTelephone2: $transportationTelephone2
+    date: $date
+    assets: $assets
+  ) {
+    workflowNumber
+    passedStages {
+      stageName
+      submittedByUser {
+        id
+        firstNameAndLastName
+      }
+      stageID
+      havaleh {
+        assets {
+          oxygen_50l
+          bihoshi_50l
+          shaft_50l
+          controlValve_50l
+          co2_50l
+          argon_50l
+          azete_50l
+          dryAir_50l
+          entonox_50l
+          acetylene_50l
+          lpg_50l
+          oxygen_40l
+          bihoshi_40l
+          shaft_40l
+          controlValve_40l
+          co2_40l
+          argon_40l
+          azete_40l
+          dryAir_40l
+          entonox_40l
+          acetylene_40l
+          lpg_40l
+        }
+      }
+    }
+  }
+}
 
 
 mutation rfidCheckWorkflows($workflowNumber: String!, $processId: Int!, $assets: AggregatedTransferedAssets!) {

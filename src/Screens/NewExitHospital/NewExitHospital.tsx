@@ -95,7 +95,7 @@ export default function NewExitHospital({
   warehouseKeeper,
   existingWorkflow = null,
   createNewHandler,
-  confirmEnterHandler,
+  confirmExitHandler,
   dateT,
   corporations = [],
   corporationsLoading,
@@ -166,12 +166,11 @@ export default function NewExitHospital({
       lpg_40l_customer: number;
     }
   ) => Promise<void>;
-  confirmEnterHandler?: (
+  confirmExitHandler?: (
     workflowNumber: string,
     editedHavalehData: {
       havalehId: string;
       date: string;
-      deliverer: string;
       description: string;
       transportationName: string;
       transportationTelephone: string;
@@ -251,17 +250,17 @@ export default function NewExitHospital({
   // handlers
   const submitHandler = async (data: any) => {
     if (existingWorkflow) {
-      await confirmEnterHandler(
+      await confirmExitHandler?.(
         existingWorkflow?.workflowNumber,
         editable
           ? {
               havalehId: data?.havalehId,
               date: date.toString(),
-              deliverer: data?.deliverer,
               description: data?.description,
               transportationName: data?.transportationName,
               transportationTelephone: data?.transportationTelephone,
               transportationTelephone2: data?.transportationTelephone2,
+              corporationRepresentativeId: '',
               assets: {
                 oxygen_50l: parseInt(data?.oxygen_50l),
                 bihoshi_50l: parseInt(data?.bihoshi_50l),
@@ -486,11 +485,17 @@ export default function NewExitHospital({
                 disablePortal
                 id='corporation'
                 options={corporations}
-                // defaultValue={
-                //   existingPerson?.role
-                //     ? roles.find((p) => p?.id === existingPerson?.role?.id)
-                //     : null
-                // }
+                defaultValue={
+                  existingWorkflow
+                    ? corporations.find(
+                        (p) =>
+                          p?.id ===
+                          existingWorkflow?.passedStages?.[0]?.havaleh
+                            ?.corporation?.id
+                      )
+                    : null
+                }
+                disabled={existingWorkflow}
                 value={corporation}
                 onChange={(event, newValue) => {
                   setCorporation(newValue as any);
@@ -504,7 +509,7 @@ export default function NewExitHospital({
                     setCorporation(
                       corporations.find((r) => r.label === newInput) as any
                     );
-                  setCorporationError(false);
+                    setCorporationError(false);
                   }
                 }}
                 noOptionsText={'هیچ شرکتی در سیستم ثبت نشده است'}

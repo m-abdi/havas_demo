@@ -1269,6 +1269,88 @@ const resolvers: Resolvers = {
         return updatedWorkflow;
       }
     },
+    async confirmReceiptByCorporation(
+      _,
+      {
+        workflowNumber,
+        havalehId,
+        deliverer,
+        description,
+        transportationName,
+        transportationTelephone,
+        transportationTelephone2,
+        date,
+        assets,
+      },
+      _context: any
+    ): Promise<any> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canCreateLicense(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+      const existingWorkflow = (await prisma.workflow.findUnique({
+        where: { workflowNumber },
+      })) as any;
+
+      // update enter workflow
+      if (havalehId) {
+        const updatedWorkflow = await prisma.workflow.update({
+          where: {
+            workflowNumber,
+          },
+          data: {
+            nextStageName: '',
+            passedStages: [
+              ...existingWorkflow?.passedStages,
+              {
+                stageID: 4,
+                stageName: 'تایید تحویل به شرکت',
+                submittedByUser: {
+                  id: session?.user?.id,
+                  firstNameAndLastName: session?.user?.firstNameAndLastName,
+                },
+                havaleh: {
+                  id: havalehId + 'edited',
+                  date,
+                  deliverer,
+                  transportationName,
+                  transportationTelephone,
+                  transportationTelephone2,
+                  description,
+                  assets:
+                    assets ||
+                    existingWorkflow?.passedStages?.[0]?.havaleh?.assets,
+                },
+              },
+            ],
+          },
+        });
+        return updatedWorkflow;
+      } else {
+        const updatedWorkflow = await prisma.workflow.update({
+          where: {
+            workflowNumber,
+          },
+          data: {
+            nextStageName: '',
+            passedStages: [
+              ...existingWorkflow?.passedStages,
+              {
+                stageID: 4,
+                stageName: 'تایید تحویل به شرکت',
+                submittedByUser: {
+                  id: session?.user?.id,
+                  firstNameAndLastName: session?.user?.firstNameAndLastName,
+                },
+              },
+            ],
+          },
+        });
+        return updatedWorkflow;
+      }
+    },
     async updateAssetsStates(_, { ids, status }, _context): Promise<any> {
       // check authentication and permission
       const { req } = _context;
@@ -1338,7 +1420,7 @@ const resolvers: Resolvers = {
     },
     async rfidCheckWorkflows(
       _,
-      { workflowNumber,processId, assets },
+      { workflowNumber, processId, assets },
       _context
     ): Promise<any> {
       // check authentication and permission
@@ -1349,38 +1431,40 @@ const resolvers: Resolvers = {
       }
       return await prisma.workflow.update({
         where: { workflowNumber },
-        data: processId === 1 ? {
-          
-          nextStageName: "",
-          passedStages: {
-            push: {
-              stageID: 3,
-              stageName: 'RFID ثبت ورود کپسول به انبار توسط',
-              submittedByUser: {
-                id: session?.user?.id,
-                firstNameAndLastName: session?.user?.firstNameAndLastName,
+        data:
+          processId === 1
+            ? {
+                nextStageName: '',
+                passedStages: {
+                  push: {
+                    stageID: 3,
+                    stageName: 'RFID ثبت ورود کپسول به انبار توسط',
+                    submittedByUser: {
+                      id: session?.user?.id,
+                      firstNameAndLastName: session?.user?.firstNameAndLastName,
+                    },
+                    havaleh: {
+                      assets,
+                    },
+                  },
+                },
+              }
+            : {
+                nextStageName: 'تایید تحویل به شرکت',
+                passedStages: {
+                  push: {
+                    stageID: 3,
+                    stageName: 'RFID ثبت خروج کپسول از انبار توسط',
+                    submittedByUser: {
+                      id: session?.user?.id,
+                      firstNameAndLastName: session?.user?.firstNameAndLastName,
+                    },
+                    havaleh: {
+                      assets,
+                    },
+                  },
+                },
               },
-              havaleh: {
-                assets,
-              },
-            },
-          },
-        } : {
-          nextStageName: "تایید تحویل به شرکت",
-          passedStages: {
-            push: {
-              stageID: 3,
-              stageName: 'RFID ثبت خروج کپسول از انبار توسط',
-              submittedByUser: {
-                id: session?.user?.id,
-                firstNameAndLastName: session?.user?.firstNameAndLastName,
-              },
-              havaleh: {
-                assets,
-              },
-            },
-          },
-        },
       });
     },
   },

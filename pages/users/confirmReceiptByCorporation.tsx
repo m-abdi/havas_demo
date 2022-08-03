@@ -14,6 +14,7 @@ import Head from 'next/head';
 import Layout from '../../src/Components/Layout';
 import NewExitCorporation from '../../src/Screens/NewExitCorporation';
 import NewExitHospital from '../../src/Screens/NewExitHospital';
+import usePlaces from '../../src/Logic/usePlaces';
 import { useRouter } from 'next/router';
 import useWorkflows from '../../src/Logic/useWorkflows';
 
@@ -24,12 +25,23 @@ export default function confirmReceiptByCorporation() {
   const [existingWorkflow, setExistingWorkflow] = useState();
   const [editable, setEditable] = useState(false);
 
-  const _ = undefined;
+  // data hooks
+  const { placesList, placesListLoading } = usePlaces(
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    false,
+    true
+  );
+
   const {
-    allExitWorkflows,
-    allExitWorkflowsLoading,
-    sending,
-    confirmEnterHandler,
+    sentExitWorkflows,
+    sentExitWorkflowsLoading,
+    confirmReceiptByCorporationSending: sending,
+    confirmExitHandler,
   } = useWorkflows(
     0,
     undefined,
@@ -37,6 +49,8 @@ export default function confirmReceiptByCorporation() {
     null,
     undefined,
     undefined,
+    false,
+    false,
     false,
     false,
     true
@@ -70,11 +84,11 @@ export default function confirmReceiptByCorporation() {
           <Divider sx={{ my: 1 }} />
         </Box>
 
-        {allExitWorkflows ? (
+        {sentExitWorkflows ? (
           <Autocomplete
             disablePortal
             id='allHavaleh'
-            options={allExitWorkflows
+            options={sentExitWorkflows
               ?.map((ew) => ew?.passedStages?.[0]?.havaleh)
               ?.map((h) => ({ id: h?.id, label: h?.id }))}
             // defaultValue={
@@ -86,7 +100,7 @@ export default function confirmReceiptByCorporation() {
             onChange={(event, newValue) => {
               setHavaleh(newValue as any);
               setExistingWorkflow(
-                allExitWorkflows.find(
+                sentExitWorkflows.find(
                   (ew) =>
                     ew?.passedStages?.[0]?.havaleh?.id === (newValue?.id as any)
                 )
@@ -104,7 +118,7 @@ export default function confirmReceiptByCorporation() {
             )}
           />
         ) : (
-          allExitWorkflowsLoading && (
+          sentExitWorkflowsLoading && (
             <Skeleton
               variant='rectangular'
               width={500}
@@ -115,11 +129,13 @@ export default function confirmReceiptByCorporation() {
         )}
         {existingWorkflow && (
           <NewExitHospital
-            loading={allExitWorkflowsLoading}
+            loading={sentExitWorkflowsLoading}
             sending={sending}
             editable={editable}
-            confirmEnterHandler={confirmEnterHandler}
+            confirmExitHandler={confirmExitHandler}
             existingWorkflow={existingWorkflow}
+            corporations={placesList}
+            corporationsLoading={placesListLoading}
           />
         )}
       </Container>

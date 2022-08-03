@@ -7,6 +7,7 @@ import {
   AllEnterWorkflowsDocument,
   AllPersonsDocument,
   AllWorkflowsDocument,
+  ConfirmReceiptByCorporationDocument,
   ConfirmReceiptByHospitalDocument,
   ConfirmedEnterWorkflowsDocument,
   CreateEnterWorkflowDocument,
@@ -35,7 +36,8 @@ export default function useWorkflows(
   fetchAllEnterWorkflows = false,
   fetchConfirmedEnterWorkflows = false,
   fetchAllExitWorkflows = false,
-  fetchApprovedExitWorkflows = false
+  fetchApprovedExitWorkflows = false,
+  fetchSentExitWorkflows=false,
 ) {
   const router = useRouter();
   const { setSnackbarOpen, setSnackbarMessage, setSnackbarColor } =
@@ -112,6 +114,27 @@ export default function useWorkflows(
       },
     },
   });
+  // exit workflows that have been sent to the hospital
+  const [
+    sentExitWorkflowsQuery,
+    {
+      data: sentExitWorkflowsData,
+      loading: sentExitWorkflowsLoading,
+      error: sentExitWorkflowsError,
+      fetchMore: fetchMoreSentExitWorkflows,
+    },
+  ] = useLazyQuery(AllWorkflowsDocument, {
+    fetchPolicy: 'cache-and-network',
+    variables: {
+      filters: {
+        nextStageName: {
+          contains: 'تایید تحویل به شرکت',
+        },
+        instanceOfProcessId: 2,
+        ...filters,
+      },
+    },
+  });
 
   // fetch queries that are requested
   useEffect(() => {
@@ -127,6 +150,9 @@ export default function useWorkflows(
       }
       if (fetchApprovedExitWorkflows) {
         await approvedExitWorkflowsQuery();
+      }
+      if (fetchSentExitWorkflows) {
+        await sentExitWorkflowsQuery();
       }
     })();
   }, [filters]);
@@ -145,6 +171,11 @@ export default function useWorkflows(
   ] = useMutation(ConfirmReceiptByHospitalDocument, {
     refetchQueries: [{ query: AllEnterWorkflowsDocument }, 'allEnterWorkflows'],
   });
+  // confirm existing exit worflow mutation to server
+  const [
+    confirmReceiptByCorporationMutation,
+    { loading: confirmReceiptByCorporationSending },
+  ] = useMutation(ConfirmReceiptByCorporationDocument);
   const [rfidCheckMutation, { loading: rfidCheckMutationSending }] =
     useMutation(RfidCheckWorkflowsDocument);
   // delete
@@ -419,6 +450,87 @@ export default function useWorkflows(
     },
     []
   );
+  // confirming handler
+  const confirmExitHandler = useCallback(
+    async (workflowNumber: string, editedHavalehData: any) => {
+      useNotification(
+        'sending',
+        setSnackbarColor,
+        setSnackbarMessage,
+        setSnackbarOpen
+      );
+      try {
+        if (editedHavalehData) {
+          const {
+            havalehId,
+            date,
+            deliverer,
+            description,
+            transportationName,
+            transportationTelephone,
+            transportationTelephone2,
+            assets,
+          }: {
+            havalehId: string;
+            date: string;
+            description: string;
+            transportationName: string;
+            transportationTelephone: string;
+            transportationTelephone2: string;
+            assets: AggregatedTransferedAssets;
+          } = editedHavalehData;
+          // drop NaN values
+          const filteredAssets = Object?.fromEntries(
+            Object?.entries(assets as any)?.filter(([key, value]) => value)
+          );
+
+          var updatedEnterWorkflow = await confirmReceiptByCorporationMutation({
+            variables: {
+              workflowNumber,
+              havalehId,
+              date,
+              transportationName,
+              transportationTelephone,
+              transportationTelephone2,
+              description,
+              assets: filteredAssets,
+            },
+          });
+        } else {
+          var updatedEnterWorkflow = await confirmReceiptByCorporationMutation({
+            variables: {
+              workflowNumber,
+            },
+          });
+        }
+
+        if (updatedEnterWorkflow) {
+          useNotification(
+            'success',
+            setSnackbarColor,
+            setSnackbarMessage,
+            setSnackbarOpen
+          );
+          router.push(`/users/dashboard`);
+        } else {
+          useNotification(
+            'error',
+            setSnackbarColor,
+            setSnackbarMessage,
+            setSnackbarOpen
+          );
+        }
+      } catch (e) {
+        useNotification(
+          'error',
+          setSnackbarColor,
+          setSnackbarMessage,
+          setSnackbarOpen
+        );
+      }
+    },
+    []
+  );
 
   // rfid handler
   const rfidHandler = useCallback(
@@ -517,6 +629,10 @@ export default function useWorkflows(
     []
   );
   return {
+    sentExitWorkflows: sentExitWorkflowsData?.assetTransferWorkflows ?? [],
+    sentExitWorkflowsLoading,
+    sentExitWorkflowsError,
+    confirmReceiptByCorporationSending,
     allApprovedExitWorkflows:
       approvedExitWorkflowsData?.assetTransferWorkflows ?? [],
     approvedExitWorkflowsLoading,
@@ -541,6 +657,7 @@ export default function useWorkflows(
     createNewEnter,
     createNewExit,
     confirmEnterHandler,
+    confirmExitHandler,
     deleting,
     deleteHandler,
     rfidHandler,
