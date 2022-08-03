@@ -21,7 +21,7 @@ import NewTag from '../NewTag/NewTag';
 import { NewTag as NewTagType } from '../../../lib/resolvers-types';
 import { useForm } from 'react-hook-form';
 
-export default function ExitWarehouseRFID({
+export default function EnterWarehouseRFID({
   equipmentsLoading,
   placesLoading,
   newTagSending,
@@ -95,15 +95,17 @@ export default function ExitWarehouseRFID({
   // states
   const [newTagDialogIsOpened, setNewTagDialogIsOpened] = useState(false);
   // react-form-hooks
-  const { register, setValue } = useForm();
+  const { register: register1, setValue: setValue1 } = useForm();
+  const { register: register2, setValue: setValue2 } = useForm();
   return (
     <Container maxWidth='lg' sx={{ position: 'relative' }}>
       <Stack
         direction='row'
         alignItems={'center'}
         justifyContent='space-between'
+        sx={{ my: 3 }}
       >
-        <TextField size='small' />
+        <span></span>
         <Button
           label='تگ جدید'
           color='info'
@@ -121,7 +123,12 @@ export default function ExitWarehouseRFID({
             تجهیزات ثبت شده
           </Typography>
           <TableContainer>
-            <AggregatedTable editable={false} assets={assets}/>
+            <AggregatedTable
+              register={register1}
+              setValue={setValue1}
+              editable={false}
+              assets={assets}
+            />
           </TableContainer>
         </Box>
         <Divider flexItem variant='fullWidth' />
@@ -136,8 +143,8 @@ export default function ExitWarehouseRFID({
           </Typography>
           <TableContainer>
             <AggregatedTable
-              register={register}
-              setValue={setValue}
+              register={register2}
+              setValue={setValue2}
               editable={false}
               assets={checkedAssets}
             />
@@ -197,7 +204,7 @@ export default function ExitWarehouseRFID({
       <Box
         sx={{
           position: 'absolute',
-          top: -68,
+          top: -110,
           right: '35px',
         }}
       >
@@ -207,7 +214,7 @@ export default function ExitWarehouseRFID({
           size='large'
           color='success'
           variant='contained'
-          onClick={async () => await submitHandler('موجود در بیمارستان')}
+          onClick={async () => await submitHandler('در حال ارسال')}
         />
       </Box>
     </Container>

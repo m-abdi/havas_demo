@@ -59,7 +59,7 @@ export default function ConfirmReceiptByHospital() {
           <Autocomplete
             disablePortal
             id='allHavaleh'
-            options={allEnterWorkflows?.enterWorkflows
+            options={allEnterWorkflows
               ?.map((ew) => ew?.passedStages?.[0]?.havaleh)
               ?.map((h) => ({ id: h?.id, label: h?.id }))}
             // defaultValue={
@@ -71,7 +71,7 @@ export default function ConfirmReceiptByHospital() {
             onChange={(event, newValue) => {
               setHavaleh(newValue as any);
               setExistingWorkflow(
-                allEnterWorkflows?.enterWorkflows?.find(
+                allEnterWorkflows?.find(
                   (ew) =>
                     ew?.passedStages?.[0]?.havaleh?.id === (newValue?.id as any)
                 )

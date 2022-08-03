@@ -15,6 +15,7 @@ import {
   DeleteEquipmentsDocument,
   DeletePersonsDocument,
   EquipmentsDocument,
+  RfidCheckWorkflowsDocument,
 } from '../../lib/graphql-operations';
 import { useCallback, useContext, useEffect } from 'react';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
@@ -33,7 +34,8 @@ export default function useWorkflows(
   setOffset?: React.Dispatch<React.SetStateAction<number>>,
   fetchAllEnterWorkflows = false,
   fetchConfirmedEnterWorkflows = false,
-  fetchAllExitWorkflows = false
+  fetchAllExitWorkflows = false,
+  fetchApprovedExitWorkflows = false
 ) {
   const router = useRouter();
   const { setSnackbarOpen, setSnackbarMessage, setSnackbarColor } =
@@ -89,16 +91,42 @@ export default function useWorkflows(
       },
     },
   });
+  // exit workflows that are confirmed by manager
+  const [
+    approvedExitWorkflowsQuery,
+    {
+      data: approvedExitWorkflowsData,
+      loading: approvedExitWorkflowsLoading,
+      error: approvedExitWorkflowsError,
+      fetchMore: fetchMoreApprovedExitWorkflows,
+    },
+  ] = useLazyQuery(AllWorkflowsDocument, {
+    fetchPolicy: 'cache-and-network',
+    variables: {
+      filters: {
+        nextStageName: {
+          contains: 'RFID ثبت خروج کپسول از انبار توسط',
+        },
+        instanceOfProcessId: 2,
+        ...filters,
+      },
+    },
+  });
 
   // fetch queries that are requested
   useEffect(() => {
     (async () => {
       if (fetchAllEnterWorkflows) {
         await allEnterWorkflowsQuery();
-      } else if (fetchConfirmedEnterWorkflows) {
+      }
+      if (fetchConfirmedEnterWorkflows) {
         await confirmedEnterWorkflowsQuery();
-      } else if (fetchAllExitWorkflows) {
+      }
+      if (fetchAllExitWorkflows) {
         await allExitWorkflowsQuery();
+      }
+      if (fetchApprovedExitWorkflows) {
+        await approvedExitWorkflowsQuery();
       }
     })();
   }, [filters]);
@@ -117,6 +145,8 @@ export default function useWorkflows(
   ] = useMutation(ConfirmReceiptByHospitalDocument, {
     refetchQueries: [{ query: AllEnterWorkflowsDocument }, 'allEnterWorkflows'],
   });
+  const [rfidCheckMutation, { loading: rfidCheckMutationSending }] =
+    useMutation(RfidCheckWorkflowsDocument);
   // delete
   const [deleteEquipmentsMutation, { loading: deleting }] = useMutation(
     DeleteEquipmentsDocument
@@ -276,7 +306,8 @@ export default function useWorkflows(
               setSnackbarColor,
               setSnackbarMessage,
               setSnackbarOpen,
-              "در حال ارسال", "منتظر تایید مدیریت"
+              'در حال ارسال',
+              'منتظر تایید مدیریت'
             );
             router.push('/users/dashboard');
           }
@@ -389,6 +420,57 @@ export default function useWorkflows(
     []
   );
 
+  // rfid handler
+  const rfidHandler = useCallback(
+    async (
+      workflowNumber: string,
+      processId: number,
+      assets: AggregatedTransferedAssets
+    ) => {
+      useNotification(
+        'sending',
+        setSnackbarColor,
+        setSnackbarMessage,
+        setSnackbarOpen
+      );
+      try {
+        const resp = await rfidCheckMutation({
+          variables: {
+            workflowNumber,
+            processId,
+            assets: Object.fromEntries(
+              Object.entries(assets).filter(([k, v]) => v)
+            ),
+          },
+        });
+        if (resp.data) {
+          useNotification(
+            'success',
+            setSnackbarColor,
+            setSnackbarMessage,
+            setSnackbarOpen
+          );
+          router.push('/users/dashboard');
+        } else {
+          useNotification(
+            'error',
+            setSnackbarColor,
+            setSnackbarMessage,
+            setSnackbarOpen
+          );
+        }
+      } catch (e) {
+        useNotification(
+          'error',
+          setSnackbarColor,
+          setSnackbarMessage,
+          setSnackbarOpen
+        );
+      }
+    },
+    []
+  );
+
   const deleteHandler = useCallback(
     async (equipmentIds: string[]): Promise<any> => {
       // provide a response for user interaction(sending...)
@@ -435,6 +517,9 @@ export default function useWorkflows(
     []
   );
   return {
+    allApprovedExitWorkflows:
+      approvedExitWorkflowsData?.assetTransferWorkflows ?? [],
+    approvedExitWorkflowsLoading,
     allEnterWorkflows: allEnterWorkflowsData?.assetTransferWorkflows ?? [],
     allEnterWorkflowsCount: allEnterWorkflowsData?.assetTransferWorkflowsCount,
     confirmedEnterWorkflows:
@@ -458,5 +543,7 @@ export default function useWorkflows(
     confirmEnterHandler,
     deleting,
     deleteHandler,
+    rfidHandler,
+    rfidCheckMutationSending,
   };
 }

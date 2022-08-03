@@ -147,7 +147,7 @@ export default memo(function EditableHtmlTable({
               50لیتری
             </td>
             {/* ک-م */}
-            <td>ک</td>
+            <td>کارخانه</td>
             {/* اکسیژن */}
             <td
               style={{
@@ -389,7 +389,7 @@ export default memo(function EditableHtmlTable({
 
           <tr>
             {/* ک-م */}
-            <td>م</td>
+            <td>بیمارستان</td>
             {/* اکسیژن */}
             <td
               style={{
@@ -634,7 +634,7 @@ export default memo(function EditableHtmlTable({
               40لیتری
             </td>
             {/* ک-م */}
-            <td>ک</td>
+            <td>کارخانه</td>
             {/* اکسیژن */}
             <td
               style={{
@@ -875,7 +875,7 @@ export default memo(function EditableHtmlTable({
 
           <tr>
             {/* ک-م */}
-            <td>م</td>
+            <td>بیمارستان</td>
             {/* اکسیژن */}
             <td
               style={{

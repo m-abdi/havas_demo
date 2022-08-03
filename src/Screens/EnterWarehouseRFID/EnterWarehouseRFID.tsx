@@ -95,15 +95,17 @@ export default function EnterWarehouseRFID({
   // states
   const [newTagDialogIsOpened, setNewTagDialogIsOpened] = useState(false);
   // react-form-hooks
-  const { register, setValue } = useForm();
+  const { register:register1, setValue: setValue1 } = useForm();
+  const { register: register2,setValue: setValue2 } = useForm();
   return (
     <Container maxWidth='lg' sx={{ position: 'relative' }}>
       <Stack
         direction='row'
         alignItems={'center'}
         justifyContent='space-between'
+        sx={{ my: 3 }}
       >
-        <TextField size='small' />
+        <span></span>
         <Button
           label='تگ جدید'
           color='info'
@@ -121,7 +123,12 @@ export default function EnterWarehouseRFID({
             تجهیزات ثبت شده
           </Typography>
           <TableContainer>
-            <AggregatedTable editable={false} assets={assets}/>
+            <AggregatedTable
+              register={register1}
+              setValue={setValue1}
+              editable={false}
+              assets={assets}
+            />
           </TableContainer>
         </Box>
         <Divider flexItem variant='fullWidth' />
@@ -136,8 +143,8 @@ export default function EnterWarehouseRFID({
           </Typography>
           <TableContainer>
             <AggregatedTable
-              register={register}
-              setValue={setValue}
+              register={register2}
+              setValue={setValue2}
               editable={false}
               assets={checkedAssets}
             />
@@ -186,6 +193,8 @@ export default function EnterWarehouseRFID({
             mqttStatus={mqttStatus}
             newAsset={true}
             createTagHandler={async (tags: NewTagType[]) => {
+          
+              
               const resp = await createTagHandler(tags);
               if (resp) {
                 setNewTagDialogIsOpened(false);
@@ -197,7 +206,7 @@ export default function EnterWarehouseRFID({
       <Box
         sx={{
           position: 'absolute',
-          top: -68,
+          top: -110,
           right: '35px',
         }}
       >

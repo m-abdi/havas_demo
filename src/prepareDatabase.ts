@@ -42,10 +42,12 @@ import prisma from '../prisma/client';
       password: '123456',
     },
   });
-  await prisma.config.create({data: {
-    ignoreManagerApproval: true,
-    current: true
-  }})
+  await prisma.config.create({
+    data: {
+      ignoreManagerApproval: true,
+      current: true,
+    },
+  });
   await prisma.process.createMany({
     data: [
       { processName: 'فرایند ورود کپسول به انبار بیمارستان', processNumber: 1 },
@@ -60,12 +62,20 @@ import prisma from '../prisma/client';
         terminologyCode: 'oxygen_50l',
         serialNumber: 'سریال',
         hasInstructions: false,
+        state: {
+          receiving: 0,
+          outsourced: 0,
+        },
       },
       {
         name: 'اکسیژن ۴۰ لیتری',
         terminologyCode: 'oxygen_40l',
         serialNumber: 'سریال',
         hasInstructions: false,
+        state: {
+          receiving: 0,
+          outsourced: 0,
+        },
       },
     ],
   });

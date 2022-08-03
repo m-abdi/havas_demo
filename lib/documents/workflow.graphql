@@ -10,6 +10,7 @@ query allWorkflows(
   assetTransferWorkflows(limit: $limit, offset: $offset, filters: $filters) {
     workflowNumber
     dateCreated
+    instanceOfProcessId
     passedStages {
       submittedByUser {
         id
@@ -309,5 +310,12 @@ mutation confirmReceiptByHospital(
         }
       }
     }
+  }
+}
+
+
+mutation rfidCheckWorkflows($workflowNumber: String!, $processId: Int!, $assets: AggregatedTransferedAssets!) {
+  rfidCheckWorkflows(workflowNumber: $workflowNumber, processId: $processId, assets: $assets) {
+    nextStageName
   }
 }

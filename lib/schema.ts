@@ -205,7 +205,7 @@ const typeDefs = /* GraphQL */ `
     workflowNumber: String
     dateCreated: String
     dateModified: String
-    # instanceOfProcess: Process
+    instanceOfProcessId: Int
     nextStageName: String
     passedStages: [Stage]
   }
@@ -616,6 +616,11 @@ const typeDefs = /* GraphQL */ `
     ): Workflow
     updateAssetsStates(ids: [String], status: String!): Int
     createTags(tags: [NewTag!]!): Int
+    rfidCheckWorkflows(
+      workflowNumber: String!
+      processId: Int!
+      assets: AggregatedTransferedAssets!
+    ): Workflow
   }
 `;
 

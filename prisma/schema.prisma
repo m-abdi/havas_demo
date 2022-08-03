@@ -86,9 +86,8 @@ type TrustOrOwn {
 }
 
 type EquipmentState {
-  insideHospital TrustOrOwn?
-  sendOrReceive  TrustOrOwn?
-  outsourced     TrustOrOwn?
+  receiving  Int?
+  outsourced     Int?
 }
 
 model Equipment {
@@ -276,11 +275,11 @@ type Corporation {
 }
 
 type Havaleh {
-  id                       String
-  date                     String
+  id                       String?
+  date                     String?
   deliverer                String?
-  transportationName       String
-  transportationTelephone  String
+  transportationName       String?
+  transportationTelephone  String?
   transportationTelephone2 String?
   description              String?
   receivingDescription     String?

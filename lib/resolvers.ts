@@ -1010,8 +1010,25 @@ const resolvers: Resolvers = {
               ? aggregatedAssets[k] + v
               : v)
         );
-      console.log(session);
-
+      //  update state of equipments
+      const updates: any = [];
+      const allEquipments = await prisma.equipment.findMany();
+      Object.entries(([key, value]) => {
+        const u = prisma.equipment.update({
+          where: {
+            terminologyCode: key,
+          },
+          data: {
+            state: {
+              receiving:
+                allEquipments.find((e) => e.terminologyCode === key)?.state
+                  .receiving + value,
+            },
+          },
+        });
+        updates.push(u);
+      });
+      await prisma.$transaction(updates);
       // new enter workflow
       const createdWorkflow = await prisma.workflow.create({
         data: {
@@ -1089,7 +1106,9 @@ const resolvers: Resolvers = {
         data: {
           workflowNumber,
           instanceOfProcess: { connect: { processNumber: 2 } },
-          nextStageName: 'قبول درخواست توسط مدیریت',
+          nextStageName: currentConfig?.ignoreManagerApproval
+            ? 'RFID ثبت خروج کپسول از انبار توسط'
+            : 'قبول درخواست توسط مدیریت',
           // do we need to wait for manager approval or not ?
           passedStages: currentConfig?.ignoreManagerApproval
             ? [
@@ -1109,9 +1128,11 @@ const resolvers: Resolvers = {
                     description,
                     corporation: {
                       id: corporationRepresentativeId,
-                      name: await prisma.place.findFirst({
-                        where: { id: corporationRepresentativeId },
-                      }),
+                      name: (
+                        await prisma.place.findFirst({
+                          where: { id: corporationRepresentativeId },
+                        })
+                      )?.name,
                     },
                     assets: { ...assets, ...aggregatedAssets },
                   },
@@ -1152,9 +1173,11 @@ const resolvers: Resolvers = {
                     description,
                     corporation: {
                       id: corporationRepresentativeId,
-                      name: await prisma.place.findFirst({
-                        where: { id: corporationRepresentativeId },
-                      }),
+                      name: (
+                        await prisma.place.findFirst({
+                          where: { id: corporationRepresentativeId },
+                        })
+                      )?.name,
                     },
                     assets: { ...assets, ...aggregatedAssets },
                   },
@@ -1246,11 +1269,7 @@ const resolvers: Resolvers = {
         return updatedWorkflow;
       }
     },
-    async updateAssetsStates(
-      _,
-      { ids, status }: { ids?: string[]; status: string },
-      _context
-    ): Promise<any> {
+    async updateAssetsStates(_, { ids, status }, _context): Promise<any> {
       // check authentication and permission
       const { req } = _context;
       const session = await getSession({ req });
@@ -1260,7 +1279,7 @@ const resolvers: Resolvers = {
       if (ids) {
         return (
           await prisma.asset.updateMany({
-            where: { id: { in: ids } },
+            where: { id: { in: ids as string[] } },
             data: {
               status,
             },
@@ -1316,6 +1335,53 @@ const resolvers: Resolvers = {
       console.log(await prisma.$transaction(operations));
 
       return 2;
+    },
+    async rfidCheckWorkflows(
+      _,
+      { workflowNumber,processId, assets },
+      _context
+    ): Promise<any> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canCreateLicense(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+      return await prisma.workflow.update({
+        where: { workflowNumber },
+        data: processId === 1 ? {
+          
+          nextStageName: "",
+          passedStages: {
+            push: {
+              stageID: 3,
+              stageName: 'RFID ثبت ورود کپسول به انبار توسط',
+              submittedByUser: {
+                id: session?.user?.id,
+                firstNameAndLastName: session?.user?.firstNameAndLastName,
+              },
+              havaleh: {
+                assets,
+              },
+            },
+          },
+        } : {
+          nextStageName: "تایید تحویل به شرکت",
+          passedStages: {
+            push: {
+              stageID: 3,
+              stageName: 'RFID ثبت خروج کپسول از انبار توسط',
+              submittedByUser: {
+                id: session?.user?.id,
+                firstNameAndLastName: session?.user?.firstNameAndLastName,
+              },
+              havaleh: {
+                assets,
+              },
+            },
+          },
+        },
+      });
     },
   },
   Person: {

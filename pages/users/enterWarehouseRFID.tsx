@@ -1,3 +1,4 @@
+import { Autocomplete, Skeleton, Stack, TextField } from '@mui/material';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
@@ -11,6 +12,7 @@ import useAssets from '../../src/Logic/useAssets';
 import useMQTT from '../../src/Logic/useMQTT';
 import { useRouter } from 'next/router';
 import useTags from '../../src/Logic/useTags';
+import useWorkflows from '../../src/Logic/useWorkflows';
 
 const pageName = 'ثبت ورود کپسول به انبار توسط RFID';
 export default function enterWarehouseRFID() {
@@ -40,9 +42,24 @@ export default function enterWarehouseRFID() {
     lpg_40l: null,
   });
   //   states
-  const { mqttMessage, mqttStatus } = useMQTT();
+  const [havaleh, setHavaleh] = useState();
+  const [existingWorkflow, setExistingWorkflow] = useState<any>();
+
   const [checkedAssetsIds, setCheckedAssetsIds] = useState([]);
   //   data hooks
+  const { confirmedEnterWorkflows, confirmedEnterWorkflowsLoading, rfidHandler } =
+    useWorkflows(
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      false,
+      true
+    );
+  const { mqttMessage, mqttStatus } = useMQTT();
+
   const {
     getTagDataQuery,
     createNew: createTagHandler,
@@ -58,17 +75,18 @@ export default function enterWarehouseRFID() {
   const router = useRouter();
   // rfid operation
   useEffect(() => {
-    const updateCheckedAssets = () => {
+    (async () => {
       //   fetch tag data
-      getTagDataQuery({ variables: { tagId: mqttMessage } });
+      const { data } = await getTagDataQuery({
+        variables: { tagId: mqttMessage },
+      });
       //
       const checkedAssetsNames = Object.keys(checkedAssets);
-      const terminologyCode =
-        tagData?.tagData?.asset?.equipment?.terminologyCode;
+      const terminologyCode = data?.tagData?.asset?.equipment?.terminologyCode;
 
       // checking to see  if equipment id exists in the table
       if (checkedAssetsNames?.includes(terminologyCode)) {
-        setCheckedAssetsIds([...checkedAssetsIds, tagData?.tagData?.asset?.id]);
+        setCheckedAssetsIds([...checkedAssetsIds, data?.tagData?.asset?.id]);
         setCheckedAssets({
           ...checkedAssets,
           [terminologyCode]: !checkedAssets[terminologyCode]
@@ -76,41 +94,100 @@ export default function enterWarehouseRFID() {
             : checkedAssets[terminologyCode] + 1,
         });
       }
-    };
-    updateCheckedAssets();
-  }, [mqttMessage, tagData]);
+    })();
+  }, [mqttMessage]);
   // if editing => extract existing workflow data from query param
-  const existingWorkflow = useMemo(
+  const existingWorkflowQuery = useMemo(
     () =>
       router?.query?.workflow
         ? JSON.parse(router?.query?.workflow as string)
         : false,
     [router?.isReady]
   );
-  console.log('ee', existingWorkflow);
 
   return (
     <Layout pageName={pageName}>
-      {existingWorkflow && (
-        <EnterWarehouseRFID
-          mqttMessage={mqttMessage as any}
-          mqttStatus={mqttStatus}
-          equipmentsLoading={loading}
-          placesLoading={loading}
-          newTagSending={newTagSending}
-          equipments={data?.equipments as any}
-          places={data?.places as any}
-          assets={
-            existingWorkflow?.passedStages?.[1]?.havaleh?.assets ??
-            existingWorkflow?.passedStages?.[0]?.havaleh?.assets
-          }
-          checkedAssets={checkedAssets as any}
-          submitHandler={async (status: string) => {
-            await updateStateHandler(status, checkedAssetsIds);
-          }}
-          createTagHandler={createTagHandler}
-        />
-      )}
+      <Stack
+        direction='column'
+        alignItems={'center'}
+        justifyContent='space-around'
+      >
+        {confirmedEnterWorkflows ? (
+          <Autocomplete
+            disablePortal
+            id='allConfirmedHavaleh'
+            options={confirmedEnterWorkflows
+              ?.map((ew) => ew?.passedStages?.[0]?.havaleh)
+              ?.map((h) => ({ id: h?.id, label: h?.id }))}
+            value={havaleh}
+            onChange={(event, newValue) => {
+              setHavaleh(newValue as any);
+              setExistingWorkflow(
+                confirmedEnterWorkflows?.find(
+                  (ew) =>
+                    ew?.passedStages?.[0]?.havaleh?.id === (newValue?.id as any)
+                )
+              );
+            }}
+            sx={{ px: 5, inlineSize: { xs: 300, sm: 400, md: 600 } }}
+            noOptionsText={'هیچ حواله ورودی تایید شده ای وجود ندارد'}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label='جستجوی حواله'
+                size='small'
+                // error={roleError}
+                // helperText={roleError && 'لطفا این فیلد را پر کنید'}
+              />
+            )}
+          />
+        ) : (
+          confirmedEnterWorkflowsLoading && (
+            <Skeleton
+              variant='rectangular'
+              width={500}
+              height={40}
+              sx={{ borderRadius: '5px' }}
+            />
+          )
+        )}
+        {(existingWorkflowQuery || existingWorkflow) && (
+          <EnterWarehouseRFID
+            mqttMessage={mqttMessage as any}
+            mqttStatus={mqttStatus}
+            equipmentsLoading={loading}
+            placesLoading={loading}
+            newTagSending={newTagSending}
+            equipments={data?.equipments as any}
+            places={data?.places as any}
+            assets={
+              existingWorkflowQuery
+                ? existingWorkflowQuery?.passedStages?.[1]?.havaleh?.assets ??
+                  existingWorkflowQuery?.passedStages?.[0]?.havaleh?.assets
+                : existingWorkflow &&
+                  (existingWorkflow?.passedStages?.[1]?.havaleh?.assets ??
+                    existingWorkflow?.passedStages?.[0]?.havaleh?.assets)
+            }
+            checkedAssets={checkedAssets as any}
+            submitHandler={async (status: string) => {
+              await updateStateHandler(status, checkedAssetsIds);
+              const params = existingWorkflowQuery
+                ? [
+                    existingWorkflowQuery?.workflowNumber,
+                    existingWorkflowQuery?.instanceOfProcessId,
+                    checkedAssets,
+                  ]
+                : existingWorkflow && [
+                    existingWorkflow?.workflowNumber,
+                    existingWorkflow?.instanceOfProcessId,
+                    checkedAssets,
+                  ];
+              await rfidHandler(params[0], params[1], params[2]);
+            }}
+            createTagHandler={createTagHandler}
+          />
+        )}
+      </Stack>
     </Layout>
   );
 }
