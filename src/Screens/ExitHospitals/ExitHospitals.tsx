@@ -48,6 +48,7 @@ import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownR
 import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import { Satellite } from '@mui/icons-material';
+import SensorsRoundedIcon from '@mui/icons-material/SensorsRounded';
 import { Session } from 'next-auth';
 import { flushSync } from 'react-dom';
 import matchSorter from 'match-sorter';
@@ -210,11 +211,12 @@ export default memo(function ExitHospitals({
       {
         Header: 'وضعیت',
         id: 'status',
+        width: 200,
         accessor: (d: any) => {
           if (d?.passedStages?.length === 2) {
-            return <Button label='تایید شده' color='success' />;
+            return <Button label='تایید مدیریت' color='success' />;
           } else if (d?.passedStages?.length === 1) {
-            return <Button label='منتظر تایید' backgroundColor='gray' />;
+            return <Button label='منتظر تایید مدیریت' backgroundColor='gray' />;
           }
         },
       },
@@ -237,10 +239,7 @@ export default memo(function ExitHospitals({
         width: 200,
       },
 
-      {
-        Header: 'نماینده شرکت',
-        accessor: 'passedStages[0].submittedByUser.firstNameAndLastName',
-      },
+  
 
       {
         Header: 'شماره حواله',
@@ -248,8 +247,8 @@ export default memo(function ExitHospitals({
       },
 
       {
-        Header: 'تحویل دهنده',
-        accessor: 'passedStages[0].havaleh.deliverer', // accessor is the "key" in the data
+        Header: 'درخواست دهنده',
+        accessor: 'passedStages[0].submittedByUser.firstNameAndLastName', // accessor is the "key" in the data
       },
       {
         Header: 'نام ترابری',
@@ -783,7 +782,7 @@ export default memo(function ExitHospitals({
                     <Skeleton width={34} height={42} variant='rectangular' />
                     <Skeleton width={34} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
+                    <Skeleton width={198} height={42} variant='rectangular' />
                     <Skeleton width={198} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
@@ -882,7 +881,7 @@ export default memo(function ExitHospitals({
         <Box
           sx={{
             position: 'absolute',
-            top: -68,
+            top: -122,
             right: '35px',
           }}
         >
@@ -965,26 +964,26 @@ export default memo(function ExitHospitals({
           />
         </DialogContent>
       </Dialog>
-      {session?.user?.role?.editPerson ? (
+      {session?.user?.role?.createLicense ? (
         <Menu
           anchorEl={rowOptionsAnchorElement}
           open={rowOptionsOpen}
           onClose={handleRowOptionsClose}
         >
-          {session?.user?.role?.['editPerson'] ? (
+          {session?.user?.role?.['createLicense'] ? (
             <MenuItem>
               <Button
-                id={choosedRow?.terminologyCode + '-edit'}
-                startIcon={<EditRoundedIcon />}
+                id={choosedRow?.workflowNumber + '-edit'}
+                startIcon={<SensorsRoundedIcon />}
                 variant='text'
                 onClick={() =>
                   router.push(
-                    `/users/newEquipment?edit=1&equipment=${JSON.stringify(
+                    `/users/exitWarehouseRFID?workflow=${JSON.stringify(
                       choosedRow
                     )}`
                   )
                 }
-                label='ویرایش'
+                label='ثبت خروج توسط RFID'
               />
             </MenuItem>
           ) : null}

@@ -369,11 +369,17 @@ const resolvers: Resolvers = {
       if (!session || !(await canViewLicenses(session))) {
         throw new GraphQLYogaError('Unauthorized');
       }
-      const {
+      let {
         limit,
         offset,
         filters,
       }: { limit?: any; offset?: any; filters?: any } = _args;
+      if (filters?.nsn) {
+        filters.nextStageName = filters?.nsn;
+        filters = Object.fromEntries(
+          Object.entries(filters).filter(([key, value]) => key !== 'nsn')
+        );
+      }
       console.log(filters);
 
       const enterWorkflowsDB = await prisma.workflow.findMany({
@@ -394,8 +400,13 @@ const resolvers: Resolvers = {
       if (!session || !(await canViewEquipments(session))) {
         throw new GraphQLYogaError('Unauthorized');
       }
-      const { filters }: { filters?: any } = _args;
-
+      let { filters }: { filters?: any } = _args;
+      if (filters?.nsn) {
+        filters.nextStageName = filters?.nsn;
+        filters = Object.fromEntries(
+          Object.entries(filters).filter(([key, value]) => key !== 'nsn')
+        );
+      }
       return (await prisma.workflow.count({
         where: { ...filters },
       })) as number;

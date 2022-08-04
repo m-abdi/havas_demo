@@ -37,7 +37,7 @@ export default function useWorkflows(
   fetchConfirmedEnterWorkflows = false,
   fetchAllExitWorkflows = false,
   fetchApprovedExitWorkflows = false,
-  fetchSentExitWorkflows=false,
+  fetchSentExitWorkflows = false
 ) {
   const router = useRouter();
   const { setSnackbarOpen, setSnackbarMessage, setSnackbarColor } =
@@ -68,7 +68,13 @@ export default function useWorkflows(
     variables: {
       offset,
       limit: itemsPerPage,
-      filters: { ...filters, instanceOfProcessId: 2 },
+      filters: {
+        ...filters,
+        instanceOfProcessId: 2,
+        nsn: {
+          in: ['RFID ثبت خروج کپسول از انبار توسط', 'قبول درخواست توسط مدیریت'],
+        },
+      },
     },
   });
 
@@ -630,6 +636,7 @@ export default function useWorkflows(
   );
   return {
     sentExitWorkflows: sentExitWorkflowsData?.assetTransferWorkflows ?? [],
+    sentExitWorkflowsCount: sentExitWorkflowsData?.assetTransferWorkflowsCount,
     sentExitWorkflowsLoading,
     sentExitWorkflowsError,
     confirmReceiptByCorporationSending,

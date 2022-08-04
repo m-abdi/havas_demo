@@ -9,6 +9,7 @@ import {
   Button,
   ClickAwayListener,
   Collapse,
+  Divider,
   Drawer,
   IconButton,
   List,
@@ -266,6 +267,7 @@ function Layout({ children, pageName }) {
       text: 'مجوزها',
       id: 5,
       icon: <WorkspacePremiumRoundedIcon />,
+      sublistCategoryHeaders: ['ورود', 'خروج'],
       sublists: [
         {
           text: 'تاریخچه گردش کارها',
@@ -278,54 +280,63 @@ function Layout({ children, pageName }) {
           icon: <AddCircleOutlineOutlined />,
           path: '/users/newExitCorporation',
           roleName: 'createLicense',
+          category: 'ورود',
         },
         {
           text: 'جدول حواله ها',
           icon: <SearchRoundedIcon />,
           path: '/users/exitCorporations',
           roleName: 'viewLicense',
+          category: 'ورود',
         },
         {
           text: 'تایید تحویل کپسول به بیمارستان',
           icon: <AddCircleOutlineOutlined />,
           path: '/users/confirmReceiptByHospital',
           roleName: 'createLicense',
+          category: 'ورود',
         },
         {
           text: 'حواله های ورودی تایید شده',
           icon: <SearchRoundedIcon />,
           path: '/users/confirmReceiptByHospitals',
           roleName: 'viewLicense',
+          category: 'ورود',
         },
         {
           text: 'RFID ثبت ورود کپسول به انبار توسط',
           icon: <AddCircleOutlineOutlined />,
           path: '/users/enterWarehouseRFID',
           roleName: 'createLicense',
+          category: 'ورود',
         },
         {
           text: 'ثبت خروج از بیمارستان',
           icon: <AddCircleOutlineOutlined />,
           path: '/users/newExitHospital',
           roleName: 'createLicense',
+          category: 'خروج',
         },
         {
           text: 'حواله های خروجی ثبت شده',
           icon: <SearchRoundedIcon />,
           path: '/users/exitHospitals',
           roleName: 'viewLicense',
+          category: 'خروج',
         },
         {
           text: 'ثبت خروج کپسول توسط RFID',
           icon: <AddCircleOutlineOutlined />,
           path: '/users/exitWarehouseRFID',
           roleName: 'createLicense',
+          category: 'خروج',
         },
         {
           text: 'تایید تحویل به شرکت',
           icon: <AddCircleOutlineOutlined />,
           path: '/users/confirmReceiptByCorporation',
           roleName: 'createLicense',
+          category: 'خروج',
         },
       ],
     },
@@ -525,28 +536,62 @@ function Layout({ children, pageName }) {
                   unmountOnExit
                 >
                   <List component='div' disablePadding>
-                    {item.sublists.map((sublist) =>
-                      session?.user?.role?.[sublist.roleName] ? (
-                        <ListItemButton
-                          id={sublist?.id}
-                          key={sublist.text}
-                          onClick={() => {
-                            router.push(sublist.path);
-                          }}
-                          sx={{
-                            pl: 6,
-                            ...(location.pathname === sublist.path && {
-                              backgroundColor: 'blue',
-                            }),
-                          }}
-                        >
-                          <ListItemIcon sx={{ minWidth: '32px' }}>
-                            {sublist.icon}
-                          </ListItemIcon>
-                          <ListItemText primary={sublist.text} />
-                        </ListItemButton>
-                      ) : null
-                    )}
+                    {item?.sublistCategoryHeaders
+                      ? item?.sublistCategoryHeaders?.map((ch, i) => (
+                          <>
+                            <ListItemText sx={{ textAlign: 'center' }}>
+                              {ch}
+                            </ListItemText>
+                            <Divider />
+                            {item.sublists
+                              .filter((sublist) => sublist.category === ch)
+                              .map((sublist) =>
+                                session?.user?.role?.[sublist.roleName] ? (
+                                  <ListItemButton
+                                    id={sublist?.id}
+                                    key={sublist.text}
+                                    onClick={() => {
+                                      router.push(sublist.path);
+                                    }}
+                                    sx={{
+                                      pl: 6,
+                                      ...(location.pathname ===
+                                        sublist.path && {
+                                        backgroundColor: 'blue',
+                                      }),
+                                    }}
+                                  >
+                                    <ListItemIcon sx={{ minWidth: '32px' }}>
+                                      {sublist.icon}
+                                    </ListItemIcon>
+                                    <ListItemText primary={sublist.text} />
+                                  </ListItemButton>
+                                ) : null
+                              )}
+                          </>
+                        ))
+                      : item.sublists.map((sublist) =>
+                          session?.user?.role?.[sublist.roleName] ? (
+                            <ListItemButton
+                              id={sublist?.id}
+                              key={sublist.text}
+                              onClick={() => {
+                                router.push(sublist.path);
+                              }}
+                              sx={{
+                                pl: 6,
+                                ...(location.pathname === sublist.path && {
+                                  backgroundColor: 'blue',
+                                }),
+                              }}
+                            >
+                              <ListItemIcon sx={{ minWidth: '32px' }}>
+                                {sublist.icon}
+                              </ListItemIcon>
+                              <ListItemText primary={sublist.text} />
+                            </ListItemButton>
+                          ) : null
+                        )}
                   </List>
                 </Collapse>
               </Box>

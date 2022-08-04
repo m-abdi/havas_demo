@@ -38,7 +38,6 @@ export default function exitCorporations() {
   );
 
   return (
-    <Layout pageName={pageName}>
       <ExitCorporations
         loading={loading}
         data={allEnterWorkflows as any}
@@ -53,6 +52,5 @@ export default function exitCorporations() {
         // deleting={deleting}
         // deleteEquipmentsHandler={deleteHandler}
       />
-    </Layout>
   );
 }

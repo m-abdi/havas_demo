@@ -298,12 +298,16 @@ const typeDefs = /* GraphQL */ `
   input SomeStageFilter {
     some: SatgeFilter
   }
+  input InArrayFilter {
+    in: [String]
+  }
   input AssetTransferWorkflowFilter {
     id: ContainsSearchType
     instanceOfProcessId: Int
     workflowNumber: ContainsSearchType
     dateCreated: ContainsSearchType
     nextStageName: ContainsSearchType
+    nsn: InArrayFilter
     passedStages: SomeStageFilter
   }
   type TransferedAssetsOutput {

@@ -146,7 +146,7 @@ const Styles = styled.div`
   }
 `;
 var delayTimer: any;
-export default memo(function ExitCorporations({
+export default memo(function SentToCorporations({
   loading,
   deleting,
   data = [],
@@ -207,6 +207,7 @@ export default memo(function ExitCorporations({
         Header: 'شماره پیگیری',
         accessor: 'workflowNumber', // accessor is the "key" in the data
       },
+  
 
       {
         Header: 'تاریخ ثبت فرم',
@@ -227,18 +228,13 @@ export default memo(function ExitCorporations({
       },
 
       {
-        Header: 'نماینده شرکت',
-        accessor: 'passedStages[0].submittedByUser.firstNameAndLastName',
-      },
-
-      {
         Header: 'شماره حواله',
         accessor: 'passedStages[0].havaleh.id',
       },
 
       {
-        Header: 'تحویل دهنده',
-        accessor: 'passedStages[0].havaleh.deliverer', // accessor is the "key" in the data
+        Header: 'درخواست دهنده',
+        accessor: 'passedStages[0].submittedByUser.firstNameAndLastName', // accessor is the "key" in the data
       },
       {
         Header: 'نام ترابری',
@@ -574,6 +570,7 @@ export default memo(function ExitCorporations({
                         spacing={2}
                         justifyContent='center'
                         alignItems='center'
+                        sx={{ blockSize: '100%' }}
                         {...column.getSortByToggleProps()}
                       >
                         {/* column header text and sort symbols */}
@@ -652,13 +649,12 @@ export default memo(function ExitCorporations({
                                   contains: e.target.value,
                                 },
                               };
-                              
+
                               setRawFilters({
                                 ...rawFilters,
                                 ...newRawFilters,
                               });
-                          
-                              
+
                               clearTimeout(delayTimer);
                               delayTimer = setTimeout(function () {
                                 setFilters({
@@ -772,7 +768,7 @@ export default memo(function ExitCorporations({
                     <Skeleton width={34} height={42} variant='rectangular' />
                     <Skeleton width={34} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
+                    <Skeleton width={198} height={42} variant='rectangular' />
                     <Skeleton width={198} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
@@ -871,7 +867,7 @@ export default memo(function ExitCorporations({
         <Box
           sx={{
             position: 'absolute',
-            top: -68,
+            top: -122,
             right: '35px',
           }}
         >
@@ -947,14 +943,14 @@ export default memo(function ExitCorporations({
             ]}
             register={register}
             existingEnterWorkflow={
-              choosedRow?.passedStages?.[0]?.havaleh?.assets
+              choosedRow?.passedStages?.[3]?.havaleh?.assets
             }
             editable={false}
             reset={reset}
           />
         </DialogContent>
       </Dialog>
-      {session?.user?.role?.createLicense ? (
+      {session?.user?.role?.editPerson ? (
         <Menu
           anchorEl={rowOptionsAnchorElement}
           open={rowOptionsOpen}

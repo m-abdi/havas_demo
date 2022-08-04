@@ -16,6 +16,7 @@ import Equipments from '../../src/Screens/Equipments';
 import ExitHospitals from '../../src/Screens/ExitHospitals';
 import Head from 'next/head';
 import Layout from '../../src/Components/Layout';
+import SentToCorporations from '../../src/Screens/SentToCorporations/SentToCorporations';
 import useWorkflows from '../../src/Logic/useWorkflows';
 
 const pageName = 'حواله های خروج از شرکت';
@@ -27,8 +28,8 @@ export default memo(function exitHospitals() {
   const [filters, setFilters] = useState<EnterWorkflowFilter>();
 
   const {
-    allExitWorkflows,
-    allExitWorkflowsCount,
+    sentExitWorkflows,
+    sentExitWorkflowsCount,
     allExitWorkflowsLoading: loading,
     sending,
     fetchMoreExitWorkflows: fetchMore,
@@ -41,23 +42,25 @@ export default memo(function exitHospitals() {
     setOffset,
     false,
     false,
-    true
+    false, 
+    false,
+    true,
   );
 
   return (
-      <ExitHospitals
-        loading={loading}
-        data={allExitWorkflows as any}
-        allEquipmentsCount={allExitWorkflowsCount as number}
-        pageNumber={pageNumber}
-        offset={offset}
-        itemsPerPage={itemsPerPage}
-        setItemsPerPage={setItemsPerPage}
-        filters={filters}
-        setFilters={setFilters}
-        fetchMoreRows={fetchMore}
-        // deleting={deleting}
-        // deleteEquipmentsHandler={deleteHandler}
-      />
+    <SentToCorporations
+      loading={loading}
+      data={sentExitWorkflows as any}
+      allEquipmentsCount={sentExitWorkflowsCount as number}
+      pageNumber={pageNumber}
+      offset={offset}
+      itemsPerPage={itemsPerPage}
+      setItemsPerPage={setItemsPerPage}
+      filters={filters}
+      setFilters={setFilters}
+      fetchMoreRows={fetchMore}
+      // deleting={deleting}
+      // deleteEquipmentsHandler={deleteHandler}
+    />
   );
 })
