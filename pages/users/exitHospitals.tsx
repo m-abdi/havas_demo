@@ -30,7 +30,8 @@ export default memo(function exitHospitals() {
     allExitWorkflows,
     allExitWorkflowsCount,
     allExitWorkflowsLoading: loading,
-    sending,
+    deleting,
+    deleteHandler,
     fetchMoreExitWorkflows: fetchMore,
   } = useWorkflows(
     offset,
@@ -56,8 +57,8 @@ export default memo(function exitHospitals() {
         filters={filters}
         setFilters={setFilters}
         fetchMoreRows={fetchMore}
-        // deleting={deleting}
-        // deleteEquipmentsHandler={deleteHandler}
+        deleting={deleting}
+        deleteHandler={deleteHandler}
       />
   );
 })

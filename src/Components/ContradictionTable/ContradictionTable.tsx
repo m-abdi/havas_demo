@@ -60,7 +60,7 @@ function giveMeContradictionRows(
   return rows;
 }
 
-export default memo(function ContradictionTable({ data }: { data: Workflow }) {
+export default memo(function ContradictionTable({ corporationRegisteredAssets, warehouseRegisteredAssets}) {
   return (
     <TableContainer>
       <Table>
@@ -100,8 +100,8 @@ export default memo(function ContradictionTable({ data }: { data: Workflow }) {
         </TableHead>
         <TableBody>
           {giveMeContradictionRows(
-            data?.passedStages?.[0]?.havaleh?.assets as any,
-            data?.passedStages?.[1]?.havaleh?.assets as any
+            corporationRegisteredAssets,
+            warehouseRegisteredAssets
           )}
         </TableBody>
       </Table>

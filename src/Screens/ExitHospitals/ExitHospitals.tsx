@@ -159,7 +159,7 @@ export default memo(function ExitHospitals({
   setFilters,
   fetchMoreRows,
   allEquipmentsCount: allequipmentsCount,
-  deleteEquipmentsHandler,
+  deleteHandler,
 }: {
   loading: boolean;
   deleting: boolean;
@@ -172,7 +172,7 @@ export default memo(function ExitHospitals({
   setFilters: any;
   allEquipmentsCount: number;
   fetchMoreRows: (e: any, page: number) => void;
-  deleteEquipmentsHandler: (placeIds: string[]) => Promise<void>;
+  deleteHandler: (placeIds: string[], query: string) => Promise<void>;
 }) {
   //  states
   const [rowOptionsAnchorElement, setRowOptionsAnchorElement] =
@@ -774,7 +774,7 @@ export default memo(function ExitHospitals({
               ))}
             </div>
 
-            {loading ? (
+            {loading || deleting ? (
               <Stack spacing={0.5}>
                 {[...Array(itemsPerPage)].map((i) => (
                   <Stack direction={'row'} alignItems='center' spacing={0.13}>
@@ -892,7 +892,7 @@ export default memo(function ExitHospitals({
             variant='contained'
             disabled={
               selectedFlatRows.length === 0 ||
-              !session?.user?.role?.deleteEquipment
+              !session?.user?.role?.deleteLicense
                 ? true
                 : false
             }
@@ -903,12 +903,13 @@ export default memo(function ExitHospitals({
         </Box>
       </Styles>
       <DeleteDialog
-        text='با این کار تمامی تجهیزات انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
+        text='با این کار تمامی گردش کارهای انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
         open={deleteDialog}
         closeDialog={() => setDeleteDialog(false)}
         confirmDelete={async () => {
-          await deleteEquipmentsHandler(
-            selectedFlatRows.map((p) => p?.original?.terminologyCode)
+          await deleteHandler(
+            selectedFlatRows.map((p) => p?.original?.workflowNumber),
+            'allExitWorkflows'
           );
           setDeleteDialog(false);
         }}

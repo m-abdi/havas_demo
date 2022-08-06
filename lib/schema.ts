@@ -306,8 +306,9 @@ const typeDefs = /* GraphQL */ `
     instanceOfProcessId: Int
     workflowNumber: ContainsSearchType
     dateCreated: ContainsSearchType
-    nextStageName: ContainsSearchType
+    nextStageName: String
     nsn: InArrayFilter
+
     passedStages: SomeStageFilter
   }
   type TransferedAssetsOutput {
@@ -549,6 +550,7 @@ const typeDefs = /* GraphQL */ `
     deletePlaces(placeIds: [String!]!): Int!
     deleteEquipments(equipmentIds: [String!]!): Int!
     deleteAssets(assetIds: [String!]!): Int!
+    deleteWorkflows(workflowIds: [String!]!): Int!
     createPlace(
       name: String!
       superPlaceId: String
@@ -612,6 +614,7 @@ const typeDefs = /* GraphQL */ `
       havalehId: String
       deliverer: String
       description: String
+      receivingDescription: String
       transportationName: String
       transportationTelephone: String
       transportationTelephone2: String
@@ -623,6 +626,7 @@ const typeDefs = /* GraphQL */ `
       havalehId: String
       deliverer: String
       description: String
+      receivingDescription: String
       transportationName: String
       transportationTelephone: String
       transportationTelephone2: String

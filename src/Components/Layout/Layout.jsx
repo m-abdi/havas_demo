@@ -283,9 +283,9 @@ function Layout({ children, pageName }) {
           category: 'ورود',
         },
         {
-          text: 'جدول حواله ها',
+          text: 'ورود',
           icon: <SearchRoundedIcon />,
-          path: '/users/exitCorporations',
+          path: '/users/assetEnterWorkflowsTables',
           roleName: 'viewLicense',
           category: 'ورود',
         },
@@ -311,26 +311,13 @@ function Layout({ children, pageName }) {
           category: 'ورود',
         },
         {
-          text: 'ثبت خروج از بیمارستان',
+          text: 'خروج',
           icon: <AddCircleOutlineOutlined />,
-          path: '/users/newExitHospital',
+          path: '/users/assetExitWorkflowsTables',
           roleName: 'createLicense',
           category: 'خروج',
         },
-        {
-          text: 'حواله های خروجی ثبت شده',
-          icon: <SearchRoundedIcon />,
-          path: '/users/exitHospitals',
-          roleName: 'viewLicense',
-          category: 'خروج',
-        },
-        {
-          text: 'ثبت خروج کپسول توسط RFID',
-          icon: <AddCircleOutlineOutlined />,
-          path: '/users/exitWarehouseRFID',
-          roleName: 'createLicense',
-          category: 'خروج',
-        },
+ 
         {
           text: 'تایید تحویل به شرکت',
           icon: <AddCircleOutlineOutlined />,

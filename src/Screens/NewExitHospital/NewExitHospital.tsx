@@ -168,15 +168,16 @@ export default function NewExitHospital({
   ) => Promise<void>;
   confirmExitHandler?: (
     workflowNumber: string,
-    editedHavalehData: {
-      havalehId: string;
-      date: string;
-      description: string;
-      transportationName: string;
-      transportationTelephone: string;
-      transportationTelephone2: string;
-      corporationRepresentativeId: string;
-      assets: {
+    editedHavalehData?: {
+      havalehId?: string;
+      date?: string;
+      description?: string;
+      receivingDescription?: string;
+      transportationName?: string;
+      transportationTelephone?: string;
+      transportationTelephone2?: string;
+      corporationRepresentativeId?: string;
+      assets?: {
         oxygen_50l?: number;
         bihoshi_50l?: number;
         shaft_50l?: number;
@@ -200,7 +201,8 @@ export default function NewExitHospital({
         acetylene_40l?: number;
         lpg_40l?: number;
       };
-    } | null
+    } | null,
+    recevingDescription?: string
   ) => Promise<void>;
 }) {
   // react-form-hooks
@@ -286,7 +288,8 @@ export default function NewExitHospital({
                 lpg_40l: parseInt(data?.lpg_40l),
               },
             }
-          : null
+          : null,
+        data?.receivingDescription
       );
     } else {
       if (!corporation) {
@@ -366,6 +369,21 @@ export default function NewExitHospital({
   function ExitHospitalForm() {
     return (
       <>
+        {existingWorkflow && (
+          <Row1>
+            <Input1>
+              <Label1>توضیحات دریافت</Label1>
+              <TextField
+                size='small'
+                id='description'
+                disabled={false}
+                inputProps={{
+                  ...register('receivingDescription'),
+                }}
+              />
+            </Input1>
+          </Row1>
+        )}
         <Row1>
           {/* <Input1>
             <Label1>شماره ثبت فرم</Label1>
@@ -531,7 +549,7 @@ export default function NewExitHospital({
             <TextField
               size='small'
               id='description'
-              disabled={!editable}
+              disabled={true}
               inputProps={{
                 ...register('description', {
                   value:
@@ -541,6 +559,7 @@ export default function NewExitHospital({
             />
           </Input1>
         </Row1>
+
         <Row1>
           <Input1>
             <Label1>نام ترابری</Label1>

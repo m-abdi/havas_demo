@@ -2,7 +2,9 @@ import { Box, Tab, TableContainer, Tabs } from '@mui/material';
 import React, { useState } from 'react';
 
 import { Button } from '../../src/Components/Button';
-import ConfirmReceiptByCorporations from './confirmReceiptByCorporations';
+import ConfirmReceiptByHospitals from './confirmReceiptByHospitals';
+import EnteredWarehouseRFID from './enteredWarehouseRFID';
+import ExitCorporations from './exitCorporations';
 import ExitHospitals from './exitHospitals';
 import Layout from '../../src/Components/Layout';
 import SentToCorporations from './sentToCorporations';
@@ -43,45 +45,45 @@ export default function AssetExitWorkflowsTables({ newExits }) {
 
   return (
     <Layout pageName={pageName}>
-      <Box sx={{ inlineSize: '100%', p: 1, position: "relative" }}>
+      <Box sx={{ inlineSize: '100%', p: 1, position: 'relative' }}>
         <Tabs
           value={tabValue}
           onChange={handleTabChange}
           variant='fullWidth'
           scrollButtons='auto'
         >
-          <Tab label='حواله های خروجی جدید' />
-          <Tab label='حواله های خروجی ارسال شده' />
-          <Tab label='حواله های خروجی تحویل داده شده' />
+          <Tab label='حواله های ورودی جدید' />
+          <Tab label='حواله های ورودی تایید شده' />
+          <Tab label='حواله های ورودی ثبت در انبار' />
         </Tabs>
         <TabPanel value={tabValue} index={0}>
-          <ExitHospitals />
+          <ExitCorporations />
         </TabPanel>
         <TabPanel value={tabValue} index={1}>
-          <SentToCorporations />
+          <ConfirmReceiptByHospitals />
         </TabPanel>
         <TabPanel value={tabValue} index={2}>
-          <ConfirmReceiptByCorporations />
+          <EnteredWarehouseRFID />
         </TabPanel>
-      <Box
-        sx={{
-          position: 'absolute',
-          top: -67,
-          right: '150px',
-          zIndex: 50000
-        }}
-      >
-        <Button
-          label='ایجاد'
-          size='large'
-          color='success'
-          variant='contained'
-          disabled={!session?.user?.role?.createLicense}
-          onClick={() => {
-            router.push('/users/newExitHospital');
+        <Box
+          sx={{
+            position: 'absolute',
+            top: -67,
+            right: '150px',
+            zIndex: 50000,
           }}
-        />
-      </Box>
+        >
+          <Button
+            label='ایجاد'
+            size='large'
+            color='success'
+            variant='contained'
+            disabled={!session?.user?.role?.createLicense}
+            onClick={() => {
+              router.push('/users/newExitCorporation');
+            }}
+          />
+        </Box>
       </Box>
     </Layout>
   );

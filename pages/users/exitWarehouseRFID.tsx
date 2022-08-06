@@ -175,7 +175,6 @@ export default function exitWarehouseRFID() {
             }
             checkedAssets={checkedAssets as any}
             submitHandler={async (status: string) => {
-              await updateStateHandler(status, checkedAssetsIds);
               const params = existingWorkflowQuery
                 ? [
                     existingWorkflowQuery?.workflowNumber,
@@ -187,7 +186,21 @@ export default function exitWarehouseRFID() {
                     existingWorkflow?.instanceOfProcessId,
                     checkedAssets,
                   ];
-              await rfidHandler(params[0], params[1], params[2]);
+              const r = await rfidHandler(
+                params[0],
+                params[1],
+                params[2],
+                existingWorkflowQuery
+                  ? existingWorkflowQuery?.passedStages?.[1]?.havaleh?.assets ??
+                      existingWorkflowQuery?.passedStages?.[0]?.havaleh?.assets
+                  : existingWorkflow &&
+                      (existingWorkflow?.passedStages?.[1]?.havaleh?.assets ??
+                        existingWorkflow?.passedStages?.[0]?.havaleh?.assets)
+              );
+              if (r) {
+                await updateStateHandler(status, checkedAssetsIds);
+                
+              }
             }}
             createTagHandler={createTagHandler}
           />

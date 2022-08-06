@@ -40,7 +40,7 @@ import {
 
 import { Button } from '../../Components/Button';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import ContradictionTable from '../../Components/ContradictionTable/ContradictionTable';
+import ContradictionTable from '../../Components/ContradictionTable';
 import DeleteDialog from '../../Components/DeleteRolesDialog';
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
@@ -131,7 +131,7 @@ const Styles = styled.div`
   }
 `;
 var delayTimer: any;
-export default memo(function ConfirmReceiptByCorporation({
+export default memo(function ConfirmReceiptByCorporations({
   loading,
   deleting,
   data = [],
@@ -143,7 +143,7 @@ export default memo(function ConfirmReceiptByCorporation({
   setFilters,
   fetchMoreRows,
   allWorkflowsCount,
-  deleteWorkflowsHandler,
+  deleteHandler,
 }: {
   loading: boolean;
   deleting: boolean;
@@ -156,7 +156,7 @@ export default memo(function ConfirmReceiptByCorporation({
   setFilters: any;
   allWorkflowsCount: number;
   fetchMoreRows: (e: any, page: number) => void;
-  deleteWorkflowsHandler: (workflowIds: string[]) => Promise<void>;
+  deleteHandler: (workflowIds: string[]) => Promise<void>;
 }) {
   //  states
   const [rowOptionsAnchorElement, setRowOptionsAnchorElement] =
@@ -192,53 +192,31 @@ export default memo(function ConfirmReceiptByCorporation({
         width: 230,
         accessor: (d: any) => {
           // عدم مغایرت و ثبت توسط شرکت
-          if (
-            !d?.passedStages?.[1].havaleh &&
-            d?.passedStages?.[0].submittedByUser?.id !==
-              d?.passedStages?.[1].submittedByUser?.id
-          ) {
-            return <Button label='ثبت حواله توسط شرکت' color='success' />;
-          } else if (d?.passedStages?.[1].havaleh) {
-            return (
-              <Button label='مغایرت حواله شرکت با دریافتی' color='error' />
-            );
-          } else if (
-            d?.passedStages?.[0].submittedByUser?.id ===
-            d?.passedStages?.[1].submittedByUser?.id
-          ) {
-            return (
-              <Button
-                label='ثبت حواله توسط انباردار'
-                backgroundColor='purple'
-              />
-            );
+          if (!d?.passedStages?.[3].havaleh?.assets) {
+            return <Button label='کامل' color='success' />;
+          } else if (d?.passedStages?.[3].havaleh?.assets) {
+            return <Button label='مغایرت حواله با دریافتی' color='error' />;
           }
         },
       },
 
       {
-        Header: 'تحویل گیرنده',
-        accessor: 'passedStages[1].submittedByUser.firstNameAndLastName', // accessor is the "key" in the data
-        width: 200,
+        Header: 'شماره پیگیری',
+        accessor: 'workflowNumber',
       },
-
       {
         Header: 'اسم شرکت',
         accessor: 'passedStages[0].havaleh.corporation.name',
       },
 
       {
-        Header: 'نماینده شرکت',
-        accessor: 'passedStages[0].submittedByUser.firstNameAndLastName',
+        Header: 'دریافت توسط',
+        accessor: 'passedStages[3].submittedByUser.firstNameAndLastName',
       },
 
       {
         Header: 'شماره حواله',
         accessor: 'passedStages[0].havaleh.id', // accessor is the "key" in the data
-      },
-      {
-        Header: 'تحویل دهنده',
-        accessor: 'passedStages[0].havaleh.deliverer', // accessor is the "key" in the data
       },
       {
         Header: 'نام ترابری',
@@ -281,15 +259,16 @@ export default memo(function ConfirmReceiptByCorporation({
         Header: 'جزییات مغایرت',
         id: 'details',
         accessor: (d: any) => {
-          if (d?.passedStages?.[1]?.havaleh) {
+          if (
+            d?.passedStages?.[3]?.havaleh?.assets &&
+            Object.values(d?.passedStages?.[3]?.havaleh?.assets).some((v) => v)
+          ) {
             return (
               <Button
                 label='مشاهده'
                 color='info'
                 onClick={() => {
                   setChoosedRow(d);
-                  console.log(d);
-
                   setDetailsDialog(true);
                 }}
               />
@@ -305,7 +284,7 @@ export default memo(function ConfirmReceiptByCorporation({
       },
       {
         Header: 'توضیحات دریافت',
-        accessor: 'passedStages[0].havaleh.receivingDescription',
+        accessor: 'passedStages[3].havaleh.receivingDescription',
         width: 300,
       },
     ],
@@ -656,7 +635,7 @@ export default memo(function ConfirmReceiptByCorporation({
               ))}
             </div>
 
-            {loading ? (
+            {loading || deleting ? (
               <Stack spacing={0.5}>
                 {[...Array(itemsPerPage)].map((i) => (
                   <Stack
@@ -734,7 +713,7 @@ export default memo(function ConfirmReceiptByCorporation({
         <Box
           sx={{
             position: 'absolute',
-            top: -68,
+            top: -122,
             right: '35px',
           }}
         >
@@ -756,15 +735,14 @@ export default memo(function ConfirmReceiptByCorporation({
         </Box>
       </Styles>
       <DeleteDialog
-        text='با این کار تمامی تجهیزات انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
+        text='با این کار تمامی گردش کارهای انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
         open={deleteDialog}
         closeDialog={() => setDeleteDialog(false)}
         confirmDelete={async () => {
-          // await deleteEquipmentsHandler(
-          //   selectedFlatRows.map((p) => p?.original?.terminologyCode)
-          // );
-          // setDeleteDialog(false);
-          return false;
+          await deleteHandler(
+            selectedFlatRows.map((p) => p?.original?.workflowNumber)
+          );
+          setDeleteDialog(false);
         }}
       />
       <Dialog
@@ -795,10 +773,17 @@ export default memo(function ConfirmReceiptByCorporation({
           </Stack>
         </DialogTitle>
         <DialogContent sx={{ position: 'relative', p: 5 }}>
-          <ContradictionTable data={choosedRow} />
+          <ContradictionTable
+            corporationRegisteredAssets={
+              choosedRow?.passedStages?.[3].havaleh?.assets
+            }
+            warehouseRegisteredAssets={
+              choosedRow?.passedStages?.[2].havaleh?.assets
+            }
+          />
         </DialogContent>
       </Dialog>
-      {session?.user?.role?.editPerson ? (
+      {/* {session?.user?.role?.editPerson ? (
         <Menu
           anchorEl={rowOptionsAnchorElement}
           open={rowOptionsOpen}
@@ -822,7 +807,7 @@ export default memo(function ConfirmReceiptByCorporation({
             </MenuItem>
           ) : null}
         </Menu>
-      ) : null}
+      ) : null} */}
     </Box>
   );
 });

@@ -13,8 +13,8 @@ import {
   CreateEnterWorkflowDocument,
   CreateExitWorkflowDocument,
   CreateNewPersonDocument,
-  DeleteEquipmentsDocument,
   DeletePersonsDocument,
+  DeleteWorkflowsDocument,
   EquipmentsDocument,
   RfidCheckWorkflowsDocument,
 } from '../../lib/graphql-operations';
@@ -26,6 +26,11 @@ import { TransferedAssets } from '../../lib/resolvers-types';
 import useNotification from './useNotification';
 import { useRouter } from 'next/router';
 
+function dropNullValues(assets: { [key: string]: any }) {
+  return Object.fromEntries(
+    Object.entries(assets).filter(([key, value]) => value)
+  );
+}
 export default function useWorkflows(
   offset = 0,
   pageNumber?: number,
@@ -37,7 +42,9 @@ export default function useWorkflows(
   fetchConfirmedEnterWorkflows = false,
   fetchAllExitWorkflows = false,
   fetchApprovedExitWorkflows = false,
-  fetchSentExitWorkflows = false
+  fetchSentExitWorkflows = false,
+  fetchRecievedExitWorkflows = false,
+  fetchRegisteredEnterWorkflows = false
 ) {
   const router = useRouter();
   const { setSnackbarOpen, setSnackbarMessage, setSnackbarColor } =
@@ -51,7 +58,11 @@ export default function useWorkflows(
     variables: {
       offset,
       limit: itemsPerPage,
-      filters: { ...filters, instanceOfProcessId: 1 },
+      filters: {
+        ...filters,
+        instanceOfProcessId: 1,
+        nextStageName: 'تایید تحویل کپسول به بیمارستان',
+      },
     },
   });
   // fetch All exit workflows
@@ -91,11 +102,28 @@ export default function useWorkflows(
     fetchPolicy: 'cache-and-network',
     variables: {
       filters: {
-        nextStageName: {
-          contains: 'RFID ثبت ورود کپسول به انبار توسط',
-        },
+        nextStageName: 'RFID ثبت ورود کپسول به انبار توسط',
         instanceOfProcessId: 1,
         ...filters,
+      },
+    },
+  });
+  // enter workflows that are registered by rfid by hospital
+  const [
+    registeredEnterWorkflowsQuery,
+    {
+      data: registeredEnterWorkflowsData,
+      loading: registeredEnterWorkflowsLoading,
+      error: registeredEnterWorkflowsError,
+      fetchMore: fetchMoreRegisteredEnterWorkflows,
+    },
+  ] = useLazyQuery(AllWorkflowsDocument, {
+    fetchPolicy: 'cache-and-network',
+    variables: {
+      filters: {
+        ...filters,
+        nextStageName: '',
+        instanceOfProcessId: 1,
       },
     },
   });
@@ -112,15 +140,13 @@ export default function useWorkflows(
     fetchPolicy: 'cache-and-network',
     variables: {
       filters: {
-        nextStageName: {
-          contains: 'RFID ثبت خروج کپسول از انبار توسط',
-        },
+        nextStageName: 'RFID ثبت خروج کپسول از انبار توسط',
         instanceOfProcessId: 2,
         ...filters,
       },
     },
   });
-  // exit workflows that have been sent to the hospital
+  // exit workflows that have been sent to the corporation
   const [
     sentExitWorkflowsQuery,
     {
@@ -132,12 +158,33 @@ export default function useWorkflows(
   ] = useLazyQuery(AllWorkflowsDocument, {
     fetchPolicy: 'cache-and-network',
     variables: {
+      offset,
+      limit: itemsPerPage,
       filters: {
-        nextStageName: {
-          contains: 'تایید تحویل به شرکت',
-        },
+        nextStageName: 'تایید تحویل به شرکت',
         instanceOfProcessId: 2,
         ...filters,
+      },
+    },
+  });
+  // exit workflows that have been received by the corporation
+  const [
+    recievedExitWorkflowsQuery,
+    {
+      data: recievedExitWorkflowsData,
+      loading: recievedExitWorkflowsLoading,
+      error: recievedExitWorkflowsError,
+      fetchMore: fetchMoreRecievedExitWorkflows,
+    },
+  ] = useLazyQuery(AllWorkflowsDocument, {
+    fetchPolicy: 'cache-and-network',
+    variables: {
+      offset,
+      limit: itemsPerPage,
+      filters: {
+        ...filters,
+        nextStageName: '',
+        instanceOfProcessId: 2,
       },
     },
   });
@@ -159,6 +206,12 @@ export default function useWorkflows(
       }
       if (fetchSentExitWorkflows) {
         await sentExitWorkflowsQuery();
+      }
+      if (fetchRecievedExitWorkflows) {
+        await recievedExitWorkflowsQuery();
+      }
+      if (fetchRegisteredEnterWorkflows) {
+        await registeredEnterWorkflowsQuery();
       }
     })();
   }, [filters]);
@@ -185,8 +238,8 @@ export default function useWorkflows(
   const [rfidCheckMutation, { loading: rfidCheckMutationSending }] =
     useMutation(RfidCheckWorkflowsDocument);
   // delete
-  const [deleteEquipmentsMutation, { loading: deleting }] = useMutation(
-    DeleteEquipmentsDocument
+  const [deleteWorkflowsMutation, { loading: deleting }] = useMutation(
+    DeleteWorkflowsDocument
   );
   // handlers
   // pagination handler
@@ -235,9 +288,7 @@ export default function useWorkflows(
       );
       try {
         // drop NaN values
-        const filteredAssets = Object.fromEntries(
-          Object.entries(assets).filter(([key, value]) => value)
-        );
+        const filteredAssets = dropNullValues(assets);
 
         const createdEnterWorkflow = await createEnterWorkflowMutation({
           variables: {
@@ -260,7 +311,7 @@ export default function useWorkflows(
             setSnackbarMessage,
             setSnackbarOpen
           );
-          router.push('/users/exitCorporations');
+          router.push('/users/assetEnterWorkflowsTables');
         } else {
           useNotification(
             'error',
@@ -301,9 +352,7 @@ export default function useWorkflows(
       );
       try {
         // drop NaN values
-        const filteredAssets = Object.fromEntries(
-          Object.entries(assets).filter(([key, value]) => value)
-        );
+        const filteredAssets = dropNullValues(assets);
 
         const createdExitWorkflow = await createExitWorkflowMutation({
           variables: {
@@ -369,13 +418,19 @@ export default function useWorkflows(
   );
   // confirming handler
   const confirmEnterHandler = useCallback(
-    async (workflowNumber: string, editedHavalehData: any) => {
+    async (
+      workflowNumber: string,
+      editedHavalehData: any,
+      receivingDescription?: string
+    ) => {
       useNotification(
         'sending',
         setSnackbarColor,
         setSnackbarMessage,
         setSnackbarOpen
       );
+      console.log('hello obama');
+
       try {
         if (editedHavalehData) {
           const {
@@ -398,9 +453,7 @@ export default function useWorkflows(
             assets: AggregatedTransferedAssets;
           } = editedHavalehData;
           // drop NaN values
-          const filteredAssets = Object?.fromEntries(
-            Object?.entries(assets as any)?.filter(([key, value]) => value)
-          );
+          const filteredAssets = dropNullValues(assets);
 
           var updatedEnterWorkflow = await confirmReceiptByHospitalMutation({
             variables: {
@@ -411,6 +464,7 @@ export default function useWorkflows(
               transportationTelephone,
               transportationTelephone2,
               description,
+              receivingDescription,
               deliverer,
               assets: filteredAssets,
             },
@@ -419,6 +473,7 @@ export default function useWorkflows(
           var updatedEnterWorkflow = await confirmReceiptByHospitalMutation({
             variables: {
               workflowNumber,
+              receivingDescription,
             },
           });
         }
@@ -458,19 +513,23 @@ export default function useWorkflows(
   );
   // confirming handler
   const confirmExitHandler = useCallback(
-    async (workflowNumber: string, editedHavalehData: any) => {
+    async (
+      workflowNumber: string,
+      editedHavalehData: any,
+      receivingDescription?: string
+    ) => {
       useNotification(
         'sending',
         setSnackbarColor,
         setSnackbarMessage,
         setSnackbarOpen
       );
+
       try {
         if (editedHavalehData) {
           const {
             havalehId,
             date,
-            deliverer,
             description,
             transportationName,
             transportationTelephone,
@@ -486,9 +545,7 @@ export default function useWorkflows(
             assets: AggregatedTransferedAssets;
           } = editedHavalehData;
           // drop NaN values
-          const filteredAssets = Object?.fromEntries(
-            Object?.entries(assets as any)?.filter(([key, value]) => value)
-          );
+          const filteredAssets = dropNullValues(assets);
 
           var updatedEnterWorkflow = await confirmReceiptByCorporationMutation({
             variables: {
@@ -499,6 +556,7 @@ export default function useWorkflows(
               transportationTelephone,
               transportationTelephone2,
               description,
+              receivingDescription,
               assets: filteredAssets,
             },
           });
@@ -506,6 +564,7 @@ export default function useWorkflows(
           var updatedEnterWorkflow = await confirmReceiptByCorporationMutation({
             variables: {
               workflowNumber,
+              receivingDescription,
             },
           });
         }
@@ -527,6 +586,8 @@ export default function useWorkflows(
           );
         }
       } catch (e) {
+        console.log(e.message);
+
         useNotification(
           'error',
           setSnackbarColor,
@@ -543,6 +604,7 @@ export default function useWorkflows(
     async (
       workflowNumber: string,
       processId: number,
+      checkedAssets: AggregatedTransferedAssets,
       assets: AggregatedTransferedAssets
     ) => {
       useNotification(
@@ -551,14 +613,41 @@ export default function useWorkflows(
         setSnackbarMessage,
         setSnackbarOpen
       );
+      if (!Object.values(checkedAssets).some((v) => v)) {
+        useNotification(
+          'error',
+          setSnackbarColor,
+          setSnackbarMessage,
+          setSnackbarOpen,
+          '',
+          '',
+          'تعداد یکی نیست!'
+        );
+        return false;
+      }
+      // Object.entries(checkedAssets)
+      //   .filter(([k, v]) => !/type/.test(k) && v)
+      //   .forEach(([k, v]) => {
+      //     if (v !== assets[k]) {
+      //       useNotification(
+      //         'error',
+      //         setSnackbarColor,
+      //         setSnackbarMessage,
+      //         setSnackbarOpen,
+      //         '',
+      //         '',
+      //         'تعداد یکی نیست!'
+      //       );
+      //       return false;
+      //     }
+      //   });
+
       try {
         const resp = await rfidCheckMutation({
           variables: {
             workflowNumber,
             processId,
-            assets: Object.fromEntries(
-              Object.entries(assets).filter(([k, v]) => v)
-            ),
+            assets: dropNullValues(checkedAssets),
           },
         });
         if (resp.data) {
@@ -590,7 +679,7 @@ export default function useWorkflows(
   );
 
   const deleteHandler = useCallback(
-    async (equipmentIds: string[]): Promise<any> => {
+    async (workflowIds: string[], query: string): Promise<any> => {
       // provide a response for user interaction(sending...)
       useNotification(
         'sending',
@@ -598,10 +687,62 @@ export default function useWorkflows(
         setSnackbarMessage,
         setSnackbarOpen
       );
+      const queryMapper = {
+        allExitWorkflows: [
+          {
+            query: AllWorkflowsDocument,
+            variables: {
+              offset,
+              limit: itemsPerPage,
+              filters: {
+                ...filters,
+                instanceOfProcessId: 2,
+                nsn: {
+                  in: [
+                    'RFID ثبت خروج کپسول از انبار توسط',
+                    'قبول درخواست توسط مدیریت',
+                  ],
+                },
+              },
+            },
+          },
+          'allWorkflows',
+        ],
+        sentExitWorkflows: [
+          {
+            query: AllWorkflowsDocument,
+            variables: {
+              offset,
+              limit: itemsPerPage,
+              filters: {
+                nextStageName: 'تایید تحویل به شرکت',
+                instanceOfProcessId: 2,
+                ...filters,
+              },
+            },
+          },
+          'allWorkflows',
+        ],
+        recievedExitWorkflows: [
+          {
+            query: AllWorkflowsDocument,
+            variables: {
+              offset,
+              limit: itemsPerPage,
+              filters: {
+                nextStageName: '',
+                instanceOfProcessId: 2,
+                ...filters,
+              },
+            },
+          },
+          'allWorkflows',
+        ],
+      };
       try {
-        const resp = await deleteEquipmentsMutation({
-          variables: { equipmentIds },
-          refetchQueries: [{ query: EquipmentsDocument }, 'equipments'],
+        const resp = await deleteWorkflowsMutation({
+          variables: { workflowIds },
+          refetchQueries: queryMapper?.[query],
         });
 
         if (resp?.data) {
@@ -635,10 +776,25 @@ export default function useWorkflows(
     []
   );
   return {
+    registeredEnterWorkflows:
+      registeredEnterWorkflowsData?.assetTransferWorkflows ?? [],
+    registeredEnterWorkflowsLoading,
+    registeredEnterWorkflowsError,
+    registeredEnterWorkflowsCount:
+      registeredEnterWorkflowsData?.assetTransferWorkflowsCount,
+    fetchMoreRegisteredEnterWorkflows,
+    recievedExitWorkflows:
+      recievedExitWorkflowsData?.assetTransferWorkflows ?? [],
+    recievedExitWorkflowsCount:
+      recievedExitWorkflowsData?.assetTransferWorkflowsCount,
+    recievedExitWorkflowsLoading,
+    recievedExitWorkflowsError,
+    fetchMoreRecievedExitWorkflows,
     sentExitWorkflows: sentExitWorkflowsData?.assetTransferWorkflows ?? [],
     sentExitWorkflowsCount: sentExitWorkflowsData?.assetTransferWorkflowsCount,
     sentExitWorkflowsLoading,
     sentExitWorkflowsError,
+    fetchMoreSentExitWorkflows,
     confirmReceiptByCorporationSending,
     allApprovedExitWorkflows:
       approvedExitWorkflowsData?.assetTransferWorkflows ?? [],

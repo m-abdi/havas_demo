@@ -20,6 +20,7 @@ query allWorkflows(
       havaleh {
         id
         description
+        receivingDescription
         deliverer
         date
         transportationName
@@ -102,7 +103,6 @@ query allWorkflows(
   }
   assetTransferWorkflowsCount(filters: $filters)
 }
-
 
 query confirmedEnterWorkflows($filters: AssetTransferWorkflowFilter) {
   assetTransferWorkflows(limit: 2000000, offset: 0, filters: $filters) {
@@ -198,7 +198,6 @@ query confirmedEnterWorkflows($filters: AssetTransferWorkflowFilter) {
   assetTransferWorkflowsCount(filters: $filters)
 }
 
-
 mutation createEnterWorkflow(
   $workflowNumber: String!
   $havalehId: String!
@@ -258,6 +257,7 @@ mutation confirmReceiptByHospital(
   $havalehId: String
   $deliverer: String
   $description: String
+  $receivingDescription: String
   $transportationName: String
   $transportationTelephone: String
   $transportationTelephone2: String
@@ -269,6 +269,7 @@ mutation confirmReceiptByHospital(
     havalehId: $havalehId
     deliverer: $deliverer
     description: $description
+    receivingDescription: $receivingDescription
     transportationName: $transportationName
     transportationTelephone: $transportationTelephone
     transportationTelephone2: $transportationTelephone2
@@ -278,7 +279,7 @@ mutation confirmReceiptByHospital(
     workflowNumber
     passedStages {
       stageName
-      submittedByUser{
+      submittedByUser {
         id
         firstNameAndLastName
       }
@@ -317,6 +318,7 @@ mutation confirmReceiptByCorporation(
   $havalehId: String
   $deliverer: String
   $description: String
+  $receivingDescription: String
   $transportationName: String
   $transportationTelephone: String
   $transportationTelephone2: String
@@ -328,6 +330,7 @@ mutation confirmReceiptByCorporation(
     havalehId: $havalehId
     deliverer: $deliverer
     description: $description
+    receivingDescription: $receivingDescription
     transportationName: $transportationName
     transportationTelephone: $transportationTelephone
     transportationTelephone2: $transportationTelephone2
@@ -372,9 +375,20 @@ mutation confirmReceiptByCorporation(
   }
 }
 
-
-mutation rfidCheckWorkflows($workflowNumber: String!, $processId: Int!, $assets: AggregatedTransferedAssets!) {
-  rfidCheckWorkflows(workflowNumber: $workflowNumber, processId: $processId, assets: $assets) {
+mutation rfidCheckWorkflows(
+  $workflowNumber: String!
+  $processId: Int!
+  $assets: AggregatedTransferedAssets!
+) {
+  rfidCheckWorkflows(
+    workflowNumber: $workflowNumber
+    processId: $processId
+    assets: $assets
+  ) {
     nextStageName
   }
+}
+
+mutation deleteWorkflows($workflowIds: [String!]!) {
+  deleteWorkflows(workflowIds: $workflowIds)
 }

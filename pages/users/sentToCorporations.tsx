@@ -31,8 +31,9 @@ export default memo(function exitHospitals() {
     sentExitWorkflows,
     sentExitWorkflowsCount,
     allExitWorkflowsLoading: loading,
-    sending,
-    fetchMoreExitWorkflows: fetchMore,
+    deleting,
+    deleteHandler,
+    fetchMoreSentExitWorkflows: fetchMore,
   } = useWorkflows(
     offset,
     pageNumber,
@@ -59,8 +60,10 @@ export default memo(function exitHospitals() {
       filters={filters}
       setFilters={setFilters}
       fetchMoreRows={fetchMore}
-      // deleting={deleting}
-      // deleteEquipmentsHandler={deleteHandler}
+      deleting={deleting}
+      deleteHandler={async (workflowIds: string[]) => {
+        await deleteHandler(workflowIds, 'sentExitWorkflows');
+      }}
     />
   );
 })

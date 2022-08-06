@@ -77,12 +77,12 @@ function createApolloClient(context?: ResolverContext) {
             assetTransferWorkflows: {
               ...offsetLimitPagination(),
               keyArgs: ['filters'],
-              read(existing, { args }): any {
-                return (
-                  existing &&
-                  existing.slice(args?.offset, args?.offset + args?.limit)
-                );
-              },
+              // read(existing, { args }): any {
+              //   return (
+              //     existing &&
+              //     existing.slice(args?.offset, args?.offset + args?.limit)
+              //   );
+              // },
             },
           },
         },

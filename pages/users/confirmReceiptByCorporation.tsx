@@ -134,7 +134,7 @@ export default function confirmReceiptByCorporation() {
             editable={editable}
             confirmExitHandler={confirmExitHandler}
             existingWorkflow={existingWorkflow}
-            corporations={placesList}
+            corporations={placesList as any}
             corporationsLoading={placesListLoading}
           />
         )}

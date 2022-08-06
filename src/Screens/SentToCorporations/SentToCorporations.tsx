@@ -38,6 +38,7 @@ import {
   useTable,
 } from 'react-table';
 
+import AggregatedTable from '../../Components/AggregatedTable';
 import { Button } from '../../Components/Button';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import DeleteDialog from '../../Components/DeleteRolesDialog';
@@ -158,7 +159,7 @@ export default memo(function SentToCorporations({
   setFilters,
   fetchMoreRows,
   allEquipmentsCount: allequipmentsCount,
-  deleteEquipmentsHandler,
+  deleteHandler,
 }: {
   loading: boolean;
   deleting: boolean;
@@ -171,7 +172,7 @@ export default memo(function SentToCorporations({
   setFilters: any;
   allEquipmentsCount: number;
   fetchMoreRows: (e: any, page: number) => void;
-  deleteEquipmentsHandler: (placeIds: string[]) => Promise<void>;
+  deleteHandler: (workflowIds: string[]) => Promise<void>;
 }) {
   //  states
   const [rowOptionsAnchorElement, setRowOptionsAnchorElement] =
@@ -184,7 +185,7 @@ export default memo(function SentToCorporations({
   const [rawFilters, setRawFilters] = useState({});
 
   //
-  const { register, reset } = useForm();
+  const { register, reset, setValue } = useForm();
 
   // other hooks
   const { data: session } = useSession();
@@ -207,7 +208,6 @@ export default memo(function SentToCorporations({
         Header: 'شماره پیگیری',
         accessor: 'workflowNumber', // accessor is the "key" in the data
       },
-  
 
       {
         Header: 'تاریخ ثبت فرم',
@@ -889,12 +889,12 @@ export default memo(function SentToCorporations({
         </Box>
       </Styles>
       <DeleteDialog
-        text='با این کار تمامی تجهیزات انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
+        text='با این کار تمامی گردش کارهای انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
         open={deleteDialog}
         closeDialog={() => setDeleteDialog(false)}
         confirmDelete={async () => {
-          await deleteEquipmentsHandler(
-            selectedFlatRows.map((p) => p?.original?.terminologyCode)
+          await deleteHandler(
+            selectedFlatRows.map((p) => p?.original?.workflowNumber)
           );
           setDeleteDialog(false);
         }}
@@ -927,7 +927,7 @@ export default memo(function SentToCorporations({
           </Stack>
         </DialogTitle>
         <DialogContent sx={{ position: 'relative', p: 5 }}>
-          <EditableHtmlTable
+          <AggregatedTable
             selectedColumns={[
               'اکسیژن',
               'گاز بیهوشی',
@@ -942,15 +942,13 @@ export default memo(function SentToCorporations({
               'گاز مایع',
             ]}
             register={register}
-            existingEnterWorkflow={
-              choosedRow?.passedStages?.[3]?.havaleh?.assets
-            }
+            assets={choosedRow?.passedStages?.[2]?.havaleh?.assets}
             editable={false}
-            reset={reset}
+            setValue={setValue}
           />
         </DialogContent>
       </Dialog>
-      {session?.user?.role?.editPerson ? (
+      {/* {session?.user?.role?.editPerson ? (
         <Menu
           anchorEl={rowOptionsAnchorElement}
           open={rowOptionsOpen}
@@ -974,7 +972,7 @@ export default memo(function SentToCorporations({
             </MenuItem>
           ) : null}
         </Menu>
-      ) : null}
+      ) : null} */}
     </Box>
   );
 });

@@ -23,6 +23,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { Check, Satellite } from '@mui/icons-material';
 import DatePicker, { Calendar } from 'react-multi-date-picker';
 /* eslint-disable react/jsx-key */
 import React, { useEffect, useMemo, useState } from 'react';
@@ -39,6 +40,7 @@ import {
 } from 'react-table';
 
 import { Button } from '../../Components/Button';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import DeleteDialog from '../../Components/DeleteRolesDialog';
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
@@ -47,7 +49,6 @@ import EditableHtmlTable from '../../Components/EditableHtmlTable';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
-import { Satellite } from '@mui/icons-material';
 import { Session } from 'next-auth';
 import { flushSync } from 'react-dom';
 import matchSorter from 'match-sorter';
@@ -583,7 +584,7 @@ export default memo(function ExitCorporations({
                           justifyContent={'center'}
                         >
                           {column.render('Header')}
-                          {!['selectAll', 'options', 'details'].includes(
+                          {!['selectAll', 'options', 'details', "detailsOfHavaleh"].includes(
                             column?.id
                           ) && column.isSorted ? (
                             column.isSortedDesc ? (
@@ -601,6 +602,7 @@ export default memo(function ExitCorporations({
                           'options',
                           'downloads',
                           'details',
+                          'detailsOfHavaleh',
                           'date',
                           'borrowed',
                         ].includes(column?.id) && (
@@ -620,6 +622,7 @@ export default memo(function ExitCorporations({
                           'downloads',
                           'date',
                           'details',
+                          'detailsOfHavaleh',
                           'borrowed',
                         ].includes(column?.id) && (
                           <TextField
@@ -652,13 +655,12 @@ export default memo(function ExitCorporations({
                                   contains: e.target.value,
                                 },
                               };
-                              
+
                               setRawFilters({
                                 ...rawFilters,
                                 ...newRawFilters,
                               });
-                          
-                              
+
                               clearTimeout(delayTimer);
                               delayTimer = setTimeout(function () {
                                 setFilters({
@@ -871,7 +873,7 @@ export default memo(function ExitCorporations({
         <Box
           sx={{
             position: 'absolute',
-            top: -68,
+            top: -122,
             right: '35px',
           }}
         >
@@ -964,16 +966,16 @@ export default memo(function ExitCorporations({
             <MenuItem>
               <Button
                 id={choosedRow?.terminologyCode + '-edit'}
-                startIcon={<EditRoundedIcon />}
+                startIcon={<CheckRoundedIcon />}
                 variant='text'
                 onClick={() =>
                   router.push(
-                    `/users/newEquipment?edit=1&equipment=${JSON.stringify(
+                    `/users/confirmReceiptByHospital/?workflow=${JSON.stringify(
                       choosedRow
                     )}`
                   )
                 }
-                label='ویرایش'
+                label='تایید ورود به بیمارستان'
               />
             </MenuItem>
           ) : null}

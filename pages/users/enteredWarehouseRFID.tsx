@@ -15,11 +15,11 @@ export default function confirmReceiptByHospitals() {
   const [filters, setFilters] = useState<EnterWorkflowFilter>();
   // hooks
   const {
-    confirmedEnterWorkflows,
-    confirmedEnterWorkflowsLoading,
-    confirmedEnterWorkflowsError,
-    confirmedEnterWorkflowsCount,
-    fetchMoreConfirmedEnterWorkflows,
+    registeredEnterWorkflows: data,
+    registeredEnterWorkflowsCount: count,
+    registeredEnterWorkflowsError: error,
+    registeredEnterWorkflowsLoading: loading,
+    fetchMoreRegisteredEnterWorkflows: fetchMore,
   } = useWorkflows(
     offset,
     pageNumber,
@@ -27,6 +27,11 @@ export default function confirmReceiptByHospitals() {
     filters,
     setPageNumber,
     setOffset,
+    false,
+    false,
+    false,
+    false,
+    false,
     false,
     true
   );
@@ -41,21 +46,21 @@ export default function confirmReceiptByHospitals() {
   );
 
   return (
-      <ConfirmReceiptByHospitals
-        data={confirmedEnterWorkflows as any}
-        loading={confirmedEnterWorkflowsLoading}
-        deleting={false}
-        filters={filters}
-        setFilters={setFilters}
-        pageNumber={pageNumber}
-        itemsPerPage={itemsPerPage}
-        setItemsPerPage={setItemsPerPage}
-        offset={offset}
-        allWorkflowsCount={confirmedEnterWorkflowsCount as number}
-        fetchMoreRows={fetchMoreConfirmedEnterWorkflows}
-        deleteWorkflowsHandler={async (workflowIds) => {
-          return;
-        }}
-      />
+    <ConfirmReceiptByHospitals
+      data={data as any}
+      loading={loading}
+      deleting={false}
+      filters={filters}
+      setFilters={setFilters}
+      pageNumber={pageNumber}
+      itemsPerPage={itemsPerPage}
+      setItemsPerPage={setItemsPerPage}
+      offset={offset}
+      allWorkflowsCount={count as number}
+      fetchMoreRows={fetchMore}
+      deleteWorkflowsHandler={async (workflowIds) => {
+        return;
+      }}
+    />
   );
 }

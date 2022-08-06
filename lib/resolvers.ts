@@ -20,6 +20,7 @@ import {
   canCreateTags,
   canDeleteAssets,
   canDeleteEquipments,
+  canDeleteLicenses,
   canDeletePersons,
   canDeletePlaces,
   canDeleteRols,
@@ -144,7 +145,6 @@ const resolvers: Resolvers = {
             }
           })
         );
-        console.log(parsedFilters);
 
         const placesDB = await prisma.place.findMany({
           take: limit ?? 2000000,
@@ -380,9 +380,8 @@ const resolvers: Resolvers = {
           Object.entries(filters).filter(([key, value]) => key !== 'nsn')
         );
       }
-      console.log(filters);
 
-      const enterWorkflowsDB = await prisma.workflow.findMany({
+      const workflows = await prisma.workflow.findMany({
         take: limit ?? 2000000,
         skip: offset ?? 0,
         where: {
@@ -391,7 +390,7 @@ const resolvers: Resolvers = {
         orderBy: { dateCreated: 'desc' },
       });
 
-      return enterWorkflowsDB as any;
+      return workflows as any;
     },
     async assetTransferWorkflowsCount(_, _args, _context): Promise<number> {
       // check authentication and permission
@@ -485,7 +484,15 @@ const resolvers: Resolvers = {
         throw new GraphQLYogaError('Unauthorized');
       }
 
-      return ((await prisma.workflow.count()) + 1).toString();
+      const newNumber =
+        parseInt(
+          (
+            await prisma.workflow.findMany({ orderBy: { dateCreated: 'desc' } })
+          ).shift()?.workflowNumber ?? '0'
+        ) + 1;
+      console.log(newNumber);
+
+      return newNumber.toString();
     },
     async tagData(
       _: any,
@@ -819,7 +826,6 @@ const resolvers: Resolvers = {
       if (!session || !(await canDeleteRols(session))) {
         throw new GraphQLYogaError('Unauthorized');
       }
-      console.log(_args.roleIds);
 
       // with two separate queries in a transaction (all queries must succeed)
       const deletePersons = prisma.person.deleteMany({
@@ -851,7 +857,6 @@ const resolvers: Resolvers = {
       const deletedPersons = await prisma.person.deleteMany({
         where: { id: { in: personIds } },
       });
-      console.log(deletedPersons);
 
       return deletedPersons?.count;
     },
@@ -908,6 +913,24 @@ const resolvers: Resolvers = {
       });
 
       return deletedAssets?.count;
+    },
+    async deleteWorkflows(
+      _: any,
+      { workflowIds },
+      _context: any
+    ): Promise<number> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canDeleteLicenses(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+
+      const deletedWorkflows = await prisma.workflow.deleteMany({
+        where: { workflowNumber: { in: workflowIds } },
+      });
+
+      return deletedWorkflows?.count;
     },
     async createEnterWorkflow(
       _,
@@ -975,7 +998,6 @@ const resolvers: Resolvers = {
       //       },
       //     },
       //   });
-      //   console.log(ur);
       // });
       // // hospital assets that have been borrowed by the corporation
       // const customerAssets = Object.entries(assets)
@@ -1108,7 +1130,6 @@ const resolvers: Resolvers = {
               ? aggregatedAssets[k] + v
               : v)
         );
-      console.log(session);
       const currentConfig = await prisma.config.findFirst({
         where: { current: true },
       });
@@ -1205,6 +1226,7 @@ const resolvers: Resolvers = {
         havalehId,
         deliverer,
         description,
+        receivingDescription,
         transportationName,
         transportationTelephone,
         transportationTelephone2,
@@ -1248,6 +1270,7 @@ const resolvers: Resolvers = {
                   transportationTelephone,
                   transportationTelephone2,
                   description,
+                  receivingDescription,
                   assets:
                     assets ||
                     existingWorkflow?.passedStages?.[0]?.havaleh?.assets,
@@ -1273,6 +1296,9 @@ const resolvers: Resolvers = {
                   id: session?.user?.id,
                   firstNameAndLastName: session?.user?.firstNameAndLastName,
                 },
+                havaleh: {
+                  receivingDescription,
+                },
               },
             ],
           },
@@ -1287,6 +1313,7 @@ const resolvers: Resolvers = {
         havalehId,
         deliverer,
         description,
+        receivingDescription,
         transportationName,
         transportationTelephone,
         transportationTelephone2,
@@ -1330,6 +1357,7 @@ const resolvers: Resolvers = {
                   transportationTelephone,
                   transportationTelephone2,
                   description,
+                  receivingDescription,
                   assets:
                     assets ||
                     existingWorkflow?.passedStages?.[0]?.havaleh?.assets,
@@ -1340,6 +1368,8 @@ const resolvers: Resolvers = {
         });
         return updatedWorkflow;
       } else {
+        console.log(receivingDescription);
+
         const updatedWorkflow = await prisma.workflow.update({
           where: {
             workflowNumber,
@@ -1354,6 +1384,9 @@ const resolvers: Resolvers = {
                 submittedByUser: {
                   id: session?.user?.id,
                   firstNameAndLastName: session?.user?.firstNameAndLastName,
+                },
+                havaleh: {
+                  receivingDescription,
                 },
               },
             ],
@@ -1425,7 +1458,7 @@ const resolvers: Resolvers = {
           operations.push(w);
         }
       });
-      console.log(await prisma.$transaction(operations));
+      await prisma.$transaction(operations);
 
       return 2;
     },

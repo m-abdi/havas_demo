@@ -128,6 +128,15 @@ export async function canDeleteRols(session: Session) {
   });
   return user?.role.deleteRole;
 }
+export async function canDeleteLicenses(session: Session) {
+  const user = await prisma.person.findFirst({
+    where: {
+      id: session.user.id,
+    },
+    include: { role: true },
+  });
+  return user?.role.deleteLicense;
+}
 export async function canEditAssets(session: Session) {
   const user = await prisma.person.findFirst({
     where: {

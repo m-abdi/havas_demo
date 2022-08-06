@@ -95,8 +95,8 @@ export default function EnterWarehouseRFID({
   // states
   const [newTagDialogIsOpened, setNewTagDialogIsOpened] = useState(false);
   // react-form-hooks
-  const { register:register1, setValue: setValue1 } = useForm();
-  const { register: register2,setValue: setValue2 } = useForm();
+  const { register: register1, setValue: setValue1 } = useForm();
+  const { register: register2, setValue: setValue2 } = useForm();
   return (
     <Container maxWidth='lg' sx={{ position: 'relative' }}>
       <Stack
@@ -193,8 +193,6 @@ export default function EnterWarehouseRFID({
             mqttStatus={mqttStatus}
             newAsset={true}
             createTagHandler={async (tags: NewTagType[]) => {
-          
-              
               const resp = await createTagHandler(tags);
               if (resp) {
                 setNewTagDialogIsOpened(false);
@@ -216,7 +214,10 @@ export default function EnterWarehouseRFID({
           size='large'
           color='success'
           variant='contained'
-          onClick={async () => await submitHandler('موجود در بیمارستان')}
+          onClick={async () => {
+            
+              await submitHandler('موجود در بیمارستان');
+          }}
         />
       </Box>
     </Container>

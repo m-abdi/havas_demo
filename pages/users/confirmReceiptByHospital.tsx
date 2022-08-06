@@ -7,11 +7,12 @@ import {
   Stack,
   TextField,
 } from '@mui/material';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { Button } from '../../src/Components/Button';
 import Head from 'next/head';
 import Layout from '../../src/Components/Layout';
+import NewExitCorporation from '../../src/Screens/NewExitCorporation';
 import NewExitHospital from '../../src/Screens/NewExitHospital';
 import { useRouter } from 'next/router';
 import useWorkflows from '../../src/Logic/useWorkflows';
@@ -23,12 +24,21 @@ export default function ConfirmReceiptByHospital() {
   const [existingWorkflow, setExistingWorkflow] = useState();
   const [editable, setEditable] = useState(false);
 
+  //
+  const router = useRouter();
   const _ = undefined;
   const { allEnterWorkflows, loading, sending, confirmEnterHandler } =
-    useWorkflows(_, _, 2000000, null, null, null, true);
+    useWorkflows(_, _, 2000000, undefined, undefined, undefined, true);
   //
 
-  const router = useRouter();
+  useEffect(() => {
+    console.log(router.query.workflow);
+    
+    if (router?.query?.workflow) {
+      setExistingWorkflow(JSON.parse(router?.query?.workflow as string));
+    }
+  }, [router.isReady]);
+
   return (
     <Layout pageName={pageName}>
       <Container maxWidth='lg' sx={{ position: 'relative' }}>
@@ -46,11 +56,13 @@ export default function ConfirmReceiptByHospital() {
                 onClick={() => setEditable(true)}
               />
             )}
-            <Button
-              label='حواله در سامانه موجود نیست'
-              backgroundColor='purple'
-              onClick={() => router.push('/users/newExitCorporation')}
-            />
+            {!existingWorkflow && (
+              <Button
+                label='حواله در سامانه موجود نیست'
+                backgroundColor='purple'
+                onClick={() => router.push('/users/newExitCorporation')}
+              />
+            )}
           </Stack>
           <Divider sx={{ my: 1 }} />
         </Box>
@@ -88,16 +100,18 @@ export default function ConfirmReceiptByHospital() {
               />
             )}
           />
-        ) : loading && (
-          <Skeleton
-            variant='rectangular'
-            width={500}
-            height={40}
-            sx={{ borderRadius: '5px' }}
-          />
+        ) : (
+          loading && (
+            <Skeleton
+              variant='rectangular'
+              width={500}
+              height={40}
+              sx={{ borderRadius: '5px' }}
+            />
+          )
         )}
         {existingWorkflow && (
-          <NewExitHospital
+          <NewExitCorporation
             loading={loading}
             sending={sending}
             editable={editable}

@@ -44,12 +44,14 @@ import ContradictionTable from '../../Components/ContradictionTable/Contradictio
 import DeleteDialog from '../../Components/DeleteRolesDialog';
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import EditableHtmlTable from '../../Components/EditableHtmlTable';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import { Satellite } from '@mui/icons-material';
 import { Session } from 'next-auth';
 import { Workflow } from '../../../lib/resolvers-types';
+import { flushSync } from 'react-dom';
 import matchSorter from 'match-sorter';
 /* eslint-disable react/jsx-filename-extension */
 import { memo } from 'react';
@@ -57,6 +59,7 @@ import persianCalender from 'react-date-object/calendars/persian';
 import persianLocale from 'react-date-object/locales/persian_fa';
 import styled from 'styled-components';
 import toNestedObject from '../../Logic/toNestedObject';
+import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
@@ -166,12 +169,13 @@ export default memo(function ConfirmReceiptByHospitals({
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [detailsDialog, setDetailsDialog] = useState(false);
   const [rawFilters, setRawFilters] = useState({});
-
+  const [havalehDialog, setHavalehDialog] = useState(false);
   // const [value, setValue] = React.useState(globalFilter);
 
   // other hooks
   const { data: session } = useSession();
   const router = useRouter();
+  const { reset, register, setValue } = useForm();
   // handlers
   const handleRowOptionsOpen = (
     e: React.MouseEvent<HTMLButtonElement>,
@@ -193,12 +197,15 @@ export default memo(function ConfirmReceiptByHospitals({
         accessor: (d: any) => {
           // عدم مغایرت و ثبت توسط شرکت
           if (
-            !d?.passedStages?.[1].havaleh &&
+            !d?.passedStages?.[1].havaleh?.assets &&
             d?.passedStages?.[0].submittedByUser?.id !==
               d?.passedStages?.[1].submittedByUser?.id
           ) {
             return <Button label='ثبت حواله توسط شرکت' color='success' />;
-          } else if (d?.passedStages?.[1].havaleh) {
+          } else if (
+            d?.passedStages?.[1].havaleh?.assets &&
+            Object.values(d?.passedStages?.[1].havaleh?.assets).some((v) => v)
+          ) {
             return (
               <Button label='مغایرت حواله شرکت با دریافتی' color='error' />
             );
@@ -216,6 +223,10 @@ export default memo(function ConfirmReceiptByHospitals({
         },
       },
 
+      {
+        Header: 'شماره پیگیری',
+        accessor: 'workflowNumber', // accessor is the "key" in the data
+      },
       {
         Header: 'تحویل گیرنده',
         accessor: 'passedStages[1].submittedByUser.firstNameAndLastName', // accessor is the "key" in the data
@@ -259,7 +270,23 @@ export default memo(function ConfirmReceiptByHospitals({
       },
       {
         Header: 'جزییات حواله',
-        accessor: 'ee', // accessor is the "key" in the data
+        id: 'detailsOfHavaleh',
+        disableSortBy: true,
+        disableFilters: true,
+        accessor: (d: any) => {
+          return (
+            <Button
+              label='مشاهده'
+              color='info'
+              onClick={(e) => {
+                flushSync(() => {
+                  setChoosedRow(d);
+                });
+                setHavalehDialog(true);
+              }}
+            />
+          );
+        },
       },
       {
         Header: 'امانتی',
@@ -281,15 +308,18 @@ export default memo(function ConfirmReceiptByHospitals({
         Header: 'جزییات مغایرت',
         id: 'details',
         accessor: (d: any) => {
-          if (d?.passedStages?.[1]?.havaleh) {
+          if (
+            d?.passedStages?.[1]?.havaleh?.assets &&
+            Object.values(d?.passedStages?.[1]?.havaleh?.assets).some((v) => v)
+          ) {
             return (
               <Button
                 label='مشاهده'
                 color='info'
                 onClick={() => {
-                  setChoosedRow(d);
-                  console.log(d);
-
+                  flushSync(() => {
+                    setChoosedRow(d);
+                  });
                   setDetailsDialog(true);
                 }}
               />
@@ -305,7 +335,7 @@ export default memo(function ConfirmReceiptByHospitals({
       },
       {
         Header: 'توضیحات دریافت',
-        accessor: 'passedStages[0].havaleh.receivingDescription',
+        accessor: 'passedStages[1].havaleh.receivingDescription',
         width: 300,
       },
     ],
@@ -511,6 +541,7 @@ export default memo(function ConfirmReceiptByHospitals({
                           'options',
                           'downloads',
                           'details',
+                          'detailsOfHavaleh',
                           'borrowed',
                           'type',
                         ].includes(column?.id) && (
@@ -529,6 +560,8 @@ export default memo(function ConfirmReceiptByHospitals({
                           'hasInstructions',
                           'downloads',
                           'details',
+                          'detailsOfHavaleh',
+
                           'borrowed',
                           'type',
                         ].includes(column?.id) && (
@@ -734,7 +767,7 @@ export default memo(function ConfirmReceiptByHospitals({
         <Box
           sx={{
             position: 'absolute',
-            top: -68,
+            top: -122,
             right: '35px',
           }}
         >
@@ -795,7 +828,65 @@ export default memo(function ConfirmReceiptByHospitals({
           </Stack>
         </DialogTitle>
         <DialogContent sx={{ position: 'relative', p: 5 }}>
-          <ContradictionTable data={choosedRow} />
+          <ContradictionTable
+            corporationRegisteredAssets={
+              choosedRow?.passedStages?.[0].havaleh?.assets
+            }
+            warehouseRegisteredAssets={
+              choosedRow?.passedStages?.[1].havaleh?.assets
+            }
+          />
+        </DialogContent>
+      </Dialog>
+      <Dialog
+        sx={{ zIndex: 7000 }}
+        open={havalehDialog}
+        maxWidth='lg'
+        onClose={() => setHavalehDialog(false)}
+      >
+        <DialogTitle sx={{ textAlign: 'center' }}>
+          <Stack
+            direction='row'
+            alignItems='center'
+            justifyContent={'space-between'}
+          >
+            <span style={{ inlineSize: '10%' }}>
+              <IconButton onClick={() => setHavalehDialog(false)}>
+                <CloseRoundedIcon />
+              </IconButton>
+            </span>
+            <Typography
+              variant='h5'
+              component='h2'
+              sx={{ flexGrow: 1, textAlign: 'center' }}
+            >
+              جزئیات حواله
+            </Typography>
+            <span style={{ inlineSize: '10%' }}></span>
+          </Stack>
+        </DialogTitle>
+        <DialogContent sx={{ position: 'relative', p: 5 }}>
+          <EditableHtmlTable
+            selectedColumns={[
+              'اکسیژن',
+              'گاز بیهوشی',
+              'شفت-فلکه',
+              'شیر کنترل',
+              'Co2',
+              'آرگون',
+              'ازت',
+              'هوای خشک',
+              'آنتونکس',
+              'استیلن',
+              'گاز مایع',
+            ]}
+            register={register}
+            existingEnterWorkflow={
+              choosedRow?.passedStages?.[0]?.havaleh?.assets
+            }
+            editable={false}
+            reset={reset}
+          />
         </DialogContent>
       </Dialog>
       {session?.user?.role?.editPerson ? (

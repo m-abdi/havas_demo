@@ -2,6 +2,7 @@ import {
   Box,
   Checkbox,
   Container,
+  Divider,
   ListItemText,
   MenuItem,
   Select,
@@ -195,7 +196,7 @@ export default function ExitCorporation({
         acetylene_40l?: number;
         lpg_40l?: number;
       };
-    } | null
+    } | null, receivingDescription: string
   ) => Promise<void>;
 }) {
   // react-form-hooks
@@ -241,7 +242,7 @@ export default function ExitCorporation({
   // handlers
   const submitHandler = async (data: any) => {
     if (existingWorkflow) {
-      await confirmEnterHandler(
+      await confirmEnterHandler?.(
         existingWorkflow?.workflowNumber,
         editable
           ? {
@@ -277,10 +278,10 @@ export default function ExitCorporation({
                 lpg_40l: parseInt(data?.lpg_40l),
               },
             }
-          : null
+          : null, data?.receivingDescription
       );
     } else {
-      await createNewHandler(
+      await createNewHandler?.(
         workflowNumber as string,
         data?.havalehId,
         dateT || new Date(date?.toDate()).getTime().toString(),
@@ -353,6 +354,20 @@ export default function ExitCorporation({
   function ExitCorporationForm() {
     return (
       <>
+        <Divider variant='fullWidth' flexItem />
+        {existingWorkflow && <Row1>
+          <Input1>
+            <Label1>توضیحات دریافت</Label1>
+            <TextField
+              size='small'
+              id='description'
+              disabled={false}
+              inputProps={{
+                ...register('receivingDescription'),
+              }}
+            />
+          </Input1>
+        </Row1>}
         <Row1>
           {/* <Input1>
             <Label1>شماره ثبت فرم</Label1>
