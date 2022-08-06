@@ -379,11 +379,13 @@ mutation rfidCheckWorkflows(
   $workflowNumber: String!
   $processId: Int!
   $assets: AggregatedTransferedAssets!
+  $checkedAssetsIds: [String!]!
 ) {
   rfidCheckWorkflows(
     workflowNumber: $workflowNumber
     processId: $processId
     assets: $assets
+    checkedAssetsIds: $checkedAssetsIds
   ) {
     nextStageName
   }

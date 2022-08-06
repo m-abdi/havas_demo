@@ -639,6 +639,7 @@ const typeDefs = /* GraphQL */ `
       workflowNumber: String!
       processId: Int!
       assets: AggregatedTransferedAssets!
+      checkedAssetsIds: [String!]!
     ): Workflow
   }
 `;

@@ -23,6 +23,7 @@ import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 
 import { SnackbarContext } from '../../pages/_app';
 import { TransferedAssets } from '../../lib/resolvers-types';
+import useAssets from './useAssets';
 import useNotification from './useNotification';
 import { useRouter } from 'next/router';
 
@@ -602,6 +603,7 @@ export default function useWorkflows(
   // rfid handler
   const rfidHandler = useCallback(
     async (
+      checkedAssetsIds: string[],
       workflowNumber: string,
       processId: number,
       checkedAssets: AggregatedTransferedAssets,
@@ -643,11 +645,13 @@ export default function useWorkflows(
       //   });
 
       try {
+
         const resp = await rfidCheckMutation({
           variables: {
             workflowNumber,
             processId,
             assets: dropNullValues(checkedAssets),
+            checkedAssetsIds
           },
         });
         if (resp.data) {

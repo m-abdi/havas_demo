@@ -1464,7 +1464,7 @@ const resolvers: Resolvers = {
     },
     async rfidCheckWorkflows(
       _,
-      { workflowNumber, processId, assets },
+      { workflowNumber, processId, assets, checkedAssetsIds },
       _context
     ): Promise<any> {
       // check authentication and permission
@@ -1473,7 +1473,18 @@ const resolvers: Resolvers = {
       if (!session || !(await canCreateLicense(session))) {
         throw new GraphQLYogaError('Unauthorized');
       }
-      return await prisma.workflow.update({
+      const updatedStates = prisma.asset.updateMany({
+        where: { id: { in: checkedAssetsIds as string[] } },
+        data: {
+          status:
+            processId === 1
+              ? 'موجود در بیمارستان'
+              : processId === 2
+              ? 'در حال ارسال'
+              : '',
+        },
+      });
+      const updatedWorkflow =  prisma.workflow.update({
         where: { workflowNumber },
         data:
           processId === 1
@@ -1510,6 +1521,8 @@ const resolvers: Resolvers = {
                 },
               },
       });
+      const t =  await prisma.$transaction([updatedStates, updatedWorkflow])
+      return t[1]
     },
   },
   Person: {

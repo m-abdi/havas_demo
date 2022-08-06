@@ -187,6 +187,7 @@ export default function exitWarehouseRFID() {
                     checkedAssets,
                   ];
               const r = await rfidHandler(
+                checkedAssetsIds,
                 params[0],
                 params[1],
                 params[2],
@@ -197,10 +198,7 @@ export default function exitWarehouseRFID() {
                       (existingWorkflow?.passedStages?.[1]?.havaleh?.assets ??
                         existingWorkflow?.passedStages?.[0]?.havaleh?.assets)
               );
-              if (r) {
-                await updateStateHandler(status, checkedAssetsIds);
-                
-              }
+             
             }}
             createTagHandler={createTagHandler}
           />
