@@ -62,20 +62,18 @@ import prisma from '../prisma/client';
         terminologyCode: 'oxygen_50l',
         serialNumber: 'سریال',
         hasInstructions: false,
-        state: {
-          receiving: 0,
-          outsourced: 0,
-        },
+        receiving: 0,
+        outsourced: 0,
+        sending: 0,
       },
       {
         name: 'اکسیژن ۴۰ لیتری',
         terminologyCode: 'oxygen_40l',
         serialNumber: 'سریال',
         hasInstructions: false,
-        state: {
-          receiving: 0,
-          outsourced: 0,
-        },
+        receiving: 0,
+        outsourced: 0,
+        sending: 0,
       },
     ],
   });

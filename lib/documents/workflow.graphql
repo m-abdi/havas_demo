@@ -248,9 +248,95 @@ mutation createExitWorkflow(
     date: $date
     assets: $assets
   ) {
+    workflowNumber
     instanceOfProcessId
     passedStages {
-      stageID
+      submittedByUser {
+        id
+        firstNameAndLastName
+      }
+      havaleh {
+        id
+        deliverer
+        date
+        assets {
+          oxygen_50l
+          bihoshi_50l
+          shaft_50l
+          controlValve_50l
+          co2_50l
+          argon_50l
+          azete_50l
+          dryAir_50l
+          entonox_50l
+          acetylene_50l
+          lpg_50l
+          oxygen_40l
+          bihoshi_40l
+          shaft_40l
+          controlValve_40l
+          co2_40l
+          argon_40l
+          azete_40l
+          dryAir_40l
+          entonox_40l
+          acetylene_40l
+          lpg_40l
+          oxygen_50l_factory
+          bihoshi_50l_factory
+          shaft_50l_factory
+          controlValve_50l_factory
+          co2_50l_factory
+          argon_50l_factory
+          azete_50l_factory
+          dryAir_50l_factory
+          entonox_50l_factory
+          acetylene_50l_factory
+          lpg_50l_factory
+          oxygen_50l_customer
+          bihoshi_50l_customer
+          shaft_50l_customer
+          controlValve_50l_customer
+          co2_50l_customer
+          argon_50l_customer
+          azete_50l_customer
+          dryAir_50l_customer
+          entonox_50l_customer
+          acetylene_50l_customer
+          lpg_50l_customer
+          oxygen_40l_factory
+          bihoshi_40l_factory
+          shaft_40l_factory
+          controlValve_40l_factory
+          co2_40l_factory
+          argon_40l_factory
+          azete_40l_factory
+          dryAir_40l_factory
+          entonox_40l_factory
+          acetylene_40l_factory
+          lpg_40l_factory
+          oxygen_40l_customer
+          bihoshi_40l_customer
+          shaft_40l_customer
+          controlValve_40l_customer
+          co2_40l_customer
+          argon_40l_customer
+          azete_40l_customer
+          dryAir_40l_customer
+          entonox_40l_customer
+          acetylene_40l_customer
+          lpg_40l_customer
+        }
+        corporation {
+          id
+          name
+        }
+        transportationName
+        transportationTelephone
+        transportationTelephone2
+        description
+        receivingDescription
+      }
     }
   }
 }

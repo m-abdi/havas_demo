@@ -381,7 +381,11 @@ export default function useWorkflows(
               setSnackbarMessage,
               setSnackbarOpen
             );
-            router.push('/users/exitWarehouseRFID');
+            router.push(
+              `/users/exitWarehouseRFID?workflow=${JSON.stringify(
+                createdExitWorkflow?.data?.createExitWorkflow
+              )}`
+            );
           }
           // needs approval -> direct to dashboard
           else if (

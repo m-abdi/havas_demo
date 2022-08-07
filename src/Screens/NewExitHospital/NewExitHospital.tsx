@@ -549,7 +549,7 @@ export default function NewExitHospital({
             <TextField
               size='small'
               id='description'
-              disabled={true}
+              disabled={Boolean(existingWorkflow)}
               inputProps={{
                 ...register('description', {
                   value:

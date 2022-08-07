@@ -1044,26 +1044,21 @@ const resolvers: Resolvers = {
               : v)
         );
       //  update state of equipments
-      const updates: any = [];
-      const allEquipments = await prisma.equipment.findMany();
-      Object.entries(([key, value]) => {
-        const u = prisma.equipment.update({
-          where: {
-            terminologyCode: key,
-          },
-          data: {
-            state: {
-              receiving:
-                allEquipments.find((e) => e.terminologyCode === key)?.state
-                  .receiving + value,
-            },
-          },
+      const o: any = [];
+      Object.entries(aggregatedAssets)
+        .filter(([k, v]) => v && !/factory/.test(k) && !/customer/.test(k))
+        .forEach(([k, v]) => {
+          o.push(
+            prisma.equipment.update({
+              where: { terminologyCode: k },
+              data: {
+                receiving: { increment: v as number },
+              },
+            })
+          );
         });
-        updates.push(u);
-      });
-      await prisma.$transaction(updates);
       // new enter workflow
-      const createdWorkflow = await prisma.workflow.create({
+      const createdWorkflow = prisma.workflow.create({
         data: {
           workflowNumber,
           instanceOfProcess: { connect: { processNumber: 1 } },
@@ -1094,7 +1089,12 @@ const resolvers: Resolvers = {
           ],
         },
       });
-      return createdWorkflow?.id ?? '';
+      console.log(o);
+      
+      const t = await prisma.$transaction([...o, createdWorkflow]);
+      console.log(t);
+      
+      return t?.[1]?.id ?? '';
     },
     async createExitWorkflow(
       _,
@@ -1245,6 +1245,38 @@ const resolvers: Resolvers = {
         where: { workflowNumber },
       });
 
+      const o: any = [];
+      if (assets) {
+        Object.entries(
+          existingWorkflow?.passedStages?.[0]?.havaleh?.assets as any
+        )
+          .filter(([k, v]) => v && !/factory/.test(k) && !/customer/.test(k))
+          .forEach(([k, v]) => {
+            o.push(
+              prisma.equipment.update({
+                where: { terminologyCode: k },
+                data: {
+                  receiving: { decrement: v as number },
+                },
+              })
+            );
+          });
+      } else {
+        Object.entries(
+          existingWorkflow?.passedStages?.[0]?.havaleh?.assets as any
+        )
+          .filter(([k, v]) => v && !/factory/.test(k) && !/customer/.test(k))
+          .forEach(([k, v]) => {
+            o.push(
+              prisma.equipment.update({
+                where: { terminologyCode: k },
+                data: {
+                  receiving: { decrement: v as number },
+                },
+              })
+            );
+          });
+      }
       // update enter workflow
       if (havalehId) {
         const updatedWorkflow = await prisma.workflow.update({
@@ -1332,9 +1364,25 @@ const resolvers: Resolvers = {
         where: { workflowNumber },
       })) as any;
 
+      const o: any = [];
+      Object.entries(
+        existingWorkflow?.passedStages?.[2]?.havaleh?.assets as any
+      )
+        .filter(([k, v]) => v)
+        .forEach(([k, v]) => {
+          o.push(
+            prisma.equipment.update({
+              where: { terminologyCode: k },
+              data: {
+                sending: { decrement: v as number },
+                outsourced: { increment: v as number },
+              },
+            })
+          );
+        });
       // update enter workflow
       if (havalehId) {
-        const updatedWorkflow = await prisma.workflow.update({
+        const updatedWorkflow = prisma.workflow.update({
           where: {
             workflowNumber,
           },
@@ -1366,11 +1414,10 @@ const resolvers: Resolvers = {
             ],
           },
         });
-        return updatedWorkflow;
+        const t = await prisma.$transaction([updatedWorkflow, ...o]);
+        return t[0];
       } else {
-        console.log(receivingDescription);
-
-        const updatedWorkflow = await prisma.workflow.update({
+        const updatedWorkflow = prisma.workflow.update({
           where: {
             workflowNumber,
           },
@@ -1392,7 +1439,8 @@ const resolvers: Resolvers = {
             ],
           },
         });
-        return updatedWorkflow;
+        const t = await prisma.$transaction([updatedWorkflow, ...o]);
+        return t[0];
       }
     },
     async updateAssetsStates(_, { ids, status }, _context): Promise<any> {
@@ -1484,7 +1532,18 @@ const resolvers: Resolvers = {
               : '',
         },
       });
-      const updatedWorkflow =  prisma.workflow.update({
+      const o: any = [];
+      if (processId === 2) {
+        Object.entries(assets).forEach(([k, v]) => {
+          o.push(
+            prisma.equipment.update({
+              where: { terminologyCode: k },
+              data: { sending: { increment: v as number } },
+            })
+          );
+        });
+      }
+      const updatedWorkflow = prisma.workflow.update({
         where: { workflowNumber },
         data:
           processId === 1
@@ -1521,8 +1580,12 @@ const resolvers: Resolvers = {
                 },
               },
       });
-      const t =  await prisma.$transaction([updatedStates, updatedWorkflow])
-      return t[1]
+      const t = await prisma.$transaction([
+        updatedStates,
+        updatedWorkflow,
+        ...o,
+      ]);
+      return t[1];
     },
   },
   Person: {
