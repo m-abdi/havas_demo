@@ -2,3 +2,7 @@ lib/*.*
 _app.*
 _document.*
 *.stories.*
+*.ts
+*.js
+*.tsx
+*.jsx
