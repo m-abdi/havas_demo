@@ -615,7 +615,70 @@ export default function useWorkflows(
         setSnackbarMessage,
         setSnackbarOpen
       );
-      if (!Object.values(checkedAssets).some((v) => v)) {
+      function giveMeAggregatedAssets(assets: {
+        [key: string]: number | null;
+      }) {
+        return Object.fromEntries(
+          Object.entries(assets).filter(
+            ([key, value]) =>
+              value &&
+              !/factory/.test(key) &&
+              !/customer/.test(key) &&
+              !/type/.test(key)
+          )
+        );
+      }
+      function sameAssetsCheck(
+        assets: { [key: string]: number },
+        checkedAssets: { [key: string]: number }
+      ) {
+        console.log(assets, checkedAssets);
+        
+        Object.keys(assets).forEach((ak)=>{
+          if (!Object.keys(checkedAssets).includes(ak)) {
+            return false
+          }
+        })
+        return true;
+      }
+      function emptyAssetsCheck(checkedAssets: {
+        [key: string]: number | null;
+      }) {
+        return Object.values(checkedAssets).some((v) => v);
+      }
+      function assetsCountCheck(
+        assets: { [key: string]: number },
+        checkedAssets: { [key: string]: number }
+      ) {
+        Object.entries(checkedAssets)
+          .filter(([k, v]) => !/type/.test(k) && v)
+          .forEach(([k, v]) => {
+            if (v !== assets[k]) {
+              useNotification(
+                'error',
+                setSnackbarColor,
+                setSnackbarMessage,
+                setSnackbarOpen,
+                '',
+                '',
+                'تعداد یکی نیست!'
+              );
+              return false;
+            }
+          });
+        return true;
+      }
+
+      const aggAssets = giveMeAggregatedAssets(assets);
+      const aggCheckedAssets = giveMeAggregatedAssets(checkedAssets);
+      // check rfid before sending
+      if (
+        !emptyAssetsCheck(checkedAssets) ||
+        !sameAssetsCheck(aggAssets as any, aggCheckedAssets as any) ||
+        !assetsCountCheck(aggAssets as any, aggCheckedAssets as any)
+      ) {
+       
+        
         useNotification(
           'error',
           setSnackbarColor,
@@ -623,35 +686,17 @@ export default function useWorkflows(
           setSnackbarOpen,
           '',
           '',
-          'تعداد یکی نیست!'
+          'تعداد یا نوع تجهیزات صحیح نیست !'
         );
         return false;
       }
-      // Object.entries(checkedAssets)
-      //   .filter(([k, v]) => !/type/.test(k) && v)
-      //   .forEach(([k, v]) => {
-      //     if (v !== assets[k]) {
-      //       useNotification(
-      //         'error',
-      //         setSnackbarColor,
-      //         setSnackbarMessage,
-      //         setSnackbarOpen,
-      //         '',
-      //         '',
-      //         'تعداد یکی نیست!'
-      //       );
-      //       return false;
-      //     }
-      //   });
-
       try {
-
         const resp = await rfidCheckMutation({
           variables: {
             workflowNumber,
             processId,
             assets: dropNullValues(checkedAssets),
-            checkedAssetsIds
+            checkedAssetsIds,
           },
         });
         if (resp.data) {
@@ -671,6 +716,8 @@ export default function useWorkflows(
           );
         }
       } catch (e) {
+        console.log(e.message);
+        
         useNotification(
           'error',
           setSnackbarColor,
@@ -736,6 +783,56 @@ export default function useWorkflows(
               filters: {
                 nextStageName: '',
                 instanceOfProcessId: 2,
+                ...filters,
+              },
+            },
+          },
+          'allWorkflows',
+        ],
+        confirmedReceiptByHospitals: [
+          {
+            query: AllWorkflowsDocument,
+            variables: {
+              offset,
+              limit: itemsPerPage,
+              filters: {
+                nextStageName: 'RFID ثبت ورود کپسول به انبار توسط',
+                instanceOfProcessId: 1,
+                ...filters,
+              },
+            },
+          },
+          'allWorkflows',
+        ],
+        exitCorporations: [
+          {
+            query: AllWorkflowsDocument,
+            variables: {
+              offset,
+              limit: itemsPerPage,
+              filters: {
+                nsn: {
+                  in: [
+                    'RFID ثبت خروج کپسول از انبار توسط',
+                    'قبول درخواست توسط مدیریت',
+                  ],
+                },
+                instanceOfProcessId: 1,
+                ...filters,
+              },
+            },
+          },
+          'allWorkflows',
+        ],
+        enteredWarehouseRFID: [
+          {
+            query: AllWorkflowsDocument,
+            variables: {
+              offset,
+              limit: itemsPerPage,
+              filters: {
+                nextStageName: '',
+                instanceOfProcessId: 1,
                 ...filters,
               },
             },

@@ -106,6 +106,7 @@ query allWorkflows(
 
 query confirmedEnterWorkflows($filters: AssetTransferWorkflowFilter) {
   assetTransferWorkflows(limit: 2000000, offset: 0, filters: $filters) {
+    instanceOfProcessId
     passedStages {
       submittedByUser {
         id
@@ -247,6 +248,7 @@ mutation createExitWorkflow(
     date: $date
     assets: $assets
   ) {
+    instanceOfProcessId
     passedStages {
       stageID
     }
@@ -277,6 +279,7 @@ mutation confirmReceiptByHospital(
     assets: $assets
   ) {
     workflowNumber
+    instanceOfProcessId
     passedStages {
       stageName
       submittedByUser {
@@ -338,6 +341,7 @@ mutation confirmReceiptByCorporation(
     assets: $assets
   ) {
     workflowNumber
+    instanceOfProcessId
     passedStages {
       stageName
       submittedByUser {
@@ -387,6 +391,7 @@ mutation rfidCheckWorkflows(
     assets: $assets
     checkedAssetsIds: $checkedAssetsIds
   ) {
+    instanceOfProcessId
     nextStageName
   }
 }

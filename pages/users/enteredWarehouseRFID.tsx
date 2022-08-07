@@ -20,6 +20,8 @@ export default function confirmReceiptByHospitals() {
     registeredEnterWorkflowsError: error,
     registeredEnterWorkflowsLoading: loading,
     fetchMoreRegisteredEnterWorkflows: fetchMore,
+    deleteHandler,
+    deleting
   } = useWorkflows(
     offset,
     pageNumber,
@@ -49,7 +51,7 @@ export default function confirmReceiptByHospitals() {
     <ConfirmReceiptByHospitals
       data={data as any}
       loading={loading}
-      deleting={false}
+      deleting={deleting}
       filters={filters}
       setFilters={setFilters}
       pageNumber={pageNumber}
@@ -58,9 +60,7 @@ export default function confirmReceiptByHospitals() {
       offset={offset}
       allWorkflowsCount={count as number}
       fetchMoreRows={fetchMore}
-      deleteWorkflowsHandler={async (workflowIds) => {
-        return;
-      }}
+      deleteWorkflowsHandler={async(workflowIds)=> deleteHandler(workflowIds, "enteredWarehouseRFID")}
     />
   );
 }

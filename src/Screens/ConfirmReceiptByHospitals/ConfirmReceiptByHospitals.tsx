@@ -137,7 +137,7 @@ var delayTimer: any;
 export default memo(function ConfirmReceiptByHospitals({
   loading,
   deleting,
-  data = [],
+  data,
   pageNumber,
   itemsPerPage,
   setItemsPerPage,
@@ -159,7 +159,9 @@ export default memo(function ConfirmReceiptByHospitals({
   setFilters: any;
   allWorkflowsCount: number;
   fetchMoreRows: (e: any, page: number) => void;
-  deleteWorkflowsHandler: (workflowIds: string[]) => Promise<void>;
+  deleteWorkflowsHandler: (
+    workflowIds: string[],
+  ) => Promise<void>;
 }) {
   //  states
   const [rowOptionsAnchorElement, setRowOptionsAnchorElement] =
@@ -689,7 +691,7 @@ export default memo(function ConfirmReceiptByHospitals({
               ))}
             </div>
 
-            {loading ? (
+            {loading || deleting ? (
               <Stack spacing={0.5}>
                 {[...Array(itemsPerPage)].map((i) => (
                   <Stack
@@ -778,7 +780,7 @@ export default memo(function ConfirmReceiptByHospitals({
             variant='contained'
             disabled={
               selectedFlatRows.length === 0 ||
-              !session?.user?.role?.deleteEquipment
+              !session?.user?.role?.deleteLicense
                 ? true
                 : false
             }
@@ -789,14 +791,14 @@ export default memo(function ConfirmReceiptByHospitals({
         </Box>
       </Styles>
       <DeleteDialog
-        text='با این کار تمامی تجهیزات انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
+        text='با این کار تمامی گردش کارهای انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
         open={deleteDialog}
         closeDialog={() => setDeleteDialog(false)}
         confirmDelete={async () => {
-          // await deleteEquipmentsHandler(
-          //   selectedFlatRows.map((p) => p?.original?.terminologyCode)
-          // );
-          // setDeleteDialog(false);
+          await deleteWorkflowsHandler(
+            selectedFlatRows.map((p) => p?.original?.workflowNumber),
+          );
+          setDeleteDialog(false);
           return false;
         }}
       />

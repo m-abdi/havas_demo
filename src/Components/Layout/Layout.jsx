@@ -40,6 +40,8 @@ import CircleIcon from '@mui/icons-material/Circle';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
+import FileUploadRoundedIcon from '@mui/icons-material/FileUploadRounded';
 import { InfoContext } from '../../../pages/_app';
 import Inventory2RoundedIcon from '@mui/icons-material/Inventory2Rounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
@@ -276,45 +278,27 @@ function Layout({ children, pageName }) {
           roleName: 'viewLicense',
         },
         {
+          text: 'ورود',
+          icon: <FileDownloadRoundedIcon />,
+          path: '/users/assetEnterWorkflowsTables',
+          roleName: 'viewLicense',
+          category: 'ورود',
+        },
+        {
           text: 'ثبت خروج از شرکت',
           icon: <AddCircleOutlineOutlined />,
           path: '/users/newExitCorporation',
           roleName: 'createLicense',
           category: 'ورود',
         },
-        {
-          text: 'ورود',
-          icon: <SearchRoundedIcon />,
-          path: '/users/assetEnterWorkflowsTables',
-          roleName: 'viewLicense',
-          category: 'ورود',
-        },
-        {
-          text: 'تایید تحویل کپسول به بیمارستان',
-          icon: <AddCircleOutlineOutlined />,
-          path: '/users/confirmReceiptByHospital',
-          roleName: 'createLicense',
-          category: 'ورود',
-        },
-        {
-          text: 'حواله های ورودی تایید شده',
-          icon: <SearchRoundedIcon />,
-          path: '/users/confirmReceiptByHospitals',
-          roleName: 'viewLicense',
-          category: 'ورود',
-        },
-        {
-          text: 'RFID ثبت ورود کپسول به انبار توسط',
-          icon: <AddCircleOutlineOutlined />,
-          path: '/users/enterWarehouseRFID',
-          roleName: 'createLicense',
-          category: 'ورود',
-        },
+     
+     
+    
         {
           text: 'خروج',
-          icon: <AddCircleOutlineOutlined />,
+          icon: <FileUploadRoundedIcon />,
           path: '/users/assetExitWorkflowsTables',
-          roleName: 'createLicense',
+          roleName: 'viewLicense',
           category: 'خروج',
         },
  
@@ -526,9 +510,9 @@ function Layout({ children, pageName }) {
                     {item?.sublistCategoryHeaders
                       ? item?.sublistCategoryHeaders?.map((ch, i) => (
                           <>
-                            <ListItemText sx={{ textAlign: 'center' }}>
+                            {/* <ListItemText sx={{ textAlign: 'center' }}>
                               {ch}
-                            </ListItemText>
+                            </ListItemText> */}
                             <Divider />
                             {item.sublists
                               .filter((sublist) => sublist.category === ch)

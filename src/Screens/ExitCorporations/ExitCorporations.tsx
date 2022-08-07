@@ -159,7 +159,7 @@ export default memo(function ExitCorporations({
   setFilters,
   fetchMoreRows,
   allEquipmentsCount: allequipmentsCount,
-  deleteEquipmentsHandler,
+  deleteHandler,
 }: {
   loading: boolean;
   deleting: boolean;
@@ -172,7 +172,7 @@ export default memo(function ExitCorporations({
   setFilters: any;
   allEquipmentsCount: number;
   fetchMoreRows: (e: any, page: number) => void;
-  deleteEquipmentsHandler: (placeIds: string[]) => Promise<void>;
+  deleteHandler: (ids: string[], query: string) => Promise<void>;
 }) {
   //  states
   const [rowOptionsAnchorElement, setRowOptionsAnchorElement] =
@@ -584,9 +584,12 @@ export default memo(function ExitCorporations({
                           justifyContent={'center'}
                         >
                           {column.render('Header')}
-                          {!['selectAll', 'options', 'details', "detailsOfHavaleh"].includes(
-                            column?.id
-                          ) && column.isSorted ? (
+                          {![
+                            'selectAll',
+                            'options',
+                            'details',
+                            'detailsOfHavaleh',
+                          ].includes(column?.id) && column.isSorted ? (
                             column.isSortedDesc ? (
                               <KeyboardArrowDownRoundedIcon />
                             ) : (
@@ -766,7 +769,7 @@ export default memo(function ExitCorporations({
               ))}
             </div>
 
-            {loading ? (
+            {loading || deleting ? (
               <Stack spacing={0.5}>
                 {[...Array(itemsPerPage)].map((i) => (
                   <Stack direction={'row'} alignItems='center' spacing={0.13}>
@@ -895,12 +898,12 @@ export default memo(function ExitCorporations({
         </Box>
       </Styles>
       <DeleteDialog
-        text='با این کار تمامی تجهیزات انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
+        text='با این کار تمامی گردش کارهای انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
         open={deleteDialog}
         closeDialog={() => setDeleteDialog(false)}
         confirmDelete={async () => {
-          await deleteEquipmentsHandler(
-            selectedFlatRows.map((p) => p?.original?.terminologyCode)
+          await deleteHandler(
+            selectedFlatRows.map((p) => p?.original?.workflowNumber), "exitCorporations"
           );
           setDeleteDialog(false);
         }}

@@ -20,6 +20,8 @@ export default function confirmReceiptByHospitals() {
     confirmedEnterWorkflowsError,
     confirmedEnterWorkflowsCount,
     fetchMoreConfirmedEnterWorkflows,
+    deleteHandler,
+    deleting,
   } = useWorkflows(
     offset,
     pageNumber,
@@ -41,21 +43,21 @@ export default function confirmReceiptByHospitals() {
   );
 
   return (
-      <ConfirmReceiptByHospitals
-        data={confirmedEnterWorkflows as any}
-        loading={confirmedEnterWorkflowsLoading}
-        deleting={false}
-        filters={filters}
-        setFilters={setFilters}
-        pageNumber={pageNumber}
-        itemsPerPage={itemsPerPage}
-        setItemsPerPage={setItemsPerPage}
-        offset={offset}
-        allWorkflowsCount={confirmedEnterWorkflowsCount as number}
-        fetchMoreRows={fetchMoreConfirmedEnterWorkflows}
-        deleteWorkflowsHandler={async (workflowIds) => {
-          return;
-        }}
-      />
+    <ConfirmReceiptByHospitals
+      data={confirmedEnterWorkflows as any}
+      loading={confirmedEnterWorkflowsLoading}
+      deleting={deleting}
+      filters={filters}
+      setFilters={setFilters}
+      pageNumber={pageNumber}
+      itemsPerPage={itemsPerPage}
+      setItemsPerPage={setItemsPerPage}
+      offset={offset}
+      allWorkflowsCount={confirmedEnterWorkflowsCount as number}
+      fetchMoreRows={fetchMoreConfirmedEnterWorkflows}
+      deleteWorkflowsHandler={async (workflowIds) =>
+        deleteHandler(workflowIds, 'confirmedReceiptByHospitals')
+      }
+    />
   );
 }

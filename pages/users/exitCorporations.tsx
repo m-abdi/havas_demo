@@ -27,7 +27,7 @@ export default function exitCorporations() {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [filters, setFilters] = useState<EnterWorkflowFilter>();
 
-  const { allEnterWorkflows, allEnterWorkflowsCount, loading, sending, fetchMore } = useWorkflows(
+  const { allEnterWorkflows, allEnterWorkflowsCount, loading, sending, fetchMore, deleting, deleteHandler } = useWorkflows(
     offset,
     pageNumber,
     itemsPerPage,
@@ -38,19 +38,21 @@ export default function exitCorporations() {
   );
 
   return (
-      <ExitCorporations
-        loading={loading}
-        data={allEnterWorkflows as any}
-        allEquipmentsCount={allEnterWorkflowsCount as number}
-        pageNumber={pageNumber}
-        offset={offset}
-        itemsPerPage={itemsPerPage}
-        setItemsPerPage={setItemsPerPage}
-        filters={filters}
-        setFilters={setFilters}
-        fetchMoreRows={fetchMore}
-        // deleting={deleting}
-        // deleteEquipmentsHandler={deleteHandler}
-      />
+    <ExitCorporations
+      loading={loading}
+      data={allEnterWorkflows as any}
+      allEquipmentsCount={allEnterWorkflowsCount as number}
+      pageNumber={pageNumber}
+      offset={offset}
+      itemsPerPage={itemsPerPage}
+      setItemsPerPage={setItemsPerPage}
+      filters={filters}
+      setFilters={setFilters}
+      fetchMoreRows={fetchMore}
+      deleting={deleting}
+      deleteHandler={async (workflowIds) =>
+        deleteHandler(workflowIds, 'exitCorporations')
+      }
+    />
   );
 }
