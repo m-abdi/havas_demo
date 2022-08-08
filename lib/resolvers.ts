@@ -388,6 +388,7 @@ const resolvers: Resolvers = {
           ...filters,
         },
         orderBy: { dateCreated: 'desc' },
+        include: { instanceOfProcess: true },
       });
 
       return workflows as any;
@@ -1090,10 +1091,10 @@ const resolvers: Resolvers = {
         },
       });
       console.log(o);
-      
+
       const t = await prisma.$transaction([...o, createdWorkflow]);
       console.log(t);
-      
+
       return t?.[1]?.id ?? '';
     },
     async createExitWorkflow(

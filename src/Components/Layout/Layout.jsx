@@ -507,12 +507,35 @@ function Layout({ children, pageName }) {
                   unmountOnExit
                 >
                   <List component='div' disablePadding>
+                    {item.sublists
+                      .filter((sublist) => !sublist.category)
+                      .map((sublist) => (
+                        <ListItemButton
+                          id={sublist?.id}
+                          key={sublist.text}
+                          onClick={() => {
+                            router.push(sublist.path);
+                          }}
+                          sx={{
+                            pl: 6,
+                            ...(location.pathname === sublist.path && {
+                              backgroundColor: 'blue',
+                            }),
+                          }}
+                        >
+                          <ListItemIcon sx={{ minWidth: '32px' }}>
+                            {sublist.icon}
+                          </ListItemIcon>
+                          <ListItemText primary={sublist.text} />
+                        </ListItemButton>
+                      ))}
                     {item?.sublistCategoryHeaders
                       ? item?.sublistCategoryHeaders?.map((ch, i) => (
                           <>
                             {/* <ListItemText sx={{ textAlign: 'center' }}>
                               {ch}
                             </ListItemText> */}
+
                             <Divider />
                             {item.sublists
                               .filter((sublist) => sublist.category === ch)

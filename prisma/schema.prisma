@@ -299,9 +299,6 @@ type Stage {
 model Process {
   processNumber Int        @id @map("_id")
   processName   String
-  skippedStage  Int?
-  // levels        Level[]    @relation(references: [stageID], fields: [levelsIds])
-  // levelsIds     String[]
   workflows     Workflow[]
 }
 

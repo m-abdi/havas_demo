@@ -15,10 +15,30 @@ export default function workflows() {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [filters, setFilters] = useState<EnterWorkflowFilter>();
   // hooks
-
+  const {
+    allWorkflows: data,
+    allWorkflowsCount: count,
+    allWorkflowsError: error,
+    allWorkflowsLoading: loading,
+  } = useWorkflows(
+    offset,
+    pageNumber,
+    itemsPerPage,
+    filters,
+    setPageNumber,
+    setOffset,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    true
+  );
   return (
     <Layout pageName={pageName}>
-      <Workflows data={[]} />
+      <Workflows data={data} loading={loading} allWorkflowsCount={count} pageNumber={pageNumber} setFilters={setFilters} setItemsPerPage={setItemsPerPage} itemsPerPage={itemsPerPage} offset={offset} filters={filters} />
     </Layout>
   );
 }

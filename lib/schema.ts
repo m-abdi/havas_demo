@@ -193,18 +193,17 @@ const typeDefs = /* GraphQL */ `
     dateModified: String
   }
 
-  # type Process {
-  #   processNumber: ID!
-  #   processName: String!
-  #   ignoreStage: Int
-  #   levels: [Level]
-  # }
+  type Process {
+    processNumber: ID!
+    processName: String!
+  }
 
   type Workflow {
     id: ID!
     workflowNumber: String
     dateCreated: String
     dateModified: String
+    instanceOfProcess: Process
     instanceOfProcessId: Int
     nextStageName: String
     passedStages: [Stage]

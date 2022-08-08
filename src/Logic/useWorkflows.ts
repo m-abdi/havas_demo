@@ -45,11 +45,22 @@ export default function useWorkflows(
   fetchApprovedExitWorkflows = false,
   fetchSentExitWorkflows = false,
   fetchRecievedExitWorkflows = false,
-  fetchRegisteredEnterWorkflows = false
+  fetchRegisteredEnterWorkflows = false,
+  fetchAllWorkflows = false
 ) {
   const router = useRouter();
   const { setSnackbarOpen, setSnackbarMessage, setSnackbarColor } =
     useContext(SnackbarContext);
+  // all workflows
+  const [
+    allWorkflowsQuery,
+    {
+      data: allWorkflowsData,
+      loading: allWorkflowsLoading,
+      error: allWorkflowsError,
+    },
+  ] = useLazyQuery(AllWorkflowsDocument);
+
   // fetch All enter workflows
   const [
     allEnterWorkflowsQuery,
@@ -213,6 +224,9 @@ export default function useWorkflows(
       }
       if (fetchRegisteredEnterWorkflows) {
         await registeredEnterWorkflowsQuery();
+      }
+      if (fetchAllWorkflows) {
+        await allWorkflowsQuery();
       }
     })();
   }, [filters]);
@@ -637,12 +651,12 @@ export default function useWorkflows(
         checkedAssets: { [key: string]: number }
       ) {
         console.log(assets, checkedAssets);
-        
-        Object.keys(assets).forEach((ak)=>{
+
+        Object.keys(assets).forEach((ak) => {
           if (!Object.keys(checkedAssets).includes(ak)) {
-            return false
+            return false;
           }
-        })
+        });
         return true;
       }
       function emptyAssetsCheck(checkedAssets: {
@@ -681,8 +695,6 @@ export default function useWorkflows(
         !sameAssetsCheck(aggAssets as any, aggCheckedAssets as any) ||
         !assetsCountCheck(aggAssets as any, aggCheckedAssets as any)
       ) {
-       
-        
         useNotification(
           'error',
           setSnackbarColor,
@@ -721,7 +733,7 @@ export default function useWorkflows(
         }
       } catch (e) {
         console.log(e.message);
-        
+
         useNotification(
           'error',
           setSnackbarColor,
@@ -881,6 +893,10 @@ export default function useWorkflows(
     []
   );
   return {
+    allWorkflows: allWorkflowsData?.assetTransferWorkflows ?? [],
+    allWorkflowsCount: allWorkflowsData?.assetTransferWorkflowsCount,
+    allWorkflowsLoading,
+    allWorkflowsError,
     registeredEnterWorkflows:
       registeredEnterWorkflowsData?.assetTransferWorkflows ?? [],
     registeredEnterWorkflowsLoading,

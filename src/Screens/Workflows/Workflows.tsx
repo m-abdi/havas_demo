@@ -39,6 +39,7 @@ import {
 } from 'react-table';
 
 import { Button } from '../../Components/Button';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ContradictionTable from '../../Components/ContradictionTable/ContradictionTable';
 import DeleteDialog from '../../Components/DeleteRolesDialog';
@@ -192,12 +193,12 @@ export default function Workflows({
 
       {
         Header: 'شماره فرایند',
-        accessor: 'process.processNumber',
+        accessor: 'instanceOfProcess.processNumber',
       },
 
       {
         Header: 'نام فرایند',
-        accessor: 'process.processName',
+        accessor: 'instanceOfProcess.processName',
       },
 
       {
@@ -219,21 +220,27 @@ export default function Workflows({
       {
         Header: 'تاریخ شروع گردش کار',
         accessor: (d: any) => {
-          return new Date(d?.dateCreated).toLocaleString('fa-IR');
+          return new Date(parseInt(d?.dateCreated)).toLocaleString('fa-IR');
         },
         width: 270,
       },
 
       {
         Header: 'پایان',
-        accessor: 'ee', // accessor is the "key" in the data
-        width: 100
+        accessor: (d: any)=>{
+          if (!d?.nextStageName) {
+            return <CheckRoundedIcon sx={{color: "green"}}/>
+          } else {
+            return <CloseRoundedIcon sx={{color: "yellow"}}/>
+          }
+        },
+        width: 100,
       },
       {
         Header: 'تاریخ پایان گردش کار',
         accessor: (d: any) => {
-          if (d?.passedStages.length === 3) {
-            return new Date(d?.dateModified).toLocaleString('fa-IR');
+          if (!d?.nextStageName) {
+            return new Date(parseInt(d?.dateModified)).toLocaleString('fa-IR');
           }
           return '';
         },
