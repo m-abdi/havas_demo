@@ -36,7 +36,7 @@ import {
 import { Equipment } from '@prisma/client';
 import { GraphQLYogaError } from '@graphql-yoga/node';
 import { RelatedFieldFilter } from './resolvers-types';
-import { Session } from 'inspector';
+import { Session } from 'next-auth';
 import { getSession } from 'next-auth/react';
 import prisma from '../prisma/client';
 
@@ -380,7 +380,8 @@ const resolvers: Resolvers = {
           Object.entries(filters).filter(([key, value]) => key !== 'nsn')
         );
       }
-
+      console.log(limit, offset);
+      
       const workflows = await prisma.workflow.findMany({
         take: limit ?? 2000000,
         skip: offset ?? 0,
@@ -390,7 +391,8 @@ const resolvers: Resolvers = {
         orderBy: { dateCreated: 'desc' },
         include: { instanceOfProcess: true },
       });
-
+      console.log(workflows.length);
+      
       return workflows as any;
     },
     async assetTransferWorkflowsCount(_, _args, _context): Promise<number> {
@@ -1071,6 +1073,7 @@ const resolvers: Resolvers = {
               submittedByUser: {
                 id: session?.user?.id,
                 firstNameAndLastName: session?.user?.firstNameAndLastName,
+                role: session?.user?.role?.name
               },
               havaleh: {
                 id: havalehId,
@@ -1151,6 +1154,7 @@ const resolvers: Resolvers = {
                   submittedByUser: {
                     id: session?.user?.id,
                     firstNameAndLastName: session?.user?.firstNameAndLastName,
+                    role: session?.user?.role?.name,
                   },
                   havaleh: {
                     id: havalehId,
@@ -1186,6 +1190,7 @@ const resolvers: Resolvers = {
                           where: { role: { name: 'مدیریت' } },
                         })
                       )?.firstNameAndLastName ?? 'unknown',
+                    role: 'مدیریت',
                   },
                 },
               ]
@@ -1196,6 +1201,7 @@ const resolvers: Resolvers = {
                   submittedByUser: {
                     id: session?.user?.id,
                     firstNameAndLastName: session?.user?.firstNameAndLastName,
+                    role: session?.user?.role?.name,
                   },
                   havaleh: {
                     id: havalehId,
@@ -1294,6 +1300,7 @@ const resolvers: Resolvers = {
                 submittedByUser: {
                   id: session?.user?.id,
                   firstNameAndLastName: session?.user?.firstNameAndLastName,
+                  role: session?.user?.role?.name,
                 },
                 havaleh: {
                   id: havalehId + 'edited',
@@ -1328,6 +1335,7 @@ const resolvers: Resolvers = {
                 submittedByUser: {
                   id: session?.user?.id,
                   firstNameAndLastName: session?.user?.firstNameAndLastName,
+                  role: session?.user?.role?.name,
                 },
                 havaleh: {
                   receivingDescription,
@@ -1397,6 +1405,7 @@ const resolvers: Resolvers = {
                 submittedByUser: {
                   id: session?.user?.id,
                   firstNameAndLastName: session?.user?.firstNameAndLastName,
+                  role: session?.user?.role?.name,
                 },
                 havaleh: {
                   id: havalehId + 'edited',
@@ -1432,6 +1441,7 @@ const resolvers: Resolvers = {
                 submittedByUser: {
                   id: session?.user?.id,
                   firstNameAndLastName: session?.user?.firstNameAndLastName,
+                  role: session?.user?.role?.name,
                 },
                 havaleh: {
                   receivingDescription,
@@ -1557,6 +1567,7 @@ const resolvers: Resolvers = {
                     submittedByUser: {
                       id: session?.user?.id,
                       firstNameAndLastName: session?.user?.firstNameAndLastName,
+                      role: session?.user?.role?.name,
                     },
                     havaleh: {
                       assets,
@@ -1573,6 +1584,7 @@ const resolvers: Resolvers = {
                     submittedByUser: {
                       id: session?.user?.id,
                       firstNameAndLastName: session?.user?.firstNameAndLastName,
+                      role: session?.user?.role?.name,
                     },
                     havaleh: {
                       assets,

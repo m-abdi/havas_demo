@@ -51,12 +51,15 @@ import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import { Satellite } from '@mui/icons-material';
 import { Session } from 'next-auth';
 import { Workflow } from '../../../lib/resolvers-types';
+import WorkflowStageModal from '@/src/Components/WorkflowStagesModal';
+import { flushSync } from 'react-dom';
 import matchSorter from 'match-sorter';
 /* eslint-disable react/jsx-filename-extension */
 import { memo } from 'react';
 import persianCalender from 'react-date-object/calendars/persian';
 import persianLocale from 'react-date-object/locales/persian_fa';
 import styled from 'styled-components';
+import toNestedObject from '@/src/Logic/toNestedObject';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
@@ -143,7 +146,7 @@ export default function Workflows({
   setFilters,
   fetchMoreRows,
   allWorkflowsCount,
-  deleteWorkflowsHandler,
+  deleteHandler,
 }: {
   loading: boolean;
   deleting: boolean;
@@ -156,12 +159,13 @@ export default function Workflows({
   setFilters: any;
   allWorkflowsCount: number;
   fetchMoreRows: (e: any, page: number) => void;
-  deleteWorkflowsHandler: (workflowIds: string[]) => Promise<void>;
+  deleteHandler: (ids: string[]) => Promise<void>;
 }) {
   //  states
   const [rowOptionsAnchorElement, setRowOptionsAnchorElement] =
     useState<null | HTMLElement>(null);
   const [choosedRow, setChoosedRow] = useState<any>('');
+  const [rawFilters, setRawFilters] = useState({});
   const [hasInstructions, setHasInstructions] = useState<boolean>();
   const rowOptionsOpen = Boolean(rowOptionsAnchorElement);
   const [deleteDialog, setDeleteDialog] = useState(false);
@@ -189,6 +193,7 @@ export default function Workflows({
       {
         Header: 'شماره گردش کار',
         accessor: 'workflowNumber',
+        width: 200,
       },
 
       {
@@ -214,7 +219,23 @@ export default function Workflows({
       },
       {
         Header: 'جزئیات',
-        accessor: 'p', // accessor is the "key" in the data
+        disableSortBy: true,
+        disableFilters: true,
+        id: 'details',
+        accessor: (d: any) => {
+          return (
+            <Button
+              label='مشاهده'
+              color='info'
+              onClick={(e) => {
+                flushSync(() => {
+                  setChoosedRow(d);
+                });
+                setDetailsDialog(true);
+              }}
+            />
+          );
+        },
         width: 110,
       },
       {
@@ -227,11 +248,14 @@ export default function Workflows({
 
       {
         Header: 'پایان',
-        accessor: (d: any)=>{
+        id: 'ended',
+        disableSortBy: true,
+        disableFilters: true,
+        accessor: (d: any) => {
           if (!d?.nextStageName) {
-            return <CheckRoundedIcon sx={{color: "green"}}/>
+            return <CheckRoundedIcon sx={{ color: 'green' }} />;
           } else {
-            return <CloseRoundedIcon sx={{color: "yellow"}}/>
+            return <CloseRoundedIcon sx={{ color: 'yellow' }} />;
           }
         },
         width: 100,
@@ -426,8 +450,12 @@ export default function Workflows({
                           justifyContent={'center'}
                         >
                           {column.render('Header')}
-                          {!['selectAll', 'options'].includes(column?.id) &&
-                          column.isSorted ? (
+                          {![
+                            'selectAll',
+                            'options',
+                            'details',
+                            'ended',
+                          ].includes(column?.id) && column.isSorted ? (
                             column.isSortedDesc ? (
                               <KeyboardArrowDownRoundedIcon />
                             ) : (
@@ -445,7 +473,8 @@ export default function Workflows({
                               'index',
                               'selectAll',
                               'options',
-                              'downloads',
+                              'details',
+                              'ended',
                             ].includes(column?.id)
                               ? 'none'
                               : 'auto',
@@ -462,7 +491,9 @@ export default function Workflows({
                           'options',
                           'index',
                           'hasInstructions',
-                          'downloads',
+                          'details',
+
+                          'ended',
                         ].includes(column?.id) && (
                           <TextField
                             size='small'
@@ -477,18 +508,36 @@ export default function Workflows({
                             //     : filters[column.id].contains
                             // }
                             onChange={(e) => {
+                              const newRawFilters = {
+                                [column.id
+                                  .replace('[0]', '')
+                                  .replace('[1]', '')
+                                  .replace(
+                                    'passedStages.',
+                                    'passedStages.some.'
+                                  )
+                                  .replace('havaleh.', 'havaleh.is.')
+                                  .replace(
+                                    'submittedByUser.',
+                                    'submittedByUser.is.'
+                                  )
+                                  .replace('corporation.', 'corporation.is.')
+                                  .replace('assets.', 'assets.is.')]: {
+                                  contains: e.target.value,
+                                },
+                              };
+
+                              setRawFilters({
+                                ...rawFilters,
+                                ...newRawFilters,
+                              });
                               clearTimeout(delayTimer);
                               delayTimer = setTimeout(function () {
                                 setFilters({
-                                  ...filters,
-                                  [column.id === 'supportCompany.name'
-                                    ? 'supportCompany'
-                                    : column.id]:
-                                    column.id === 'supportCompany.name'
-                                      ? { name: { contains: e.target.value } }
-                                      : column.id === 'hasInstructions'
-                                      ? hasInstructions
-                                      : { contains: e.target.value },
+                                  ...toNestedObject({
+                                    ...rawFilters,
+                                    ...newRawFilters,
+                                  }),
                                 });
                                 fetchMoreRows(e, 0);
                               }, 1000);
@@ -578,7 +627,7 @@ export default function Workflows({
               ))}
             </div>
 
-            {loading ? (
+            {loading || deleting ? (
               <Stack spacing={0.5}>
                 {[...Array(itemsPerPage)].map((i) => (
                   <Stack direction={'row'} alignItems='center' spacing={0.13}>
@@ -624,7 +673,11 @@ export default function Workflows({
           rowsPerPageOptions={[5, 10, 15, 20, 30, 50]}
           page={pageNumber}
           count={allWorkflowsCount}
-          onPageChange={fetchMoreRows}
+          onPageChange={(e, p) => {
+            console.log('----', p);
+
+            fetchMoreRows(e, p);
+          }}
           onRowsPerPageChange={(
             event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
           ) => {
@@ -660,7 +713,7 @@ export default function Workflows({
             variant='contained'
             disabled={
               selectedFlatRows.length === 0 ||
-              !session?.user?.role?.deleteEquipment
+              !session?.user?.role?.deleteLicense
                 ? true
                 : false
             }
@@ -675,8 +728,8 @@ export default function Workflows({
         open={deleteDialog}
         closeDialog={() => setDeleteDialog(false)}
         confirmDelete={async () => {
-          await deleteEquipmentsHandler(
-            selectedFlatRows.map((p) => p?.original?.terminologyCode)
+          await deleteHandler(
+            selectedFlatRows.map((p) => p?.original?.workflowNumber)
           );
           setDeleteDialog(false);
         }}
@@ -684,7 +737,7 @@ export default function Workflows({
       <Dialog
         sx={{ zIndex: 7000 }}
         open={detailsDialog}
-        maxWidth='md'
+        maxWidth='lg'
         onClose={() => setDetailsDialog(false)}
       >
         <DialogTitle sx={{ textAlign: 'center' }}>
@@ -703,16 +756,16 @@ export default function Workflows({
               component='h2'
               sx={{ flexGrow: 1, textAlign: 'center' }}
             >
-              جزئیات مغایرت
+              جزئیات
             </Typography>
             <span style={{ inlineSize: '10%' }}></span>
           </Stack>
         </DialogTitle>
         <DialogContent sx={{ position: 'relative', p: 5 }}>
-          <ContradictionTable data={choosedRow} />
+          <WorkflowStageModal data={choosedRow} />
         </DialogContent>
       </Dialog>
-      {session?.user?.role?.editPerson ? (
+      {/* {session?.user?.role?.editPerson ? (
         <Menu
           anchorEl={rowOptionsAnchorElement}
           open={rowOptionsOpen}
@@ -736,7 +789,7 @@ export default function Workflows({
             </MenuItem>
           ) : null}
         </Menu>
-      ) : null}
+      ) : null} */}
     </Box>
   );
 }

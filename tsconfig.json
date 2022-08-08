@@ -22,11 +22,12 @@
     "incremental": true,
     "types": ["axe-playwright"]
   },
-  "exclude": ["node_modules", ".cache", "./lib", "cypress"],
+  "exclude": ["node_modules", ".cache", "cypress"],
   "include": [
     "next-env.d.ts",
     "graphql.d.ts",
     "types/**/*.ts",
-  
- "src/Screens/Persons/Persons.tsx"  ]
+    "**/*.ts",
+    "**/*.tsx",
+  ]
 }

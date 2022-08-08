@@ -19,7 +19,7 @@ export default function confirmReceiptByHospitals() {
     registeredEnterWorkflowsCount: count,
     registeredEnterWorkflowsError: error,
     registeredEnterWorkflowsLoading: loading,
-    fetchMoreRegisteredEnterWorkflows: fetchMore,
+    fetchMore,
     deleteHandler,
     deleting
   } = useWorkflows(

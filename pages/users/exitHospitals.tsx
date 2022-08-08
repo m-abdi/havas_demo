@@ -32,7 +32,7 @@ export default memo(function exitHospitals() {
     allExitWorkflowsLoading: loading,
     deleting,
     deleteHandler,
-    fetchMoreExitWorkflows: fetchMore,
+    fetchMore,
   } = useWorkflows(
     offset,
     pageNumber,

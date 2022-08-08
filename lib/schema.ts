@@ -184,13 +184,18 @@ const typeDefs = /* GraphQL */ `
     assets: AggregatedTransferedAssetsOutput
   }
 
+  type UserData {
+    id: String
+    firstNameAndLastName: String
+    role: String
+  }
+
   type Stage {
     stageID: String
     stageName: String
-    submittedByUser: Person
+    submittedByUser: UserData
     havaleh: Havaleh
-    dateCreated: String
-    dateModified: String
+    createdAt: String
   }
 
   type Process {

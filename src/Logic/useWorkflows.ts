@@ -58,8 +58,12 @@ export default function useWorkflows(
       data: allWorkflowsData,
       loading: allWorkflowsLoading,
       error: allWorkflowsError,
+      fetchMore: fetchMoreAllWorkflows,
     },
-  ] = useLazyQuery(AllWorkflowsDocument);
+  ] = useLazyQuery(AllWorkflowsDocument, {
+    fetchPolicy: 'cache-and-network',
+    variables: { filters, limit: itemsPerPage, offset },
+  });
 
   // fetch All enter workflows
   const [
@@ -229,7 +233,7 @@ export default function useWorkflows(
         await allWorkflowsQuery();
       }
     })();
-  }, [filters]);
+  }, [filters, itemsPerPage, offset]);
 
   // new enter worflow mutation to server
   const [createEnterWorkflowMutation, { loading: sending }] = useMutation(
@@ -855,6 +859,16 @@ export default function useWorkflows(
           },
           'allWorkflows',
         ],
+        allWorkflows: [
+          {
+            query: AllWorkflowsDocument,
+            variables: {
+              offset,
+              limit: itemsPerPage,
+            },
+          },
+          'allWorkflows',
+        ],
       };
       try {
         const resp = await deleteWorkflowsMutation({
@@ -897,6 +911,7 @@ export default function useWorkflows(
     allWorkflowsCount: allWorkflowsData?.assetTransferWorkflowsCount,
     allWorkflowsLoading,
     allWorkflowsError,
+    fetchMoreAllWorkflows,
     registeredEnterWorkflows:
       registeredEnterWorkflowsData?.assetTransferWorkflows ?? [],
     registeredEnterWorkflowsLoading,

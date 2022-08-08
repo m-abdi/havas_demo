@@ -21,7 +21,7 @@ export default function confirmReceiptByCorporations() {
     recievedExitWorkflowsCount,
     recievedExitWorkflowsLoading,
     deleting,
-    fetchMoreRecievedExitWorkflows,
+    fetchMore,
     deleteHandler,
   } = useWorkflows(
     offset,
@@ -59,7 +59,7 @@ export default function confirmReceiptByCorporations() {
       setItemsPerPage={setItemsPerPage}
       offset={offset}
       allWorkflowsCount={recievedExitWorkflowsCount as number}
-      fetchMoreRows={fetchMoreRecievedExitWorkflows}
+      fetchMoreRows={fetchMore}
       deleteHandler={async (workflowIds: string[]) => {
         await deleteHandler(workflowIds, 'recievedExitWorkflows');
       }}

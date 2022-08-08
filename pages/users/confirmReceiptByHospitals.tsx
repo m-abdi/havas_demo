@@ -19,7 +19,7 @@ export default function confirmReceiptByHospitals() {
     confirmedEnterWorkflowsLoading,
     confirmedEnterWorkflowsError,
     confirmedEnterWorkflowsCount,
-    fetchMoreConfirmedEnterWorkflows,
+    fetchMore,
     deleteHandler,
     deleting,
   } = useWorkflows(
@@ -54,7 +54,7 @@ export default function confirmReceiptByHospitals() {
       setItemsPerPage={setItemsPerPage}
       offset={offset}
       allWorkflowsCount={confirmedEnterWorkflowsCount as number}
-      fetchMoreRows={fetchMoreConfirmedEnterWorkflows}
+      fetchMoreRows={fetchMore}
       deleteWorkflowsHandler={async (workflowIds) =>
         deleteHandler(workflowIds, 'confirmedReceiptByHospitals')
       }
