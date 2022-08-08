@@ -1,0 +1,12 @@
+query getCurrentConfig {
+  getCurrentConfig {
+    id
+    ignoreManagerApproval
+  }
+}
+
+mutation updateCurrentConfig($id: String!, $ignoreManagerApproval: Boolean!) {
+  updateCurrentConfig(id: $id, ignoreManagerApproval: $ignoreManagerApproval) {
+    id
+  }
+}

@@ -183,7 +183,11 @@ const typeDefs = /* GraphQL */ `
     corporation: CorporationData
     assets: AggregatedTransferedAssetsOutput
   }
-
+  type Config {
+    id: String
+    ignoreManagerApproval: Boolean
+    current: Boolean
+  }
   type UserData {
     id: String
     firstNameAndLastName: String
@@ -530,6 +534,7 @@ const typeDefs = /* GraphQL */ `
     countAllRoles(limit: Int!, offset: Int!): Int
     getWorkflowNumber: String!
     tagData(tagId: ID!): Tag
+    getCurrentConfig: Config
   }
 
   type Mutation {
@@ -645,6 +650,7 @@ const typeDefs = /* GraphQL */ `
       assets: AggregatedTransferedAssets!
       checkedAssetsIds: [String!]!
     ): Workflow
+    updateCurrentConfig(id: String!, ignoreManagerApproval: Boolean!): Config
   }
 `;
 

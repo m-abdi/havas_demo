@@ -50,6 +50,7 @@ import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
 import PermIdentityRoundedIcon from '@mui/icons-material/PermIdentityRounded';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import Snackbar from '../Snackbar';
 import StyleRoundedIcon from '@mui/icons-material/StyleRounded';
 import WorkspacePremiumRoundedIcon from '@mui/icons-material/WorkspacePremiumRounded';
@@ -385,6 +386,15 @@ function Layout({ children, pageName }) {
               transformOrigin={{ horizontal: 'right', vertical: 'top' }}
               anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
+              <MenuItem
+                id='settingsButton'
+                onClick={() => router.push("/users/settings")}
+              >
+                <ListItemIcon>
+                  <SettingsOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText>تنظیمات</ListItemText>
+              </MenuItem>
               <MenuItem
                 id='logoutButton'
                 onClick={() => signOut({ callbackUrl: '/users/login' })}

@@ -891,7 +891,7 @@ export default memo(function ConfirmReceiptByHospitals({
           />
         </DialogContent>
       </Dialog>
-      {session?.user?.role?.editPerson ? (
+      {/* {session?.user?.role?.editPerson ? (
         <Menu
           anchorEl={rowOptionsAnchorElement}
           open={rowOptionsOpen}
@@ -915,7 +915,7 @@ export default memo(function ConfirmReceiptByHospitals({
             </MenuItem>
           ) : null}
         </Menu>
-      ) : null}
+      ) : null} */}
     </Box>
   );
 });

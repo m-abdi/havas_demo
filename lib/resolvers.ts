@@ -1,5 +1,6 @@
 import {
   Asset,
+  Config,
   NewTag,
   Person,
   PersonFilter,
@@ -381,7 +382,7 @@ const resolvers: Resolvers = {
         );
       }
       console.log(limit, offset);
-      
+
       const workflows = await prisma.workflow.findMany({
         take: limit ?? 2000000,
         skip: offset ?? 0,
@@ -392,7 +393,7 @@ const resolvers: Resolvers = {
         include: { instanceOfProcess: true },
       });
       console.log(workflows.length);
-      
+
       return workflows as any;
     },
     async assetTransferWorkflowsCount(_, _args, _context): Promise<number> {
@@ -512,6 +513,16 @@ const resolvers: Resolvers = {
         where: { id: tagId },
         include: { asset: { include: { equipment: true } } },
       });
+    },
+    async getCurrentConfig(_, __, _context): Promise<Config | null> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      // manager recognition
+      if (!session || !(await canDeleteLicenses(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+      return await prisma.config.findFirst({ where: { current: true } });
     },
   },
   Mutation: {
@@ -1073,7 +1084,7 @@ const resolvers: Resolvers = {
               submittedByUser: {
                 id: session?.user?.id,
                 firstNameAndLastName: session?.user?.firstNameAndLastName,
-                role: session?.user?.role?.name
+                role: session?.user?.role?.name,
               },
               havaleh: {
                 id: havalehId,
@@ -1599,6 +1610,19 @@ const resolvers: Resolvers = {
         ...o,
       ]);
       return t[1];
+    },
+    async updateCurrentConfig(_, { id, ignoreManagerApproval }, _context) {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      // manager recognition
+      if (!session || !(await canDeleteLicenses(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+      return await prisma.config.update({
+        where: { id },
+        data: { ignoreManagerApproval },
+      });
     },
   },
   Person: {
