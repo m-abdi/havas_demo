@@ -6,6 +6,7 @@ services:
     image: mongo:5.0.9
     volumes:
       - ./scripts/rs-init.sh:/scripts/rs-init.sh
+      - mongoData:/data/db
     networks:
       - mongo-network
     ports:
@@ -57,6 +58,9 @@ services:
       - 8000:8000
     restart: always
 
+
+volumes:
+  mongoData:
 
 networks:
   mongo-network:

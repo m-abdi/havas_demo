@@ -1,6 +1,18 @@
-import prisma from '../prisma/client';
+import { PrismaClient } from '@prisma/client';
+import bcrypt from "bcrypt"
 
-(async () => {
+// add prisma to the NodeJS global type
+interface CustomNodeJsGlobal extends NodeJS.Global {
+  prisma: PrismaClient;
+}
+
+// Prevent multiple instances of Prisma Client in development
+declare const global: CustomNodeJsGlobal;
+const prisma =
+  global.prisma || (typeof window === 'undefined' && new PrismaClient());
+
+if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => {
+  
   await prisma.role.create({
     data: {
       name: 'مدیریت',
@@ -34,12 +46,15 @@ import prisma from '../prisma/client';
       deleteTag: true,
     },
   });
+    // hash salt
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash('123456', salt);
   await prisma.person.create({
     data: {
       id: '0520926458',
       firstNameAndLastName: 'مهدی عبدی',
       role: { connect: { name: 'مدیریت' } },
-      password: '123456',
+      password: hashedPassword,
     },
   });
   await prisma.config.create({

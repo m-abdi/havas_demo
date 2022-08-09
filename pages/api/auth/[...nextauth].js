@@ -4,6 +4,7 @@ import 'dotenv/config';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import NextAuth from 'next-auth';
+import bcrypt from "bcrypt"
 import prisma from '../../../prisma/client';
 
 export default NextAuth({
@@ -38,9 +39,10 @@ export default NextAuth({
       async authorize(credentials, req) {
         try {
           const potentialUser = await prisma.person.findFirst({
-            where: { id: credentials.email, password: credentials.password },
+            where: { id: credentials.email },
           });
-          if (potentialUser) {
+          const match = await bcrypt.compare(credentials.password, potentialUser?.password);
+          if (match) {
             await prisma.$disconnect();
             return { name: potentialUser.firstNameAndLastName, email: potentialUser.id }
           }

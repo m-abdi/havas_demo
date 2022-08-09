@@ -51,3 +51,17 @@ node ./src/prepareDatabase.js
 docker pull abdimehdi/havas:latest
 
 ```
+
+## Backup database ##
+
+
+```sh
+docker exec mongo1 sh -c 'exec mongodump -d havas --archive'> ./db-backup.archive
+```
+
+## Restore database ##
+
+m
+```sh
+mongoresotre --archive=./db-backup.archive
+```

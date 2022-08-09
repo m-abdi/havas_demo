@@ -30,4 +30,4 @@ EOF
 
 echo "****** Waiting for ${DELAY} seconds for replicaset configuration to be applied ******"
 
-sleep $DELAY
+# sleep $DELAY
