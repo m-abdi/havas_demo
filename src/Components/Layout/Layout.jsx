@@ -388,7 +388,7 @@ function Layout({ children, pageName }) {
             >
               <MenuItem
                 id='settingsButton'
-                onClick={() => router.push("/users/settings")}
+                onClick={() => router.push('/users/settings')}
               >
                 <ListItemIcon>
                   <SettingsOutlinedIcon />
@@ -574,28 +574,7 @@ function Layout({ children, pageName }) {
                               )}
                           </>
                         ))
-                      : item.sublists.map((sublist) =>
-                          session?.user?.role?.[sublist.roleName] ? (
-                            <ListItemButton
-                              id={sublist?.id}
-                              key={sublist.text}
-                              onClick={() => {
-                                router.push(sublist.path);
-                              }}
-                              sx={{
-                                pl: 6,
-                                ...(location.pathname === sublist.path && {
-                                  backgroundColor: 'blue',
-                                }),
-                              }}
-                            >
-                              <ListItemIcon sx={{ minWidth: '32px' }}>
-                                {sublist.icon}
-                              </ListItemIcon>
-                              <ListItemText primary={sublist.text} />
-                            </ListItemButton>
-                          ) : null
-                        )}
+                      : null}
                   </List>
                 </Collapse>
               </Box>

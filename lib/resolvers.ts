@@ -8,7 +8,9 @@ import {
   PlaceFilter,
   Resolvers,
   Role,
+  Stage,
   Tag,
+  TransferedAssets,
   Workflow,
 } from './resolvers-types';
 import {
@@ -604,11 +606,7 @@ const resolvers: Resolvers = {
       });
       return createdPerson as any;
     },
-    async createCategory(
-      _,
-      { name, superPlaceId }: { name: string; superPlaceId: string },
-      _context
-    ): Promise<any> {
+    async createCategory(_, { name, superPlaceId }, _context): Promise<any> {
       // check authentication and permission
       const { req } = _context;
       const session = await getSession({ req });
@@ -673,8 +671,8 @@ const resolvers: Resolvers = {
           data: {
             name,
             typeOfWork,
-            superPlace: { connect: { id: superPlaceId } },
-            representative: { connect: { id: representativeId } },
+            superPlace: { connect: { id: superPlaceId as string } },
+            representative: { connect: { id: representativeId as string } },
             state,
             city,
             postalCode,
@@ -790,11 +788,9 @@ const resolvers: Resolvers = {
           supportCompany: { connect: { id: supportCompanyId } },
           supportTelephone1,
           supportTelephone2,
-          state: {
-            outsourced: { own: 0 },
-            insideHospital: { own: 0 },
-            sendOrReceive: { own: 0 },
-          },
+          outsourced: 0,
+          sending: 0,
+          receiving: 0,
         },
       });
       return createdEquipment;
@@ -1046,7 +1042,7 @@ const resolvers: Resolvers = {
       //   });
       // });
       const aggregatedAssets = {};
-      Object.entries(assets)
+      Object.entries(assets as TransferedAssets)
         .map(([key, value]) => [
           key.replace('_factory', '').replace('_customer', ''),
           value,
@@ -1176,11 +1172,13 @@ const resolvers: Resolvers = {
                     description,
                     corporation: {
                       id: corporationRepresentativeId,
-                      name: (
-                        await prisma.place.findFirst({
-                          where: { id: corporationRepresentativeId },
-                        })
-                      )?.name,
+                      name:
+                        (
+                          await prisma.place.findFirst({
+                            where: { id: corporationRepresentativeId },
+                          })
+                        )?.name ?? 'unknown',
+                      role: session?.user?.role?.name,
                     },
                     assets: { ...assets, ...aggregatedAssets },
                   },
@@ -1223,11 +1221,12 @@ const resolvers: Resolvers = {
                     description,
                     corporation: {
                       id: corporationRepresentativeId,
-                      name: (
-                        await prisma.place.findFirst({
-                          where: { id: corporationRepresentativeId },
-                        })
-                      )?.name,
+                      name:
+                        (
+                          await prisma.place.findFirst({
+                            where: { id: corporationRepresentativeId },
+                          })
+                        )?.name ?? 'unknown',
                     },
                     assets: { ...assets, ...aggregatedAssets },
                   },
@@ -1304,7 +1303,7 @@ const resolvers: Resolvers = {
           data: {
             nextStageName: 'RFID ثبت ورود کپسول به انبار توسط',
             passedStages: [
-              existingWorkflow?.passedStages?.[0],
+              existingWorkflow?.passedStages?.[0] as any,
               {
                 stageID: 2,
                 stageName: 'تایید تحویل کپسول به بیمارستان',
@@ -1339,7 +1338,7 @@ const resolvers: Resolvers = {
           data: {
             nextStageName: 'RFID ثبت ورود کپسول به انبار توسط',
             passedStages: [
-              existingWorkflow?.passedStages?.[0],
+              existingWorkflow?.passedStages?.[0] as any,
               {
                 stageID: 2,
                 stageName: 'تایید تحویل کپسول به بیمارستان',
@@ -1499,7 +1498,7 @@ const resolvers: Resolvers = {
         throw new GraphQLYogaError('Unauthorized');
       }
 
-      let operations = [];
+      let operations: any = [];
       tags.forEach(async (tag) => {
         if (tag?.newAsset) {
           let w = prisma.tag.create({

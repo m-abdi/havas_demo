@@ -18,7 +18,7 @@ export default function newEquipment() {
   // access to browser url input
   const router = useRouter();
   // graphql operations for getting factories
-  const { data, loading } = usePlaces();
+  const { data, loading } = usePlaces(undefined, undefined, undefined, undefined, undefined, undefined, true);
   //
   const { sending, createNew } = useEquipments();
   //
