@@ -249,14 +249,23 @@ const resolvers: Resolvers = {
           })
         );
 
-        const equipmentsDB = await prisma.equipment.findMany({
+        const equipmentsDB: any = await prisma.equipment.findMany({
           take: limit ?? 2000000,
           skip: offset ?? 0,
-          include: { supportCompany: true },
+          include: {
+            supportCompany: true,
+            assets: {
+              where: { status: 'موجود در بیمارستان' },
+              select: { id: true },
+            },
+          },
           where: parsedFilters,
         });
 
-        return equipmentsDB as any;
+        return {
+          ...equipmentsDB,
+          available: equipmentsDB?.assets?.length,
+        } as any;
       }
       const equipmentsDB = await prisma.equipment.findMany({
         take: limit ?? 2000000,

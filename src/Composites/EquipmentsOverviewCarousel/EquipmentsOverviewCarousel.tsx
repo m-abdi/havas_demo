@@ -1,4 +1,4 @@
-import { Divider, Stack, Typography } from '@mui/material';
+import { Divider, Skeleton, Stack, Typography } from '@mui/material';
 
 import Carousel from 'react-grid-carousel';
 import { Equipment } from 'lib/resolvers-types';
@@ -7,8 +7,10 @@ import React from 'react';
 
 export default function EquipmentsOverviewCarousel({
   equipments,
+  loading,
 }: {
   equipments: Equipment[];
+  loading: Boolean;
 }) {
   return (
     <Stack
@@ -21,21 +23,42 @@ export default function EquipmentsOverviewCarousel({
         موجودی تجهیزات
       </Typography>
       <Divider variant='fullWidth' flexItem />
-      <Carousel
-        breakpoint={700}
-        cols={equipments.length}
-        gap={30}
-        loop
-        autoplay={5000}
-      >
-        {equipments?.map((e) => (
-          <Carousel.Item>
-            <div style={{ marginBlock: '40px' }}>
-              <EquipmentOverview key={e?.terminologyCode} equipment={e} />
-            </div>
-          </Carousel.Item>
-        ))}
-      </Carousel>
+      {equipments.length > 0 && (
+        <Carousel
+          breakpoint={700}
+          cols={equipments?.length}
+          rows={1}
+          gap={30}
+          loop
+          autoplay={5000}
+          containerStyle={{ maxInlineSize: '100%' }}
+        >
+          {equipments.map((e) => (
+            <Carousel.Item key={e?.terminologyCode}>
+              <div style={{ marginBlock: '40px' }}>
+                <EquipmentOverview equipment={e} />
+              </div>
+            </Carousel.Item>
+          ))}
+        </Carousel>
+      )}
+      {loading && (
+        <Stack
+          direction={'row'}
+          alignItems='center'
+          justifyContent={'start'}
+          spacing={3}
+        >
+          {[1, 2, 3].map((e) => (
+            <Skeleton
+              variant='rectangular'
+              width={300}
+              height={250}
+              sx={{ borderRadius: 3, boxShadow: 5 }}
+            />
+          ))}
+        </Stack>
+      )}
     </Stack>
   );
 }

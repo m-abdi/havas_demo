@@ -40,6 +40,17 @@ query equipmentsAndPlaces {
   }
 }
 
+query equipmentsStatus {
+  equipments {
+    terminologyCode
+    name
+    receiving
+    sending
+    outsourced
+    available
+  }
+}
+
 mutation createEquipment(
   $name: String!
   $model: String

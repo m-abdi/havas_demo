@@ -541,6 +541,7 @@ const typeDefs = /* GraphQL */ `
     getWorkflowNumber: String!
     tagData(tagId: ID!): Tag
     getCurrentConfig: Config
+    
   }
 
   type Mutation {

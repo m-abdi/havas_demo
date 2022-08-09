@@ -5,6 +5,7 @@ import {
   DeleteEquipmentsDocument,
   DeletePersonsDocument,
   EquipmentsDocument,
+  EquipmentsStatusDocument,
 } from '../../lib/graphql-operations';
 import { EquipmentFilter, PersonFilter } from '../../lib/resolvers-types';
 import { useCallback, useContext, useEffect } from 'react';
@@ -24,7 +25,8 @@ export default function useEquipments(
   setPageNumber?: React.Dispatch<React.SetStateAction<number>>,
   setOffset?: React.Dispatch<React.SetStateAction<number>>,
   fetchEquipmentsList = false,
-  fetchAllEquipments = false
+  fetchAllEquipments = false,
+  fetchEquipmentsStatus = false
 ) {
   const router = useRouter();
   const { setSnackbarOpen, setSnackbarMessage, setSnackbarColor } =
@@ -54,6 +56,13 @@ export default function useEquipments(
   });
   const infoContext = useContext(InfoContext);
 
+  // equipments statistics
+  const [
+    equipmentsStatusQuery,
+    { data: equipmentsStatusData, loading: equipmentsStatusLoading },
+  ] = useLazyQuery(EquipmentsStatusDocument, {
+    fetchPolicy: 'cache-and-network',
+  });
   // fetch queries that are requested
   useEffect(() => {
     (async () => {
@@ -62,8 +71,12 @@ export default function useEquipments(
         if (data) {
           infoContext.setEquipments(data?.equipments);
         }
-      } else if (fetchAllEquipments) {
-         await allEquipmentsQuery();
+      }
+      if (fetchAllEquipments) {
+        await allEquipmentsQuery();
+      }
+      if (fetchEquipmentsStatus) {
+        await equipmentsStatusQuery();
       }
     })();
   }, []);
@@ -213,7 +226,10 @@ export default function useEquipments(
     []
   );
   equipmentsList?.equipments;
+  
   return {
+    equipmentsStatus: equipmentsStatusData?.equipments ?? [],
+    equipmentsStatusLoading,
     equipmentsList: equipmentsList?.equipments,
     equipmentsListLoading,
     equipmentsListError,

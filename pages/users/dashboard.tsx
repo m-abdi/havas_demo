@@ -6,35 +6,34 @@ import Head from 'next/head';
 import { InfoContext } from 'pages/_app';
 import Layout from '../../src/Components/Layout/Layout';
 import Loader from 'src/Components/Loader';
+import useEquipments from '@/src/Logic/useEquipments';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
 const pageName = 'داشبورد';
 export default function dashboard() {
+  const { equipmentsStatus, equipmentsStatusLoading } = useEquipments(
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    false,
+    false,
+    true
+  );
+  
   return (
     <AuthenticationRequired>
       <Layout pageName={pageName}>
         <Head>
           <title>{`${pageName}`} | حواس</title>
         </Head>
-        <EquipmentsOverviewCarousel
-          equipments={[
-            {
-              name: 'اکسیژن ۵۰ لیتری',
-              outsourced: 4,
-              sending: 0,
-              receiving: 2152,
-              available: 3,
-            },
-            {
-              name: 'اکسیژن ۴۰ لیتری',
-              outsourced: 4,
-              sending: 0,
-              receiving: 2152,
-              available: 3,
-            },
-          ]}
-        />
+        {<EquipmentsOverviewCarousel
+          equipments={equipmentsStatus as any}
+          loading={equipmentsStatusLoading}
+        />}
       </Layout>
     </AuthenticationRequired>
   );
