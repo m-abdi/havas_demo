@@ -518,7 +518,7 @@ const resolvers: Resolvers = {
       // check authentication and permission
       const { req } = _context;
       const session = await getSession({ req });
-      // manager recognition
+      // manager detection
       if (!session || !(await canDeleteLicenses(session))) {
         throw new GraphQLYogaError('Unauthorized');
       }

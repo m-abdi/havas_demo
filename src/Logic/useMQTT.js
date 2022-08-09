@@ -26,6 +26,28 @@ export default function useMQTT(channel = 'rfid') {
     );
   }, [mqttMessage]);
 
+  // show notification every time a new mqtt message is received
+  useEffect(() => {
+    if (mqttStatus === "CONNECTED") {
+      useNotification(
+        "success",
+        setSnackbarColor,
+        setSnackbarMessage,
+        setSnackbarOpen,
+        "", "اتصال با RFID برقرار شد"
+        
+      );
+    } else if (mqttStatus === 'DISCONNECTED') {
+      useNotification(
+        'sending',
+        setSnackbarColor,
+        setSnackbarMessage,
+        setSnackbarOpen,
+        'در حال برقراری اتصال با RFID',
+      );
+    }
+  }, [mqttStatus]);
+
   // connection manager
   function startConnection() {
     const client = new MqttClient(

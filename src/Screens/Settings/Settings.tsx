@@ -45,6 +45,7 @@ export default function Settings({
       }}
     >
       {/* automatic confirm exit workflows */}
+      {/* manager detection */}
       {session?.user?.role?.deleteLicense && loading ? (
         <Skeleton variant='rectangular' width={300} height={20} />
       ) : (

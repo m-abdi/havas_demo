@@ -6,6 +6,7 @@ import {
   Checkbox,
   Container,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
@@ -50,6 +51,7 @@ import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import { Satellite } from '@mui/icons-material';
 import SensorsRoundedIcon from '@mui/icons-material/SensorsRounded';
 import { Session } from 'next-auth';
+import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined';
 import { flushSync } from 'react-dom';
 import matchSorter from 'match-sorter';
 /* eslint-disable react/jsx-filename-extension */
@@ -183,7 +185,7 @@ export default memo(function ExitHospitals({
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [detailsDialog, setDetailsDialog] = useState(false);
   const [rawFilters, setRawFilters] = useState({});
-
+  const [approveDialog, setApproveDialog] = useState(false);
   //
   const { register, reset } = useForm();
 
@@ -238,8 +240,6 @@ export default memo(function ExitHospitals({
         accessor: 'passedStages[0].havaleh.corporation.name', // accessor is the "key" in the data
         width: 200,
       },
-
-  
 
       {
         Header: 'شماره حواله',
@@ -965,13 +965,67 @@ export default memo(function ExitHospitals({
           />
         </DialogContent>
       </Dialog>
+      <Dialog
+        sx={{ zIndex: 7000 }}
+        open={approveDialog}
+        maxWidth='lg'
+        onClose={() => setApproveDialog(false)}
+      >
+        <DialogTitle sx={{ textAlign: 'center' }}>
+          <Stack
+            direction='row'
+            alignItems='center'
+            justifyContent={'space-between'}
+          >
+            <span style={{ inlineSize: '10%' }}>
+              <IconButton onClick={() => setApproveDialog(false)}>
+                <CloseRoundedIcon />
+              </IconButton>
+            </span>
+            <Typography
+              variant='h6'
+              component='h2'
+              sx={{ flexGrow: 1, textAlign: 'center' }}
+            >
+              آیا حواله خروجی با مشخصات زیر مورد تایید است؟
+            </Typography>
+            <span style={{ inlineSize: '10%' }}></span>
+          </Stack>
+        </DialogTitle>
+        <DialogContent sx={{ position: 'relative', p: 5 }}>
+          <div>شماره حواله :‌ {choosedRow?.passedStages?.[0]?.havaleh?.id}</div>
+          <div> شماره گردش کار :‌ {choosedRow?.workflowNumber}</div>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            label='خیر'
+            color='error'
+            onClick={() => setApproveDialog(false)}
+          />
+          <Button
+            label='بله'
+            color='success'
+            onClick={() => approveHandler(choosedRow?.workflowNumber)}
+          />
+        </DialogActions>
+      </Dialog>
       {session?.user?.role?.createLicense ? (
         <Menu
           anchorEl={rowOptionsAnchorElement}
           open={rowOptionsOpen}
           onClose={handleRowOptionsClose}
         >
-          {session?.user?.role?.['createLicense'] ? (
+          {session?.user?.role?.['deleteLicense'] && !choosedRow?.passedStages?.[1] ? (
+            <MenuItem>
+              <Button
+                startIcon={<VerifiedOutlinedIcon />}
+                variant='text'
+                onClick={() => setApproveDialog(true)}
+                label='تایید خروج'
+              />
+            </MenuItem>
+          ) : null}
+          {session?.user?.role?.['createLicense'] && choosedRow?.passedStages?.[1] ? (
             <MenuItem>
               <Button
                 id={choosedRow?.workflowNumber + '-edit'}
