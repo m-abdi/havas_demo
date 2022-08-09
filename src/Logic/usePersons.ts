@@ -92,37 +92,79 @@ export default function usePersons(
         setSnackbarOpen
       );
       try {
-        const createdPerson = await createPersonMutation({
-          variables: {
-            id,
-            firstNameAndLastName,
-            placeId,
-            roleId,
-            state,
-            city,
-            postalCode,
-            address,
-            telephone,
-            mobileNumber,
-            website,
-            edit,
-          },
-        });
-        if (createdPerson) {
-          useNotification(
-            'success',
-            setSnackbarColor,
-            setSnackbarMessage,
-            setSnackbarOpen
-          );
-          router.push('/users/persons');
+        // create new person from rest api
+        if (!edit) {
+          const resp = await fetch('/api/createPerson', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              id,
+              firstNameAndLastName,
+              placeId,
+              roleId,
+              state,
+              city,
+              postalCode,
+              address,
+              telephone,
+              mobileNumber,
+              website,
+              edit,
+            }),
+          });
+          if (resp.ok) {
+            useNotification(
+              'success',
+              setSnackbarColor,
+              setSnackbarMessage,
+              setSnackbarOpen
+            );
+            router.push('/users/persons');
+            return;
+          } else {
+            useNotification(
+              'error',
+              setSnackbarColor,
+              setSnackbarMessage,
+              setSnackbarOpen
+            );
+            return;
+          }
         } else {
-          useNotification(
-            'error',
-            setSnackbarColor,
-            setSnackbarMessage,
-            setSnackbarOpen
-          );
+          const createdPerson = await createPersonMutation({
+            variables: {
+              id,
+              firstNameAndLastName,
+              placeId,
+              roleId,
+              state,
+              city,
+              postalCode,
+              address,
+              telephone,
+              mobileNumber,
+              website,
+              edit,
+            },
+          });
+          if (createdPerson) {
+            useNotification(
+              'success',
+              setSnackbarColor,
+              setSnackbarMessage,
+              setSnackbarOpen
+            );
+            router.push('/users/persons');
+          } else {
+            useNotification(
+              'error',
+              setSnackbarColor,
+              setSnackbarMessage,
+              setSnackbarOpen
+            );
+          }
         }
       } catch (e) {
         useNotification(
