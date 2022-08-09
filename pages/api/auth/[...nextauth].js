@@ -41,6 +41,7 @@ export default NextAuth({
           const potentialUser = await prisma.person.findFirst({
             where: { id: credentials.email },
           });
+          
           const match = await bcrypt.compare(credentials.password, potentialUser?.password);
           if (match) {
             await prisma.$disconnect();

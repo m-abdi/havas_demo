@@ -15,6 +15,8 @@ const typeDefs = /* GraphQL */ `
     roleId: ID
     createdAt: String
     editedAt: String
+
+    
   }
 
   type Place {
@@ -58,6 +60,10 @@ const typeDefs = /* GraphQL */ `
     createdAt: String
     editedAt: String
     assets: [Asset]
+    outsourced: Int
+    receiving: Int
+    sending: Int
+    available: Int
   }
   type Asset {
     id: ID!

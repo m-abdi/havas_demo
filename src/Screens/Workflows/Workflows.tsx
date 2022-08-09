@@ -51,7 +51,7 @@ import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import { Satellite } from '@mui/icons-material';
 import { Session } from 'next-auth';
 import { Workflow } from '../../../lib/resolvers-types';
-import WorkflowStageModal from '@/src/Components/WorkflowStagesModal';
+import WorkflowStageModal from '../../../src/Components/WorkflowStagesModal';
 import { flushSync } from 'react-dom';
 import matchSorter from 'match-sorter';
 /* eslint-disable react/jsx-filename-extension */
@@ -59,7 +59,7 @@ import { memo } from 'react';
 import persianCalender from 'react-date-object/calendars/persian';
 import persianLocale from 'react-date-object/locales/persian_fa';
 import styled from 'styled-components';
-import toNestedObject from '@/src/Logic/toNestedObject';
+import toNestedObject from '../../../src/Logic/toNestedObject';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 

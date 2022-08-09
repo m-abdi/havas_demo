@@ -61,7 +61,6 @@ docker exec mongo1 sh -c 'exec mongodump -d havas --archive'> ./db-backup.archiv
 
 ## Restore database ##
 
-m
 ```sh
 mongoresotre --archive=./db-backup.archive
 ```

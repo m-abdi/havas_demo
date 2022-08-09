@@ -28,6 +28,6 @@
     "graphql.d.ts",
     "types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx",
+    "**/*.tsx", "src/Components/EquipmentOverview/.stories.tsx",
   ]
 }
