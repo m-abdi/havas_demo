@@ -40,10 +40,10 @@ describe('interaction test for NewPlace page', () => {
       .invoke('val')
       .should('eq', Main?.args?.persons?.[0]?.role?.name as string);
     cy.get('#typeOfWork').type(testNewPlaceData?.typeOfWork, { force: true });
-    const placeCategoryId = Main.args?.places?.find(
-      (p) => p.isCategory
-    )?.id;
-    cy.get(`#${placeCategoryId}`).click();
+    // const placeCategoryId = Main.args?.places?.find(
+    //   (p) => p.isCategory
+    // )?.id;
+    // cy.get(`#${placeCategoryId}`).click();
     cy.get('#state').type(testNewPlaceData?.state);
     cy.get('#city').type(testNewPlaceData?.city);
     cy.get('#postalCode').type(testNewPlaceData?.postalCode);
@@ -60,7 +60,7 @@ describe('interaction test for NewPlace page', () => {
     cy.get('@onSubmitSpy').should(
       'have.been.calledWith',
       testNewPlaceData.name,
-      placeCategoryId,
+      null,
       Main?.args?.persons?.[0]?.id,
       testNewPlaceData.typeOfWork,
       testNewPlaceData.state,

@@ -21,14 +21,13 @@ describe('interaction test for NewEquipment page', () => {
       { props: { createHandler: onSubmitSpy } }
     );
     cy.get('#equipment').type(Main.args?.equipments?.[0].label as string);
-    cy.get('#publicPropertyCode').type(testNewAsset?.publicPropertyCode);
-    cy.get('#place').type(Main.args?.places?.[0].label as string);
+    // cy.get('#publicPropertyCode').type(testNewAsset?.publicPropertyCode);
+    cy.get('#place').type(Main.args?.places?.[0].label as string, {force: true});
     cy.get('#submitButton').click({ force: true });
     cy.get('@onSubmitSpy').should('have.been.called');
     cy.get('@onSubmitSpy').should(
       'have.been.calledWith',
       Main.args?.equipments?.[0]?.id,
-      testNewAsset?.publicPropertyCode,
       Main.args?.places?.[0]?.id,
       ""
     );
@@ -49,9 +48,9 @@ describe('interaction test for NewEquipment page', () => {
     cy.get('#equipment')
       .clear()
       .type(Main.args?.equipments?.[1].label as string);
-    cy.get('#publicPropertyCode')
-      .clear()
-      .type(testEditAsset?.publicPropertyCode);
+    // cy.get('#publicPropertyCode')
+    //   .clear()
+    //   .type(testEditAsset?.publicPropertyCode);
     cy.get('#place')
       .clear()
       .type(Main.args?.places?.[1].label as string);
@@ -60,7 +59,6 @@ describe('interaction test for NewEquipment page', () => {
     cy.get('@onSubmitSpy').should(
       'have.been.calledWith',
       Main.args?.equipments?.[1]?.id,
-      testEditAsset?.publicPropertyCode,
       Main.args?.places?.[1]?.id,
       testEditAsset.id
     );

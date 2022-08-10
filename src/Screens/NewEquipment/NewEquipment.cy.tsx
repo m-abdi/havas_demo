@@ -17,6 +17,7 @@ export const testEditedEquipmentData = {
   name: 'نام تجهیز',
   model: 'مدل تجهیز',
   factory: 'نام کارخانه سازنده',
+  supportCompany: { id: '123', label: 'نام کارخانه' },
   serialNumber: 'شماره سریال',
   productionYear: 'سال تولید',
   installationYear: 'سال نصب و راه اندازی',

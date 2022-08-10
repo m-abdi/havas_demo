@@ -126,7 +126,7 @@ export default function NewEquipment({
   useEffect(() => {
     if (existingEquipment.name) {
       setSupportCompany(
-        factories.find((f) => f.id === existingEquipment.supportCompany.id)
+        factories.find((f) => f.id === existingEquipment?.supportCompany?.id)
       );
       setHasInstructions(existingEquipment?.hasInstructions);
     }
