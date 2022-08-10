@@ -1,17 +1,11 @@
 import {
-  AllPersonsDocument,
-  AllPlacesDocument,
-  DeletePersonsDocument,
-  DeletePlacesDocument,
-  PlaceFilter,
-} from '../../lib/graphql-operations';
+  AssetTransferWorkflowFilter,
+  EquipmentFilter,
+} from '../../lib/resolvers-types';
 import React, { memo, useCallback, useContext, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
 import AuthenticationRequired from '../../src/AuthenticationRequired';
-import {
-  EquipmentFilter,
-} from '../../lib/resolvers-types';
 import Equipments from '../../src/Screens/Equipments';
 import ExitHospitals from '../../src/Screens/ExitHospitals';
 import Head from 'next/head';
@@ -24,7 +18,7 @@ export default memo(function exitHospitals() {
   const [pageNumber, setPageNumber] = useState(0);
   const [offset, setOffset] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [filters, setFilters] = useState<EnterWorkflowFilter>();
+  const [filters, setFilters] = useState<AssetTransferWorkflowFilter>();
 
   const {
     allExitWorkflows,
@@ -33,6 +27,7 @@ export default memo(function exitHospitals() {
     deleting,
     deleteHandler,
     fetchMore,
+    approveExitHandler
   } = useWorkflows(
     offset,
     pageNumber,
@@ -59,6 +54,7 @@ export default memo(function exitHospitals() {
         fetchMoreRows={fetchMore}
         deleting={deleting}
         deleteHandler={deleteHandler}
+        approveHandler={approveExitHandler}
       />
   );
 })

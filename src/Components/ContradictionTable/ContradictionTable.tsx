@@ -1,5 +1,6 @@
 import {
   AggregatedTransferedAssets,
+  AggregatedTransferedAssetsOutput,
   Workflow,
 } from '../../../lib/resolvers-types';
 import React, { memo, useContext } from 'react';
@@ -19,7 +20,7 @@ function giveMeContradictionRows(
   corporationRegisteredAssets: AggregatedTransferedAssets,
   warehouseRegisteredAssets: AggregatedTransferedAssets
 ): any[] {
-  const infoContext = useContext(InfoContext);
+  const infoContext: any = useContext(InfoContext);
   const rows: any = [];
   //
   const aggCorporationRegisteredAssets = Object.entries(
@@ -43,7 +44,7 @@ function giveMeContradictionRows(
         <TableRow key={corporationAsset?.[0]}>
           <TableCell sx={{ textAlign: 'center' }}>
             {infoContext?.equipments?.find(
-              (e) => e?.id === corporationAsset?.[0]
+              (e: any) => e?.id === corporationAsset?.[0]
             )?.label ?? corporationAsset?.[0]}
           </TableCell>
           <TableCell sx={{ textAlign: 'center' }}>
@@ -60,7 +61,13 @@ function giveMeContradictionRows(
   return rows;
 }
 
-export default memo(function ContradictionTable({ corporationRegisteredAssets, warehouseRegisteredAssets}) {
+export default memo(function ContradictionTable({
+  corporationRegisteredAssets,
+  warehouseRegisteredAssets,
+}: {
+  corporationRegisteredAssets: AggregatedTransferedAssetsOutput;
+  warehouseRegisteredAssets: AggregatedTransferedAssetsOutput;
+}) {
   return (
     <TableContainer>
       <Table>

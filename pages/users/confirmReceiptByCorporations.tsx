@@ -1,9 +1,10 @@
-import { EnterWorkflowFilter, Workflow } from '../../lib/resolvers-types';
 import React, { useCallback, useContext, useState } from 'react';
 
+import { AssetTransferWorkflowFilter } from 'lib/graphql-operations';
 import ConfirmReceiptByCorporations from '../../src/Screens/ConfirmReceiptByCorporations/ConfirmReceiptByCorporations';
 import ConfirmReceiptByHospitals from '../../src/Screens/ConfirmReceiptByHospitals';
 import Layout from '../../src/Components/Layout';
+import { Workflow } from '../../lib/resolvers-types';
 import { receiveMessageOnPort } from 'worker_threads';
 import useEquipments from '../../src/Logic/useEquipments';
 import useWorkflows from '../../src/Logic/useWorkflows';
@@ -14,7 +15,7 @@ export default function confirmReceiptByCorporations() {
   const [pageNumber, setPageNumber] = useState(0);
   const [offset, setOffset] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [filters, setFilters] = useState<EnterWorkflowFilter>();
+  const [filters, setFilters] = useState<AssetTransferWorkflowFilter>();
   // hooks
   const {
     recievedExitWorkflows,

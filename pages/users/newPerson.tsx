@@ -47,7 +47,7 @@ export default function newPerson() {
         places={data?.places}
         allPlaces={data?.places as any}
         createNewPersonHandler={createNewPersonHandler}
-        createNewPlaceHandler={createNewPlaceHandler}
+        createNewPlaceHandler={createNewPlaceHandler as any}
         createNewCategoryHandler={createNewCategoryHandler}
         deletePlacesHandler={deletePlaces}
       />

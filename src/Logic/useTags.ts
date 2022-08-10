@@ -37,7 +37,7 @@ export default function useTags(
   // fetch a specific tag
   const [
     getTagDataQuery,
-    { data: tagData, error: tagDataError, loading: tagDataLoading },
+    { data: tagData, error: tagDataError, loading: tagDataLoading, fetchMore: fetchMoreRows },
   ] = useLazyQuery(GetTagDataDocument, {
     fetchPolicy: 'cache-and-network',
   });

@@ -55,7 +55,7 @@ export default function newPlace() {
         }
         persons={personsOptions?.persons as any}
         existingPlace={existingPlace}
-        createNewPlaceHandler={createNew}
+        createNewPlaceHandler={createNew as any}
         createNewCategoryHandler={createNewCategory}
         deletePlacesHandler={deleteHandler}
         modal={false}

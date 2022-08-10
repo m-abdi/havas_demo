@@ -1,4 +1,7 @@
-import { EnterWorkflowFilter, Workflow } from '../../lib/resolvers-types';
+import {
+  AssetTransferWorkflowFilter,
+  Workflow,
+} from '../../lib/resolvers-types';
 import React, { useCallback, useContext, useState } from 'react';
 
 import ConfirmReceiptByHospitals from '../../src/Screens/ConfirmReceiptByHospitals';
@@ -12,7 +15,7 @@ export default function confirmReceiptByHospitals() {
   const [pageNumber, setPageNumber] = useState(0);
   const [offset, setOffset] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [filters, setFilters] = useState<EnterWorkflowFilter>();
+  const [filters, setFilters] = useState<AssetTransferWorkflowFilter>();
   // hooks
   const {
     confirmedEnterWorkflows,

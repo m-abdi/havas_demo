@@ -14,6 +14,7 @@ import Head from 'next/head';
 import Layout from '../../src/Components/Layout';
 import NewExitCorporation from '../../src/Screens/NewExitCorporation';
 import NewExitHospital from '../../src/Screens/NewExitHospital';
+import { Workflow } from 'lib/resolvers-types';
 import { useRouter } from 'next/router';
 import useWorkflows from '../../src/Logic/useWorkflows';
 
@@ -21,7 +22,7 @@ const pageName = 'تحویل کپسول به بیمارستان';
 export default function ConfirmReceiptByHospital() {
   // states
   const [havaleh, setHavaleh] = useState<{ id: string; label: string }>();
-  const [existingWorkflow, setExistingWorkflow] = useState();
+  const [existingWorkflow, setExistingWorkflow] = useState<any>();
   const [editable, setEditable] = useState(false);
 
   //
@@ -33,7 +34,7 @@ export default function ConfirmReceiptByHospital() {
 
   useEffect(() => {
     console.log(router.query.workflow);
-    
+
     if (router?.query?.workflow) {
       setExistingWorkflow(JSON.parse(router?.query?.workflow as string));
     }

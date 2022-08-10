@@ -7,6 +7,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
+    
   const {
     id,
     firstNameAndLastName,
@@ -19,7 +20,9 @@ export default async function handler(
     telephone,
     mobileNumber,
     website,
-  } = JSON.parse(req?.body);
+  } = req?.body;
+
+  
   // hash salt
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(telephone as string, salt);

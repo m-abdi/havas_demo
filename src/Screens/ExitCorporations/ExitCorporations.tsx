@@ -50,6 +50,7 @@ import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownR
 import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import { Session } from 'next-auth';
+import { Workflow } from 'lib/graphql-operations';
 import { flushSync } from 'react-dom';
 import matchSorter from 'match-sorter';
 /* eslint-disable react/jsx-filename-extension */
@@ -163,7 +164,7 @@ export default memo(function ExitCorporations({
 }: {
   loading: boolean;
   deleting: boolean;
-  data: DataType[];
+  data: Workflow[];
   offset: number;
   pageNumber: number;
   itemsPerPage: number;
@@ -903,7 +904,10 @@ export default memo(function ExitCorporations({
         closeDialog={() => setDeleteDialog(false)}
         confirmDelete={async () => {
           await deleteHandler(
-            selectedFlatRows.map((p) => p?.original?.workflowNumber), "exitCorporations"
+            selectedFlatRows.map(
+              (p) => p?.original?.workflowNumber
+            ) as string[],
+            'exitCorporations'
           );
           setDeleteDialog(false);
         }}
@@ -950,6 +954,7 @@ export default memo(function ExitCorporations({
               'استیلن',
               'گاز مایع',
             ]}
+            setValue={undefined}
             register={register}
             existingEnterWorkflow={
               choosedRow?.passedStages?.[0]?.havaleh?.assets

@@ -30,5 +30,4 @@ Main.args = {
 export const Loading = Template.bind({});
 Loading.args = {
   ...Main.args,
-  loading: true,
 };

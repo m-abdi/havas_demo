@@ -5,13 +5,10 @@ import {
   DeletePlacesDocument,
   PlaceFilter,
 } from '../../lib/graphql-operations';
-import {
-  EnterWorkflowFilter,
-  EquipmentFilter,
-} from '../../lib/resolvers-types';
 import React, { useCallback, useContext, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
+import { AssetTransferWorkflowFilter } from 'lib/resolvers-types';
 import AuthenticationRequired from '../../src/AuthenticationRequired';
 import Equipments from '../../src/Screens/Equipments';
 import ExitCorporations from '../../src/Screens/ExitCorporations/ExitCorporations';
@@ -25,7 +22,7 @@ export default function exitCorporations() {
   const [pageNumber, setPageNumber] = useState(0);
   const [offset, setOffset] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [filters, setFilters] = useState<EnterWorkflowFilter>();
+  const [filters, setFilters] = useState<AssetTransferWorkflowFilter>();
 
   const { allEnterWorkflows, allEnterWorkflowsCount, loading, sending, fetchMore, deleting, deleteHandler } = useWorkflows(
     offset,

@@ -1050,18 +1050,17 @@ const resolvers: Resolvers = {
       //     },
       //   });
       // });
-      const aggregatedAssets = {};
+      const aggregatedAssets: any = {};
       Object.entries(assets as TransferedAssets)
         .map(([key, value]) => [
           key.replace('_factory', '').replace('_customer', ''),
           value,
         ])
-        .forEach(
-          ([k, v]) =>
-            (aggregatedAssets[k] = aggregatedAssets[k]
-              ? aggregatedAssets[k] + v
-              : v)
-        );
+        ?.forEach(([k, v]) => {
+          aggregatedAssets[String(k)] = aggregatedAssets[String(k)]
+            ? aggregatedAssets[String(k)] + v
+            : v;
+        });
       //  update state of equipments
       const o: any = [];
       Object.entries(aggregatedAssets)
@@ -1138,7 +1137,7 @@ const resolvers: Resolvers = {
       if (!session || !(await canCreateEquipment(session))) {
         throw new GraphQLYogaError('Unauthorized');
       }
-      const aggregatedAssets = {};
+      const aggregatedAssets: any = {};
       Object.entries(assets as any)
         .map(([key, value]) => [
           key.replace('_factory', '').replace('_customer', ''),
@@ -1146,8 +1145,8 @@ const resolvers: Resolvers = {
         ])
         .forEach(
           ([k, v]) =>
-            (aggregatedAssets[k] = aggregatedAssets[k]
-              ? aggregatedAssets[k] + v
+            (aggregatedAssets[String(k)] = aggregatedAssets[String(k)]
+              ? aggregatedAssets[String(k)] + v
               : v)
         );
       const currentConfig = await prisma.config.findFirst({
@@ -1631,6 +1630,31 @@ const resolvers: Resolvers = {
         where: { id },
         data: { ignoreManagerApproval },
       });
+    },
+    async approveExitWorkflow(_, { workflowNumber }, _context): Promise<any> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      // manager recognition
+      if (!session || session?.user?.role?.name !== 'مدیریت') {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+      return (await prisma.workflow.update({
+        where: { workflowNumber },
+        data: {
+          passedStages: {
+            push: {
+              stageID: 2,
+              stageName: 'قبول درخواست توسط مدیریت',
+              submittedByUser: {
+                id: session?.user?.id,
+                firstNameAndLastName: session?.user?.firstNameAndLastName,
+                role: session?.user?.role?.name,
+              },
+            },
+          },
+        },
+      })).workflowNumber;
     },
   },
   Person: {

@@ -26,6 +26,7 @@ Main.args = {
 
   data: [
     {
+      id: '324',
       passedStages: [
         {
           submittedByUser: {
@@ -125,6 +126,7 @@ Main.args = {
       ],
     },
     {
+      id: '23423',
       passedStages: [
         {
           submittedByUser: {

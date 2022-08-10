@@ -493,3 +493,8 @@ mutation rfidCheckWorkflows(
 mutation deleteWorkflows($workflowIds: [String!]!) {
   deleteWorkflows(workflowIds: $workflowIds)
 }
+
+
+mutation approveExitWorkflow($workflowNumber: String!) {
+  approveExitWorkflow(workflowNumber: $workflowNumber) 
+}

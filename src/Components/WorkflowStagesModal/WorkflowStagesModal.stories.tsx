@@ -26,14 +26,14 @@ export const Main = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Main.args = {
   data: {
-    _id: '6',
-    instanceOfProcessId: { $numberLong: '2' },
+    id: '6',
+    instanceOfProcessId:2,
     nextStageName: '',
     dateCreated: '1659685654011',
     dateModified: '1659685680668',
     passedStages: [
       {
-        stageID: { $numberLong: '1' },
+        stageID: "1",
         stageName: 'ثبت خروج کپسول از بیمارستان',
         submittedByUser: {
           id: '0520926458',
@@ -53,7 +53,7 @@ Main.args = {
             name: 'اداری',
           },
           assets: {
-            oxygen_50l_factory: { $numberLong: '3' },
+            oxygen_50l_factory: 3,
             bihoshi_50l_factory: null,
             shaft_50l_factory: null,
             controlValve_50l_factory: null,
@@ -76,7 +76,7 @@ Main.args = {
             acetylene_50l_customer: null,
             lpg_50l_customer: null,
             oxygen_40l_factory: null,
-            bihoshi_40l_factory: { $numberLong: '3' },
+            bihoshi_40l_factory: 3,
             shaft_40l_factory: null,
             controlValve_40l_factory: null,
             co2_40l_factory: null,
@@ -97,7 +97,7 @@ Main.args = {
             entonox_40l_customer: null,
             acetylene_40l_customer: null,
             lpg_40l_customer: null,
-            oxygen_50l: { $numberLong: '3' },
+            oxygen_50l: 3,
             bihoshi_50l: null,
             shaft_50l: null,
             controlValve_50l: null,
@@ -109,7 +109,7 @@ Main.args = {
             acetylene_50l: null,
             lpg_50l: null,
             oxygen_40l: null,
-            bihoshi_40l: { $numberLong: '3' },
+            bihoshi_40l: 3,
             shaft_40l: null,
             controlValve_40l: null,
             co2_40l: null,
@@ -123,7 +123,7 @@ Main.args = {
         },
       },
       {
-        stageID: { $numberLong: '2' },
+        stageID: "2",
         stageName: 'قبول درخواست توسط مدیریت',
         submittedByUser: {
           id: '0520926458',
@@ -132,7 +132,7 @@ Main.args = {
         havaleh: null,
       },
       {
-        stageID: { $numberLong: '3' },
+        stageID: "3",
         stageName: 'RFID ثبت خروج کپسول از انبار توسط',
         submittedByUser: {
           id: '0520926458',
@@ -219,7 +219,7 @@ Main.args = {
         },
       },
       {
-        stageID: { $numberLong: '4' },
+        stageID: "4",
         stageName: 'تایید تحویل به شرکت',
         submittedByUser: {
           id: '0520926458',
@@ -234,8 +234,8 @@ Main.args = {
           description: null,
           receivingDescription: 'توضیحات ارسال عزیزم',
           assets: {
-            oxygen_50l: { $numberLong: '6' },
-            bihoshi_40l: { $numberLong: '6' },
+            oxygen_50l: 6,
+            bihoshi_40l: 6,
           },
         },
       },

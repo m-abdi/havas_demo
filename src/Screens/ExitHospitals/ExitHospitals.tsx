@@ -162,10 +162,11 @@ export default memo(function ExitHospitals({
   fetchMoreRows,
   allEquipmentsCount: allequipmentsCount,
   deleteHandler,
+  approveHandler,
 }: {
   loading: boolean;
   deleting: boolean;
-  data: DataType[];
+  data: any[];
   offset: number;
   pageNumber: number;
   itemsPerPage: number;
@@ -175,6 +176,7 @@ export default memo(function ExitHospitals({
   allEquipmentsCount: number;
   fetchMoreRows: (e: any, page: number) => void;
   deleteHandler: (placeIds: string[], query: string) => Promise<void>;
+  approveHandler: (workflowNumber: string) => Promise<void>;
 }) {
   //  states
   const [rowOptionsAnchorElement, setRowOptionsAnchorElement] =
@@ -908,7 +910,9 @@ export default memo(function ExitHospitals({
         closeDialog={() => setDeleteDialog(false)}
         confirmDelete={async () => {
           await deleteHandler(
-            selectedFlatRows.map((p) => p?.original?.workflowNumber),
+            selectedFlatRows.map(
+              (p) => p?.original?.workflowNumber
+            ) as string[],
             'allExitWorkflows'
           );
           setDeleteDialog(false);
@@ -956,6 +960,7 @@ export default memo(function ExitHospitals({
               'استیلن',
               'گاز مایع',
             ]}
+            setValue={undefined}
             register={register}
             existingEnterWorkflow={
               choosedRow?.passedStages?.[0]?.havaleh?.assets
@@ -1005,7 +1010,10 @@ export default memo(function ExitHospitals({
           <Button
             label='بله'
             color='success'
-            onClick={() => approveHandler(choosedRow?.workflowNumber)}
+            onClick={() => {
+              approveHandler?.(choosedRow?.workflowNumber);
+              setApproveDialog(false);
+            }}
           />
         </DialogActions>
       </Dialog>
@@ -1015,7 +1023,8 @@ export default memo(function ExitHospitals({
           open={rowOptionsOpen}
           onClose={handleRowOptionsClose}
         >
-          {session?.user?.role?.['deleteLicense'] && !choosedRow?.passedStages?.[1] ? (
+          {session?.user?.role?.['deleteLicense'] &&
+          !choosedRow?.passedStages?.[1] ? (
             <MenuItem>
               <Button
                 startIcon={<VerifiedOutlinedIcon />}
@@ -1025,7 +1034,8 @@ export default memo(function ExitHospitals({
               />
             </MenuItem>
           ) : null}
-          {session?.user?.role?.['createLicense'] && choosedRow?.passedStages?.[1] ? (
+          {session?.user?.role?.['createLicense'] &&
+          choosedRow?.passedStages?.[1] ? (
             <MenuItem>
               <Button
                 id={choosedRow?.workflowNumber + '-edit'}

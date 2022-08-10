@@ -92,7 +92,7 @@ const newTag: NextPage = () => {
             sending={newTagSending}
             equipments={equipments as { id: string; label: string }[]}
             assetIds={assets as { id: string; label: string }[]}
-            places={places}
+            places={places as any}
             mqttMessage={mqttMessage as any}
             mqttStatus={mqttStatus as any}
             existingTag

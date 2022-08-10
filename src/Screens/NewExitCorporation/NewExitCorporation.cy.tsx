@@ -62,6 +62,7 @@ describe('interaction test for NewPerson page', () => {
 
     cy.mount(
       <ExitCorporation
+        editable={true}
         loading={false}
         sending={false}
         corporationRepresentative={{

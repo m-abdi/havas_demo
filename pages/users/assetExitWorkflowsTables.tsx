@@ -31,7 +31,7 @@ function TabPanel(props: TabPanelProps) {
     </div>
   );
 }
-export default function AssetExitWorkflowsTables({ newExits }) {
+export default function AssetExitWorkflowsTables() {
   // states
   const [tabValue, setTabValue] = useState(0);
   //

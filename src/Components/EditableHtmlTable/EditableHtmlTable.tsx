@@ -9,11 +9,17 @@ export default memo(function EditableHtmlTable({
   existingEnterWorkflow: assets,
   editable = true,
   reset,
-  setValue
+  setValue,
+}: {
+  selectedColumns: any;
+  register: any;
+  existingEnterWorkflow: any;
+  editable: boolean;
+  reset: any;
+  setValue: any;
 }) {
   // update react-hook-form state after rfid operation
   useEffect(() => {
-
     setValue?.('oxygen_50l', assets?.oxygen_50l);
     setValue?.('bihoshi_50l', assets?.bihoshi_50l);
     setValue?.('shaft_50l', assets?.shaft_50l);

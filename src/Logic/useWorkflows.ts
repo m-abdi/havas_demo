@@ -1,12 +1,12 @@
 /* eslint-disable no-var */
 import {
   AggregatedTransferedAssets,
-  EnterWorkflowFilter,
+  AssetTransferWorkflowFilter,
 } from '../../lib/resolvers-types';
 import {
-  AllEnterWorkflowsDocument,
   AllPersonsDocument,
   AllWorkflowsDocument,
+  ApproveExitWorkflowDocument,
   ConfirmReceiptByCorporationDocument,
   ConfirmReceiptByHospitalDocument,
   ConfirmedEnterWorkflowsDocument,
@@ -32,11 +32,12 @@ function dropNullValues(assets: { [key: string]: any }) {
     Object.entries(assets).filter(([key, value]) => value)
   );
 }
+
 export default function useWorkflows(
   offset = 0,
   pageNumber?: number,
   itemsPerPage = 10,
-  filters?: EnterWorkflowFilter,
+  filters?: AssetTransferWorkflowFilter,
   setPageNumber?: React.Dispatch<React.SetStateAction<number>>,
   setOffset?: React.Dispatch<React.SetStateAction<number>>,
   fetchAllEnterWorkflows = false,
@@ -51,6 +52,119 @@ export default function useWorkflows(
   const router = useRouter();
   const { setSnackbarOpen, setSnackbarMessage, setSnackbarColor } =
     useContext(SnackbarContext);
+  //
+  const queryMapper: any = {
+    allExitWorkflows: [
+      {
+        query: AllWorkflowsDocument,
+        variables: {
+          offset,
+          limit: itemsPerPage,
+          filters: {
+            ...filters,
+            instanceOfProcessId: 2,
+            nsn: {
+              in: [
+                'RFID ثبت خروج کپسول از انبار توسط',
+                'قبول درخواست توسط مدیریت',
+              ],
+            },
+          },
+        },
+      },
+      'allWorkflows',
+    ],
+    sentExitWorkflows: [
+      {
+        query: AllWorkflowsDocument,
+        variables: {
+          offset,
+          limit: itemsPerPage,
+          filters: {
+            nextStageName: 'تایید تحویل به شرکت',
+            instanceOfProcessId: 2,
+            ...filters,
+          },
+        },
+      },
+      'allWorkflows',
+    ],
+    recievedExitWorkflows: [
+      {
+        query: AllWorkflowsDocument,
+        variables: {
+          offset,
+          limit: itemsPerPage,
+          filters: {
+            nextStageName: '',
+            instanceOfProcessId: 2,
+            ...filters,
+          },
+        },
+      },
+      'allWorkflows',
+    ],
+    confirmedReceiptByHospitals: [
+      {
+        query: AllWorkflowsDocument,
+        variables: {
+          offset,
+          limit: itemsPerPage,
+          filters: {
+            nextStageName: 'RFID ثبت ورود کپسول به انبار توسط',
+            instanceOfProcessId: 1,
+            ...filters,
+          },
+        },
+      },
+      'allWorkflows',
+    ],
+    exitCorporations: [
+      {
+        query: AllWorkflowsDocument,
+        variables: {
+          offset,
+          limit: itemsPerPage,
+          filters: {
+            nsn: {
+              in: [
+                'RFID ثبت خروج کپسول از انبار توسط',
+                'قبول درخواست توسط مدیریت',
+              ],
+            },
+            instanceOfProcessId: 1,
+            ...filters,
+          },
+        },
+      },
+      'allWorkflows',
+    ],
+    enteredWarehouseRFID: [
+      {
+        query: AllWorkflowsDocument,
+        variables: {
+          offset,
+          limit: itemsPerPage,
+          filters: {
+            nextStageName: '',
+            instanceOfProcessId: 1,
+            ...filters,
+          },
+        },
+      },
+      'allWorkflows',
+    ],
+    allWorkflows: [
+      {
+        query: AllWorkflowsDocument,
+        variables: {
+          offset,
+          limit: itemsPerPage,
+        },
+      },
+      'allWorkflows',
+    ],
+  };
   // all workflows
   const [
     allWorkflowsQuery,
@@ -247,7 +361,7 @@ export default function useWorkflows(
     confirmReceiptByHospitalMutation,
     { loading: confirmReceiptByHospitalSending },
   ] = useMutation(ConfirmReceiptByHospitalDocument, {
-    refetchQueries: [{ query: AllEnterWorkflowsDocument }, 'allEnterWorkflows'],
+    refetchQueries: [{ query: AllWorkflowsDocument }, 'allWorkflows'],
   });
   // confirm existing exit worflow mutation to server
   const [
@@ -260,6 +374,9 @@ export default function useWorkflows(
   const [deleteWorkflowsMutation, { loading: deleting }] = useMutation(
     DeleteWorkflowsDocument
   );
+  // approve requested exit workflow
+  const [approveExitWorkflowQuery, { data: approvedExitWorkflowNumber }] =
+    useMutation(ApproveExitWorkflowDocument);
   // handlers
   // pagination handler
   const fetchMore = useCallback(
@@ -521,7 +638,7 @@ export default function useWorkflows(
             setSnackbarOpen
           );
         }
-      } catch (e) {
+      } catch (e: any) {
         console.log(e.message);
 
         useNotification(
@@ -608,7 +725,7 @@ export default function useWorkflows(
             setSnackbarOpen
           );
         }
-      } catch (e) {
+      } catch (e: any) {
         console.log(e.message);
 
         useNotification(
@@ -735,7 +852,7 @@ export default function useWorkflows(
             setSnackbarOpen
           );
         }
-      } catch (e) {
+      } catch (e: any) {
         console.log(e.message);
 
         useNotification(
@@ -758,122 +875,20 @@ export default function useWorkflows(
         setSnackbarMessage,
         setSnackbarOpen
       );
-      const queryMapper = {
-        allExitWorkflows: [
-          {
-            query: AllWorkflowsDocument,
-            variables: {
-              offset,
-              limit: itemsPerPage,
-              filters: {
-                ...filters,
-                instanceOfProcessId: 2,
-                nsn: {
-                  in: [
-                    'RFID ثبت خروج کپسول از انبار توسط',
-                    'قبول درخواست توسط مدیریت',
-                  ],
-                },
-              },
-            },
-          },
-          'allWorkflows',
-        ],
-        sentExitWorkflows: [
-          {
-            query: AllWorkflowsDocument,
-            variables: {
-              offset,
-              limit: itemsPerPage,
-              filters: {
-                nextStageName: 'تایید تحویل به شرکت',
-                instanceOfProcessId: 2,
-                ...filters,
-              },
-            },
-          },
-          'allWorkflows',
-        ],
-        recievedExitWorkflows: [
-          {
-            query: AllWorkflowsDocument,
-            variables: {
-              offset,
-              limit: itemsPerPage,
-              filters: {
-                nextStageName: '',
-                instanceOfProcessId: 2,
-                ...filters,
-              },
-            },
-          },
-          'allWorkflows',
-        ],
-        confirmedReceiptByHospitals: [
-          {
-            query: AllWorkflowsDocument,
-            variables: {
-              offset,
-              limit: itemsPerPage,
-              filters: {
-                nextStageName: 'RFID ثبت ورود کپسول به انبار توسط',
-                instanceOfProcessId: 1,
-                ...filters,
-              },
-            },
-          },
-          'allWorkflows',
-        ],
-        exitCorporations: [
-          {
-            query: AllWorkflowsDocument,
-            variables: {
-              offset,
-              limit: itemsPerPage,
-              filters: {
-                nsn: {
-                  in: [
-                    'RFID ثبت خروج کپسول از انبار توسط',
-                    'قبول درخواست توسط مدیریت',
-                  ],
-                },
-                instanceOfProcessId: 1,
-                ...filters,
-              },
-            },
-          },
-          'allWorkflows',
-        ],
-        enteredWarehouseRFID: [
-          {
-            query: AllWorkflowsDocument,
-            variables: {
-              offset,
-              limit: itemsPerPage,
-              filters: {
-                nextStageName: '',
-                instanceOfProcessId: 1,
-                ...filters,
-              },
-            },
-          },
-          'allWorkflows',
-        ],
-        allWorkflows: [
-          {
-            query: AllWorkflowsDocument,
-            variables: {
-              offset,
-              limit: itemsPerPage,
-            },
-          },
-          'allWorkflows',
-        ],
-      };
+
       try {
         const resp = await deleteWorkflowsMutation({
           variables: { workflowIds },
-          refetchQueries: queryMapper?.[query],
+          refetchQueries: queryMapper?.[query] ?? [
+            {
+              query: AllWorkflowsDocument,
+              variables: {
+                offset,
+                limit: itemsPerPage,
+              },
+            },
+            'allWorkflows',
+          ],
         });
 
         if (resp?.data) {
@@ -906,7 +921,50 @@ export default function useWorkflows(
     },
     []
   );
+  const approveExitHandler = useCallback(
+    async (workflowNumber: string): Promise<any> => {
+      // provide a response for user interaction(sending...)
+      useNotification(
+        'sending',
+        setSnackbarColor,
+        setSnackbarMessage,
+        setSnackbarOpen
+      );
+
+      try {
+        const resp = await approveExitWorkflowQuery({
+          variables: { workflowNumber },
+          refetchQueries: queryMapper?.allExitWorkflows,
+        });
+
+        if (resp?.data) {
+          useNotification(
+            'success',
+            setSnackbarColor,
+            setSnackbarMessage,
+            setSnackbarOpen
+          );
+        } else if (resp?.errors) {
+          useNotification(
+            'error',
+            setSnackbarColor,
+            setSnackbarMessage,
+            setSnackbarOpen
+          );
+        }
+      } catch (e) {
+        useNotification(
+          'error',
+          setSnackbarColor,
+          setSnackbarMessage,
+          setSnackbarOpen
+        );
+      }
+    },
+    []
+  );
   return {
+    approveExitHandler,
     allWorkflows: allWorkflowsData?.assetTransferWorkflows ?? [],
     allWorkflowsCount: allWorkflowsData?.assetTransferWorkflowsCount,
     allWorkflowsLoading,

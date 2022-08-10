@@ -1,2 +1,2 @@
-import ConfirmReceiptByCorporation from './ConfirmReceiptByCorporation';
-export default ConfirmReceiptByCorporation;
+import ConfirmReceiptByCorporations from './ConfirmReceiptByCorporations';
+export default ConfirmReceiptByCorporations;

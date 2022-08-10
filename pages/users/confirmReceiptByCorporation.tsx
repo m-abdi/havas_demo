@@ -22,7 +22,7 @@ const pageName = 'تحویل کپسول به بیمارستان';
 export default function confirmReceiptByCorporation() {
   // states
   const [havaleh, setHavaleh] = useState<{ id: string; label: string }>();
-  const [existingWorkflow, setExistingWorkflow] = useState();
+  const [existingWorkflow, setExistingWorkflow] = useState<any>();
   const [editable, setEditable] = useState(false);
 
   // data hooks
@@ -46,7 +46,7 @@ export default function confirmReceiptByCorporation() {
     0,
     undefined,
     2000000,
-    null,
+    undefined,
     undefined,
     undefined,
     false,

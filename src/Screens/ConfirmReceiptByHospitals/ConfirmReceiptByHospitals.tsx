@@ -159,9 +159,7 @@ export default memo(function ConfirmReceiptByHospitals({
   setFilters: any;
   allWorkflowsCount: number;
   fetchMoreRows: (e: any, page: number) => void;
-  deleteWorkflowsHandler: (
-    workflowIds: string[],
-  ) => Promise<void>;
+  deleteWorkflowsHandler: (workflowIds: string[]) => Promise<void>;
 }) {
   //  states
   const [rowOptionsAnchorElement, setRowOptionsAnchorElement] =
@@ -796,10 +794,9 @@ export default memo(function ConfirmReceiptByHospitals({
         closeDialog={() => setDeleteDialog(false)}
         confirmDelete={async () => {
           await deleteWorkflowsHandler(
-            selectedFlatRows.map((p) => p?.original?.workflowNumber),
+            selectedFlatRows.map((p) => p?.original?.workflowNumber) as string[]
           );
           setDeleteDialog(false);
-          return false;
         }}
       />
       <Dialog
@@ -882,6 +879,7 @@ export default memo(function ConfirmReceiptByHospitals({
               'استیلن',
               'گاز مایع',
             ]}
+            setValue={undefined}
             register={register}
             existingEnterWorkflow={
               choosedRow?.passedStages?.[0]?.havaleh?.assets

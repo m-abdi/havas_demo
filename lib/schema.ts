@@ -15,8 +15,6 @@ const typeDefs = /* GraphQL */ `
     roleId: ID
     createdAt: String
     editedAt: String
-
-    
   }
 
   type Place {
@@ -541,7 +539,6 @@ const typeDefs = /* GraphQL */ `
     getWorkflowNumber: String!
     tagData(tagId: ID!): Tag
     getCurrentConfig: Config
-    
   }
 
   type Mutation {
@@ -658,6 +655,7 @@ const typeDefs = /* GraphQL */ `
       checkedAssetsIds: [String!]!
     ): Workflow
     updateCurrentConfig(id: String!, ignoreManagerApproval: Boolean!): Config
+    approveExitWorkflow(workflowNumber: String!): String
   }
 `;
 

@@ -42,7 +42,7 @@ export default function settings() {
     <Layout pageName={pageName}>
       <Settings
         session={session as Session}
-        loding={loading}
+        loading={loading}
         data={data?.getCurrentConfig as any}
         submitHandler={submitHandler}
       />

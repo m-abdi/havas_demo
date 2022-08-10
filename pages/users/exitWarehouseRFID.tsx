@@ -17,7 +17,7 @@ import useWorkflows from '../../src/Logic/useWorkflows';
 const pageName = 'ثبت خروج کپسول توسط RFID';
 export default function exitWarehouseRFID() {
   //
-  const [checkedAssets, setCheckedAssets] = useState({
+  const [checkedAssets, setCheckedAssets] = useState<any>({
     oxygen_50l: null,
     bihoshi_50l: null,
     shaft_50l: null,
@@ -42,10 +42,10 @@ export default function exitWarehouseRFID() {
     lpg_40l: null,
   });
   //   states
-  const [havaleh, setHavaleh] = useState();
+  const [havaleh, setHavaleh] = useState<any>();
   const [existingWorkflow, setExistingWorkflow] = useState<any>();
 
-  const [checkedAssetsIds, setCheckedAssetsIds] = useState([]);
+  const [checkedAssetsIds, setCheckedAssetsIds] = useState<any>([]);
   //   data hooks
   const {
     allApprovedExitWorkflows,
@@ -83,11 +83,11 @@ export default function exitWarehouseRFID() {
     (async () => {
       //   fetch tag data
       const { data } = await getTagDataQuery({
-        variables: { tagId: mqttMessage },
+        variables: { tagId: mqttMessage as any },
       });
       //
       const checkedAssetsNames = Object.keys(checkedAssets);
-      const terminologyCode = data?.tagData?.asset?.equipment?.terminologyCode;
+      const terminologyCode: any = data?.tagData?.asset?.equipment?.terminologyCode;
 
       // checking to see  if equipment id exists in the table
       if (checkedAssetsNames?.includes(terminologyCode)) {
