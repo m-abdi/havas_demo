@@ -52,6 +52,7 @@ import { Satellite } from '@mui/icons-material';
 import SensorsRoundedIcon from '@mui/icons-material/SensorsRounded';
 import { Session } from 'next-auth';
 import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined';
+import { Workflow } from 'lib/graphql-operations';
 import { flushSync } from 'react-dom';
 import matchSorter from 'match-sorter';
 /* eslint-disable react/jsx-filename-extension */
@@ -166,7 +167,7 @@ export default memo(function ExitHospitals({
 }: {
   loading: boolean;
   deleting: boolean;
-  data: any[];
+  data: Workflow[];
   offset: number;
   pageNumber: number;
   itemsPerPage: number;

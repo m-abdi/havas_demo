@@ -729,7 +729,7 @@ export default function Workflows({
         closeDialog={() => setDeleteDialog(false)}
         confirmDelete={async () => {
           await deleteHandler(
-            selectedFlatRows.map((p) => p?.original?.workflowNumber)
+            selectedFlatRows.map((p) => p?.original?.workflowNumber) as string[]
           );
           setDeleteDialog(false);
         }}

@@ -25,7 +25,7 @@ Main.args = {
   itemsPerPage,
   data: [
     {
-      _id: 'b0106817-d981-4b00-977e-ed235828bd5c',
+      id: "34",
       workflowNumber: '1',
       instanceOfProcessId: 1,
       nextStageName: 'RFID ثبت ورود کپسول به انبار توسط',
@@ -33,13 +33,13 @@ Main.args = {
       dateModified: '1657967683902',
       passedStages: [
         {
-          stageID: { $numberLong: '1' },
+          stageID: '1',
           stageName: 'ثبت خروج کپسول از شرکت',
           submittedByUser: {
             id: '0520926458',
             firstNameAndLastName: 'مهدی عبدی',
           },
-          
+
           havaleh: {
             id: 'شماره حواله',
             date: '1657952804983',
@@ -48,7 +48,7 @@ Main.args = {
             transportationTelephone: 'شماره ترابری',
             transportationTelephone2: '',
             description: 'صثق',
-            corporation: {id: "234", name: "324"},
+            corporation: { id: '234', name: '324' },
             receivingDescription: null,
             assets: {
               oxygen_50l_factory: 2,

@@ -50,6 +50,7 @@ import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRound
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import { Satellite } from '@mui/icons-material';
 import { Session } from 'next-auth';
+import { Workflow } from 'lib/resolvers-types';
 import { flushSync } from 'react-dom';
 import matchSorter from 'match-sorter';
 /* eslint-disable react/jsx-filename-extension */
@@ -163,7 +164,7 @@ export default memo(function SentToCorporations({
 }: {
   loading: boolean;
   deleting: boolean;
-  data: DataType[];
+  data: Workflow[];
   offset: number;
   pageNumber: number;
   itemsPerPage: number;
@@ -894,7 +895,7 @@ export default memo(function SentToCorporations({
         closeDialog={() => setDeleteDialog(false)}
         confirmDelete={async () => {
           await deleteHandler(
-            selectedFlatRows.map((p) => p?.original?.workflowNumber)
+            selectedFlatRows.map((p) => p?.original?.workflowNumber) as string[]
           );
           setDeleteDialog(false);
         }}

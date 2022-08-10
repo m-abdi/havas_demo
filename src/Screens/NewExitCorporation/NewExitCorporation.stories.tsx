@@ -20,7 +20,6 @@ const Template: ComponentStory<typeof ExitCorporation> = (args) => <ExitCorporat
 let itemsPerPage = 10;
 export const Main = Template.bind({});
 Main.args = {
-  workflowNumber :234234,
   corporationRepresentative: {id: "2123", label: "مهدی عبدی"}
 };
 

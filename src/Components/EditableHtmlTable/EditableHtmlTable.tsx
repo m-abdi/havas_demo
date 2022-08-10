@@ -12,11 +12,11 @@ export default memo(function EditableHtmlTable({
   setValue,
 }: {
   selectedColumns: any;
-  register: any;
+  register?: any;
   existingEnterWorkflow: any;
-  editable: boolean;
-  reset: any;
-  setValue: any;
+  editable?: boolean;
+  reset?: any;
+  setValue?: any;
 }) {
   // update react-hook-form state after rfid operation
   useEffect(() => {

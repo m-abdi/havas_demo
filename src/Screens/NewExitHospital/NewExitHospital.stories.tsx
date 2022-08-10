@@ -22,7 +22,6 @@ const Template: ComponentStory<typeof RequestExitCylinderWarehouse> = (
 let itemsPerPage = 10;
 export const Main = Template.bind({});
 Main.args = {
-  workflowNumber: 234234,
   warehouseKeeper: { id: '2123', label: 'مهدی عبدی' },
   corporations : [{id: "3489", label: "بیتا"}]
 };

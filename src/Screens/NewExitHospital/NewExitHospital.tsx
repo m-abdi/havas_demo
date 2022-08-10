@@ -665,7 +665,7 @@ export default function NewExitHospital({
                         value
                     )
                     .map(([key, value]) => value)
-                    .reduce((pv, cv) => pv + cv, 0)
+                    .reduce((pv: any, cv: any) => pv + cv, 0)
                 : sum
             }
           />

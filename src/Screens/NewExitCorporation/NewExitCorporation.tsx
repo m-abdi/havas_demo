@@ -196,7 +196,8 @@ export default function ExitCorporation({
         acetylene_40l?: number;
         lpg_40l?: number;
       };
-    } | null, receivingDescription: string
+    } | null,
+    receivingDescription: string
   ) => Promise<void>;
 }) {
   // react-form-hooks
@@ -278,7 +279,8 @@ export default function ExitCorporation({
                 lpg_40l: parseInt(data?.lpg_40l),
               },
             }
-          : null, data?.receivingDescription
+          : null,
+        data?.receivingDescription
       );
     } else {
       await createNewHandler?.(
@@ -355,19 +357,21 @@ export default function ExitCorporation({
     return (
       <>
         <Divider variant='fullWidth' flexItem />
-        {existingWorkflow && <Row1>
-          <Input1>
-            <Label1>توضیحات دریافت</Label1>
-            <TextField
-              size='small'
-              id='description'
-              disabled={false}
-              inputProps={{
-                ...register('receivingDescription'),
-              }}
-            />
-          </Input1>
-        </Row1>}
+        {existingWorkflow && (
+          <Row1>
+            <Input1>
+              <Label1>توضیحات دریافت</Label1>
+              <TextField
+                size='small'
+                id='description'
+                disabled={false}
+                inputProps={{
+                  ...register('receivingDescription'),
+                }}
+              />
+            </Input1>
+          </Row1>
+        )}
         <Row1>
           {/* <Input1>
             <Label1>شماره ثبت فرم</Label1>
@@ -606,7 +610,7 @@ export default function ExitCorporation({
                         value
                     )
                     .map(([key, value]) => value)
-                    .reduce((pv, cv) => pv + cv, 0)
+                    .reduce((pv: any, cv: any) => pv + cv, 0)
                 : sum
             }
           />

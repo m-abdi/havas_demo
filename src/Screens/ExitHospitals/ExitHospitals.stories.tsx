@@ -25,7 +25,7 @@ Main.args = {
   itemsPerPage,
   data: [
     {
-      _id: 'b0106817-d981-4b00-977e-ed235828bd5c',
+      id: 'b0106817-d981-4b00-977e-ed235828bd5c',
       workflowNumber: '1',
       instanceOfProcessId: 1,
       nextStageName: 'RFID ثبت ورود کپسول به انبار توسط',
@@ -33,7 +33,7 @@ Main.args = {
       dateModified: '1657967683902',
       passedStages: [
         {
-          stageID: { $numberLong: '1' },
+          stageID: '1',
           stageName: 'ثبت خروج کپسول از شرکت',
           submittedByUser: {
             id: '0520926458',

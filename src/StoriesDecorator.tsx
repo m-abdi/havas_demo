@@ -2,6 +2,7 @@ import { CacheProvider, EmotionCache } from '@emotion/react';
 import { SessionProvider, getSession } from 'next-auth/react';
 
 import React from 'react';
+import { Session } from 'next-auth';
 import { Stack } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import createCache from '@emotion/cache';
@@ -9,10 +10,10 @@ import { prefixer } from 'stylis';
 import rtlPlugin from 'stylis-plugin-rtl';
 import theme from './theme';
 
-const session =  {
+const session = {
   user: {
     id: '123',
-    firstNameAndLastName: "مهدی عبدی",
+    firstNameAndLastName: 'مهدی عبدی',
     role: {
       id: 'id',
       name: 'مدیریت',
@@ -65,14 +66,14 @@ export default function StoriesDecorator({
   return (
     <RTL>
       <ThemeProvider theme={theme}>
-        <SessionProvider session={session}>
-            <Stack
-              alignItems={'center'}
-              justifyContent='center'
-              sx={{ inlineSize: '100%', blockSize: '100%' }}
-            >
-              {children}
-            </Stack>
+        <SessionProvider session={session as Session}>
+          <Stack
+            alignItems={'center'}
+            justifyContent='center'
+            sx={{ inlineSize: '100%', blockSize: '100%' }}
+          >
+            {children}
+          </Stack>
         </SessionProvider>
       </ThemeProvider>
     </RTL>
