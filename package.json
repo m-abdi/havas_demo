@@ -3,7 +3,7 @@
   "version": "5.0.0",
   "private": true,
   "scripts": {
-    "pdb": "node ./src/prepareDatabase.js",
+    "pdb": "node ./src/prepareDatabase.mjs",
     "codegen": "graphql-codegen -r ts-node/register",
     "dev": "yarn codegen && next",
     "build": "yarn codegen && next build",

@@ -1642,6 +1642,7 @@ const resolvers: Resolvers = {
       return (await prisma.workflow.update({
         where: { workflowNumber },
         data: {
+          nextStageName: 'RFID ثبت خروج کپسول از انبار توسط',
           passedStages: {
             push: {
               stageID: 2,
