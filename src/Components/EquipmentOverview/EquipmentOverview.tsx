@@ -33,7 +33,7 @@ export default function EquipmentOverview({
           alignItems='center'
           justifyContent={'space-between'}
           spacing={1}
-          sx={{ flexGrow: 1 , inlineSize: "100%" }}
+          sx={{ flexGrow: 1, inlineSize: '100%' }}
         >
           <Typography component={'h3'} variant='h5' fontWeight={'bold'}>
             {equipment?.name}
@@ -63,7 +63,9 @@ export default function EquipmentOverview({
             sx={{ borderBottom: 1, borderRight: 1, p: 0.3 }}
           >
             <Typography component={'h6'} variant='body1'>
-              {toPersianDigit(equipment.available?.toString() as string)}
+              {toPersianDigit(
+                (equipment.available?.toString() as string) ?? '0'
+              )}
             </Typography>
             <Typography component={'h6'} variant='body2'>
               موجود در بیمارستان
@@ -75,7 +77,9 @@ export default function EquipmentOverview({
             sx={{ borderBottom: 1, borderLeft: 1, p: 0.3 }}
           >
             <Typography component={'h6'} variant='body1'>
-              {toPersianDigit(equipment.outsourced?.toString() as string)}
+              {toPersianDigit(
+                (equipment.outsourced?.toString() as string) ?? '0'
+              )}
             </Typography>
             <Typography component={'h6'} variant='body2'>
               برون سپاری شده
@@ -87,7 +91,9 @@ export default function EquipmentOverview({
             sx={{ borderTop: 1, borderRight: 1, p: 0.3 }}
           >
             <Typography component={'h6'} variant='body1'>
-              {toPersianDigit(equipment.receiving?.toString() as string)}
+              {toPersianDigit(
+                (equipment.receiving?.toString() as string) ?? '0'
+              )}
             </Typography>
             <Typography component={'h6'} variant='body2'>
               در حال دریافت
@@ -99,7 +105,7 @@ export default function EquipmentOverview({
             sx={{ borderTop: 1, borderLeft: 1, p: 0.3 }}
           >
             <Typography component={'h6'} variant='body1'>
-              {toPersianDigit(equipment.sending?.toString() as string)}
+              {toPersianDigit((equipment.sending?.toString() as string) ?? '0')}
             </Typography>
             <Typography component={'h6'} variant='body2'>
               در حال ارسال
