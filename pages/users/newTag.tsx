@@ -41,9 +41,28 @@ const newTag: NextPage = () => {
   // mqtt hook
   const { mqttMessage, mqttStatus } = useMQTT();
   // data hooks
-  const { equipmentsList: equipments, equipmentsListLoading: equipmentsLoading } =
-    useEquipments();
-  const { placesList: places, placesListLoading: placesLoading } = usePlaces();
+  const {
+    equipmentsList: equipments,
+    equipmentsListLoading: equipmentsLoading,
+  } = useEquipments(
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    true
+  );
+  const { placesList: places, placesListLoading: placesLoading } = usePlaces(
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    false,
+    true
+  );
   const { assetsList: assets } = useAssets();
   const { sending: newTagSending, createNew: createTagHandler } = useTags();
   //
