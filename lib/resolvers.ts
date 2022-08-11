@@ -262,7 +262,7 @@ const resolvers: Resolvers = {
           where: parsedFilters,
         });
         console.log(equipmentsDB);
-        
+
         return equipmentsDB?.map((e: any) => ({
           ...e,
           available: e?.assets?.length ?? 0,
@@ -1100,6 +1100,7 @@ const resolvers: Resolvers = {
                 firstNameAndLastName: session?.user?.firstNameAndLastName,
                 role: session?.user?.role?.name,
               },
+
               havaleh: {
                 id: havalehId,
                 date,
@@ -1109,8 +1110,8 @@ const resolvers: Resolvers = {
                 transportationTelephone2,
                 description,
                 corporation: {
-                  id: session?.user?.place?.id,
-                  name: session?.user?.place?.name,
+                  id: session?.user?.place?.id ?? '',
+                  name: session?.user?.place?.name ?? '',
                 },
                 assets: { ...assets, ...aggregatedAssets },
               },
