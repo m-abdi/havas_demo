@@ -761,7 +761,7 @@ export default memo(function SentToCorporations({
               ))}
             </div>
 
-            {loading ? (
+            {loading || deleting ? (
               <Stack spacing={0.5}>
                 {[...Array(itemsPerPage)].map((i) => (
                   <Stack direction={'row'} alignItems='center' spacing={0.13}>
@@ -769,16 +769,15 @@ export default memo(function SentToCorporations({
                     <Skeleton width={34} height={42} variant='rectangular' />
                     <Skeleton width={34} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={198} height={42} variant='rectangular' />
+                    <Skeleton width={148} height={42} variant='rectangular' />
                     <Skeleton width={198} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={146} height={42} variant='rectangular' />
+                    <Skeleton width={199} height={42} variant='rectangular' />
                     <Skeleton width={198} height={42} variant='rectangular' />
                     <Skeleton width={146} height={42} variant='rectangular' />
                     <Skeleton width={146} height={42} variant='rectangular' />
-                    <Skeleton width={298} height={42} variant='rectangular' />
                   </Stack>
                 ))}
               </Stack>

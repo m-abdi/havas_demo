@@ -786,8 +786,8 @@ export default memo(function ExitHospitals({
                     <Skeleton width={34} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
                     <Skeleton width={198} height={42} variant='rectangular' />
-                    <Skeleton width={198} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
+                    <Skeleton width={199} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
                     <Skeleton width={146} height={42} variant='rectangular' />

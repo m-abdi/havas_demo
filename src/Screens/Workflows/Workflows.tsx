@@ -634,17 +634,16 @@ export default function Workflows({
                     <Skeleton width={34} height={42} variant='rectangular' />
                     <Skeleton width={34} height={42} variant='rectangular' />
                     <Skeleton width={34} height={42} variant='rectangular' />
-                    <Skeleton width={229} height={42} variant='rectangular' />
-                    <Skeleton width={199} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={199} height={42} variant='rectangular' />
                     <Skeleton width={198} height={42} variant='rectangular' />
-                    <Skeleton width={146} height={42} variant='rectangular' />
-                    <Skeleton width={199} height={42} variant='rectangular' />
+                    <Skeleton width={149} height={42} variant='rectangular' />
+                    <Skeleton width={148} height={42} variant='rectangular' />
+                    <Skeleton width={148} height={42} variant='rectangular' />
+                    <Skeleton width={148} height={42} variant='rectangular' />
+                    <Skeleton width={100} height={42} variant='rectangular' />
                     <Skeleton width={270} height={42} variant='rectangular' />
+                    <Skeleton width={100} height={42} variant='rectangular' />
+                    <Skeleton width={270} height={42} variant='rectangular' />
+              
                   </Stack>
                 ))}
               </Stack>
