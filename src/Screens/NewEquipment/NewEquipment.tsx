@@ -257,6 +257,7 @@ export default function NewEquipment({
             <TextField
               size='small'
               id='terminologyCode'
+              disabled={Boolean(existingEquipment?.terminologyCode)}
               inputProps={{
                 ...register('terminologyCode', {
                   required: true,

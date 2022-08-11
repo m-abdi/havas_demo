@@ -9,6 +9,7 @@ export const testNewEquipmentData = {
   installationYear: 'سال نصب و راه اندازی',
   terminologyCode: '123123123',
   hasInstructions: true,
+  supportCompany: "پارس گستر",
   supportTelephone1: 'تلفن پشتیبانی',
   supportTelephone2: 'تلفن پشتیبانی ۲',
   edit: '',

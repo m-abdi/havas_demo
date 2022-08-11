@@ -46,8 +46,7 @@ export default function equipments() {
     filters,
     setPageNumber,
     setOffset,
-    false,
-    true,
+    false,true,
     
   );
 

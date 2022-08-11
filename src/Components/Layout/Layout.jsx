@@ -237,17 +237,19 @@ function Layout({ children, pageName }) {
     },
     {
       text: 'تجهیزات / موجودی',
-      id: 4,
+      id: "equipments-assets",
       icon: <Inventory2RoundedIcon />,
       sublists: [
         {
           text: 'تجهیز جدید',
           icon: <AddCircleOutlineOutlined />,
+          id: "newEquipment",
           path: '/users/newEquipment',
           roleName: 'createEquipment',
         },
         {
           text: 'مشاهده تجهیزات',
+          id: "equipments",
           icon: <SearchRoundedIcon />,
           path: '/users/equipments',
           roleName: 'viewEquipment',

@@ -262,10 +262,10 @@ const resolvers: Resolvers = {
           where: parsedFilters,
         });
 
-        return {
-          ...equipmentsDB,
-          available: equipmentsDB?.assets?.length,
-        } as any;
+        return equipmentsDB?.map((e: any) => ({
+          ...e,
+          available: e?.assets?.length ?? 0,
+        })) as any;
       }
       const equipmentsDB = await prisma.equipment.findMany({
         take: limit ?? 2000000,
@@ -1639,23 +1639,25 @@ const resolvers: Resolvers = {
       if (!session || session?.user?.role?.name !== 'مدیریت') {
         throw new GraphQLYogaError('Unauthorized');
       }
-      return (await prisma.workflow.update({
-        where: { workflowNumber },
-        data: {
-          nextStageName: 'RFID ثبت خروج کپسول از انبار توسط',
-          passedStages: {
-            push: {
-              stageID: 2,
-              stageName: 'قبول درخواست توسط مدیریت',
-              submittedByUser: {
-                id: session?.user?.id,
-                firstNameAndLastName: session?.user?.firstNameAndLastName,
-                role: session?.user?.role?.name,
+      return (
+        await prisma.workflow.update({
+          where: { workflowNumber },
+          data: {
+            nextStageName: 'RFID ثبت خروج کپسول از انبار توسط',
+            passedStages: {
+              push: {
+                stageID: 2,
+                stageName: 'قبول درخواست توسط مدیریت',
+                submittedByUser: {
+                  id: session?.user?.id,
+                  firstNameAndLastName: session?.user?.firstNameAndLastName,
+                  role: session?.user?.role?.name,
+                },
               },
             },
           },
-        },
-      })).workflowNumber;
+        })
+      ).workflowNumber;
     },
   },
   Person: {

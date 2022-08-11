@@ -775,6 +775,14 @@ export default memo(function Equipments({
           }}
           rowsPerPage={itemsPerPage}
           labelRowsPerPage='تعداد ردیف در هر صفحه'
+          nextIconButtonProps={{
+            title: 'صفحه بعدی',
+            'aria-label': 'صفحه بعدی',
+          }}
+          backIconButtonProps={{
+            title: 'صفحه قبلی',
+            'aria-label': 'صفحه قبلی',
+          }}
           labelDisplayedRows={({ from, to, count }) => {
             return `صفحه ${pageNumber + 1} از ${Math.ceil(
               count / itemsPerPage
