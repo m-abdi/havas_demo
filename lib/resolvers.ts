@@ -1196,7 +1196,6 @@ const resolvers: Resolvers = {
                             where: { id: corporationRepresentativeId },
                           })
                         )?.name ?? 'unknown',
-                      role: session?.user?.role?.name,
                     },
                     assets: { ...assets, ...aggregatedAssets },
                   },
