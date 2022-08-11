@@ -1,9 +1,9 @@
 import React, { useCallback, useContext, useState } from 'react';
 
-import ConfirmReceiptByHospitalsStories from '../../src/Screens/ConfirmReceiptByHospitals';
-import Layout from '../../src/Components/Layout';
+import ConfirmReceiptByHospitalsStories from '../../src/Components/Pages/ConfirmReceiptByHospitals';
+import Layout from '../../src/Components/Atomic/Layout';
 import { Workflow } from '../../lib/resolvers-types';
-import Workflows from '../../src/Screens/Workflows';
+import Workflows from '../../src/Components/Pages/Workflows';
 import useEquipments from '../../src/Logic/useEquipments';
 import useWorkflows from '../../src/Logic/useWorkflows';
 

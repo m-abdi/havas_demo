@@ -12,9 +12,9 @@ import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 
 import AuthenticationRequired from 'src/AuthenticationRequired';
 import Head from 'next/head';
-import Layout from 'src/Components/Layout';
-import NewPerson from 'src/Screens/NewPerson';
-import Snackbar from 'src/Components/Snackbar';
+import Layout from '@/src/Components/Atomic/Layout';
+import NewPerson from '@/src/Components/Pages/NewPerson';
+import Snackbar from '@/src/Components/Atomic/Snackbar';
 import useNotification from 'src/Logic/useNotification';
 import usePersons from 'src/Logic/usePersons';
 import usePlaces from 'src/Logic/usePlaces';

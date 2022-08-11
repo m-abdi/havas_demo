@@ -1,10 +1,10 @@
 import { Box, Tab, TableContainer, Tabs } from '@mui/material';
 import React, { useState } from 'react';
 
-import { Button } from '../../src/Components/Button';
+import { Button } from '../../src/Components/Atomic/Button';
 import ConfirmReceiptByCorporations from './confirmReceiptByCorporations';
 import ExitHospitals from './exitHospitals';
-import Layout from '../../src/Components/Layout';
+import Layout from '../../src/Components/Atomic/Layout';
 import SentToCorporations from './sentToCorporations';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
@@ -43,7 +43,7 @@ export default function AssetExitWorkflowsTables() {
 
   return (
     <Layout pageName={pageName}>
-      <Box sx={{ inlineSize: '100%', p: 1, position: "relative" }}>
+      <Box sx={{ inlineSize: '100%', p: 1, position: 'relative' }}>
         <Tabs
           value={tabValue}
           onChange={handleTabChange}
@@ -63,25 +63,25 @@ export default function AssetExitWorkflowsTables() {
         <TabPanel value={tabValue} index={2}>
           <ConfirmReceiptByCorporations />
         </TabPanel>
-      <Box
-        sx={{
-          position: 'absolute',
-          top: -67,
-          right: '150px',
-          zIndex: 50000
-        }}
-      >
-        <Button
-          label='ایجاد'
-          size='large'
-          color='success'
-          variant='contained'
-          disabled={!session?.user?.role?.createLicense}
-          onClick={() => {
-            router.push('/users/newExitHospital');
+        <Box
+          sx={{
+            position: 'absolute',
+            top: -67,
+            right: '150px',
+            zIndex: 50000,
           }}
-        />
-      </Box>
+        >
+          <Button
+            label='ایجاد'
+            size='large'
+            color='success'
+            variant='contained'
+            disabled={!session?.user?.role?.createLicense}
+            onClick={() => {
+              router.push('/users/newExitHospital');
+            }}
+          />
+        </Box>
       </Box>
     </Layout>
   );

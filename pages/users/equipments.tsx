@@ -10,12 +10,12 @@ import { useMutation, useQuery } from '@apollo/client';
 
 import AuthenticationRequired from '../../src/AuthenticationRequired';
 import { EquipmentFilter } from '../../lib/resolvers-types';
-import Equipments from '../../src/Screens/Equipments';
+import Equipments from '../../src/Components/Pages/Equipments';
 import Head from 'next/head';
-import Layout from '../../src/Components/Layout';
-import Persons from '../../src/Screens/Persons';
-import Places from '../../src/Screens/Places';
-import Snackbar from '../../src/Components/Snackbar';
+import Layout from '@/src/Components/Atomic/Layout';
+import Persons from '../../src/Components/Pages/Persons';
+import Places from '../../src/Components/Pages/Places';
+import Snackbar from '@/src/Components/Atomic/Snackbar';
 import { SnackbarContext } from '../../pages/_app';
 import useEquipments from '../../src/Logic/useEquipments';
 import usePlaces from '../../src/Logic/usePlaces';

@@ -5,12 +5,12 @@ import {
 import React, { useMemo } from 'react';
 
 import Head from 'next/head';
-import Layout from 'src/Components/Layout';
-import NewAsset from 'src/Screens/NewAsset';
-import NewEquipment from 'src/Screens/NewEquipment/NewEquipment';
-import NewPerson from 'src/Screens/NewPerson';
-import NewPlace from 'src/Screens/NewPlace';
-import Snackbar from 'src/Components/Snackbar';
+import Layout from '@/src/Components/Atomic/Layout';
+import NewAsset from '@/src/Components/Pages/NewAsset';
+import NewEquipment from '@/src/Components/Pages/NewEquipment/NewEquipment';
+import NewPerson from '@/src/Components/Pages/NewPerson';
+import NewPlace from '@/src/Components/Pages/NewPlace';
+import Snackbar from '@/src/Components/Atomic/Snackbar';
 import useAssets from 'src/Logic/useAssets';
 import useEquipments from 'src/Logic/useEquipments';
 import usePlaces from 'src/Logic/usePlaces';

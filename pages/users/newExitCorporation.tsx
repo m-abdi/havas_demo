@@ -6,9 +6,9 @@ import {
 import React, { useMemo } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
-import ExitCorporation from 'src/Screens/NewExitCorporation';
+import ExitCorporation from '@/src/Components/Pages/NewExitCorporation';
 import Head from 'next/head';
-import Layout from 'src/Components/Layout';
+import Layout from '@/src/Components/Atomic/Layout';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import useWorkflows from 'src/Logic/useWorkflows';

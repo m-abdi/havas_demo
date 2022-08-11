@@ -6,11 +6,11 @@ import React, { memo, useCallback, useContext, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
 import AuthenticationRequired from '../../src/AuthenticationRequired';
-import Equipments from '../../src/Screens/Equipments';
-import ExitHospitals from '../../src/Screens/ExitHospitals';
+import Equipments from '../../src/Components/Pages/Equipments';
+import ExitHospitals from '../../src/Components/Pages/ExitHospitals';
 import Head from 'next/head';
-import Layout from '../../src/Components/Layout';
-import SentToCorporations from '../../src/Screens/SentToCorporations/SentToCorporations';
+import Layout from '../../src/Components/Atomic/Layout';
+import SentToCorporations from '../../src/Components/Pages/SentToCorporations/SentToCorporations';
 import useWorkflows from '../../src/Logic/useWorkflows';
 
 const pageName = 'حواله های خروج از شرکت';

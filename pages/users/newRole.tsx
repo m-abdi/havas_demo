@@ -6,10 +6,10 @@ import { AllRolesDocument } from 'lib/graphql-operations';
 import AuthenticationRequired from 'src/AuthenticationRequired';
 import { CreateRoleDocument } from '../../lib/graphql-operations';
 import Head from 'next/head';
-import Layout from 'src/Components/Layout';
-import Loader from 'src/Components/Loader';
-import { NewRole } from 'src/Screens/NewRole';
-import Snackbar from 'src/Components/Snackbar';
+import Layout from '@/src/Components/Atomic/Layout';
+import Loader from '@/src/Components/Atomic/Loader';
+import { NewRole } from '@/src/Components/Pages/NewRole';
+import Snackbar from '@/src/Components/Atomic/Snackbar';
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
 

@@ -1,9 +1,9 @@
 import React, { useCallback, useContext, useState } from 'react';
 
 import { AssetTransferWorkflowFilter } from 'lib/graphql-operations';
-import ConfirmReceiptByCorporations from '../../src/Screens/ConfirmReceiptByCorporations/ConfirmReceiptByCorporations';
-import ConfirmReceiptByHospitals from '../../src/Screens/ConfirmReceiptByHospitals';
-import Layout from '../../src/Components/Layout';
+import ConfirmReceiptByCorporations from '../../src/Components/Pages/ConfirmReceiptByCorporations/ConfirmReceiptByCorporations';
+import ConfirmReceiptByHospitals from '../../src/Components/Pages/ConfirmReceiptByHospitals';
+import Layout from '@/src/Components/Atomic/Layout';
 import { Workflow } from '../../lib/resolvers-types';
 import { receiveMessageOnPort } from 'worker_threads';
 import useEquipments from '../../src/Logic/useEquipments';

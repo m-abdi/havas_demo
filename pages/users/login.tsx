@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import { GetServerSideProps } from 'next';
-import LoaderSpinner from '../../src/Components/Loader/Loader';
+import LoaderSpinner from '../../src/Components/Atomic/Loader/Loader';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import type { Session } from 'next-auth';
 import TextField from '@mui/material/TextField';

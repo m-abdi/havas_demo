@@ -5,9 +5,9 @@ import {
 import React, { useCallback } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
-import Layout from '@/src/Components/Layout';
+import Layout from '@/src/Components/Atomic/Layout';
 import { Session } from 'next-auth';
-import Settings from '@/src/Screens/Settings';
+import Settings from '@/src/Components/Pages/Settings';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 

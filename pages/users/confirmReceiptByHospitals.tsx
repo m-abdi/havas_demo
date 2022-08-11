@@ -4,8 +4,8 @@ import {
 } from '../../lib/resolvers-types';
 import React, { useCallback, useContext, useState } from 'react';
 
-import ConfirmReceiptByHospitals from '../../src/Screens/ConfirmReceiptByHospitals';
-import Layout from '../../src/Components/Layout';
+import ConfirmReceiptByHospitals from '../../src/Components/Pages/ConfirmReceiptByHospitals';
+import Layout from '@/src/Components/Atomic/Layout';
 import useEquipments from '../../src/Logic/useEquipments';
 import useWorkflows from '../../src/Logic/useWorkflows';
 

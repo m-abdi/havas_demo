@@ -2,10 +2,10 @@ import { Autocomplete, Skeleton, Stack, TextField } from '@mui/material';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
-import EnterWarehouseRFID from '../../src/Screens/EnterWarehouseRFID';
+import EnterWarehouseRFID from '../../src/Components/Pages/EnterWarehouseRFID';
 import { EquipmentsAndPlacesDocument } from '../../lib/graphql-operations';
 import Head from 'next/head';
-import Layout from '../../src/Components/Layout';
+import Layout from '@/src/Components/Atomic/Layout';
 import { UpdateAssetsStatesDocument } from '../../lib/graphql-operations';
 import { getQueryDefinition } from '@apollo/client/utilities';
 import useAssets from '../../src/Logic/useAssets';

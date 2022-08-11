@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import AuthenticationRequired from 'src/AuthenticationRequired';
 import Head from 'next/head';
 import { InfoContext } from 'pages/_app';
-import Layout from 'src/Components/Layout';
+import Layout from '@/src/Components/Atomic/Layout';
 import { useContext } from 'react';
 
 const pageName = 'درخواست مجوز جدید';

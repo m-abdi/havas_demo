@@ -1,12 +1,12 @@
 import { Box, Tab, TableContainer, Tabs } from '@mui/material';
 import React, { useState } from 'react';
 
-import { Button } from '../../src/Components/Button';
+import { Button } from '../../src/Components/Atomic/Button';
 import ConfirmReceiptByHospitals from './confirmReceiptByHospitals';
 import EnteredWarehouseRFID from './enteredWarehouseRFID';
 import ExitCorporations from './exitCorporations';
 import ExitHospitals from './exitHospitals';
-import Layout from '../../src/Components/Layout';
+import Layout from '../../src/Components/Atomic/Layout';
 import SentToCorporations from './sentToCorporations';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';

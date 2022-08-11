@@ -8,9 +8,9 @@ import { useMutation, useQuery } from '@apollo/client';
 
 import AuthenticationRequired from 'src/AuthenticationRequired';
 import Head from 'next/head';
-import Layout from 'src/Components/Layout';
-import Persons from 'src/Screens/Persons';
-import Snackbar from 'src/Components/Snackbar';
+import Layout from '@/src/Components/Atomic/Layout';
+import Persons from '@/src/Components/Pages/Persons';
+import Snackbar from '@/src/Components/Atomic/Snackbar';
 import { SnackbarContext } from 'pages/_app';
 import usePersons from 'src/Logic/usePersons';
 

@@ -9,11 +9,11 @@ import {
 } from '@mui/material';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { Button } from '../../src/Components/Button';
+import { Button } from '../../src/Components/Atomic/Button';
 import Head from 'next/head';
-import Layout from '../../src/Components/Layout';
-import NewExitCorporation from '../../src/Screens/NewExitCorporation';
-import NewExitHospital from '../../src/Screens/NewExitHospital';
+import Layout from '@/src/Components/Atomic/Layout';
+import NewExitCorporation from '../../src/Components/Pages/NewExitCorporation';
+import NewExitHospital from '../../src/Components/Pages/NewExitHospital';
 import { Workflow } from 'lib/resolvers-types';
 import { useRouter } from 'next/router';
 import useWorkflows from '../../src/Logic/useWorkflows';

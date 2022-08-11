@@ -9,13 +9,13 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useApolloClient, useMutation, useQuery } from '@apollo/client';
 
 import AuthenticationRequired from 'src/AuthenticationRequired';
-import { Button } from '../../src/Components/Button';
-import DeleteDialog from 'src/Components/DeleteRolesDialog';
+import { Button } from '../../src/Components/Atomic/Button';
+import DeleteDialog from '@/src/Components/Atomic/DeleteRolesDialog';
 import Head from 'next/head';
-import Layout from 'src/Components/Layout';
-import Loader from 'src/Components/Loader';
-import RoleTable from 'src/Components/RolesTable/RolesTable';
-import Snackbar from 'src/Components/Snackbar';
+import Layout from '@/src/Components/Atomic/Layout';
+import Loader from '@/src/Components/Atomic/Loader';
+import RolesTable from '@/src/Components/Atomic/RolesTable/RolesTable';
+import Snackbar from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
@@ -115,7 +115,7 @@ export default function roles() {
 
   return (
     <Layout pageName={pageName}>
-      <RoleTable
+      <RolesTable
         itemsPerPage={itemsPerPage}
         setItemsPerPage={setItemsPerPage}
         fetchMoreRows={fetchMoreRows}
@@ -131,6 +131,7 @@ export default function roles() {
         checkedItems={checkedItems}
         setCheckedItems={setCheckedItems}
         setDeleteDialog={setDeleteRoleDialog}
+
         // checkedAllPages={
         //   router?.query?.checkedAllPages
         //     ? JSON.parse(router?.query?.checkedAllPages)

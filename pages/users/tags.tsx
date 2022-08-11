@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import Layout from 'src/Components/Layout'
+import Layout from '../../src/Components/Atomic/Layout'
 import React from 'react'
 const pageName = "تگ ها"
 export default function tags() {

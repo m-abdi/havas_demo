@@ -2,8 +2,8 @@ import React, { useContext, useEffect } from 'react';
 
 import Head from 'next/head';
 import { InfoContext } from 'pages/_app';
-import Layout from './Components/Layout';
-import Loader from './Components/Loader';
+import Layout from './Components/Atomic/Layout';
+import Loader from './Components/Atomic/Loader';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
