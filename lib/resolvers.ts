@@ -261,7 +261,8 @@ const resolvers: Resolvers = {
           },
           where: parsedFilters,
         });
-
+        console.log(equipmentsDB);
+        
         return equipmentsDB?.map((e: any) => ({
           ...e,
           available: e?.assets?.length ?? 0,
@@ -270,10 +271,19 @@ const resolvers: Resolvers = {
       const equipmentsDB = await prisma.equipment.findMany({
         take: limit ?? 2000000,
         skip: offset ?? 0,
-        include: { supportCompany: true },
+        include: {
+          supportCompany: true,
+          assets: {
+            where: { status: 'موجود در بیمارستان' },
+            select: { id: true },
+          },
+        },
       });
 
-      return equipmentsDB as any;
+      return equipmentsDB?.map((e: any) => ({
+        ...e,
+        available: e?.assets?.length ?? 0,
+      })) as any;
     },
     async equipmentsCount(_, _args, _context): Promise<number> {
       // check authentication and permission

@@ -121,7 +121,7 @@ model Asset {
   corporation        Place?    @relation("corporationPlace", fields: [corporationId], references: [id])
   corporationId      String?
   deliverer          String?
-  status             String?
+  status             String?  @default("موجود در بیمارستان")
 }
 
 model Tag {

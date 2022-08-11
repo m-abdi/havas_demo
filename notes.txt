@@ -1,1 +1,2 @@
 // manager recognition
+// seperating corporation from hospital departments
