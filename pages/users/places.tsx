@@ -52,7 +52,8 @@ export default function places() {
     itemsPerPage,
     filters,
     setPageNumber,
-    setOffset
+    setOffset,
+    true
   );
 
   return (
