@@ -42,7 +42,7 @@ export default function EquipmentsOverviewCarousel({
           ))}
         </Carousel>
       )}
-      {loading && (
+      {(!equipments || equipments?.length === 0) && loading && (
         <Stack
           direction={'row'}
           alignItems='center'
