@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { TableBody, TextField } from '@mui/material';
+import { TableBody, TableContainer, TextField } from '@mui/material';
 
 import { memo } from 'react';
 
@@ -45,7 +45,7 @@ export default memo(function EditableHtmlTable({
   }, [assets]);
 
   return (
-    <>
+    <TableContainer sx={{maxInlineSize: "90vw"}}>
       <table border={2}>
         <thead>
           <tr>
@@ -1145,6 +1145,6 @@ export default memo(function EditableHtmlTable({
           </tr>
         </TableBody>
       </table>
-    </>
+    </TableContainer>
   );
 });

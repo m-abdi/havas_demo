@@ -1,4 +1,4 @@
-import { TableBody, TextField } from '@mui/material';
+import { TableBody, TableContainer, TextField } from '@mui/material';
 import { memo, useEffect } from 'react';
 
 import React from 'react';
@@ -83,660 +83,680 @@ export default function AggregatedTable({
   }, [assets]);
 
   return (
-    <table border={2} style={{ marginInline: '16px' }}>
-      <thead>
-        <tr>
-          <th>نوع سیلندر</th>
+    <TableContainer sx={{maxInlineSize: "90vw"}}>
+      <table border={2} style={{ marginInline: '16px' }}>
+        <thead>
+          <tr>
+            <th>نوع سیلندر</th>
 
-          {/* اکسیژن */}
-          <th
-            style={{
-              display:
-                selectedColumns.indexOf('اکسیژن') > -1 ? 'table-cell' : 'none',
-            }}
-          >
-            اکسیژن
-          </th>
-          {/* گاز بیهوشی */}
-          <th
-            style={{
-              display:
-                selectedColumns.indexOf('گاز بیهوشی') > -1
-                  ? 'table-cell'
-                  : 'none',
-            }}
-          >
-            گاز بیهوشی
-          </th>
-          {/* شفت-فلکه */}
-          <th
-            style={{
-              display:
-                selectedColumns.indexOf('شفت-فلکه') > -1
-                  ? 'table-cell'
-                  : 'none',
-            }}
-          >
-            شفت-فلکه
-          </th>
-          {/* شیر کنترل */}
-          <th
-            style={{
-              display:
-                selectedColumns.indexOf('شیر کنترل') > -1
-                  ? 'table-cell'
-                  : 'none',
-            }}
-          >
-            شیر کنترل
-          </th>
-          {/* Co2 */}
-          <th
-            style={{
-              display:
-                selectedColumns.indexOf('Co2') > -1 ? 'table-cell' : 'none',
-            }}
-          >
-            Co2
-          </th>
-          {/* آرگون */}
-          <th
-            style={{
-              display:
-                selectedColumns.indexOf('آرگون') > -1 ? 'table-cell' : 'none',
-            }}
-          >
-            آرگون
-          </th>
-          {/* ازت */}
-          <th
-            style={{
-              display:
-                selectedColumns.indexOf('ازت') > -1 ? 'table-cell' : 'none',
-            }}
-          >
-            ازت
-          </th>
-          {/* هوای خشک */}
-          <th
-            style={{
-              display:
-                selectedColumns.indexOf('هوای خشک') > -1
-                  ? 'table-cell'
-                  : 'none',
-            }}
-          >
-            هوای خشک
-          </th>
-          {/* آنتونکس */}
-          <th
-            style={{
-              display:
-                selectedColumns.indexOf('آنتونکس') > -1 ? 'table-cell' : 'none',
-            }}
-          >
-            آنتونکس
-          </th>
-          {/* استیلن */}
-          <th
-            style={{
-              display:
-                selectedColumns.indexOf('استیلن') > -1 ? 'table-cell' : 'none',
-            }}
-          >
-            استیلن
-          </th>
-          {/* گاز مایع */}
-          <th
-            style={{
-              display:
-                selectedColumns.indexOf('گاز مایع') > -1
-                  ? 'table-cell'
-                  : 'none',
-            }}
-          >
-            گاز مایع
-          </th>
-        </tr>
-      </thead>
+            {/* اکسیژن */}
+            <th
+              style={{
+                display:
+                  selectedColumns.indexOf('اکسیژن') > -1
+                    ? 'table-cell'
+                    : 'none',
+              }}
+            >
+              اکسیژن
+            </th>
+            {/* گاز بیهوشی */}
+            <th
+              style={{
+                display:
+                  selectedColumns.indexOf('گاز بیهوشی') > -1
+                    ? 'table-cell'
+                    : 'none',
+              }}
+            >
+              گاز بیهوشی
+            </th>
+            {/* شفت-فلکه */}
+            <th
+              style={{
+                display:
+                  selectedColumns.indexOf('شفت-فلکه') > -1
+                    ? 'table-cell'
+                    : 'none',
+              }}
+            >
+              شفت-فلکه
+            </th>
+            {/* شیر کنترل */}
+            <th
+              style={{
+                display:
+                  selectedColumns.indexOf('شیر کنترل') > -1
+                    ? 'table-cell'
+                    : 'none',
+              }}
+            >
+              شیر کنترل
+            </th>
+            {/* Co2 */}
+            <th
+              style={{
+                display:
+                  selectedColumns.indexOf('Co2') > -1 ? 'table-cell' : 'none',
+              }}
+            >
+              Co2
+            </th>
+            {/* آرگون */}
+            <th
+              style={{
+                display:
+                  selectedColumns.indexOf('آرگون') > -1 ? 'table-cell' : 'none',
+              }}
+            >
+              آرگون
+            </th>
+            {/* ازت */}
+            <th
+              style={{
+                display:
+                  selectedColumns.indexOf('ازت') > -1 ? 'table-cell' : 'none',
+              }}
+            >
+              ازت
+            </th>
+            {/* هوای خشک */}
+            <th
+              style={{
+                display:
+                  selectedColumns.indexOf('هوای خشک') > -1
+                    ? 'table-cell'
+                    : 'none',
+              }}
+            >
+              هوای خشک
+            </th>
+            {/* آنتونکس */}
+            <th
+              style={{
+                display:
+                  selectedColumns.indexOf('آنتونکس') > -1
+                    ? 'table-cell'
+                    : 'none',
+              }}
+            >
+              آنتونکس
+            </th>
+            {/* استیلن */}
+            <th
+              style={{
+                display:
+                  selectedColumns.indexOf('استیلن') > -1
+                    ? 'table-cell'
+                    : 'none',
+              }}
+            >
+              استیلن
+            </th>
+            {/* گاز مایع */}
+            <th
+              style={{
+                display:
+                  selectedColumns.indexOf('گاز مایع') > -1
+                    ? 'table-cell'
+                    : 'none',
+              }}
+            >
+              گاز مایع
+            </th>
+          </tr>
+        </thead>
 
-      <TableBody sx={{ '& input': { textAlign: 'center' } }}>
-        <tr>
-          {/* نوع سیلندر */}
-          <td style={{ textAlign: 'center' }}>50لیتری</td>
+        <TableBody sx={{ '& input': { textAlign: 'center' } }}>
+          <tr>
+            {/* نوع سیلندر */}
+            <td style={{ textAlign: 'center' }}>50لیتری</td>
 
-          {/* اکسیژن */}
-          <td
-            style={{
-              display:
-                selectedColumns.indexOf('اکسیژن') > -1 ? 'table-cell' : 'none',
-            }}
-          >
-            <TextField
-              size='small'
-              fullWidth
-              variant='standard'
-              type='number'
-              id='oxygen_50l'
-              disabled={!editable}
-              defaultValue={assets?.oxygen_50l}
-              inputProps={{
-                ...register?.('oxygen_50l', {
-                  value: assets?.oxygen_50l,
-                }),
+            {/* اکسیژن */}
+            <td
+              style={{
+                display:
+                  selectedColumns.indexOf('اکسیژن') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
-            />
-          </td>
-          {/* گاز بیهوشی */}
-          <td
-            style={{
-              display:
-                selectedColumns.indexOf('گاز بیهوشی') > -1
-                  ? 'table-cell'
-                  : 'none',
-            }}
-          >
-            <TextField
-              fullWidth
-              variant='standard'
-              size='small'
-              type='number'
-              disabled={!editable}
-              sx={{ width: '100%', textAlign: 'center' }}
-              id='bihoshi_50l'
-              defaultValue={assets?.bihoshi_50l}
-              inputProps={{
-                ...register?.('bihoshi_50l', {
-                  value: assets?.bihoshi_50l,
-                }),
+            >
+              <TextField
+                size='small'
+                fullWidth
+                variant='standard'
+                type='number'
+                id='oxygen_50l'
+                disabled={!editable}
+                defaultValue={assets?.oxygen_50l}
+                inputProps={{
+                  ...register?.('oxygen_50l', {
+                    value: assets?.oxygen_50l,
+                  }),
+                }}
+              />
+            </td>
+            {/* گاز بیهوشی */}
+            <td
+              style={{
+                display:
+                  selectedColumns.indexOf('گاز بیهوشی') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
-            />
-          </td>
-          {/* شفت-فلکه */}
-          <td
-            style={{
-              display:
-                selectedColumns.indexOf('شفت-فلکه') > -1
-                  ? 'table-cell'
-                  : 'none',
-            }}
-          >
-            <TextField
-              fullWidth
-              variant='standard'
-              size='small'
-              type='number'
-              sx={{ width: '100%', textAlign: 'center' }}
-              id='shaft_50l'
-              disabled={!editable}
-              defaultValue={assets?.shaft_50l}
-              inputProps={{
-                ...register?.('shaft_50l', {
-                  value: assets?.shaft_50l,
-                }),
+            >
+              <TextField
+                fullWidth
+                variant='standard'
+                size='small'
+                type='number'
+                disabled={!editable}
+                sx={{ width: '100%', textAlign: 'center' }}
+                id='bihoshi_50l'
+                defaultValue={assets?.bihoshi_50l}
+                inputProps={{
+                  ...register?.('bihoshi_50l', {
+                    value: assets?.bihoshi_50l,
+                  }),
+                }}
+              />
+            </td>
+            {/* شفت-فلکه */}
+            <td
+              style={{
+                display:
+                  selectedColumns.indexOf('شفت-فلکه') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
-            />
-          </td>
-          {/* شیر کنترل */}
-          <td
-            style={{
-              display:
-                selectedColumns.indexOf('شیر کنترل') > -1
-                  ? 'table-cell'
-                  : 'none',
-            }}
-          >
-            <TextField
-              fullWidth
-              variant='standard'
-              size='small'
-              type='number'
-              sx={{ width: '100%', textAlign: 'center' }}
-              id='controlValve_50l'
-              disabled={!editable}
-              defaultValue={assets?.controlValve_50l}
-              inputProps={{
-                ...register?.('controlValve_50l', {
-                  value: assets?.controlValve_50l,
-                }),
+            >
+              <TextField
+                fullWidth
+                variant='standard'
+                size='small'
+                type='number'
+                sx={{ width: '100%', textAlign: 'center' }}
+                id='shaft_50l'
+                disabled={!editable}
+                defaultValue={assets?.shaft_50l}
+                inputProps={{
+                  ...register?.('shaft_50l', {
+                    value: assets?.shaft_50l,
+                  }),
+                }}
+              />
+            </td>
+            {/* شیر کنترل */}
+            <td
+              style={{
+                display:
+                  selectedColumns.indexOf('شیر کنترل') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
-            />
-          </td>
-          {/* Co2 */}
-          <td
-            style={{
-              display:
-                selectedColumns.indexOf('Co2') > -1 ? 'table-cell' : 'none',
-            }}
-          >
-            <TextField
-              fullWidth
-              variant='standard'
-              size='small'
-              type='number'
-              sx={{ width: '100%', textAlign: 'center' }}
-              id='co2_50l'
-              disabled={!editable}
-              defaultValue={assets?.co2_50l}
-              inputProps={{
-                ...register?.('co2_50l', {
-                  value: assets?.co2_50l,
-                }),
+            >
+              <TextField
+                fullWidth
+                variant='standard'
+                size='small'
+                type='number'
+                sx={{ width: '100%', textAlign: 'center' }}
+                id='controlValve_50l'
+                disabled={!editable}
+                defaultValue={assets?.controlValve_50l}
+                inputProps={{
+                  ...register?.('controlValve_50l', {
+                    value: assets?.controlValve_50l,
+                  }),
+                }}
+              />
+            </td>
+            {/* Co2 */}
+            <td
+              style={{
+                display:
+                  selectedColumns.indexOf('Co2') > -1 ? 'table-cell' : 'none',
               }}
-            />
-          </td>
-          {/* آرگون */}
-          <td
-            style={{
-              display:
-                selectedColumns.indexOf('آرگون') > -1 ? 'table-cell' : 'none',
-            }}
-          >
-            <TextField
-              fullWidth
-              variant='standard'
-              size='small'
-              type='number'
-              sx={{ width: '100%', textAlign: 'center' }}
-              id='argon_50l'
-              disabled={!editable}
-              defaultValue={assets?.argon_50l}
-              inputProps={{
-                ...register?.('argon_50l', {
-                  value: assets?.argon_50l,
-                }),
+            >
+              <TextField
+                fullWidth
+                variant='standard'
+                size='small'
+                type='number'
+                sx={{ width: '100%', textAlign: 'center' }}
+                id='co2_50l'
+                disabled={!editable}
+                defaultValue={assets?.co2_50l}
+                inputProps={{
+                  ...register?.('co2_50l', {
+                    value: assets?.co2_50l,
+                  }),
+                }}
+              />
+            </td>
+            {/* آرگون */}
+            <td
+              style={{
+                display:
+                  selectedColumns.indexOf('آرگون') > -1 ? 'table-cell' : 'none',
               }}
-            />
-          </td>
-          {/* ازت */}
-          <td
-            style={{
-              display:
-                selectedColumns.indexOf('ازت') > -1 ? 'table-cell' : 'none',
-            }}
-          >
-            <TextField
-              fullWidth
-              variant='standard'
-              size='small'
-              type='number'
-              sx={{ width: '100%', textAlign: 'center' }}
-              id='azete_50l'
-              disabled={!editable}
-              defaultValue={assets?.azete_50l}
-              inputProps={{
-                ...register?.('azete_50l', {
-                  value: assets?.azete_50l,
-                }),
+            >
+              <TextField
+                fullWidth
+                variant='standard'
+                size='small'
+                type='number'
+                sx={{ width: '100%', textAlign: 'center' }}
+                id='argon_50l'
+                disabled={!editable}
+                defaultValue={assets?.argon_50l}
+                inputProps={{
+                  ...register?.('argon_50l', {
+                    value: assets?.argon_50l,
+                  }),
+                }}
+              />
+            </td>
+            {/* ازت */}
+            <td
+              style={{
+                display:
+                  selectedColumns.indexOf('ازت') > -1 ? 'table-cell' : 'none',
               }}
-            />
-          </td>
-          {/* هوای خشک */}
-          <td
-            style={{
-              display:
-                selectedColumns.indexOf('هوای خشک') > -1
-                  ? 'table-cell'
-                  : 'none',
-            }}
-          >
-            <TextField
-              fullWidth
-              variant='standard'
-              size='small'
-              type='number'
-              sx={{ width: '100%', textAlign: 'center' }}
-              id='dryAir_50l'
-              disabled={!editable}
-              defaultValue={assets?.dryAir_50l}
-              inputProps={{
-                ...register?.('dryAir_50l', {
-                  value: assets?.dryAir_50l,
-                }),
+            >
+              <TextField
+                fullWidth
+                variant='standard'
+                size='small'
+                type='number'
+                sx={{ width: '100%', textAlign: 'center' }}
+                id='azete_50l'
+                disabled={!editable}
+                defaultValue={assets?.azete_50l}
+                inputProps={{
+                  ...register?.('azete_50l', {
+                    value: assets?.azete_50l,
+                  }),
+                }}
+              />
+            </td>
+            {/* هوای خشک */}
+            <td
+              style={{
+                display:
+                  selectedColumns.indexOf('هوای خشک') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
-            />
-          </td>
-          {/* آنتونکس */}
-          <td
-            style={{
-              display:
-                selectedColumns.indexOf('آنتونکس') > -1 ? 'table-cell' : 'none',
-            }}
-          >
-            <TextField
-              fullWidth
-              variant='standard'
-              size='small'
-              type='number'
-              sx={{ width: '100%', textAlign: 'center' }}
-              id='entonox_50l'
-              disabled={!editable}
-              defaultValue={assets?.entonox_50l}
-              inputProps={{
-                ...register?.('entonox_50l', {
-                  value: assets?.entonox_50l,
-                }),
+            >
+              <TextField
+                fullWidth
+                variant='standard'
+                size='small'
+                type='number'
+                sx={{ width: '100%', textAlign: 'center' }}
+                id='dryAir_50l'
+                disabled={!editable}
+                defaultValue={assets?.dryAir_50l}
+                inputProps={{
+                  ...register?.('dryAir_50l', {
+                    value: assets?.dryAir_50l,
+                  }),
+                }}
+              />
+            </td>
+            {/* آنتونکس */}
+            <td
+              style={{
+                display:
+                  selectedColumns.indexOf('آنتونکس') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
-            />
-          </td>
-          {/* استیلن */}
-          <td
-            style={{
-              display:
-                selectedColumns.indexOf('استیلن') > -1 ? 'table-cell' : 'none',
-            }}
-          >
-            <TextField
-              fullWidth
-              variant='standard'
-              size='small'
-              type='number'
-              sx={{ width: '100%', textAlign: 'center' }}
-              id='acetylene_50l'
-              disabled={!editable}
-              defaultValue={assets?.acetylene_50l}
-              inputProps={{
-                ...register?.('acetylene_50l', {
-                  value: assets?.acetylene_50l,
-                }),
+            >
+              <TextField
+                fullWidth
+                variant='standard'
+                size='small'
+                type='number'
+                sx={{ width: '100%', textAlign: 'center' }}
+                id='entonox_50l'
+                disabled={!editable}
+                defaultValue={assets?.entonox_50l}
+                inputProps={{
+                  ...register?.('entonox_50l', {
+                    value: assets?.entonox_50l,
+                  }),
+                }}
+              />
+            </td>
+            {/* استیلن */}
+            <td
+              style={{
+                display:
+                  selectedColumns.indexOf('استیلن') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
-            />
-          </td>
-          {/* گاز مایع */}
-          <td
-            style={{
-              display:
-                selectedColumns.indexOf('گاز مایع') > -1
-                  ? 'table-cell'
-                  : 'none',
-            }}
-          >
-            <TextField
-              fullWidth
-              variant='standard'
-              size='small'
-              type='number'
-              sx={{ width: '100%', textAlign: 'center' }}
-              id='lpg_50l'
-              disabled={!editable}
-              defaultValue={assets?.lpg_50l}
-              inputProps={{
-                ...register?.('lpg_50l', {
-                  value: assets?.lpg_50l,
-                }),
+            >
+              <TextField
+                fullWidth
+                variant='standard'
+                size='small'
+                type='number'
+                sx={{ width: '100%', textAlign: 'center' }}
+                id='acetylene_50l'
+                disabled={!editable}
+                defaultValue={assets?.acetylene_50l}
+                inputProps={{
+                  ...register?.('acetylene_50l', {
+                    value: assets?.acetylene_50l,
+                  }),
+                }}
+              />
+            </td>
+            {/* گاز مایع */}
+            <td
+              style={{
+                display:
+                  selectedColumns.indexOf('گاز مایع') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
-            />
-          </td>
-        </tr>
+            >
+              <TextField
+                fullWidth
+                variant='standard'
+                size='small'
+                type='number'
+                sx={{ width: '100%', textAlign: 'center' }}
+                id='lpg_50l'
+                disabled={!editable}
+                defaultValue={assets?.lpg_50l}
+                inputProps={{
+                  ...register?.('lpg_50l', {
+                    value: assets?.lpg_50l,
+                  }),
+                }}
+              />
+            </td>
+          </tr>
 
-        <tr>
-          {/* نوع سیلندر */}
-          <td style={{ textAlign: 'center' }}>40لیتری</td>
-          {/* اکسیژن */}
-          <td
-            style={{
-              display:
-                selectedColumns.indexOf('اکسیژن') > -1 ? 'table-cell' : 'none',
-            }}
-          >
-            <TextField
-              fullWidth
-              variant='standard'
-              size='small'
-              type='number'
-              sx={{ width: '100%', textAlign: 'center' }}
-              id='oxygen_40l'
-              disabled={!editable}
-              defaultValue={assets?.oxygen_40l}
-              inputProps={{
-                ...register?.('oxygen_40l', {
-                  value: assets?.oxygen_40l,
-                }),
+          <tr>
+            {/* نوع سیلندر */}
+            <td style={{ textAlign: 'center' }}>40لیتری</td>
+            {/* اکسیژن */}
+            <td
+              style={{
+                display:
+                  selectedColumns.indexOf('اکسیژن') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
-            />
-          </td>
-          {/* گاز بیهوشی */}
-          <td
-            style={{
-              display:
-                selectedColumns.indexOf('گاز بیهوشی') > -1
-                  ? 'table-cell'
-                  : 'none',
-            }}
-          >
-            <TextField
-              fullWidth
-              variant='standard'
-              size='small'
-              type='number'
-              sx={{ width: '100%', textAlign: 'center' }}
-              id='bihoshi_40l'
-              disabled={!editable}
-              defaultValue={assets?.bihoshi_40l}
-              inputProps={{
-                ...register?.('bihoshi_40l', {
-                  value: assets?.bihoshi_40l,
-                }),
+            >
+              <TextField
+                fullWidth
+                variant='standard'
+                size='small'
+                type='number'
+                sx={{ width: '100%', textAlign: 'center' }}
+                id='oxygen_40l'
+                disabled={!editable}
+                defaultValue={assets?.oxygen_40l}
+                inputProps={{
+                  ...register?.('oxygen_40l', {
+                    value: assets?.oxygen_40l,
+                  }),
+                }}
+              />
+            </td>
+            {/* گاز بیهوشی */}
+            <td
+              style={{
+                display:
+                  selectedColumns.indexOf('گاز بیهوشی') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
-            />
-          </td>
-          {/* شفت-فلکه */}
-          <td
-            style={{
-              display:
-                selectedColumns.indexOf('شفت-فلکه') > -1
-                  ? 'table-cell'
-                  : 'none',
-            }}
-          >
-            <TextField
-              fullWidth
-              variant='standard'
-              size='small'
-              type='number'
-              sx={{ width: '100%', textAlign: 'center' }}
-              id='shaft_40l'
-              disabled={!editable}
-              defaultValue={assets?.shaft_40l}
-              inputProps={{
-                ...register?.('shaft_40l', {
-                  value: assets?.shaft_40l,
-                }),
+            >
+              <TextField
+                fullWidth
+                variant='standard'
+                size='small'
+                type='number'
+                sx={{ width: '100%', textAlign: 'center' }}
+                id='bihoshi_40l'
+                disabled={!editable}
+                defaultValue={assets?.bihoshi_40l}
+                inputProps={{
+                  ...register?.('bihoshi_40l', {
+                    value: assets?.bihoshi_40l,
+                  }),
+                }}
+              />
+            </td>
+            {/* شفت-فلکه */}
+            <td
+              style={{
+                display:
+                  selectedColumns.indexOf('شفت-فلکه') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
-            />
-          </td>
-          {/* شیر کنترل */}
-          <td
-            style={{
-              display:
-                selectedColumns.indexOf('شیر کنترل') > -1
-                  ? 'table-cell'
-                  : 'none',
-            }}
-          >
-            <TextField
-              fullWidth
-              variant='standard'
-              size='small'
-              type='number'
-              sx={{ width: '100%', textAlign: 'center' }}
-              id='controlValve_40l'
-              disabled={!editable}
-              defaultValue={assets?.controlValve_40l}
-              inputProps={{
-                ...register?.('controlValve_40l', {
-                  value: assets?.controlValve_40l,
-                }),
+            >
+              <TextField
+                fullWidth
+                variant='standard'
+                size='small'
+                type='number'
+                sx={{ width: '100%', textAlign: 'center' }}
+                id='shaft_40l'
+                disabled={!editable}
+                defaultValue={assets?.shaft_40l}
+                inputProps={{
+                  ...register?.('shaft_40l', {
+                    value: assets?.shaft_40l,
+                  }),
+                }}
+              />
+            </td>
+            {/* شیر کنترل */}
+            <td
+              style={{
+                display:
+                  selectedColumns.indexOf('شیر کنترل') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
-            />
-          </td>
-          {/* Co2 */}
-          <td
-            style={{
-              display:
-                selectedColumns.indexOf('Co2') > -1 ? 'table-cell' : 'none',
-            }}
-          >
-            <TextField
-              fullWidth
-              variant='standard'
-              size='small'
-              type='number'
-              sx={{ width: '100%', textAlign: 'center' }}
-              id='co2_40l'
-              disabled={!editable}
-              defaultValue={assets?.co2_40l}
-              inputProps={{
-                ...register?.('co2_40l', {
-                  value: assets?.co2_40l,
-                }),
+            >
+              <TextField
+                fullWidth
+                variant='standard'
+                size='small'
+                type='number'
+                sx={{ width: '100%', textAlign: 'center' }}
+                id='controlValve_40l'
+                disabled={!editable}
+                defaultValue={assets?.controlValve_40l}
+                inputProps={{
+                  ...register?.('controlValve_40l', {
+                    value: assets?.controlValve_40l,
+                  }),
+                }}
+              />
+            </td>
+            {/* Co2 */}
+            <td
+              style={{
+                display:
+                  selectedColumns.indexOf('Co2') > -1 ? 'table-cell' : 'none',
               }}
-            />
-          </td>
-          {/* آرگون */}
-          <td
-            style={{
-              display:
-                selectedColumns.indexOf('آرگون') > -1 ? 'table-cell' : 'none',
-            }}
-          >
-            <TextField
-              fullWidth
-              variant='standard'
-              size='small'
-              type='number'
-              sx={{ width: '100%', textAlign: 'center' }}
-              id='argon_40l'
-              disabled={!editable}
-              defaultValue={assets?.argon_40l}
-              inputProps={{
-                ...register?.('argon_40l', {
-                  value: assets?.argon_40l,
-                }),
+            >
+              <TextField
+                fullWidth
+                variant='standard'
+                size='small'
+                type='number'
+                sx={{ width: '100%', textAlign: 'center' }}
+                id='co2_40l'
+                disabled={!editable}
+                defaultValue={assets?.co2_40l}
+                inputProps={{
+                  ...register?.('co2_40l', {
+                    value: assets?.co2_40l,
+                  }),
+                }}
+              />
+            </td>
+            {/* آرگون */}
+            <td
+              style={{
+                display:
+                  selectedColumns.indexOf('آرگون') > -1 ? 'table-cell' : 'none',
               }}
-            />
-          </td>
-          {/* ازت */}
-          <td
-            style={{
-              display:
-                selectedColumns.indexOf('ازت') > -1 ? 'table-cell' : 'none',
-            }}
-          >
-            <TextField
-              fullWidth
-              variant='standard'
-              size='small'
-              type='number'
-              sx={{ width: '100%', textAlign: 'center' }}
-              id='azete_40l'
-              disabled={!editable}
-              defaultValue={assets?.azete_40l}
-              inputProps={{
-                ...register?.('azete_40l', {
-                  value: assets?.azete_40l,
-                }),
+            >
+              <TextField
+                fullWidth
+                variant='standard'
+                size='small'
+                type='number'
+                sx={{ width: '100%', textAlign: 'center' }}
+                id='argon_40l'
+                disabled={!editable}
+                defaultValue={assets?.argon_40l}
+                inputProps={{
+                  ...register?.('argon_40l', {
+                    value: assets?.argon_40l,
+                  }),
+                }}
+              />
+            </td>
+            {/* ازت */}
+            <td
+              style={{
+                display:
+                  selectedColumns.indexOf('ازت') > -1 ? 'table-cell' : 'none',
               }}
-            />
-          </td>
-          {/* هوای خشک */}
-          <td
-            style={{
-              display:
-                selectedColumns.indexOf('هوای خشک') > -1
-                  ? 'table-cell'
-                  : 'none',
-            }}
-          >
-            <TextField
-              fullWidth
-              variant='standard'
-              size='small'
-              type='number'
-              sx={{ width: '100%', textAlign: 'center' }}
-              id='dryAir_40l'
-              disabled={!editable}
-              defaultValue={assets?.dryAir_40l}
-              inputProps={{
-                ...register?.('dryAir_40l', {
-                  value: assets?.dryAir_40l,
-                }),
+            >
+              <TextField
+                fullWidth
+                variant='standard'
+                size='small'
+                type='number'
+                sx={{ width: '100%', textAlign: 'center' }}
+                id='azete_40l'
+                disabled={!editable}
+                defaultValue={assets?.azete_40l}
+                inputProps={{
+                  ...register?.('azete_40l', {
+                    value: assets?.azete_40l,
+                  }),
+                }}
+              />
+            </td>
+            {/* هوای خشک */}
+            <td
+              style={{
+                display:
+                  selectedColumns.indexOf('هوای خشک') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
-            />
-          </td>
-          {/* آنتونکس */}
-          <td
-            style={{
-              display:
-                selectedColumns.indexOf('آنتونکس') > -1 ? 'table-cell' : 'none',
-            }}
-          >
-            <TextField
-              fullWidth
-              variant='standard'
-              size='small'
-              type='number'
-              sx={{ width: '100%', textAlign: 'center' }}
-              id='entonox_40l'
-              disabled={!editable}
-              defaultValue={assets?.entonox_40l}
-              inputProps={{
-                ...register?.('entonox_40l', {
-                  value: assets?.entonox_40l,
-                }),
+            >
+              <TextField
+                fullWidth
+                variant='standard'
+                size='small'
+                type='number'
+                sx={{ width: '100%', textAlign: 'center' }}
+                id='dryAir_40l'
+                disabled={!editable}
+                defaultValue={assets?.dryAir_40l}
+                inputProps={{
+                  ...register?.('dryAir_40l', {
+                    value: assets?.dryAir_40l,
+                  }),
+                }}
+              />
+            </td>
+            {/* آنتونکس */}
+            <td
+              style={{
+                display:
+                  selectedColumns.indexOf('آنتونکس') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
-            />
-          </td>
-          {/* استیلن */}
-          <td
-            style={{
-              display:
-                selectedColumns.indexOf('استیلن') > -1 ? 'table-cell' : 'none',
-            }}
-          >
-            <TextField
-              fullWidth
-              variant='standard'
-              size='small'
-              type='number'
-              sx={{ width: '100%', textAlign: 'center' }}
-              id='acetylene_40l'
-              disabled={!editable}
-              defaultValue={assets?.acetylene_40l}
-              inputProps={{
-                ...register?.('acetylene_40l', {
-                  value: assets?.acetylene_40l,
-                }),
+            >
+              <TextField
+                fullWidth
+                variant='standard'
+                size='small'
+                type='number'
+                sx={{ width: '100%', textAlign: 'center' }}
+                id='entonox_40l'
+                disabled={!editable}
+                defaultValue={assets?.entonox_40l}
+                inputProps={{
+                  ...register?.('entonox_40l', {
+                    value: assets?.entonox_40l,
+                  }),
+                }}
+              />
+            </td>
+            {/* استیلن */}
+            <td
+              style={{
+                display:
+                  selectedColumns.indexOf('استیلن') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
-            />
-          </td>
-          {/* گاز مایع */}
-          <td
-            style={{
-              display:
-                selectedColumns.indexOf('گاز مایع') > -1
-                  ? 'table-cell'
-                  : 'none',
-            }}
-          >
-            <TextField
-              fullWidth
-              variant='standard'
-              size='small'
-              type='number'
-              sx={{ width: '100%', textAlign: 'center' }}
-              id='lpg_40l'
-              disabled={!editable}
-              defaultValue={assets?.lpg_40l}
-              inputProps={{
-                ...register?.('lpg_40l', {
-                  value: assets?.lpg_40l,
-                }),
+            >
+              <TextField
+                fullWidth
+                variant='standard'
+                size='small'
+                type='number'
+                sx={{ width: '100%', textAlign: 'center' }}
+                id='acetylene_40l'
+                disabled={!editable}
+                defaultValue={assets?.acetylene_40l}
+                inputProps={{
+                  ...register?.('acetylene_40l', {
+                    value: assets?.acetylene_40l,
+                  }),
+                }}
+              />
+            </td>
+            {/* گاز مایع */}
+            <td
+              style={{
+                display:
+                  selectedColumns.indexOf('گاز مایع') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
-            />
-          </td>
-        </tr>
-      </TableBody>
-    </table>
+            >
+              <TextField
+                fullWidth
+                variant='standard'
+                size='small'
+                type='number'
+                sx={{ width: '100%', textAlign: 'center' }}
+                id='lpg_40l'
+                disabled={!editable}
+                defaultValue={assets?.lpg_40l}
+                inputProps={{
+                  ...register?.('lpg_40l', {
+                    value: assets?.lpg_40l,
+                  }),
+                }}
+              />
+            </td>
+          </tr>
+        </TableBody>
+      </table>
+    </TableContainer>
   );
 }
