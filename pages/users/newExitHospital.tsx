@@ -15,7 +15,7 @@ import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import useWorkflows from '../../src/Logic/useWorkflows';
 
-const pageName = 'ثبت خروج از بیمارستان';
+const pageName = 'درخواست خروج از بیمارستان';
 
 export default function newExitCorporation() {
   // use user session context
