@@ -574,6 +574,29 @@ export default memo(function ExitHospitals({
   return (
     <Box sx={{ maxInlineSize: '100%', position: 'relative' }}>
       {/* <button onClick={resetResizing}>Reset Resizing</button> */}
+        <Box
+          sx={{
+            position: 'absolute',
+            top: {xs: -170, sm:-122},
+            right: '2%',
+          }}
+        >
+          <Button
+            label='حذف'
+            size='large'
+            color='error'
+            variant='contained'
+            disabled={
+              selectedFlatRows.length === 0 ||
+              !session?.user?.role?.deleteLicense
+                ? true
+                : false
+            }
+            onClick={() => {
+              setDeleteDialog(true);
+            }}
+          />
+        </Box>
       <Styles>
         <TableContainer sx={{ position: 'relative !important' }}>
           <div {...getTableProps()} className='table'>
@@ -881,29 +904,6 @@ export default memo(function ExitHospitals({
             },
           }}
         />
-        <Box
-          sx={{
-            position: 'absolute',
-            top: -122,
-            right: '35px',
-          }}
-        >
-          <Button
-            label='حذف'
-            size='large'
-            color='error'
-            variant='contained'
-            disabled={
-              selectedFlatRows.length === 0 ||
-              !session?.user?.role?.deleteLicense
-                ? true
-                : false
-            }
-            onClick={() => {
-              setDeleteDialog(true);
-            }}
-          />
-        </Box>
       </Styles>
       <DeleteDialog
         text='با این کار تمامی گردش کارهای انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'

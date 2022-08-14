@@ -621,6 +621,7 @@ export default function ExitCorporation({
               selectedColumns={selectedColumns}
               register={register}
               existingEnterWorkflow={existingWorkflow}
+              setValue={setValue}
             />
           ) : (
             <AggregatedTable

@@ -67,7 +67,7 @@ export default function AssetExitWorkflowsTables() {
           sx={{
             position: 'absolute',
             top: -67,
-            right: '150px',
+            right: 'calc(73px + 60px)',
             zIndex: 50000,
           }}
         >

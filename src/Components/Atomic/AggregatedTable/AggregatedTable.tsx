@@ -54,10 +54,9 @@ export default function AggregatedTable({
 }) {
   // update react-hook-form state after rfid operation
   useEffect(() => {
-
     console.log('xxxxx');
     console.log(assets?.oxygen_50l);
-    
+
     setValue?.('oxygen_50l', assets?.oxygen_50l);
     setValue?.('bihoshi_50l', assets?.bihoshi_50l);
     setValue?.('shaft_50l', assets?.shaft_50l);
@@ -83,7 +82,7 @@ export default function AggregatedTable({
   }, [assets]);
 
   return (
-    <TableContainer sx={{maxInlineSize: "90vw"}}>
+    <TableContainer sx={{ maxInlineSize: '90vw' }}>
       <table border={2} style={{ marginInline: '16px' }}>
         <thead>
           <tr>
@@ -229,6 +228,11 @@ export default function AggregatedTable({
                 id='oxygen_50l'
                 disabled={!editable}
                 defaultValue={assets?.oxygen_50l}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('oxygen_50l', null);
+                  }
+                }}
                 inputProps={{
                   ...register?.('oxygen_50l', {
                     value: assets?.oxygen_50l,
@@ -253,6 +257,11 @@ export default function AggregatedTable({
                 disabled={!editable}
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='bihoshi_50l'
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('bihoshi_50l', null);
+                  }
+                }}
                 defaultValue={assets?.bihoshi_50l}
                 inputProps={{
                   ...register?.('bihoshi_50l', {
@@ -278,6 +287,11 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='shaft_50l'
                 disabled={!editable}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('shaft_50l', null);
+                  }
+                }}
                 defaultValue={assets?.shaft_50l}
                 inputProps={{
                   ...register?.('shaft_50l', {
@@ -303,6 +317,11 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='controlValve_50l'
                 disabled={!editable}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('controlValve_50l', null);
+                  }
+                }}
                 defaultValue={assets?.controlValve_50l}
                 inputProps={{
                   ...register?.('controlValve_50l', {
@@ -326,6 +345,11 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='co2_50l'
                 disabled={!editable}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('co2_50l', null);
+                  }
+                }}
                 defaultValue={assets?.co2_50l}
                 inputProps={{
                   ...register?.('co2_50l', {
@@ -349,6 +373,11 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='argon_50l'
                 disabled={!editable}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('argon_50l', null);
+                  }
+                }}
                 defaultValue={assets?.argon_50l}
                 inputProps={{
                   ...register?.('argon_50l', {
@@ -372,6 +401,11 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='azete_50l'
                 disabled={!editable}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('azete_50l', null);
+                  }
+                }}
                 defaultValue={assets?.azete_50l}
                 inputProps={{
                   ...register?.('azete_50l', {
@@ -397,6 +431,11 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='dryAir_50l'
                 disabled={!editable}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('dryAir_50l', null);
+                  }
+                }}
                 defaultValue={assets?.dryAir_50l}
                 inputProps={{
                   ...register?.('dryAir_50l', {
@@ -422,6 +461,11 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='entonox_50l'
                 disabled={!editable}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('entonox_50l', null);
+                  }
+                }}
                 defaultValue={assets?.entonox_50l}
                 inputProps={{
                   ...register?.('entonox_50l', {
@@ -447,6 +491,11 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='acetylene_50l'
                 disabled={!editable}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('acetylene_50l', null);
+                  }
+                }}
                 defaultValue={assets?.acetylene_50l}
                 inputProps={{
                   ...register?.('acetylene_50l', {
@@ -472,6 +521,11 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='lpg_50l'
                 disabled={!editable}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('lpg_50l', null);
+                  }
+                }}
                 defaultValue={assets?.lpg_50l}
                 inputProps={{
                   ...register?.('lpg_50l', {
@@ -502,6 +556,11 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='oxygen_40l'
                 disabled={!editable}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('oxygen_40l', null);
+                  }
+                }}
                 defaultValue={assets?.oxygen_40l}
                 inputProps={{
                   ...register?.('oxygen_40l', {
@@ -527,6 +586,11 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='bihoshi_40l'
                 disabled={!editable}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('bihoshi_40l', null);
+                  }
+                }}
                 defaultValue={assets?.bihoshi_40l}
                 inputProps={{
                   ...register?.('bihoshi_40l', {
@@ -552,6 +616,11 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='shaft_40l'
                 disabled={!editable}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('shaft_40l', null);
+                  }
+                }}
                 defaultValue={assets?.shaft_40l}
                 inputProps={{
                   ...register?.('shaft_40l', {
@@ -577,6 +646,11 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='controlValve_40l'
                 disabled={!editable}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('controlValve_40l', null);
+                  }
+                }}
                 defaultValue={assets?.controlValve_40l}
                 inputProps={{
                   ...register?.('controlValve_40l', {
@@ -600,6 +674,11 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='co2_40l'
                 disabled={!editable}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('co2_40l', null);
+                  }
+                }}
                 defaultValue={assets?.co2_40l}
                 inputProps={{
                   ...register?.('co2_40l', {
@@ -623,6 +702,11 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='argon_40l'
                 disabled={!editable}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('argon_40l', null);
+                  }
+                }}
                 defaultValue={assets?.argon_40l}
                 inputProps={{
                   ...register?.('argon_40l', {
@@ -646,6 +730,11 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='azete_40l'
                 disabled={!editable}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('azete_40l', null);
+                  }
+                }}
                 defaultValue={assets?.azete_40l}
                 inputProps={{
                   ...register?.('azete_40l', {
@@ -671,6 +760,11 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='dryAir_40l'
                 disabled={!editable}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('dryAir_40l', null);
+                  }
+                }}
                 defaultValue={assets?.dryAir_40l}
                 inputProps={{
                   ...register?.('dryAir_40l', {
@@ -696,6 +790,11 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='entonox_40l'
                 disabled={!editable}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('entonox_40l', null);
+                  }
+                }}
                 defaultValue={assets?.entonox_40l}
                 inputProps={{
                   ...register?.('entonox_40l', {
@@ -721,6 +820,11 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='acetylene_40l'
                 disabled={!editable}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('acetylene_40l', null);
+                  }
+                }}
                 defaultValue={assets?.acetylene_40l}
                 inputProps={{
                   ...register?.('acetylene_40l', {
@@ -746,6 +850,11 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='lpg_40l'
                 disabled={!editable}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('lpg_40l', null);
+                  }
+                }}
                 defaultValue={assets?.lpg_40l}
                 inputProps={{
                   ...register?.('lpg_40l', {

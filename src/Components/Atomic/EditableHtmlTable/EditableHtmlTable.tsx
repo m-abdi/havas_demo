@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { TableBody, TableContainer, TextField } from '@mui/material';
 
 import { memo } from 'react';
+import { toEnglishDigit } from '@/src/Logic/toEnglishDigit';
 
 export default memo(function EditableHtmlTable({
   selectedColumns,
@@ -45,8 +46,9 @@ export default memo(function EditableHtmlTable({
   }, [assets]);
 
   return (
-    <TableContainer sx={{maxInlineSize: "90vw"}}>
+    <TableContainer sx={{ maxInlineSize: '90vw' }}>
       <table border={2}>
+      <caption>کیبورد را در حالت انگلیسی قرار دهید</caption>
         <thead>
           <tr>
             <th>نوع سیلندر</th>
@@ -193,7 +195,13 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 id='oxygen_50l_factory'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('oxygen_50l_factory', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('oxygen_50l_factory', {
                     value: assets?.oxygen_50l_factory,
                   }),
@@ -216,7 +224,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='bihoshi_50l_factory'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('bihoshi_50l_factory', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('bihoshi_50l_factory', {
                     value: assets?.bihoshi_50l_factory,
                   }),
@@ -238,7 +252,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='shaft_50l_factory'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('shaft_50l_factory', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('shaft_50l_factory', {
                     value: assets?.shaft_50l_factory,
                   }),
@@ -260,7 +280,14 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='controlValve_50l_factory'
                 disabled={editable ? false : true}
+
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('controlValve_50l_factory', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('controlValve_50l_factory', {
                     value: assets?.controlValve_50l_factory,
                   }),
@@ -280,7 +307,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='co2_50l_factory'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('co2_50l_factory', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('co2_50l_factory', {
                     value: assets?.co2_50l_factory,
                   }),
@@ -300,7 +333,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='argon_50l_factory'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('argon_50l_factory', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('argon_50l_factory', {
                     value: assets?.argon_50l_factory,
                   }),
@@ -320,7 +359,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='azete_50l_factory'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('azete_50l_factory', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('azete_50l_factory', {
                     value: assets?.azete_50l_factory,
                   }),
@@ -342,7 +387,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='dryAir_50l_factory'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('dryAir_50l_factory', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('dryAir_50l_factory', {
                     value: assets?.dryAir_50l_factory,
                   }),
@@ -364,7 +415,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='entonox_50l_factory'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('entonox_50l_factory', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('entonox_50l_factory', {
                     value: assets?.entonox_50l_factory,
                   }),
@@ -386,7 +443,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='acetylene_50l_factory'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('acetylene_50l_factory', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('acetylene_50l_factory', {
                     value: assets?.acetylene_50l_factory,
                   }),
@@ -408,7 +471,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='lpg_50l_factory'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('lpg_50l_factory', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('lpg_50l_factory', {
                     value: assets?.lpg_50l_factory,
                   }),
@@ -435,7 +504,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='oxygen_50l_customer'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('oxygen_50l_customer', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('oxygen_50l_customer', {
                     value: assets?.oxygen_50l_customer,
                   }),
@@ -457,7 +532,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='bihoshi_50l_customer'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('bihoshi_50l_customer', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('bihoshi_50l_customer', {
                     value: assets?.bihoshi_50l_customer,
                   }),
@@ -479,7 +560,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='shaft_50l_customer'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('shaft_50l_customer', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('shaft_50l_customer', {
                     value: assets?.shaft_50l_customer,
                   }),
@@ -501,7 +588,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='controlValve_50l_customer'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('controlValve_50l_customer', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('controlValve_50l_customer', {
                     value: assets?.controlValve_50l_customer,
                   }),
@@ -521,7 +614,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='co2_50l_customer'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('co2_50l_customer', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('co2_50l_customer', {
                     value: assets?.co2_50l_customer,
                   }),
@@ -541,7 +640,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='argon_50l_customer'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('argon_50l_customer', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('argon_50l_customer', {
                     value: assets?.argon_50l_customer,
                   }),
@@ -561,7 +666,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='azete_50l_customer'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('azete_50l_customer', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('azete_50l_customer', {
                     value: assets?.azete_50l_customer,
                   }),
@@ -583,7 +694,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='dryAir_50l_customer'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('dryAir_50l_customer', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('dryAir_50l_customer', {
                     value: assets?.dryAir_50l_customer,
                   }),
@@ -605,7 +722,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='entonox_50l_customer'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('entonox_50l_customer', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('entonox_50l_customer', {
                     value: assets?.entonox_50l_customer,
                   }),
@@ -627,7 +750,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='acetylene_50l_customer'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('acetylene_50l_customer', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('acetylene_50l_customer', {
                     value: assets?.acetylene_50l_customer,
                   }),
@@ -649,7 +778,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='lpg_50l_customer'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('lpg_50l_customer', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('lpg_50l_customer', {
                     value: assets?.lpg_50l_customer,
                   }),
@@ -680,7 +815,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='oxygen_40l_factory'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('oxygen_40l_factory', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('oxygen_40l_factory', {
                     value: assets?.oxygen_40l_factory,
                   }),
@@ -702,7 +843,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='bihoshi_40l_factory'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('bihoshi_40l_factory', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('bihoshi_40l_factory', {
                     value: assets?.bihoshi_40l_factory,
                   }),
@@ -724,7 +871,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='shaft_40l_factory'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('shaft_40l_factory', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('shaft_40l_factory', {
                     value: assets?.shaft_40l_factory,
                   }),
@@ -746,7 +899,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='controlValve_40l_factory'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('controlValve_40l_factory', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('controlValve_40l_factory', {
                     value: assets?.controlValve_40l_factory,
                   }),
@@ -766,7 +925,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='co2_40l_factory'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('co2_40l_factory', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('co2_40l_factory', {
                     value: assets?.co2_40l_factory,
                   }),
@@ -786,7 +951,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='argon_40l_factory'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('argon_40l_factory', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('argon_40l_factory', {
                     value: assets?.argon_40l_factory,
                   }),
@@ -806,7 +977,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='azete_40l_factory'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('azete_40l_factory', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('azete_40l_factory', {
                     value: assets?.azete_40l_factory,
                   }),
@@ -828,7 +1005,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='dryAir_40l_factory'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('dryAir_40l_factory', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('dryAir_40l_factory', {
                     value: assets?.dryAir_40l_factory,
                   }),
@@ -850,7 +1033,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='entonox_40l_factory'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('entonox_40l_factory', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('entonox_40l_factory', {
                     value: assets?.entonox_40l_factory,
                   }),
@@ -872,7 +1061,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='acetylene_40l_factory'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('acetylene_40l_factory', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('acetylene_40l_factory', {
                     value: assets?.acetylene_40l_factory,
                   }),
@@ -894,7 +1089,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='lpg_40l_factory'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('lpg_40l_factory', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('lpg_40l_factory', {
                     value: assets?.lpg_40l_factory,
                   }),
@@ -921,7 +1122,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='oxygen_40l_customer'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('oxygen_40l_customer', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('oxygen_40l_customer', {
                     value: assets?.oxygen_40l_customer,
                   }),
@@ -943,7 +1150,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='bihoshi_40l_customer'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('bihoshi_40l_customer', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('bihoshi_40l_customer', {
                     value: assets?.bihoshi_40l_customer,
                   }),
@@ -965,7 +1178,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='shaft_40l_customer'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('shaft_40l_customer', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('shaft_40l_customer', {
                     value: assets?.shaft_40l_customer,
                   }),
@@ -987,7 +1206,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='controlValve_40l_customer'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('controlValve_40l_customer', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('controlValve_40l_customer', {
                     value: assets?.controlValve_40l_customer,
                   }),
@@ -1007,7 +1232,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='co2_40l_customer'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('co2_40l_customer', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('co2_40l_customer', {
                     value: assets?.co2_40l_customer,
                   }),
@@ -1027,7 +1258,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='argon_40l_customer'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('argon_40l_customer', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('argon_40l_customer', {
                     value: assets?.argon_40l_customer,
                   }),
@@ -1047,7 +1284,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='azete_40l_customer'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('azete_40l_customer', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('azete_40l_customer', {
                     value: assets?.azete_40l_customer,
                   }),
@@ -1069,7 +1312,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='dryAir_40l_customer'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('dryAir_40l_customer', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('dryAir_40l_customer', {
                     value: assets?.dryAir_40l_customer,
                   }),
@@ -1091,7 +1340,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='entonox_40l_customer'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('entonox_40l_customer', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('entonox_40l_customer', {
                     value: assets?.entonox_40l_customer,
                   }),
@@ -1113,7 +1368,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='acetylene_40l_customer'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('acetylene_40l_customer', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('acetylene_40l_customer', {
                     value: assets?.acetylene_40l_customer,
                   }),
@@ -1135,7 +1396,13 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='lpg_40l_customer'
                 disabled={editable ? false : true}
+                onChange={(e) => {
+                  if (parseInt(e.target.value) < 1) {
+                    setValue?.('lpg_40l_customer', null);
+                  }
+                }}
                 inputProps={{
+                  min: '1',
                   ...register?.('lpg_40l_customer', {
                     value: assets?.lpg_40l_customer,
                   }),
