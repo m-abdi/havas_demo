@@ -3,7 +3,7 @@ import 'react-spinner-animated/dist/index.css';
 import '../src/NextJsServerSecurityToken';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { ApolloProvider } from '@apollo/client';
 import { AppProps } from 'next/app';
@@ -45,28 +45,33 @@ interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
 export const InfoContext = createContext({
-  pageName: "داشبورد", 
-  changePageName: (newName: string)=>{},
+  pageName: 'داشبورد',
+  changePageName: (newName: string) => {},
   equipments: null,
-  setEquipments: (e: any)=>{}
+  setEquipments: (e: any) => {},
 });
 
 export default function MyApp(props: MyAppProps) {
   // custom context
   const [info, setInfo] = React.useState({
     pageName: 'داشبورد',
-    equipments: null
+    equipments: null,
   });
-  const infoContext: {pageName: string, changePageName: (newName: string)=>void, equipments: any, setEquipments: (e: any)=>void} = React.useMemo(
+  const infoContext: {
+    pageName: string;
+    changePageName: (newName: string) => void;
+    equipments: any;
+    setEquipments: (e: any) => void;
+  } = React.useMemo(
     () => ({
       pageName: info.pageName,
       changePageName: (newName: string) => {
         setInfo({ ...info, pageName: newName });
       },
       equipments: info?.equipments,
-      setEquipments: (e: any) =>{
-        setInfo({...info, equipments: e})
-      }
+      setEquipments: (e: any) => {
+        setInfo({ ...info, equipments: e });
+      },
     }),
     [info]
   );
@@ -91,6 +96,8 @@ export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   //
   const apolloClient = useApollo(pageProps.initialApolloState);
+
+
 
   return (
     <CacheProvider value={emotionCache}>

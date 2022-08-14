@@ -218,6 +218,7 @@ export default function NewExitHospital({
     'گاز بیهوشی',
   ]);
   const [sum, setSum] = useState(0);
+  const [scrollPosition, setScrollPosition] = useState(0);
   const [date, setDate] = useState<any>(
     existingWorkflow
       ? parseInt(existingWorkflow?.passedStages?.[0]?.havaleh?.date)
@@ -688,9 +689,9 @@ export default function NewExitHospital({
         </Row1>
         <Box
           sx={{
-            position: 'absolute',
-            top: existingWorkflow ? -187 : -68,
-            right: '35px',
+            position: 'fixed',
+            top: 72,
+            right: '10vw',
           }}
         >
           <Button

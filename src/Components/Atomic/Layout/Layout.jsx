@@ -31,7 +31,7 @@ import {
 import React, { memo, useContext, useEffect } from 'react';
 import { getCookie, setCookie } from '../../../Cookies';
 import { signOut, useSession } from 'next-auth/react';
-
+import { Button as MyButton } from '../Button';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -71,8 +71,8 @@ const AppBar2 = styled('nav')({
   alignItems: 'center',
   paddingRight: '1.2rem',
   background: '#bbc6d4',
-  position: "sticky",
-  top: "56px",
+  position: 'sticky',
+  top: '56px',
 });
 
 const MainContent = styled('div', {
@@ -323,9 +323,9 @@ function Layout({ children, pageName }) {
       {/* First Appbar */}
       <AppBar
         elevation={2}
-       
         sx={{
           '&.MuiAppBar-root': { backgroundColor: '#304967', zIndex: 6000 },
+          blockSize: 64,
         }}
       >
         <Toolbar sx={{ justifyContent: 'space-between' }}>
@@ -416,11 +416,7 @@ function Layout({ children, pageName }) {
           <MainContent drawOpen={drawOpen}>
             <ToolbarOffest />
             {/* Secend Appbar */}
-            <AppBar2
-      
-              drawOpen={drawOpen}
-            
-            >
+            <AppBar2 drawOpen={drawOpen}>
               <IconButton color='primary'>
                 <ArrowForwardIcon sx={{ ml: '1rem', fontSize: '1.2rem' }} />
               </IconButton>
@@ -432,6 +428,7 @@ function Layout({ children, pageName }) {
                 {' '}
                 {infoContext?.pageName}
               </Typography>
+              
             </AppBar2>
 
             {/* اطلاعات صفحه */}
@@ -453,6 +450,34 @@ function Layout({ children, pageName }) {
                 {' '}
                 {infoContext?.pageName}
               </Typography>
+              {/* <Stack
+                direction={'row'}
+                alignItems='center'
+                spacing={1}
+                justifyContent='space-around'
+                sx={{ display: infoContext?.buttons ? 'flex' : 'none' }}
+              >
+                <MyButton
+                  id='submitButton'
+                  label='ارسال'
+                  color='success'
+                  size='large'
+                  sx={{
+                    display: infoContext?.buttons?.submit ? 'flex' : 'none',
+                  }}
+                  onClick={infoContext?.buttons?.submit()}
+                />
+                <MyButton
+                  id='deleteButton'
+                  label='حذف'
+                  color='error'
+                  size='large'
+                  sx={{
+                    display: infoContext?.buttons?.delete ? 'flex' : 'none',
+                  }}
+                  onClick={infoContext?.buttons?.delete()}
+                />
+              </Stack> */}
             </AppBar2>
 
             {/* اطلاعات صفحه */}

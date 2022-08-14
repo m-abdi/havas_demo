@@ -637,9 +637,9 @@ export default function ExitCorporation({
         </Row1>
         <Box
           sx={{
-            position: 'absolute',
-            top: existingWorkflow ? -187 : -68,
-            right: '35px',
+            position: 'fixed',
+            top: 72,
+            right: "10vw",
           }}
         >
           <Button
