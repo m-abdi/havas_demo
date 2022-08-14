@@ -389,7 +389,7 @@ export default function NewExitHospital({
             <Label1>شماره ثبت فرم</Label1>
             <TextField size='small' disabled />
           </Input1> */}
-          <Input1>
+          <Input1 sx={{ display: 'none' }}>
             <Label1>شماره گردش کار</Label1>
             {loading ? (
               <Skeleton
@@ -417,38 +417,8 @@ export default function NewExitHospital({
               />
             )}
           </Input1>
-          <Input1>
-            <Label1>تحویل دهنده</Label1>
-            {loading ? (
-              <Skeleton
-                variant='rectangular'
-                width={300}
-                height={40}
-                sx={{ borderRadius: '5px' }}
-              />
-            ) : (
-              <TextField
-                size='small'
-                disabled
-                id='warehouseKeeper'
-                inputProps={{
-                  ...register('warehouseKeeper', {
-                    required: true,
-                    value:
-                      warehouseKeeper?.label ||
-                      existingWorkflow?.passedStages?.[0]?.submittedByUser
-                        ?.firstNameAndLastName,
-                  }),
-                }}
-                error={errors.warehouseKeeper?.type === 'required'}
-                helperText={
-                  errors.warehouseKeeper?.type === 'required' &&
-                  'لطفا این فیلد را پر کنید'
-                }
-              />
-            )}
-          </Input1>
-          <Input1>
+
+          <Input1 sx={{ display: 'none' }}>
             <Label1>تاریخ ثبت حواله</Label1>
 
             <DatePicker
@@ -488,9 +458,39 @@ export default function NewExitHospital({
               }
             />
           </Input1>
-
           <Input1>
-            <Label1>شرکت</Label1>
+            <Label1>تحویل دهنده</Label1>
+            {loading ? (
+              <Skeleton
+                variant='rectangular'
+                width={300}
+                height={40}
+                sx={{ borderRadius: '5px' }}
+              />
+            ) : (
+              <TextField
+                size='small'
+                disabled
+                id='warehouseKeeper'
+                inputProps={{
+                  ...register('warehouseKeeper', {
+                    required: true,
+                    value:
+                      warehouseKeeper?.label ||
+                      existingWorkflow?.passedStages?.[0]?.submittedByUser
+                        ?.firstNameAndLastName,
+                  }),
+                }}
+                error={errors.warehouseKeeper?.type === 'required'}
+                helperText={
+                  errors.warehouseKeeper?.type === 'required' &&
+                  'لطفا این فیلد را پر کنید'
+                }
+              />
+            )}
+          </Input1>
+          <Input1>
+            <Label1>ارسال به</Label1>
             {corporationsLoading ? (
               <Skeleton
                 variant='rectangular'

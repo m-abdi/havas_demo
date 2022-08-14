@@ -372,7 +372,7 @@ export default function ExitCorporation({
             </Input1>
           </Row1>
         )}
-        <Row1>
+        <Row1 sx={{ display: 'none' }}>
           {/* <Input1>
             <Label1>شماره ثبت فرم</Label1>
             <TextField size='small' disabled />
@@ -405,37 +405,7 @@ export default function ExitCorporation({
               />
             )}
           </Input1>
-          <Input1>
-            <Label1>نماینده شرکت</Label1>
-            {loading ? (
-              <Skeleton
-                variant='rectangular'
-                width={300}
-                height={40}
-                sx={{ borderRadius: '5px' }}
-              />
-            ) : (
-              <TextField
-                size='small'
-                disabled
-                id='corporationRepresentative'
-                inputProps={{
-                  ...register('corporationRepresentative', {
-                    required: true,
-                    value:
-                      corporationRepresentative?.label ||
-                      existingWorkflow?.passedStages?.[0]?.submittedByUser
-                        ?.firstNameAndLastName,
-                  }),
-                }}
-                error={errors.corporationRepresentative?.type === 'required'}
-                helperText={
-                  errors.corporationRepresentative?.type === 'required' &&
-                  'لطفا این فیلد را پر کنید'
-                }
-              />
-            )}
-          </Input1>
+
           <Input1>
             <Label1>تاریخ ثبت حواله</Label1>
 
@@ -476,6 +446,37 @@ export default function ExitCorporation({
               }
             />
           </Input1>
+          <Input1 sx={{ display: 'none' }}>
+            <Label1>نماینده شرکت</Label1>
+            {loading ? (
+              <Skeleton
+                variant='rectangular'
+                width={300}
+                height={40}
+                sx={{ borderRadius: '5px' }}
+              />
+            ) : (
+              <TextField
+                size='small'
+                disabled
+                id='corporationRepresentative'
+                inputProps={{
+                  ...register('corporationRepresentative', {
+                    required: true,
+                    value:
+                      corporationRepresentative?.label ||
+                      existingWorkflow?.passedStages?.[0]?.submittedByUser
+                        ?.firstNameAndLastName,
+                  }),
+                }}
+                error={errors.corporationRepresentative?.type === 'required'}
+                helperText={
+                  errors.corporationRepresentative?.type === 'required' &&
+                  'لطفا این فیلد را پر کنید'
+                }
+              />
+            )}
+          </Input1>
           <Input1>
             <Label1>تحویل دهنده</Label1>
             <TextField
@@ -490,6 +491,8 @@ export default function ExitCorporation({
               }}
             />
           </Input1>
+        </Row1>
+        <Row1>
           <Input1>
             <Label1>توضیحات ارسال</Label1>
             <TextField

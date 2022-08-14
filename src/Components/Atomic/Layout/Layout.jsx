@@ -73,7 +73,6 @@ const AppBar2 = styled('nav')({
   background: '#bbc6d4',
   position: "sticky",
   top: "56px",
-  zIndex: 1000,
 });
 
 const MainContent = styled('div', {
