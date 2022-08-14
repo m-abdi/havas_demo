@@ -597,6 +597,7 @@ export default function ExitCorporation({
           <Label1>جمع ثبت شده</Label1>
           <TextField
             size='small'
+            disabled
             value={
               existingWorkflow
                 ? Object.entries(
