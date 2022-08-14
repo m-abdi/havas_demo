@@ -71,6 +71,9 @@ const AppBar2 = styled('nav')({
   alignItems: 'center',
   paddingRight: '1.2rem',
   background: '#bbc6d4',
+  position: "sticky",
+  top: "56px",
+  zIndex: 1000,
 });
 
 const MainContent = styled('div', {
@@ -321,6 +324,7 @@ function Layout({ children, pageName }) {
       {/* First Appbar */}
       <AppBar
         elevation={2}
+       
         sx={{
           '&.MuiAppBar-root': { backgroundColor: '#304967', zIndex: 6000 },
         }}
@@ -413,7 +417,11 @@ function Layout({ children, pageName }) {
           <MainContent drawOpen={drawOpen}>
             <ToolbarOffest />
             {/* Secend Appbar */}
-            <AppBar2 drawOpen={drawOpen}>
+            <AppBar2
+      
+              drawOpen={drawOpen}
+            
+            >
               <IconButton color='primary'>
                 <ArrowForwardIcon sx={{ ml: '1rem', fontSize: '1.2rem' }} />
               </IconButton>
