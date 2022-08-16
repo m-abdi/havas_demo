@@ -257,9 +257,10 @@ export default memo(function NewTag({
       ))}
       <Box
         sx={{
-          position: modal ? 'static' : 'absolute',
-          top: -105,
-          right: '35px',
+          position: 'fixed',
+          top: 72,
+          right: 'calc(110px + 20px)',
+          zIndex: 40,
         }}
       >
         <Button

@@ -647,7 +647,8 @@ export default function ExitCorporation({
           sx={{
             position: 'fixed',
             top: 72,
-            right: '10vw',
+            right: {xs: 20, md: 100, xl: 400,},
+            zIndex: 40,
           }}
         >
           <Button

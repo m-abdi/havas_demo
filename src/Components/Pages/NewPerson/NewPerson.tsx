@@ -474,9 +474,10 @@ export default function newPerson({
 
           <Box
             sx={{
-              position: 'absolute',
-              top: -68,
-              right: '35px',
+              position: 'fixed',
+              top: 72,
+              right: {xs: 10, md: 40, lg: 200, xl: 420,},
+              zIndex: 40,
             }}
           >
             <Button

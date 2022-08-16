@@ -643,7 +643,6 @@ export default function Workflows({
                     <Skeleton width={270} height={42} variant='rectangular' />
                     <Skeleton width={100} height={42} variant='rectangular' />
                     <Skeleton width={270} height={42} variant='rectangular' />
-              
                   </Stack>
                 ))}
               </Stack>
@@ -700,9 +699,10 @@ export default function Workflows({
         />
         <Box
           sx={{
-            position: 'absolute',
-            top: -68,
-            right: '35px',
+            position: 'fixed',
+            top: 72,
+            right: 40,
+            zIndex: 40,
           }}
         >
           <Button

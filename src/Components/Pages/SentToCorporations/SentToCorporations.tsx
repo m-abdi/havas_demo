@@ -866,9 +866,10 @@ export default memo(function SentToCorporations({
         />
         <Box
           sx={{
-            position: 'absolute',
-            top: -122,
-            right: '35px',
+            position: 'fixed',
+            top: 72,
+            right: 40,
+            zIndex: 40,
           }}
         >
           <Button

@@ -265,9 +265,10 @@ export default function NewAsset({
         {!submitOnChange && (
           <Box
             sx={{
-              position: 'absolute',
-              top: -68,
-              right: 'min(10%, 105px)',
+              position: 'fixed',
+              top: 72,
+              right: { xs: 20, md: 40, lg: 200, xl: 420 },
+              zIndex: 40,
             }}
           >
             <Button

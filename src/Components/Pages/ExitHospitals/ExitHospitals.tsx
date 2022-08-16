@@ -574,29 +574,29 @@ export default memo(function ExitHospitals({
   return (
     <Box sx={{ maxInlineSize: '100%', position: 'relative' }}>
       {/* <button onClick={resetResizing}>Reset Resizing</button> */}
-        <Box
-          sx={{
-            position: 'absolute',
-            top: {xs: -170, sm:-122},
-            right: '2%',
+      <Box
+        sx={{
+          position: 'fixed',
+          top: 72,
+          right: 40,
+          zIndex: 40,
+        }}
+      >
+        <Button
+          label='حذف'
+          size='large'
+          color='error'
+          variant='contained'
+          disabled={
+            selectedFlatRows.length === 0 || !session?.user?.role?.deleteLicense
+              ? true
+              : false
+          }
+          onClick={() => {
+            setDeleteDialog(true);
           }}
-        >
-          <Button
-            label='حذف'
-            size='large'
-            color='error'
-            variant='contained'
-            disabled={
-              selectedFlatRows.length === 0 ||
-              !session?.user?.role?.deleteLicense
-                ? true
-                : false
-            }
-            onClick={() => {
-              setDeleteDialog(true);
-            }}
-          />
-        </Box>
+        />
+      </Box>
       <Styles>
         <TableContainer sx={{ position: 'relative !important' }}>
           <div {...getTableProps()} className='table'>

@@ -65,10 +65,10 @@ export default function AssetExitWorkflowsTables() {
         </TabPanel>
         <Box
           sx={{
-            position: 'absolute',
-            top: -67,
-            right: 'calc(73px + 60px)',
-            zIndex: 50000,
+            position: 'fixed',
+            top: 72,
+            right: 'calc(110px + 20px)',
+            zIndex: 40,
           }}
         >
           <Button
