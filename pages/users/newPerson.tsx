@@ -27,7 +27,7 @@ export default function newPerson() {
   const router = useRouter();
 
   // fetch all roles and places for autocomplete fields
-  const { loading, error, data } = useQuery(AllRolesAndPlacesDocument, {
+  const { loading, error, data, fetchMore: fetchMorePlacesAndRoles } = useQuery(AllRolesAndPlacesDocument, {
     fetchPolicy: 'cache-and-network',
   });
   const { createNew: createNewPersonHandler, sending } = usePersons();
@@ -50,6 +50,7 @@ export default function newPerson() {
         createNewPlaceHandler={createNewPlaceHandler as any}
         createNewCategoryHandler={createNewCategoryHandler}
         deletePlacesHandler={deletePlaces}
+        fetchMorePlacesAndRoles={fetchMorePlacesAndRoles}
       />
     </Layout>
   );

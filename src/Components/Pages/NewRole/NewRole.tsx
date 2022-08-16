@@ -21,7 +21,7 @@ export default memo(function NewRole({
   onSubmit,
 }: {
   existingRoleData?: RoleType;
-  onSubmit: (name: string, permissions: any, edit: string) => Promise<boolean>;
+  onSubmit: (name: string, permissions: any, edit: string) => Promise<void>;
 }) {
   // states
   const [name, setName] = useState('');
@@ -49,12 +49,12 @@ export default memo(function NewRole({
   const [createRole, setCreateRole] = useState(false);
   const [editRole, setEditRole] = useState(false);
   const [deleteRole, setDeleteRole] = useState(false);
-  const [editId, setEditId] = useState("")
-  const [createEnterDeliverExit, setCreateEnterDeliverExit] = useState(false)
+  const [editId, setEditId] = useState('');
+  const [createEnterDeliverExit, setCreateEnterDeliverExit] = useState(false);
   // fill input field with existing role data
   useEffect(() => {
     if (existingRoleData) {
-      setEditId(existingRoleData.id)
+      setEditId(existingRoleData.id);
       setName(existingRoleData.name);
       setViewPerson(existingRoleData.viewPerson as boolean);
       setViewPlace(existingRoleData.viewPlace as boolean);
@@ -80,20 +80,26 @@ export default memo(function NewRole({
       setDeleteLicense(existingRoleData.deleteLicense as boolean);
       setDeleteTag(existingRoleData.deleteTag as boolean);
       setDeleteRole(existingRoleData.deleteRole as boolean);
-      setCreateEnterDeliverExit(existingRoleData.createEnterDeliverExit as boolean)
+      setCreateEnterDeliverExit(
+        existingRoleData.createEnterDeliverExit as boolean
+      );
     }
   }, [existingRoleData]);
 
   //
   return (
-    <Stack spacing={2} divider={<Divider flexItem />} alignItems='center'>
+    <Stack
+      spacing={2}
+      divider={<Divider flexItem />}
+      alignItems='center'
+      sx={{ p: 2, maxInlineSize: '100%' }}
+    >
       <TextField
         name='name'
         label='نام نقش مورد نظر را وارد کنید'
         type='text'
         size='small'
         value={name}
-        sx={{ inlineSize: 300 }}
         onChange={(e) => setName(e.target.value)}
       />
       {/* Permissions دسترسی ها */}
@@ -120,12 +126,12 @@ export default memo(function NewRole({
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           spacing={3}
-          alignItems='center'
-          justifyContent={'center'}
+          alignItems='center !important'
+          justifyContent={{ xs: 'center', sm: 'center' }}
           flexWrap={'wrap'}
         >
           {/* اماکن */}
-          <FormControl>
+          <FormControl sx={{ my: 2 }}>
             <FormLabel>اماکن</FormLabel>
             <FormGroup>
               <FormControlLabel
@@ -173,8 +179,10 @@ export default memo(function NewRole({
               />
             </FormGroup>
           </FormControl>
+          <Divider flexItem variant='middle' orientation='horizontal' />
+
           {/* اشخاص */}
-          <FormControl>
+          <FormControl sx={{ my: 2 }}>
             <FormLabel>اشخاص</FormLabel>
             <FormGroup>
               <FormControlLabel
@@ -222,9 +230,10 @@ export default memo(function NewRole({
               />
             </FormGroup>
           </FormControl>
+          <Divider flexItem variant='middle' orientation='horizontal' />
 
           {/* تجهیزات و موجودی */}
-          <FormControl>
+          <FormControl sx={{ my: 2 }}>
             <FormLabel>تجهیزات و موجودی</FormLabel>
             <FormGroup>
               <FormControlLabel
@@ -279,8 +288,10 @@ export default memo(function NewRole({
               />
             </FormGroup>
           </FormControl>
+          <Divider flexItem variant='middle' orientation='horizontal' />
+
           {/* تگ ها */}
-          <FormControl>
+          <FormControl sx={{ my: 2 }}>
             <FormLabel>تگ ها</FormLabel>
             <FormGroup>
               <FormControlLabel
@@ -328,8 +339,10 @@ export default memo(function NewRole({
               />
             </FormGroup>
           </FormControl>
+          <Divider flexItem variant='middle' orientation='horizontal' />
+
           {/*  مجوزها */}
-          <FormControl>
+          <FormControl sx={{ my: 2 }}>
             <FormLabel>مجوزها</FormLabel>
             <FormGroup>
               <FormControlLabel
@@ -389,8 +402,10 @@ export default memo(function NewRole({
               />
             </FormGroup>
           </FormControl>
+          <Divider flexItem variant='middle' orientation='horizontal' />
+
           {/*  نقش ها */}
-          <FormControl>
+          <FormControl sx={{ my: 2 }}>
             <FormLabel>نقش ها</FormLabel>
             <FormGroup>
               <FormControlLabel

@@ -12,6 +12,7 @@ import { NewRole } from '@/src/Components/Pages/NewRole';
 import Snackbar from '@/src/Components/Atomic/Snackbar';
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
+import useRoles from '@/src/Logic/useRoles';
 
 const pageName = 'نقش جدید';
 export default function newRole() {
@@ -28,49 +29,7 @@ export default function newRole() {
       setExistingRoleData(JSON.parse(router?.query?.role as string));
     }
   }, [router.query]);
-
-  // other hooks
-  const [createRoleMutation] = useMutation(CreateRoleDocument);
-  const {
-    snackbarOpen,
-    setSnackbarOpen,
-    snackbarMessage,
-    setSnackbarMessage,
-    snackbarColor,
-    setSnackbarColor,
-  } = useContext(SnackbarContext);
-  //   handlers
-
-  const onSubmit = useCallback(
-    async (name: string, permissions: any, edit: string) => {
-      // provide a response for user interaction(sending...)
-      setLoading(true);
-      setSnackbarColor('info');
-      setSnackbarMessage('در حال ارسال');
-      setSnackbarOpen(true);
-      try {
-        const resp = await createRoleMutation({
-          variables: { name, permissions, edit },
-        });
-        if (resp.data) {
-          setSnackbarColor('success');
-          setSnackbarMessage('انجام شد');
-          setSnackbarOpen(true);
-          router.push('/users/roles');
-          return true;
-        } else if (resp.errors) {
-          setSnackbarColor('error');
-          setSnackbarMessage('خطا');
-          setSnackbarOpen(true);
-          console.log(resp.errors);
-        }
-      } catch (e: any) {
-        console.log(e.message);
-      }
-      return false;
-    },
-    [router]
-  );
+  const { createNew } = useRoles();
 
   return (
     <Layout pageName={pageName}>
@@ -80,7 +39,15 @@ export default function newRole() {
       {loading ? (
         <Loader center={false} />
       ) : (
-        <NewRole existingRoleData={existingRoleData} onSubmit={onSubmit} />
+        <NewRole
+          existingRoleData={existingRoleData}
+          onSubmit={async (name: string, permissions: any, edit: string) => {
+            const resp = await createNew(name, permissions, edit);
+            if (resp) {
+              router.push('/users/roles');
+            }
+          }}
+        />
       )}
     </Layout>
   );

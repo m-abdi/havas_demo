@@ -35,6 +35,10 @@ import NewPlace from '../NewPlace';
 import { toEnglishDigit } from '../../../Logic/toEnglishDigit';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
+import { NewRole } from '../NewRole';
+import useRoles from '@/src/Logic/useRoles';
+import { Permissions } from 'lib/resolvers-types';
+import { flushSync } from 'react-dom';
 
 const pageName = 'شخص جدید';
 const Form1 = styled('form', { name: 'form1' })(({ theme }) => ({
@@ -95,19 +99,21 @@ interface OptionsType {
 export default function newPerson({
   loading,
   sending,
-  roles,
+  roles = [],
   places,
   allPlaces,
   createNewPersonHandler,
   createNewPlaceHandler,
   createNewCategoryHandler,
   deletePlacesHandler,
+  fetchMorePlacesAndRoles,
 }: {
   loading: boolean;
   sending: boolean;
   allPlaces: any[];
-  roles: OptionsType[];
+  roles: any[];
   places: any;
+  fetchMorePlacesAndRoles: any;
   createNewPersonHandler: (
     id: string,
     firstNameAndLastName: string,
@@ -156,12 +162,14 @@ export default function newPerson({
   const [editRoleCheck, setEditRoleCheck] = useState(false);
   const [role, setRole] = useState<{ id: string; label: string }>();
   const [place, setPlace] = useState<{ id: string; label: string }>();
+  const [rolesList, setRolesList] = useState(roles);
   const [roleError, setRoleError] = useState(false);
   const [placeError, setPlaceError] = useState(false);
   const [newPlaceDialogOpen, setNewPlaceDialogOpen] = useState(false);
+  const [newRoleDialogIsOpened, setNewRoleDialogIsOpened] = useState(false);
   // other hooks
   const router = useRouter();
-
+  const { createNew } = useRoles();
   // handers
   const placeCreationHandler = (newPlace?: any) => {
     if (newPlace) {
@@ -213,6 +221,9 @@ export default function newPerson({
       setEditRoleCheck(true);
     }
   }, [router?.isReady]);
+  useEffect(() => {
+    setRolesList(roles);
+  }, [roles]);
 
   //
   if (sending) {
@@ -254,38 +265,50 @@ export default function newPerson({
               </Input1>
               <Input1>
                 <Label1 sx={{ marginLeft: '0px !important' }}>مسولیت</Label1>
-                <Autocomplete
-                  disablePortal
-                  id='roleInput'
-                  options={roles}
-                  defaultValue={
-                    existingPerson?.role
-                      ? roles.find((p) => p?.id === existingPerson?.role?.id)
-                      : null
-                  }
-                  value={role}
-                  onChange={(event, newValue) => {
-                    setRole(newValue as any);
-                    setRoleError(false);
-                  }}
-                  onInputChange={(event, newInput) => {
-                    if (
-                      roles.length > 0 &&
-                      roles.some((r) => r.label === newInput)
-                    ) {
-                      setRole(roles.find((r) => r.label === newInput) as any);
-                      setRoleError(false);
+                <Stack direction='row' alignItems='center' spacing={1}>
+                  <Autocomplete
+                    disablePortal
+                    id='roleInput'
+                    options={rolesList}
+                    sx={{ flexGrow: 1 }}
+                    defaultValue={
+                      existingPerson?.role
+                        ? roles.find((p) => p?.id === existingPerson?.role?.id)
+                        : null
                     }
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      size='small'
-                      error={roleError}
-                      helperText={roleError && 'لطفا این فیلد را پر کنید'}
-                    />
-                  )}
-                />
+                    value={role}
+                    onChange={(event, newValue) => {
+                      setRole(newValue as any);
+                      setRoleError(false);
+                    }}
+                    onInputChange={(event, newInput) => {
+                      if (
+                        roles.length > 0 &&
+                        roles.some((r) => r.label === newInput)
+                      ) {
+                        setRole(roles.find((r) => r.label === newInput) as any);
+                        setRoleError(false);
+                      }
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        size='small'
+                        error={roleError}
+                        helperText={roleError && 'لطفا این فیلد را پر کنید'}
+                      />
+                    )}
+                  />
+                  <IconButton
+                    id='createPlaceButton'
+                    color='success'
+                    size='large'
+                    sx={{ p: 0, backgroundColor: 'whitesmoke' }}
+                    onClick={() => setNewRoleDialogIsOpened(true)}
+                  >
+                    <AddCircleOutlineRoundedIcon />
+                  </IconButton>
+                </Stack>
               </Input1>
             </Row1>
 
@@ -476,7 +499,7 @@ export default function newPerson({
             sx={{
               position: 'fixed',
               top: 72,
-              right: {xs: 10, md: 40, lg: 200, xl: 420,},
+              right: { xs: 10, md: 40, lg: 200, xl: 420 },
               zIndex: 40,
             }}
           >
@@ -535,6 +558,52 @@ export default function newPerson({
               }
               loading={loading}
               existingPlace={undefined}
+            />
+          </DialogContent>
+          <DialogActions sx={{ px: 5 }}></DialogActions>
+        </Dialog>
+        <Dialog
+          sx={{ zIndex: 7000 }}
+          open={newRoleDialogIsOpened}
+          onClose={() => setNewRoleDialogIsOpened(false)}
+        >
+          <DialogTitle sx={{ textAlign: 'center' }}>
+            <Stack
+              direction='row'
+              alignItems='center'
+              justifyContent={'space-between'}
+            >
+              <span style={{ inlineSize: '10%' }}>
+                <IconButton onClick={() => setNewRoleDialogIsOpened(false)}>
+                  <CloseRoundedIcon />
+                </IconButton>
+              </span>
+              <Typography
+                variant='h5'
+                component='h2'
+                sx={{ flexGrow: 1, textAlign: 'center' }}
+              >
+                نقش جدید
+              </Typography>
+              <span style={{ inlineSize: '10%' }}></span>
+            </Stack>
+          </DialogTitle>
+          <DialogContent sx={{ position: 'relative', p: '1px' }}>
+            <NewRole
+              onSubmit={async (
+                name: string,
+                permissions: Permissions,
+                edit: string
+              ) => {
+                const newRole = await createNew(name, permissions, edit);
+                if (newRole) {
+                  const r = { id: newRole?.id, label: newRole?.name };
+                 
+                  setNewRoleDialogIsOpened(false);
+                  setRolesList([...rolesList, r]);
+                  setRole(r);
+                }
+              }}
             />
           </DialogContent>
           <DialogActions sx={{ px: 5 }}></DialogActions>
