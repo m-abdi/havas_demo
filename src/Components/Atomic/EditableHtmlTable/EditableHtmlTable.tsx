@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { TableBody, TableContainer, TextField } from '@mui/material';
+import { Table, TableBody, TableContainer, TextField } from '@mui/material';
 
 import { memo } from 'react';
 import { toEnglishDigit } from '@/src/Logic/toEnglishDigit';
@@ -47,7 +47,7 @@ export default memo(function EditableHtmlTable({
 
   return (
     <TableContainer sx={{ maxInlineSize: '90vw' }}>
-      <table border={2}>
+      <Table border={2} sx={{"& td": {minInlineSize: 80}}} >
       <caption>کیبورد را در حالت انگلیسی قرار دهید</caption>
         <thead>
           <tr>
@@ -1411,7 +1411,7 @@ export default memo(function EditableHtmlTable({
             </td>
           </tr>
         </TableBody>
-      </table>
+      </Table>
     </TableContainer>
   );
 });

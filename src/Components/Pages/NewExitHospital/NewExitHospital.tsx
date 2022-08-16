@@ -45,6 +45,8 @@ const Input1 = styled('div', { name: 'Input1' })(() => ({
   flexDirection: 'column',
   margin: '1em 1em 0em 1em',
   flexWrap: 'nowrap',
+  maxInlineSize: '100%',
+  overflow: 'clip',
 }));
 
 // لیبل بالای تکست فیلد
@@ -70,6 +72,7 @@ const MenuProps = {
 const S1 = styled('div', { name: 'S1' })(() => ({
   display: 'flex',
   margin: 1,
+  overflow: "hidden",
   '& .MuiOutlinedInput-root': { flex: '1 0 155px' },
 }));
 
@@ -639,6 +642,7 @@ export default function NewExitHospital({
               onChange={handleChange}
               renderValue={(selected) => selected.join(', ')}
               MenuProps={MenuProps}
+              sx={{ maxInlineSize: '100% !important' }}
             >
               {columns.map((name) => (
                 <MenuItem key={name} value={name}>

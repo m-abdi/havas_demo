@@ -1,4 +1,4 @@
-import { TableBody, TableContainer, TextField } from '@mui/material';
+import { Table, TableBody, TableContainer, TextField } from '@mui/material';
 import { memo, useEffect } from 'react';
 
 import React from 'react';
@@ -83,7 +83,7 @@ export default function AggregatedTable({
 
   return (
     <TableContainer sx={{ maxInlineSize: '90vw' }}>
-      <table border={2} style={{ marginInline: '16px' }}>
+      <Table border={2} sx={{ marginInline: '16px', "& td": {minInlineSize: 90} }}>
         <thead>
           <tr>
             <th>نوع سیلندر</th>
@@ -865,7 +865,7 @@ export default function AggregatedTable({
             </td>
           </tr>
         </TableBody>
-      </table>
+      </Table>
     </TableContainer>
   );
 }

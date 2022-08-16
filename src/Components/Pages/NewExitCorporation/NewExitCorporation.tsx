@@ -45,6 +45,8 @@ const Input1 = styled('div', { name: 'Input1' })(() => ({
   flexDirection: 'column',
   margin: '1em 1em 0em 1em',
   flexWrap: 'nowrap',
+  maxInlineSize: "100%",
+  overflow: "clip"
 }));
 
 // لیبل بالای تکست فیلد
@@ -575,7 +577,7 @@ export default function ExitCorporation({
     <Container maxWidth='lg' sx={{ position: 'relative' }}>
       <Form1 onSubmit={handleSubmit(submitHandler)}>
         <ExitCorporationForm />
-        <Input1>
+        <Input1 >
           <Label1>مشاهده ستون های جدول</Label1>
           <S1>
             <Select
@@ -586,9 +588,13 @@ export default function ExitCorporation({
               onChange={handleChange}
               renderValue={(selected) => selected.join(', ')}
               MenuProps={MenuProps}
+              sx={{ maxInlineSize: '100% !important' }}
             >
               {columns.map((name) => (
-                <MenuItem key={name} value={name}>
+                <MenuItem
+                  key={name}
+                  value={name}
+                >
                   <Checkbox checked={selectedColumns.indexOf(name) > -1} />
                   <ListItemText primary={name} />
                 </MenuItem>
@@ -639,7 +645,7 @@ export default function ExitCorporation({
           sx={{
             position: 'fixed',
             top: 72,
-            right: "10vw",
+            right: '10vw',
           }}
         >
           <Button
