@@ -149,7 +149,7 @@ export default memo(function RolesTable({
                 style={{ borderLeft: '1px solid grey' }}
               ></colgroup>
               <colgroup
-                span={3}
+                span={4}
                 style={{ borderLeft: '1px solid grey' }}
               ></colgroup>
               <colgroup
@@ -210,7 +210,7 @@ export default memo(function RolesTable({
                     تگ ها
                   </TableCell>
                   <TableCell
-                    colSpan={3}
+                    colSpan={4}
                     scope='colgroup'
                     sx={{
                       textAlign: 'center',
@@ -324,10 +324,13 @@ export default memo(function RolesTable({
                     حذف
                   </TableCell>
                   <TableCell scope='col' sx={PermissionColumnStyle}>
+                    نماینده شرکت
+                  </TableCell>
+                  <TableCell scope='col' sx={PermissionColumnStyle}>
                     مشاهده
                   </TableCell>
                   <TableCell scope='col' sx={PermissionColumnStyle}>
-                    ایجاد/ویرایش
+                    ایجاد
                   </TableCell>
                   <TableCell scope='col' sx={PermissionColumnStyle}>
                     حذف
@@ -399,6 +402,9 @@ export default memo(function RolesTable({
                           <Skeleton height={42} variant='rectangular' />
                         </TableCell>
 
+                        <TableCell>
+                          <Skeleton height={42} variant='rectangular' />
+                        </TableCell>
                         <TableCell>
                           <Skeleton height={42} variant='rectangular' />
                         </TableCell>
@@ -574,6 +580,15 @@ export default memo(function RolesTable({
                           )}
                         </TableCell>
                         <TableCell sx={{ textAlign: 'center' }}>
+                          {row.createEnterDeliverExit ? (
+                            <DoneOutlineRoundedIcon
+                              sx={{ color: 'success.main' }}
+                            />
+                          ) : (
+                            <CloseRoundedIcon sx={{ color: 'error.main' }} />
+                          )}
+                        </TableCell>
+                        <TableCell sx={{ textAlign: 'center' }}>
                           {row.viewLicense ? (
                             <DoneOutlineRoundedIcon
                               sx={{ color: 'success.main' }}
@@ -685,9 +700,10 @@ export default memo(function RolesTable({
       </Box>
       <Box
         sx={{
-          position: 'absolute',
-          top: -68,
-          right: '35px',
+          position: 'fixed',
+          top: 72,
+          right: 40,
+          zIndex: 40,
         }}
       >
         <Button

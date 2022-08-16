@@ -748,9 +748,10 @@ export default memo(function Places({
         />
         <Box
           sx={{
-            position: 'absolute',
-            top: -68,
-            right: '35px',
+            position: 'fixed',
+            top: 72,
+            right: 40,
+            zIndex: 40,
           }}
         >
           <Button

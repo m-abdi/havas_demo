@@ -50,6 +50,7 @@ export default memo(function NewRole({
   const [editRole, setEditRole] = useState(false);
   const [deleteRole, setDeleteRole] = useState(false);
   const [editId, setEditId] = useState("")
+  const [createEnterDeliverExit, setCreateEnterDeliverExit] = useState(false)
   // fill input field with existing role data
   useEffect(() => {
     if (existingRoleData) {
@@ -79,16 +80,13 @@ export default memo(function NewRole({
       setDeleteLicense(existingRoleData.deleteLicense as boolean);
       setDeleteTag(existingRoleData.deleteTag as boolean);
       setDeleteRole(existingRoleData.deleteRole as boolean);
+      setCreateEnterDeliverExit(existingRoleData.createEnterDeliverExit as boolean)
     }
   }, [existingRoleData]);
 
   //
   return (
-    <Stack
-      spacing={2}
-      divider={<Divider flexItem />}
-      alignItems='center'
-    >
+    <Stack spacing={2} divider={<Divider flexItem />} alignItems='center'>
       <TextField
         name='name'
         label='نام نقش مورد نظر را وارد کنید'
@@ -337,6 +335,18 @@ export default memo(function NewRole({
               <FormControlLabel
                 control={
                   <Checkbox
+                    color='success'
+                    checked={createEnterDeliverExit}
+                    onChange={() =>
+                      setCreateEnterDeliverExit(!createEnterDeliverExit)
+                    }
+                  />
+                }
+                label='نماینده شرکت(ثبت مجوز ورود / تحویل حواله خروجی)'
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
                     color='secondary'
                     checked={viewLicense}
                     onChange={() => setViewLicense(!viewLicense)}
@@ -355,7 +365,7 @@ export default memo(function NewRole({
                     }}
                   />
                 }
-                label='درخواست/ویرایش مجوز'
+                label='درخواست مجوز'
               />
               {/* <FormControlLabel
                 control={
@@ -468,6 +478,7 @@ export default memo(function NewRole({
               createRole,
               editRole,
               deleteRole,
+              createEnterDeliverExit,
             },
             editId
           )

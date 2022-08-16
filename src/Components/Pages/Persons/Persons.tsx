@@ -704,9 +704,10 @@ export default memo(function Persons({
         />
         <Box
           sx={{
-            position: 'absolute',
-            top: -68,
-            right: '35px',
+            position: 'fixed',
+            top: 72,
+            right: 40,
+            zIndex: 40,
           }}
         >
           <Button
@@ -715,7 +716,8 @@ export default memo(function Persons({
             color='error'
             variant='contained'
             disabled={
-              selectedFlatRows.length === 0 || !session?.user?.role?.deletePerson
+              selectedFlatRows.length === 0 ||
+              !session?.user?.role?.deletePerson
                 ? true
                 : false
             }

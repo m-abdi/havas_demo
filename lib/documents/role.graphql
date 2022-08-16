@@ -37,6 +37,7 @@ query roles($limit: Int!, $offset: Int!) {
     createRole
     editRole
     deleteRole
+    createEnterDeliverExit
   }
   hasNextRole(limit: $limit, offset: $offset)
   countAllRoles(limit: $limit, offset: $offset)
@@ -74,6 +75,7 @@ query specificRole($roleId: ID!) {
     createRole
     editRole
     deleteRole
+    createEnterDeliverExit
   }
 }
 

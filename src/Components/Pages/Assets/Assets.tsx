@@ -580,7 +580,6 @@ export default memo(function Assets({
                     <Skeleton width={148} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
-                   
                   </Stack>
                 ))}
               </Stack>
@@ -669,9 +668,10 @@ export default memo(function Assets({
         />
         <Box
           sx={{
-            position: 'absolute',
-            top: -68,
-            right: '35px',
+            position: 'fixed',
+            top: 72,
+            right: 40,
+            zIndex: 40,
           }}
         >
           <Button

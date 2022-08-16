@@ -121,7 +121,7 @@ model Asset {
   corporation        Place?    @relation("corporationPlace", fields: [corporationId], references: [id])
   corporationId      String?
   deliverer          String?
-  status             String?  @default("موجود در بیمارستان")
+  status             String?   @default("موجود در بیمارستان")
 }
 
 model Tag {
@@ -152,38 +152,39 @@ model License {
 }
 
 model Role {
-  id              String   @id @default(uuid()) @map("_id")
-  name            String?  @unique
-  viewPerson      Boolean  @default(false)
-  createPerson    Boolean
-  editPerson      Boolean
-  deletePerson    Boolean
-  viewPlace       Boolean  @default(false)
-  createPlace     Boolean
-  editPlace       Boolean
-  deletePlace     Boolean
-  viewEquipment   Boolean  @default(false)
-  createEquipment Boolean
-  editEquipment   Boolean
-  deleteEquipment Boolean
-  viewAsset       Boolean  @default(false)
-  createAsset     Boolean
-  editAsset       Boolean
-  deleteAsset     Boolean
-  viewLicense     Boolean  @default(false)
-  createLicense   Boolean
-  editLicense     Boolean
-  deleteLicense   Boolean
-  viewTag         Boolean  @default(false)
-  createTag       Boolean
-  editTag         Boolean
-  deleteTag       Boolean
-  viewRole        Boolean  @default(false)
-  createRole      Boolean
-  editRole        Boolean
-  deleteRole      Boolean
-  Person          Person[]
-  createdAt       DateTime @default(now())
+  id                      String   @id @default(uuid()) @map("_id")
+  name                    String?  @unique
+  viewPerson              Boolean  @default(false)
+  createPerson            Boolean
+  editPerson              Boolean
+  deletePerson            Boolean
+  viewPlace               Boolean  @default(false)
+  createPlace             Boolean
+  editPlace               Boolean
+  deletePlace             Boolean
+  viewEquipment           Boolean  @default(false)
+  createEquipment         Boolean
+  editEquipment           Boolean
+  deleteEquipment         Boolean
+  viewAsset               Boolean  @default(false)
+  createAsset             Boolean
+  editAsset               Boolean
+  deleteAsset             Boolean
+  viewLicense             Boolean  @default(false)
+  createLicense           Boolean
+  editLicense             Boolean
+  deleteLicense           Boolean
+  viewTag                 Boolean  @default(false)
+  createTag               Boolean
+  editTag                 Boolean
+  deleteTag               Boolean
+  viewRole                Boolean  @default(false)
+  createRole              Boolean
+  editRole                Boolean
+  deleteRole              Boolean
+  createEnterDeliverExit Boolean  @default(false)
+  Person                  Person[]
+  createdAt               DateTime @default(now())
 }
 
 // model Level {

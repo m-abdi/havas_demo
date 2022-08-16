@@ -29,6 +29,7 @@ type RoleType = {
   viewPlace?: boolean;
   viewRole?: boolean;
   viewTag?: boolean;
+  createEnterDeliverExit? : boolean;
 };
 
 

@@ -125,6 +125,7 @@ const typeDefs = /* GraphQL */ `
     createRole: Boolean!
     editRole: Boolean!
     deleteRole: Boolean!
+    createEnterDeliverExit: Boolean!
   }
   type Role {
     id: ID!
@@ -158,6 +159,7 @@ const typeDefs = /* GraphQL */ `
     editRole: Boolean
     deleteRole: Boolean
     createdAt: String
+    createEnterDeliverExit: Boolean
   }
   # type Level {
   #   stageID     :           ID!
