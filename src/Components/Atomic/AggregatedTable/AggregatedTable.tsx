@@ -83,7 +83,10 @@ export default function AggregatedTable({
 
   return (
     <TableContainer sx={{ maxInlineSize: '90vw' }}>
-      <Table border={2} sx={{ marginInline: '16px', "& td": {minInlineSize: 90} }}>
+      <Table
+        border={2}
+        sx={{ marginInline: '16px', '& td': { minInlineSize: 90 } }}
+      >
         <thead>
           <tr>
             <th>نوع سیلندر</th>
@@ -228,12 +231,14 @@ export default function AggregatedTable({
                 id='oxygen_50l'
                 disabled={!editable}
                 defaultValue={assets?.oxygen_50l}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('oxygen_50l', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
+                  min: '1',
                   ...register?.('oxygen_50l', {
                     value: assets?.oxygen_50l,
                   }),
@@ -257,13 +262,15 @@ export default function AggregatedTable({
                 disabled={!editable}
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='bihoshi_50l'
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('bihoshi_50l', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 defaultValue={assets?.bihoshi_50l}
                 inputProps={{
+                  min: '1',
                   ...register?.('bihoshi_50l', {
                     value: assets?.bihoshi_50l,
                   }),
@@ -287,13 +294,15 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='shaft_50l'
                 disabled={!editable}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('shaft_50l', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 defaultValue={assets?.shaft_50l}
                 inputProps={{
+                  min: '1',
                   ...register?.('shaft_50l', {
                     value: assets?.shaft_50l,
                   }),
@@ -317,13 +326,15 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='controlValve_50l'
                 disabled={!editable}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('controlValve_50l', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 defaultValue={assets?.controlValve_50l}
                 inputProps={{
+                  min: '1',
                   ...register?.('controlValve_50l', {
                     value: assets?.controlValve_50l,
                   }),
@@ -345,13 +356,15 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='co2_50l'
                 disabled={!editable}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('co2_50l', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 defaultValue={assets?.co2_50l}
                 inputProps={{
+                  min: '1',
                   ...register?.('co2_50l', {
                     value: assets?.co2_50l,
                   }),
@@ -373,13 +386,15 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='argon_50l'
                 disabled={!editable}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('argon_50l', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 defaultValue={assets?.argon_50l}
                 inputProps={{
+                  min: '1',
                   ...register?.('argon_50l', {
                     value: assets?.argon_50l,
                   }),
@@ -401,13 +416,15 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='azete_50l'
                 disabled={!editable}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('azete_50l', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 defaultValue={assets?.azete_50l}
                 inputProps={{
+                  min: '1',
                   ...register?.('azete_50l', {
                     value: assets?.azete_50l,
                   }),
@@ -431,13 +448,15 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='dryAir_50l'
                 disabled={!editable}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('dryAir_50l', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 defaultValue={assets?.dryAir_50l}
                 inputProps={{
+                  min: '1',
                   ...register?.('dryAir_50l', {
                     value: assets?.dryAir_50l,
                   }),
@@ -461,13 +480,15 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='entonox_50l'
                 disabled={!editable}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('entonox_50l', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 defaultValue={assets?.entonox_50l}
                 inputProps={{
+                  min: '1',
                   ...register?.('entonox_50l', {
                     value: assets?.entonox_50l,
                   }),
@@ -491,13 +512,15 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='acetylene_50l'
                 disabled={!editable}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('acetylene_50l', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 defaultValue={assets?.acetylene_50l}
                 inputProps={{
+                  min: '1',
                   ...register?.('acetylene_50l', {
                     value: assets?.acetylene_50l,
                   }),
@@ -521,13 +544,15 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='lpg_50l'
                 disabled={!editable}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('lpg_50l', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 defaultValue={assets?.lpg_50l}
                 inputProps={{
+                  min: '1',
                   ...register?.('lpg_50l', {
                     value: assets?.lpg_50l,
                   }),
@@ -556,13 +581,15 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='oxygen_40l'
                 disabled={!editable}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('oxygen_40l', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 defaultValue={assets?.oxygen_40l}
                 inputProps={{
+                  min: '1',
                   ...register?.('oxygen_40l', {
                     value: assets?.oxygen_40l,
                   }),
@@ -586,13 +613,15 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='bihoshi_40l'
                 disabled={!editable}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('bihoshi_40l', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 defaultValue={assets?.bihoshi_40l}
                 inputProps={{
+                  min: '1',
                   ...register?.('bihoshi_40l', {
                     value: assets?.bihoshi_40l,
                   }),
@@ -616,13 +645,15 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='shaft_40l'
                 disabled={!editable}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('shaft_40l', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 defaultValue={assets?.shaft_40l}
                 inputProps={{
+                  min: '1',
                   ...register?.('shaft_40l', {
                     value: assets?.shaft_40l,
                   }),
@@ -646,13 +677,15 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='controlValve_40l'
                 disabled={!editable}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('controlValve_40l', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 defaultValue={assets?.controlValve_40l}
                 inputProps={{
+                  min: '1',
                   ...register?.('controlValve_40l', {
                     value: assets?.controlValve_40l,
                   }),
@@ -674,13 +707,15 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='co2_40l'
                 disabled={!editable}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('co2_40l', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 defaultValue={assets?.co2_40l}
                 inputProps={{
+                  min: '1',
                   ...register?.('co2_40l', {
                     value: assets?.co2_40l,
                   }),
@@ -702,13 +737,15 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='argon_40l'
                 disabled={!editable}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('argon_40l', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 defaultValue={assets?.argon_40l}
                 inputProps={{
+                  min: '1',
                   ...register?.('argon_40l', {
                     value: assets?.argon_40l,
                   }),
@@ -730,13 +767,15 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='azete_40l'
                 disabled={!editable}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('azete_40l', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 defaultValue={assets?.azete_40l}
                 inputProps={{
+                  min: '1',
                   ...register?.('azete_40l', {
                     value: assets?.azete_40l,
                   }),
@@ -760,13 +799,15 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='dryAir_40l'
                 disabled={!editable}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('dryAir_40l', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 defaultValue={assets?.dryAir_40l}
                 inputProps={{
+                  min: '1',
                   ...register?.('dryAir_40l', {
                     value: assets?.dryAir_40l,
                   }),
@@ -790,13 +831,15 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='entonox_40l'
                 disabled={!editable}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('entonox_40l', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 defaultValue={assets?.entonox_40l}
                 inputProps={{
+                  min: '1',
                   ...register?.('entonox_40l', {
                     value: assets?.entonox_40l,
                   }),
@@ -820,13 +863,15 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='acetylene_40l'
                 disabled={!editable}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('acetylene_40l', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 defaultValue={assets?.acetylene_40l}
                 inputProps={{
+                  min: '1',
                   ...register?.('acetylene_40l', {
                     value: assets?.acetylene_40l,
                   }),
@@ -850,13 +895,15 @@ export default function AggregatedTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='lpg_40l'
                 disabled={!editable}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('lpg_40l', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 defaultValue={assets?.lpg_40l}
                 inputProps={{
+                  min: '1',
                   ...register?.('lpg_40l', {
                     value: assets?.lpg_40l,
                   }),

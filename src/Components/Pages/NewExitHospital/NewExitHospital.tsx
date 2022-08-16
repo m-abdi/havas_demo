@@ -682,6 +682,7 @@ export default function NewExitHospital({
               selectedColumns={selectedColumns}
               register={register}
               existingEnterWorkflow={existingWorkflow}
+              setValue={setValue}
             />
           ) : (
             <AggregatedTable

@@ -47,8 +47,8 @@ export default memo(function EditableHtmlTable({
 
   return (
     <TableContainer sx={{ maxInlineSize: '90vw' }}>
-      <Table border={2} sx={{"& td": {minInlineSize: 80}}} >
-      <caption>کیبورد را در حالت انگلیسی قرار دهید</caption>
+      <Table border={2} sx={{ '& td': { minInlineSize: 80 } }}>
+        <caption>کیبورد را در حالت انگلیسی قرار دهید</caption>
         <thead>
           <tr>
             <th>نوع سیلندر</th>
@@ -195,9 +195,10 @@ export default memo(function EditableHtmlTable({
                 type='number'
                 id='oxygen_50l_factory'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('oxygen_50l_factory', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -224,9 +225,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='bihoshi_50l_factory'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('bihoshi_50l_factory', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -252,9 +254,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='shaft_50l_factory'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('shaft_50l_factory', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -280,10 +283,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='controlValve_50l_factory'
                 disabled={editable ? false : true}
-
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('controlValve_50l_factory', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -307,9 +310,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='co2_50l_factory'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('co2_50l_factory', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -333,9 +337,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='argon_50l_factory'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('argon_50l_factory', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -359,9 +364,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='azete_50l_factory'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('azete_50l_factory', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -387,9 +393,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='dryAir_50l_factory'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('dryAir_50l_factory', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -415,9 +422,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='entonox_50l_factory'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('entonox_50l_factory', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -443,9 +451,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='acetylene_50l_factory'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('acetylene_50l_factory', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -471,9 +480,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='lpg_50l_factory'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('lpg_50l_factory', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -504,9 +514,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='oxygen_50l_customer'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('oxygen_50l_customer', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -532,9 +543,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='bihoshi_50l_customer'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('bihoshi_50l_customer', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -560,9 +572,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='shaft_50l_customer'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('shaft_50l_customer', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -588,9 +601,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='controlValve_50l_customer'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('controlValve_50l_customer', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -614,9 +628,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='co2_50l_customer'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('co2_50l_customer', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -640,9 +655,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='argon_50l_customer'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('argon_50l_customer', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -666,9 +682,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='azete_50l_customer'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('azete_50l_customer', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -694,9 +711,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='dryAir_50l_customer'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('dryAir_50l_customer', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -722,9 +740,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='entonox_50l_customer'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('entonox_50l_customer', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -750,9 +769,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='acetylene_50l_customer'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('acetylene_50l_customer', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -778,9 +798,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='lpg_50l_customer'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('lpg_50l_customer', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -815,9 +836,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='oxygen_40l_factory'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('oxygen_40l_factory', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -843,9 +865,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='bihoshi_40l_factory'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('bihoshi_40l_factory', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -871,9 +894,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='shaft_40l_factory'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('shaft_40l_factory', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -899,9 +923,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='controlValve_40l_factory'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('controlValve_40l_factory', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -925,9 +950,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='co2_40l_factory'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('co2_40l_factory', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -951,9 +977,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='argon_40l_factory'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('argon_40l_factory', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -977,9 +1004,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='azete_40l_factory'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('azete_40l_factory', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -1005,9 +1033,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='dryAir_40l_factory'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('dryAir_40l_factory', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -1033,9 +1062,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='entonox_40l_factory'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('entonox_40l_factory', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -1061,9 +1091,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='acetylene_40l_factory'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('acetylene_40l_factory', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -1089,9 +1120,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='lpg_40l_factory'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('lpg_40l_factory', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -1122,9 +1154,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='oxygen_40l_customer'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('oxygen_40l_customer', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -1150,9 +1183,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='bihoshi_40l_customer'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('bihoshi_40l_customer', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -1178,9 +1212,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='shaft_40l_customer'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('shaft_40l_customer', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -1206,9 +1241,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='controlValve_40l_customer'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('controlValve_40l_customer', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -1232,9 +1268,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='co2_40l_customer'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('co2_40l_customer', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -1258,9 +1295,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='argon_40l_customer'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('argon_40l_customer', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -1284,9 +1322,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='azete_40l_customer'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('azete_40l_customer', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -1312,9 +1351,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='dryAir_40l_customer'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('dryAir_40l_customer', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -1340,9 +1380,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='entonox_40l_customer'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('entonox_40l_customer', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -1368,9 +1409,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='acetylene_40l_customer'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('acetylene_40l_customer', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
@@ -1396,9 +1438,10 @@ export default memo(function EditableHtmlTable({
                 sx={{ width: '100%', textAlign: 'center' }}
                 id='lpg_40l_customer'
                 disabled={editable ? false : true}
-                onChange={(e) => {
-                  if (parseInt(e.target.value) < 1) {
-                    setValue?.('lpg_40l_customer', null);
+                onInput={(e: any) => {
+                  if (parseInt(e.target.value) < 0) {
+                    alert('مقادیر منفی مجاز نیست!');
+                    setValue(e.target.id, null);
                   }
                 }}
                 inputProps={{
