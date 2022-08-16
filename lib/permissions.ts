@@ -183,3 +183,12 @@ export async function canDeletePlaces(session: Session) {
   });
   return user?.role.deletePlace;
 }
+export async function canCreateEnterDeliverExit(session: Session) {
+  const user = await prisma.person.findFirst({
+    where: {
+      id: session.user.id,
+    },
+    include: { role: true },
+  });
+  return user?.role.createEnterDeliverExit;
+}

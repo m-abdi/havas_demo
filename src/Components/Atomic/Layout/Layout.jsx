@@ -281,7 +281,7 @@ function Layout({ children, pageName }) {
           text: 'تاریخچه گردش کارها',
           icon: <SearchRoundedIcon />,
           path: '/users/workflows',
-          roleName: 'viewLicense',
+          roleName: 'deleteLicense',
         },
         {
           text: 'ورود',
@@ -294,7 +294,7 @@ function Layout({ children, pageName }) {
           text: 'ثبت خروج از شرکت',
           icon: <AddCircleOutlineOutlined />,
           path: '/users/newExitCorporation',
-          roleName: 'createLicense',
+          roleName: 'createEnterDeliverExit',
           category: 'ورود',
         },
 
@@ -310,7 +310,7 @@ function Layout({ children, pageName }) {
           text: 'تایید تحویل به شرکت',
           icon: <AddCircleOutlineOutlined />,
           path: '/users/confirmReceiptByCorporation',
-          roleName: 'createLicense',
+          roleName: 'createEnterDeliverExit',
           category: 'خروج',
         },
       ],

@@ -15,6 +15,7 @@ import {
 } from './resolvers-types';
 import {
   canCreateAsset,
+  canCreateEnterDeliverExit,
   canCreateEquipment,
   canCreateLicense,
   canCreatePerson,
@@ -980,7 +981,7 @@ const resolvers: Resolvers = {
       // check authentication and permission
       const { req } = _context;
       const session = await getSession({ req });
-      if (!session || !(await canCreateEquipment(session))) {
+      if (!session || !(await canCreateEnterDeliverExit(session))) {
         throw new GraphQLYogaError('Unauthorized');
       }
       // // new assets that must be created
@@ -1394,7 +1395,7 @@ const resolvers: Resolvers = {
       // check authentication and permission
       const { req } = _context;
       const session = await getSession({ req });
-      if (!session || !(await canCreateLicense(session))) {
+      if (!session || !(await canCreateEnterDeliverExit(session))) {
         throw new GraphQLYogaError('Unauthorized');
       }
       const existingWorkflow = (await prisma.workflow.findUnique({

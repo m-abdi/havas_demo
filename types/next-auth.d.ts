@@ -43,6 +43,7 @@ declare module 'next-auth' {
         readonly createRole: boolean;
         readonly editRole: boolean;
         readonly deleteRole: boolean;
+        readonly canCreateEnterDeliverExit: boolean;
       };
     };
   }
