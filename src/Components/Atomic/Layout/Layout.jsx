@@ -433,7 +433,7 @@ function Layout({ children, pageName }) {
             </AppBar2>
 
             {/* اطلاعات صفحه */}
-            <PageContent sx={{ inlineSize: 'inherit' }}>{children}</PageContent>
+            <PageContent sx={{ inlineSize: 'inherit', overflow: "auto" }}>{children}</PageContent>
           </MainContent>
         ) : (
           <MainContentMobile drawOpen={drawOpen}>
@@ -482,7 +482,7 @@ function Layout({ children, pageName }) {
             </AppBar2>
 
             {/* اطلاعات صفحه */}
-            <PageContent sx={{ inlineSize: 'inherit' }}>{children}</PageContent>
+            <PageContent sx={{ inlineSize: 'inherit', overflow: "auto" }}>{children}</PageContent>
           </MainContentMobile>
         )}
       </ClickAwayListener>

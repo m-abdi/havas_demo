@@ -36,6 +36,7 @@ const Row1 = styled('div', { name: 'Row1' })(() => ({
   display: 'flex',
   marginBottom: '0.6em',
   alignItems: 'center',
+  maxInlineSize: "100%"
 }));
 
 // دربرگیرنده لیبل و تکست فیلد

@@ -82,7 +82,7 @@ export default function AggregatedTable({
   }, [assets]);
 
   return (
-    <TableContainer sx={{ maxInlineSize: '90vw' }}>
+    <TableContainer sx={{ maxInlineSize: '100%' }}>
       <Table
         border={2}
         sx={{ marginInline: '16px', '& td': { minInlineSize: 90 } }}

@@ -46,7 +46,7 @@ export default memo(function EditableHtmlTable({
   }, [assets]);
 
   return (
-    <TableContainer sx={{ maxInlineSize: '90vw' }}>
+    <TableContainer sx={{ maxInlineSize: '100%' }}>
       <Table border={2} sx={{ '& td': { minInlineSize: 80 } }}>
         <caption>کیبورد را در حالت انگلیسی قرار دهید</caption>
         <thead>
