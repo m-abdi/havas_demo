@@ -1024,7 +1024,7 @@ export default memo(function ExitHospitals({
           open={rowOptionsOpen}
           onClose={handleRowOptionsClose}
         >
-          {session?.user?.role?.['deleteLicense'] &&
+          {session?.user?.role?.name === 'مدیریت' &&
           !choosedRow?.passedStages?.[1] ? (
             <MenuItem>
               <Button

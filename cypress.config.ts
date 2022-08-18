@@ -1,5 +1,6 @@
 import { defineConfig } from 'cypress';
 import prisma from './prisma/client';
+import sendToMQTTBroker from './mqttClientServer';
 export default defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
@@ -23,6 +24,15 @@ export default defineConfig({
           const equipment = prisma.equipment
             .delete({
               where: { terminologyCode },
+            })
+            .then((p) => p)
+            .catch((e) => null);
+          return null;
+        },
+        deleteAsset: (tag: string) => {
+          const equipment = prisma.tag
+            .delete({
+              where: { id: tag },
             })
             .then((p) => p)
             .catch((e) => null);
@@ -96,6 +106,27 @@ export default defineConfig({
               }
             });
         },
+        checkAsset: (info: any) => {
+          return prisma.asset
+            .findFirst({
+              where: {
+               tag: {id: info?.tag},
+               equipment: {terminologyCode: info?.equipment},
+               place: {name: info?.place},
+              },
+            })
+            .then((r) => {
+              if (r) {
+                return r;
+              } else {
+                return undefined;
+              }
+            });
+        },
+        sendToMQTTBroker: (message: string) =>{
+          sendToMQTTBroker(message);
+          return null
+        }
       });
     },
     baseUrl: 'http://localhost:3000',

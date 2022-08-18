@@ -38,9 +38,11 @@ const newTag: NextPage = () => {
   // states
   const [existingAsset, setExistingAsset] = useState(true);
   // hooks
+  const router = useRouter()
   // mqtt hook
   const { mqttMessage, mqttStatus } = useMQTT();
   // data hooks
+
   const {
     equipmentsList: equipments,
     equipmentsListLoading: equipmentsLoading,
@@ -84,27 +86,6 @@ const newTag: NextPage = () => {
             alignItems: 'center',
           }}
         >
-          <Stack
-            direction={'row'}
-            spacing={1}
-            alignItems='center'
-            sx={{ mx: 'auto' }}
-          >
-            <Typography>موجودی ثبت شده</Typography>
-            <Switch
-              id='existingAssetMode'
-              checked={existingAsset}
-              color='success'
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-              onChange={(e) => {
-                e.stopPropagation();
-                setExistingAsset(!existingAsset);
-              }}
-            />
-            <Typography>موجودی جدید</Typography>
-          </Stack>
           <NewTag
             equipmentsLoading={equipmentsLoading}
             placesLoading={placesLoading}
@@ -116,9 +97,11 @@ const newTag: NextPage = () => {
             mqttStatus={mqttStatus as any}
             existingTag
             modal={false}
-            newAsset={existingAsset}
             createTagHandler={async (tags: NewTagType[]) => {
               const resp = await createTagHandler(tags);
+              if (resp) {
+                router.push('/users/tags');
+              }
             }}
           />
         </Container>

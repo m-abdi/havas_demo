@@ -117,7 +117,7 @@ export default function exitWarehouseRFID() {
         alignItems={'center'}
         justifyContent='space-around'
       >
-        {allApprovedExitWorkflows ? (
+        {allApprovedExitWorkflows && !existingWorkflowQuery ? (
           <Autocomplete
             disablePortal
             id='allConfirmedHavaleh'
@@ -198,7 +198,6 @@ export default function exitWarehouseRFID() {
                       (existingWorkflow?.passedStages?.[1]?.havaleh?.assets ??
                         existingWorkflow?.passedStages?.[0]?.havaleh?.assets)
               );
-             
             }}
             createTagHandler={createTagHandler}
           />

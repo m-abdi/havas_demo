@@ -191,7 +191,7 @@ export default function EnterWarehouseRFID({
             places={places}
             mqttMessage={mqttMessage}
             mqttStatus={mqttStatus}
-            newAsset={true}
+            modal={true}
             createTagHandler={async (tags: NewTagType[]) => {
               const resp = await createTagHandler(tags);
               if (resp) {
@@ -203,9 +203,10 @@ export default function EnterWarehouseRFID({
       </Dialog>
       <Box
         sx={{
-          position: 'absolute',
-          top: -110,
-          right: '35px',
+          position: 'fixed',
+          top: 72,
+          right: 30,
+          zIndex: 40,
         }}
       >
         <Button

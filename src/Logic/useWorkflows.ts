@@ -447,7 +447,7 @@ export default function useWorkflows(
             setSnackbarMessage,
             setSnackbarOpen
           );
-          router.push('/users/assetEnterWorkflowsTables');
+          router.push('/users/dashboard');
         } else {
           useNotification(
             'error',

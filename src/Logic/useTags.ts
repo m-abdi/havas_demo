@@ -93,7 +93,6 @@ export default function useTags(
           setSnackbarOpen
         );
         return true
-        // router.push('/users/tags');
       } else {
         useNotification(
           'error',

@@ -40,7 +40,6 @@ export const NewAsset = Template.bind({});
 NewAsset.args = {
   mqttStatus: 'CONNECTED',
   mqttMessage: '',
-  newAsset: true,
   places: [{id: "23423", label: "انبار"}],
   equipments: [{id: "435", label: "تجهیز"}],
   createTagHandler:async(tags:any)=>{console.log(tags);

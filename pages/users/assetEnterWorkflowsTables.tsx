@@ -11,7 +11,7 @@ import SentToCorporations from './sentToCorporations';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
-const pageName = 'جداول حواله های خروجی';
+const pageName = 'جداول حواله های ورودی';
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;

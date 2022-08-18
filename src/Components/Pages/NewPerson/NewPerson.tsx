@@ -14,15 +14,11 @@ import {
   styled,
 } from '@mui/material';
 import React, {
-  memo,
-  useCallback,
-  useContext,
   useEffect,
   useMemo,
   useState,
 } from 'react';
 
-import AddCircleIcon from '@mui/icons-material/AddCircle';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { Button } from '../../Atomic/Button';
@@ -32,13 +28,12 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import HomeIcon from '@mui/icons-material/Home';
 import Loader from '../../Atomic/Loader';
 import NewPlace from '../NewPlace';
+import { NewRole } from '../NewRole';
+import { Permissions } from 'lib/resolvers-types';
 import { toEnglishDigit } from '../../../Logic/toEnglishDigit';
 import { useForm } from 'react-hook-form';
+import useRoles from '../../../Logic/useRoles';
 import { useRouter } from 'next/router';
-import { NewRole } from '../NewRole';
-import useRoles from '@/src/Logic/useRoles';
-import { Permissions } from 'lib/resolvers-types';
-import { flushSync } from 'react-dom';
 
 const pageName = 'شخص جدید';
 const Form1 = styled('form', { name: 'form1' })(({ theme }) => ({
@@ -106,14 +101,14 @@ export default function newPerson({
   createNewPlaceHandler,
   createNewCategoryHandler,
   deletePlacesHandler,
-  fetchMorePlacesAndRoles,
+
 }: {
   loading: boolean;
   sending: boolean;
   allPlaces: any[];
   roles: any[];
   places: any;
-  fetchMorePlacesAndRoles: any;
+
   createNewPersonHandler: (
     id: string,
     firstNameAndLastName: string,

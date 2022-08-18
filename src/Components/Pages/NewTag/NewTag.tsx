@@ -4,6 +4,7 @@ import {
   IconButton,
   Select,
   Stack,
+  Switch,
   TextField,
 } from '@mui/material';
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -24,19 +25,16 @@ import Typography from '@mui/material/Typography';
 export default memo(function NewTag({
   mqttMessage,
   mqttStatus,
-  newAsset = false,
   equipmentsLoading,
-
   places,
   equipments,
   assetIds = [],
   existingTag,
   createTagHandler,
-  modal = true,
+  modal = false,
 }: {
   mqttMessage: string;
   mqttStatus: 'CONNECTING' | 'CONNECTED' | 'DISCONNECTED';
-  newAsset: boolean;
   equipmentsLoading?: boolean;
   placesLoading?: boolean;
   sending: boolean;
@@ -50,19 +48,20 @@ export default memo(function NewTag({
   // states
   const [assetId, setAssetId] = useState<{ id: string; label: string }>();
   const [assetIdError, setAssetIdError] = useState(false);
+  const [newAsset, setNewAsset] = useState(true);
   const [tags, setTags] = useState<NewTagType[]>(
     newAsset
       ? [{ tagId: '', newAsset: { equipmentId: '', placeId: '' } }]
       : [{ tagId: '', assetId: '' }]
   );
   const [tagError, setTagError] = useState(false);
-  useEffect(() => {
-    if (newAsset) {
-      setTags([{ tagId: '', newAsset: { equipmentId: '', placeId: '' } }]);
-    } else {
-      setTags([{ tagId: '', assetId: '' }]);
-    }
-  }, [newAsset]);
+  // useEffect(() => {
+  //   if (newAsset) {
+  //     setTags([{ tagId: '', newAsset: { equipmentId: '', placeId: '' } }]);
+  //   } else {
+  //     setTags([{ tagId: '', assetId: '' }]);
+  //   }
+  // }, [newAsset]);
 
   useEffect(() => {
     if (mqttMessage && (tags?.length === 0 || tags?.[0].tagId.length === 0)) {
@@ -97,6 +96,27 @@ export default memo(function NewTag({
   }
   return (
     <Container maxWidth='sm' sx={{ position: 'relative', p: 1 }}>
+      <Stack
+        direction={'row'}
+        spacing={1}
+        justifyContent='center'
+        alignItems='center'
+      >
+        <Typography>موجودی ثبت شده</Typography>
+        <Switch
+          id='existingAssetMode'
+          checked={newAsset}
+          color='success'
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          onChange={(e) => {
+            e.stopPropagation();
+            setNewAsset(!newAsset);
+          }}
+        />
+        <Typography>موجودی جدید</Typography>
+      </Stack>
       <Typography
         variant='h4'
         component='h1'
@@ -257,7 +277,8 @@ export default memo(function NewTag({
       ))}
       <Box
         sx={{
-          position: 'fixed',
+          position: modal ? 'static' : 'fixed',
+          
           top: 72,
           right: 'calc(110px + 20px)',
           zIndex: 40,

@@ -28,6 +28,6 @@
     "graphql.d.ts",
     "types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx", "src/Components/EquipmentOverview/.stories.tsx",
+    "**/*.tsx", "src/Components/EquipmentOverview/.stories.tsx", "mqttServer.js",
   ]
 }

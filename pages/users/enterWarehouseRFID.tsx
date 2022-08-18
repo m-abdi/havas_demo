@@ -114,7 +114,7 @@ export default function enterWarehouseRFID() {
         alignItems={'center'}
         justifyContent='space-around'
       >
-        {confirmedEnterWorkflows ? (
+        {confirmedEnterWorkflows && !existingWorkflowQuery ? (
           <Autocomplete
             disablePortal
             id='allConfirmedHavaleh'
@@ -195,7 +195,6 @@ export default function enterWarehouseRFID() {
                       (existingWorkflow?.passedStages?.[1]?.havaleh?.assets ??
                         existingWorkflow?.passedStages?.[0]?.havaleh?.assets)
               );
-              
             }}
             createTagHandler={createTagHandler}
           />

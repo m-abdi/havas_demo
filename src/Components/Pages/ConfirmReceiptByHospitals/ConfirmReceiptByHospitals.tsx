@@ -49,6 +49,7 @@ import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownR
 import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import { Satellite } from '@mui/icons-material';
+import SensorsRoundedIcon from '@mui/icons-material/SensorsRounded';
 import { Session } from 'next-auth';
 import { Workflow } from '../../../../lib/resolvers-types';
 import { flushSync } from 'react-dom';
@@ -891,31 +892,32 @@ export default memo(function ConfirmReceiptByHospitals({
           />
         </DialogContent>
       </Dialog>
-      {/* {session?.user?.role?.editPerson ? (
+      {session?.user?.role?.createLicense ? (
         <Menu
           anchorEl={rowOptionsAnchorElement}
           open={rowOptionsOpen}
           onClose={handleRowOptionsClose}
         >
-          {session?.user?.role?.['editPerson'] ? (
+          {session?.user?.role?.['createLicense'] &&
+          choosedRow?.passedStages?.[1] ? (
             <MenuItem>
               <Button
-                id={choosedRow?.terminologyCode + '-edit'}
-                startIcon={<EditRoundedIcon />}
+                id={choosedRow?.workflowNumber + '-edit'}
+                startIcon={<SensorsRoundedIcon />}
                 variant='text'
                 onClick={() =>
                   router.push(
-                    `/users/newEquipment?edit=1&equipment=${JSON.stringify(
+                    `/users/enterWarehouseRFID?workflow=${JSON.stringify(
                       choosedRow
                     )}`
                   )
                 }
-                label='ویرایش'
+                label='ثبت  ورود توسط RFID'
               />
             </MenuItem>
           ) : null}
         </Menu>
-      ) : null} */}
+      ) : null}
     </Box>
   );
 });

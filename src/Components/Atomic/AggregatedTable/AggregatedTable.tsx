@@ -85,7 +85,7 @@ export default function AggregatedTable({
     <TableContainer sx={{ maxInlineSize: '100%' }}>
       <Table
         border={2}
-        sx={{ marginInline: '16px', '& td': { minInlineSize: 90 } }}
+        sx={{ marginInline: '16px', '& td': { inlineSize: 80 } }}
       >
         <thead>
           <tr>

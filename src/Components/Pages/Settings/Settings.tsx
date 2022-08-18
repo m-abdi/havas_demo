@@ -63,9 +63,10 @@ export default function Settings({
       )}
       <Box
         sx={{
-          position: 'absolute',
-          top: -70,
-          right: '35px',
+          position: 'fixed',
+          top: 72,
+          right: 40,
+          zIndex: 40,
         }}
       >
         <Button

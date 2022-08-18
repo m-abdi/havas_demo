@@ -98,7 +98,7 @@ export default function EnterWarehouseRFID({
   const { register: register1, setValue: setValue1 } = useForm();
   const { register: register2, setValue: setValue2 } = useForm();
   return (
-    <Container maxWidth='lg' sx={{ position: 'relative' }}>
+    <Container maxWidth='xl' sx={{ position: 'relative' }}>
       <Stack
         direction='row'
         alignItems={'center'}
@@ -113,7 +113,7 @@ export default function EnterWarehouseRFID({
         />
       </Stack>
       <Stack alignItems={'center'} spacing={3}>
-        <Box>
+        <Box >
           <Typography
             variant='h4'
             component='h3'
@@ -191,7 +191,7 @@ export default function EnterWarehouseRFID({
             places={places}
             mqttMessage={mqttMessage}
             mqttStatus={mqttStatus}
-            newAsset={true}
+            modal={true}
             createTagHandler={async (tags: NewTagType[]) => {
               const resp = await createTagHandler(tags);
               if (resp) {

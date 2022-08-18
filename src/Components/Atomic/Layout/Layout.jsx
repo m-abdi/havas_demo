@@ -31,7 +31,7 @@ import {
 import React, { memo, useContext, useEffect } from 'react';
 import { getCookie, setCookie } from '../../../Cookies';
 import { signOut, useSession } from 'next-auth/react';
-import { Button as MyButton } from '../Button';
+
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -46,6 +46,7 @@ import { InfoContext } from '../../../../pages/_app';
 import Inventory2RoundedIcon from '@mui/icons-material/Inventory2Rounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Button as MyButton } from '../Button';
 import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
 import PermIdentityRoundedIcon from '@mui/icons-material/PermIdentityRounded';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
@@ -167,14 +168,16 @@ function Layout({ children, pageName }) {
   const menuItems = [
     {
       text: 'تگ',
-      id: 1,
+      id: 'tag',
       icon: <StyleRoundedIcon />,
+      
       sublists: [
         {
           text: 'تگ جدید',
           icon: <AddCircleOutlineOutlined />,
           path: '/users/newTag',
           roleName: 'createTag',
+          id: 'newTag',
         },
         {
           text: 'مشاهده تگ ها',
