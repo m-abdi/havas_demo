@@ -48,7 +48,7 @@ export default function exitWarehouseRFID() {
   const [checkedAssetsIds, setCheckedAssetsIds] = useState<any>([]);
   //   data hooks
   const {
-    allApprovedExitWorkflows,
+    approvedExitWorkflows,
     approvedExitWorkflowsLoading,
     rfidHandler,
   } = useWorkflows(
@@ -117,18 +117,18 @@ export default function exitWarehouseRFID() {
         alignItems={'center'}
         justifyContent='space-around'
       >
-        {allApprovedExitWorkflows && !existingWorkflowQuery ? (
+        {approvedExitWorkflows && !existingWorkflowQuery ? (
           <Autocomplete
             disablePortal
             id='allConfirmedHavaleh'
-            options={allApprovedExitWorkflows
+            options={approvedExitWorkflows
               ?.map((ew) => ew?.passedStages?.[0]?.havaleh)
               ?.map((h) => ({ id: h?.id, label: h?.id }))}
             value={havaleh}
             onChange={(event, newValue) => {
               setHavaleh(newValue as any);
               setExistingWorkflow(
-                allApprovedExitWorkflows?.find(
+                approvedExitWorkflows?.find(
                   (ew) =>
                     ew?.passedStages?.[0]?.havaleh?.id === (newValue?.id as any)
                 )

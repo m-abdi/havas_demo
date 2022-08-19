@@ -957,7 +957,7 @@ export default memo(function ExitCorporations({
             ]}
             setValue={undefined}
             register={register}
-            existingEnterWorkflow={
+            assets={
               choosedRow?.passedStages?.[0]?.havaleh?.assets
             }
             editable={false}
