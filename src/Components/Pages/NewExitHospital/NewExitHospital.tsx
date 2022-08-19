@@ -682,7 +682,7 @@ export default function NewExitHospital({
             <EditableHtmlTable
               selectedColumns={selectedColumns}
               register={register}
-              existingEnterWorkflow={existingWorkflow}
+              assets={existingWorkflow}
               setValue={setValue}
             />
           ) : (

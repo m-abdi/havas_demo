@@ -208,7 +208,7 @@ query confirmedEnterWorkflows($filters: AssetTransferWorkflowFilter) {
 }
 
 mutation createEnterWorkflow(
-  $workflowNumber: String!
+  $workflowNumber: String
   $havalehId: String!
   $deliverer: String
   $description: String

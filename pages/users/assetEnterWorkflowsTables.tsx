@@ -52,9 +52,9 @@ export default function AssetExitWorkflowsTables() {
           variant='fullWidth'
           scrollButtons='auto'
         >
-          <Tab label='حواله های ورودی جدید' />
-          <Tab label='حواله های ورودی تایید شده' />
-          <Tab label='حواله های ورودی ثبت در انبار' />
+          <Tab label='منتظر تایید دریافت' />
+          <Tab label='منتظر ثبت توسط RFID' />
+          <Tab label='تاریخچه' />
         </Tabs>
         <TabPanel value={tabValue} index={0}>
           <ExitCorporations />

@@ -43,6 +43,7 @@ import { RelatedFieldFilter } from './resolvers-types';
 import { Session } from 'next-auth';
 import { getSession } from 'next-auth/react';
 import prisma from '../prisma/client';
+import toNestedObject from '@/src/Logic/toNestedObject';
 
 const resolvers: Resolvers = {
   Query: {
@@ -222,11 +223,11 @@ const resolvers: Resolvers = {
     },
     async equipments(_, _args, _context): Promise<any> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canViewEquipments(session))) {
-        throw new GraphQLYogaError('Unauthorized');
-      }
+      // const { req } = _context;
+      // const session = await getSession({ req });
+      // if (!session || !(await canViewEquipments(session))) {
+      //   throw new GraphQLYogaError('Unauthorized');
+      // }
       const { limit, offset, filters } = _args;
       if (filters) {
         const parsedFilters = Object.fromEntries(
@@ -288,11 +289,11 @@ const resolvers: Resolvers = {
     },
     async equipmentsCount(_, _args, _context): Promise<number> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canViewEquipments(session))) {
-        throw new GraphQLYogaError('Unauthorized');
-      }
+      // const { req } = _context;
+      // const session = await getSession({ req });
+      // if (!session || !(await canViewEquipments(session))) {
+      //   throw new GraphQLYogaError('Unauthorized');
+      // }
       const { filters } = _args;
 
       if (filters) {
@@ -389,7 +390,11 @@ const resolvers: Resolvers = {
       // check authentication and permission
       const { req } = _context;
       const session = await getSession({ req });
-      if (!session || !(await canViewLicenses(session))) {
+      if (
+        !session ||
+        (!(await canViewLicenses(session)) &&
+          !(await canCreateEnterDeliverExit(session)))
+      ) {
         throw new GraphQLYogaError('Unauthorized');
       }
       let {
@@ -403,14 +408,22 @@ const resolvers: Resolvers = {
           Object.entries(filters).filter(([key, value]) => key !== 'nsn')
         );
       }
-      console.log(limit, offset);
 
       const workflows = await prisma.workflow.findMany({
         take: limit ?? 2000000,
         skip: offset ?? 0,
-        where: {
-          ...filters,
-        },
+        where: session?.user?.role?.createEnterDeliverExit
+          ? toNestedObject({
+              ...filters,
+              'passedStages.some.havaleh.is.corporation.is.id':
+                session?.user?.place?.id,
+              nextStageName:
+                filters?.nextStageName === '' ||
+                filters?.nextStageName === 'تایید تحویل به شرکت'
+                  ? filters?.nextStageName
+                  : '',
+            })
+          : filters,
         orderBy: { dateCreated: 'desc' },
         include: { instanceOfProcess: true },
       });
@@ -422,7 +435,11 @@ const resolvers: Resolvers = {
       // check authentication and permission
       const { req } = _context;
       const session = await getSession({ req });
-      if (!session || !(await canViewEquipments(session))) {
+      if (
+        !session ||
+        (!(await canViewLicenses(session)) &&
+          !(await canCreateEnterDeliverExit(session)))
+      ) {
         throw new GraphQLYogaError('Unauthorized');
       }
       let { filters }: { filters?: any } = _args;
@@ -433,7 +450,18 @@ const resolvers: Resolvers = {
         );
       }
       return (await prisma.workflow.count({
-        where: { ...filters },
+        where: session?.user?.role?.createEnterDeliverExit
+          ? toNestedObject({
+              ...filters,
+              'passedStages.some.havaleh.is.corporation.is.id':
+                session?.user?.place?.id,
+              nextStageName:
+                filters?.nextStageName === '' ||
+                filters?.nextStageName === 'تایید تحویل به شرکت'
+                  ? filters?.nextStageName
+                  : '',
+            })
+          : filters,
       })) as number;
     },
     async role(_parent: any, _args: any, _context: any): Promise<any> {
@@ -1089,7 +1117,15 @@ const resolvers: Resolvers = {
       // new enter workflow
       const createdWorkflow = prisma.workflow.create({
         data: {
-          workflowNumber,
+          workflowNumber:
+            workflowNumber ??
+            (parseInt(
+              (
+                await prisma.workflow.findMany({
+                  orderBy: { dateCreated: 'desc' },
+                })
+              ).shift()?.workflowNumber ?? '0'
+            ) + 1).toString(),
           instanceOfProcess: { connect: { processNumber: 1 } },
           nextStageName: 'تایید تحویل کپسول به بیمارستان',
           passedStages: [

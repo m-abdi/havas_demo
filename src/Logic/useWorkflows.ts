@@ -26,6 +26,7 @@ import { TransferedAssets } from '../../lib/resolvers-types';
 import useAssets from './useAssets';
 import useNotification from './useNotification';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 
 function dropNullValues(assets: { [key: string]: any }) {
   return Object.fromEntries(
@@ -53,6 +54,7 @@ export default function useWorkflows(
   const { setSnackbarOpen, setSnackbarMessage, setSnackbarColor } =
     useContext(SnackbarContext);
   //
+  const { data: session } = useSession();
   const queryMapper: any = {
     allExitWorkflows: [
       {
@@ -64,9 +66,7 @@ export default function useWorkflows(
             ...filters,
             instanceOfProcessId: 2,
             nsn: {
-              in: [
-                'قبول درخواست توسط مدیریت',
-              ],
+              in: ['قبول درخواست توسط مدیریت'],
             },
           },
         },
@@ -181,7 +181,7 @@ export default function useWorkflows(
   // fetch All enter workflows
   const [
     allEnterWorkflowsQuery,
-    { data: allEnterWorkflowsData, error, loading, fetchMore: fetchMoreRows },
+    { data: allEnterWorkflowsData, error, loading, fetchMore: fetchMoreEnterWorkflows },
   ] = useLazyQuery(AllWorkflowsDocument, {
     fetchPolicy: 'cache-and-network',
     variables: {
@@ -217,7 +217,6 @@ export default function useWorkflows(
       },
     },
   });
-
 
   // enter workflows that are confirmed by hospital
   const [
@@ -379,27 +378,86 @@ export default function useWorkflows(
     useMutation(ApproveExitWorkflowDocument);
   // handlers
   // pagination handler
-  const fetchMore:any = useCallback(
+  const fetchMore: any = useCallback(
     function (
       event: any,
       page: number
       // itemsPerPage: number
     ) {
       try {
-        fetchMoreRows({
-          variables: {
-            offset: itemsPerPage * page,
-            limit: itemsPerPage,
-            filters,
-          },
-        });
+        if (fetchAllEnterWorkflows) {
+          fetchMoreEnterWorkflows({
+            variables: {
+              offset: itemsPerPage * page,
+              limit: itemsPerPage,
+              filters,
+            },
+          });
+        }
+        if (fetchConfirmedEnterWorkflows) {
+          fetchMoreConfirmedEnterWorkflows({
+            variables: {
+              offset: itemsPerPage * page,
+              limit: itemsPerPage,
+              filters,
+            },
+          });
+        }
+        if (fetchAllExitWorkflows) {
+          // await allExitWorkflowsQuery();
+        }
+        if (fetchApprovedExitWorkflows) {
+          fetchMoreApprovedExitWorkflows({
+            variables: {
+              offset: itemsPerPage * page,
+              limit: itemsPerPage,
+              filters,
+            },
+          });
+        }
+        if (fetchSentExitWorkflows) {
+          fetchMoreSentExitWorkflows({
+            variables: {
+              offset: itemsPerPage * page,
+              limit: itemsPerPage,
+              filters,
+            },
+          });
+        }
+        if (fetchRecievedExitWorkflows) {
+          fetchMoreRecievedExitWorkflows({
+            variables: {
+              offset: itemsPerPage * page,
+              limit: itemsPerPage,
+              filters,
+            },
+          });
+        }
+        if (fetchRegisteredEnterWorkflows) {
+          fetchMoreRecievedExitWorkflows({
+            variables: {
+              offset: itemsPerPage * page,
+              limit: itemsPerPage,
+              filters,
+            },
+          });
+        }
+        if (fetchAllWorkflows) {
+          fetchMoreAllWorkflows({
+            variables: {
+              offset: itemsPerPage * page,
+              limit: itemsPerPage,
+              filters,
+            },
+          });
+        }
       } catch {
         console.log('');
       }
       setPageNumber?.(page);
       setOffset?.(itemsPerPage * page);
     },
-    [itemsPerPage, pageNumber]
+    [itemsPerPage, pageNumber, filters]
   );
   // handlers
   // creation handler
@@ -992,7 +1050,8 @@ export default function useWorkflows(
     confirmReceiptByCorporationSending,
     approvedExitWorkflows:
       approvedExitWorkflowsData?.assetTransferWorkflows ?? [],
-    approvedExitWorkflowsCount:approvedExitWorkflowsData?.assetTransferWorkflowsCount,
+    approvedExitWorkflowsCount:
+      approvedExitWorkflowsData?.assetTransferWorkflowsCount,
     approvedExitWorkflowsLoading,
     allEnterWorkflows: allEnterWorkflowsData?.assetTransferWorkflows ?? [],
     allEnterWorkflowsCount: allEnterWorkflowsData?.assetTransferWorkflowsCount,

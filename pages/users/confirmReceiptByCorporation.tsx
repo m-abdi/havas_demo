@@ -75,11 +75,11 @@ export default function confirmReceiptByCorporation() {
                 onClick={() => setEditable(true)}
               />
             )}
-            <Button
+            {/* <Button
               label='حواله در سامانه موجود نیست'
               backgroundColor='purple'
               onClick={() => router.push('/users/newExitCorporation')}
-            />
+            /> */}
           </Stack>
           <Divider sx={{ my: 1 }} />
         </Box>

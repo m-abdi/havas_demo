@@ -169,7 +169,7 @@ export default memo(function ConfirmReceiptByCorporations({
   const [rawFilters, setRawFilters] = useState({});
 
   // const [value, setValue] = React.useState(globalFilter);
-
+  
   // other hooks
   const { data: session } = useSession();
   const router = useRouter();
@@ -523,6 +523,8 @@ export default memo(function ConfirmReceiptByCorporations({
                                 [column.id
                                   .replace('[0]', '')
                                   .replace('[1]', '')
+                                  .replace('[2]', '')
+                                  .replace('[3]', '')
                                   .replace(
                                     'passedStages.',
                                     'passedStages.some.'
@@ -550,6 +552,8 @@ export default memo(function ConfirmReceiptByCorporations({
                                     ...newRawFilters,
                                   }),
                                 });
+                                console.log(filters);
+                                
                                 fetchMoreRows(e, 0);
                               }, 1000);
                             }}
@@ -638,7 +642,7 @@ export default memo(function ConfirmReceiptByCorporations({
               ))}
             </div>
 
-            {loading || deleting ? (
+            {loading || deleting || !session ? (
               <Stack spacing={0.5}>
                 {[...Array(itemsPerPage)].map((i) => (
                   <Stack

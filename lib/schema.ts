@@ -601,7 +601,7 @@ const typeDefs = /* GraphQL */ `
     createAsset(equipmentId: String!, placeId: String!, edit: String): Place!
     createCategory(name: String!, superPlaceId: String): ID!
     createEnterWorkflow(
-      workflowNumber: String!
+      workflowNumber: String
       havalehId: String!
       deliverer: String
       description: String

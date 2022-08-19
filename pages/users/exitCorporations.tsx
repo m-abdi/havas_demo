@@ -24,7 +24,14 @@ export default function exitCorporations() {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [filters, setFilters] = useState<AssetTransferWorkflowFilter>();
 
-  const { allEnterWorkflows, allEnterWorkflowsCount, loading, sending, fetchMore, deleting, deleteHandler } = useWorkflows(
+  const {
+    allEnterWorkflows,
+    allEnterWorkflowsCount,
+    loading,
+    fetchMore,
+    deleting,
+    deleteHandler,
+  } = useWorkflows(
     offset,
     pageNumber,
     itemsPerPage,

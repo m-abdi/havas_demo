@@ -246,6 +246,8 @@ export default function ExitCorporation({
 
   // handlers
   const submitHandler = async (data: any) => {
+    console.log('xfgd');
+    
     if (existingWorkflow) {
       await confirmEnterHandler?.(
         existingWorkflow?.workflowNumber,
@@ -287,6 +289,7 @@ export default function ExitCorporation({
         data?.receivingDescription
       );
     } else {
+      
       await createNewHandler?.(
         workflowNumber as string,
         data?.havalehId,
@@ -376,60 +379,7 @@ export default function ExitCorporation({
             </Input1>
           </Row1>
         )}
-        <Row1 sx={{ display: 'none' }}>
-          {/* <Input1>
-            <Label1>شماره ثبت فرم</Label1>
-            <TextField size='small' disabled />
-          </Input1> */}
-          <Input1>
-            <Label1>شماره گردش کار</Label1>
-            {loading ? (
-              <Skeleton
-                variant='rectangular'
-                width={300}
-                height={40}
-                sx={{ borderRadius: '5px' }}
-              />
-            ) : (
-              <TextField
-                size='small'
-                disabled
-                id='workflowNumber'
-                inputProps={{
-                  ...register('workflowNumber', {
-                    required: true,
-                    value: workflowNumber || existingWorkflow?.workflowNumber,
-                  }),
-                }}
-                error={errors.workflowNumber?.type === 'required'}
-                helperText={
-                  errors.workflowNumber?.type === 'required' &&
-                  'لطفا این فیلد را پر کنید'
-                }
-              />
-            )}
-          </Input1>
-
-          <Input1>
-            <Label1>تاریخ ثبت حواله</Label1>
-
-            <DatePicker
-              calendar={SolarHijri}
-              locale={SolarHijriFarsi}
-              plugins={[<AnalogTimePicker key={useId()} />]}
-              value={date}
-              onChange={(value) => {
-                setDate(value);
-              }}
-              style={{
-                blockSize: '35px',
-                inlineSize: '100%',
-                textAlign: 'center',
-                fontSize: '15pt',
-              }}
-            />
-          </Input1>
-        </Row1>
+       
         <Row1>
           <Input1>
             <Label1>شماره حواله</Label1>
@@ -579,7 +529,7 @@ export default function ExitCorporation({
     <Container maxWidth='lg' sx={{ position: 'relative' }}>
       <Form1 onSubmit={handleSubmit(submitHandler)}>
         <ExitCorporationForm />
-        <Input1 >
+        <Input1>
           <Label1>مشاهده ستون های جدول</Label1>
           <S1>
             <Select
@@ -593,10 +543,7 @@ export default function ExitCorporation({
               sx={{ maxInlineSize: '100% !important' }}
             >
               {columns.map((name) => (
-                <MenuItem
-                  key={name}
-                  value={name}
-                >
+                <MenuItem key={name} value={name}>
                   <Checkbox checked={selectedColumns.indexOf(name) > -1} />
                   <ListItemText primary={name} />
                 </MenuItem>
@@ -632,8 +579,9 @@ export default function ExitCorporation({
             <EditableHtmlTable
               selectedColumns={selectedColumns}
               register={register}
-              existingEnterWorkflow={existingWorkflow}
+              assets={existingWorkflow}
               setValue={setValue}
+              
             />
           ) : (
             <AggregatedTable
@@ -647,7 +595,7 @@ export default function ExitCorporation({
           sx={{
             position: 'fixed',
             top: 72,
-            right: {xs: 20, md: 100, xl: 400,},
+            right: { xs: 20, md: 100, xl: 400 },
             zIndex: 40,
           }}
         >

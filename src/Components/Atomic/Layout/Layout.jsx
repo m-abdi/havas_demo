@@ -432,11 +432,12 @@ function Layout({ children, pageName }) {
                 {' '}
                 {infoContext?.pageName}
               </Typography>
-              
             </AppBar2>
 
             {/* اطلاعات صفحه */}
-            <PageContent sx={{ inlineSize: 'inherit', overflow: "auto" }}>{children}</PageContent>
+            <PageContent sx={{ inlineSize: 'inherit', overflow: 'auto' }}>
+              {children}
+            </PageContent>
           </MainContent>
         ) : (
           <MainContentMobile drawOpen={drawOpen}>
@@ -485,7 +486,9 @@ function Layout({ children, pageName }) {
             </AppBar2>
 
             {/* اطلاعات صفحه */}
-            <PageContent sx={{ inlineSize: 'inherit', overflow: "auto" }}>{children}</PageContent>
+            <PageContent sx={{ inlineSize: 'inherit', overflow: 'auto' }}>
+              {children}
+            </PageContent>
           </MainContentMobile>
         )}
       </ClickAwayListener>
@@ -554,6 +557,7 @@ function Layout({ children, pageName }) {
                 >
                   <List component='div' disablePadding>
                     {item.sublists
+                      .filter((s) => session?.user?.role?.[s.roleName])
                       .filter((sublist) => !sublist.category)
                       .map((sublist) => (
                         <ListItemButton
