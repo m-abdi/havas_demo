@@ -7,20 +7,21 @@ import { toEnglishDigit } from '@/src/Logic/toEnglishDigit';
 export default memo(function EditableHtmlTable({
   selectedColumns,
   register,
-  existingEnterWorkflow: assets,
+  assets,
   editable = true,
   reset,
   setValue,
 }: {
   selectedColumns: any;
   register?: any;
-  existingEnterWorkflow: any;
+  assets: any;
   editable?: boolean;
   reset?: any;
   setValue?: any;
 }) {
   // update react-hook-form state after rfid operation
   useEffect(() => {
+    reset?.()
     setValue?.('oxygen_50l', assets?.oxygen_50l);
     setValue?.('bihoshi_50l', assets?.bihoshi_50l);
     setValue?.('shaft_50l', assets?.shaft_50l);
@@ -48,7 +49,6 @@ export default memo(function EditableHtmlTable({
   return (
     <TableContainer sx={{ maxInlineSize: '100%' }}>
       <Table border={2} sx={{ '& td': { minInlineSize: 80 } }}>
-        <caption>کیبورد را در حالت انگلیسی قرار دهید</caption>
         <thead>
           <tr>
             <th>نوع سیلندر</th>

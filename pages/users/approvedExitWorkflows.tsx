@@ -10,7 +10,6 @@ import Equipments from '../../src/Components/Pages/Equipments';
 import ExitHospitals from '../../src/Components/Pages/ExitHospitals';
 import Head from 'next/head';
 import Layout from '../../src/Components/Atomic/Layout';
-import SentToCorporations from '../../src/Components/Pages/SentToCorporations/SentToCorporations';
 import useWorkflows from '../../src/Logic/useWorkflows';
 
 const pageName = 'حواله های خروج از شرکت';
@@ -22,12 +21,12 @@ export default memo(function exitHospitals() {
   const [filters, setFilters] = useState<AssetTransferWorkflowFilter>();
 
   const {
-    sentExitWorkflows,
-    sentExitWorkflowsCount,
-    allExitWorkflowsLoading: loading,
+    approvedExitWorkflows: data,
+    approvedExitWorkflowsCount: count,
+    approvedExitWorkflowsLoading: loading,
     deleting,
     deleteHandler,
-    fetchMoreSentExitWorkflows: fetchMore,
+    fetchMore,
   } = useWorkflows(
     offset,
     pageNumber,
@@ -38,15 +37,14 @@ export default memo(function exitHospitals() {
     false,
     false,
     false, 
-    false,
     true,
   );
 
   return (
-    <SentToCorporations
+    <ExitHospitals
       loading={loading}
-      data={sentExitWorkflows as any}
-      allEquipmentsCount={sentExitWorkflowsCount as number}
+      data={data as any}
+      allEquipmentsCount={count as number}
       pageNumber={pageNumber}
       offset={offset}
       itemsPerPage={itemsPerPage}

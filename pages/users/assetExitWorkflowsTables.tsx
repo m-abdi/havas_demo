@@ -1,11 +1,12 @@
 import { Box, Tab, TableContainer, Tabs } from '@mui/material';
 import React, { useState } from 'react';
 
+import ApprovedExitWorkflows from './approvedExitWorkflows';
 import { Button } from '../../src/Components/Atomic/Button';
-import ConfirmReceiptByCorporations from './confirmReceiptByCorporations';
 import ExitHospitals from './exitHospitals';
 import Layout from '../../src/Components/Atomic/Layout';
-import SentToCorporations from './sentToCorporations';
+import ReceivedExitWorkflows from './receivedExitWorkflows';
+import SentExitWorkflows from "./sentExitWorkflows"
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
@@ -50,18 +51,22 @@ export default function AssetExitWorkflowsTables() {
           variant='fullWidth'
           scrollButtons='auto'
         >
-          <Tab label='حواله های خروجی جدید' />
-          <Tab label='حواله های خروجی ارسال شده' />
-          <Tab label='حواله های خروجی تحویل داده شده' />
+          <Tab label='منتظر تایید مدیریت' />
+          <Tab label='منتظر ثبت توسط RFID' />
+          <Tab label='منتظر تایید دریافت' />
+          <Tab label='تاریخچه' />
         </Tabs>
         <TabPanel value={tabValue} index={0}>
           <ExitHospitals />
         </TabPanel>
         <TabPanel value={tabValue} index={1}>
-          <SentToCorporations />
+          <ApprovedExitWorkflows />
         </TabPanel>
         <TabPanel value={tabValue} index={2}>
-          <ConfirmReceiptByCorporations />
+          <SentExitWorkflows />
+        </TabPanel>
+        <TabPanel value={tabValue} index={3}>
+          <ReceivedExitWorkflows />
         </TabPanel>
         <Box
           sx={{

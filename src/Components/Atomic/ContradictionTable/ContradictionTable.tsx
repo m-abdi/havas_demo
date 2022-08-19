@@ -26,20 +26,29 @@ function giveMeContradictionRows(
   const aggCorporationRegisteredAssets = Object.entries(
     corporationRegisteredAssets
   )?.filter(
-    ([key, value]) => !/_factory/.test(key) && !/_customer/.test(key) && value
+    ([key, value]) => !/__typename/.test(key) && !/_factory/.test(key) && !/_customer/.test(key) && value
   );
   //
   const aggWarehouseRegisteredAssets = Object.entries(
     warehouseRegisteredAssets
   )?.filter(
-    ([key, value]) => !/_factory/.test(key) && !/_customer/.test(key) && value
+    ([key, value]) =>
+      !/__typename/.test(key) &&
+      !/_factory/.test(key) &&
+      !/_customer/.test(key) &&
+      value
   );
+
+
+
+  
+  
 
   for (const corporationAsset of aggCorporationRegisteredAssets) {
     const warehouseAsset = aggWarehouseRegisteredAssets.find(
       ([key, value]) => key === corporationAsset?.[0]
     );
-    if (warehouseAsset && corporationAsset?.[1] !== warehouseAsset?.[1]) {
+    if ((warehouseAsset && corporationAsset?.[1] !== warehouseAsset?.[1]) || !warehouseAsset) {
       rows.push(
         <TableRow key={corporationAsset?.[0]}>
           <TableCell sx={{ textAlign: 'center' }}>

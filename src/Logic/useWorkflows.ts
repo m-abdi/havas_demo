@@ -65,7 +65,6 @@ export default function useWorkflows(
             instanceOfProcessId: 2,
             nsn: {
               in: [
-                'RFID ثبت خروج کپسول از انبار توسط',
                 'قبول درخواست توسط مدیریت',
               ],
             },
@@ -213,11 +212,12 @@ export default function useWorkflows(
         ...filters,
         instanceOfProcessId: 2,
         nsn: {
-          in: ['RFID ثبت خروج کپسول از انبار توسط', 'قبول درخواست توسط مدیریت'],
+          in: ['قبول درخواست توسط مدیریت'],
         },
       },
     },
   });
+
 
   // enter workflows that are confirmed by hospital
   const [
@@ -379,7 +379,7 @@ export default function useWorkflows(
     useMutation(ApproveExitWorkflowDocument);
   // handlers
   // pagination handler
-  const fetchMore = useCallback(
+  const fetchMore:any = useCallback(
     function (
       event: any,
       page: number
@@ -990,8 +990,9 @@ export default function useWorkflows(
     sentExitWorkflowsError,
     fetchMoreSentExitWorkflows,
     confirmReceiptByCorporationSending,
-    allApprovedExitWorkflows:
+    approvedExitWorkflows:
       approvedExitWorkflowsData?.assetTransferWorkflows ?? [],
+    approvedExitWorkflowsCount:approvedExitWorkflowsData?.assetTransferWorkflowsCount,
     approvedExitWorkflowsLoading,
     allEnterWorkflows: allEnterWorkflowsData?.assetTransferWorkflows ?? [],
     allEnterWorkflowsCount: allEnterWorkflowsData?.assetTransferWorkflowsCount,

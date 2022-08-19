@@ -177,7 +177,7 @@ export default memo(function ExitHospitals({
   allEquipmentsCount: number;
   fetchMoreRows: (e: any, page: number) => void;
   deleteHandler: (placeIds: string[], query: string) => Promise<void>;
-  approveHandler: (workflowNumber: string) => Promise<void>;
+  approveHandler?: (workflowNumber: string) => Promise<void>;
 }) {
   //  states
   const [rowOptionsAnchorElement, setRowOptionsAnchorElement] =
@@ -963,7 +963,7 @@ export default memo(function ExitHospitals({
             ]}
             setValue={undefined}
             register={register}
-            existingEnterWorkflow={
+            assets={
               choosedRow?.passedStages?.[0]?.havaleh?.assets
             }
             editable={false}

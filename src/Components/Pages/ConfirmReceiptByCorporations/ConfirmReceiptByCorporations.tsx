@@ -50,6 +50,7 @@ import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import { Satellite } from '@mui/icons-material';
 import { Session } from 'next-auth';
 import { Workflow } from '../../../../lib/resolvers-types';
+import { flushSync } from 'react-dom';
 import matchSorter from 'match-sorter';
 /* eslint-disable react/jsx-filename-extension */
 import { memo } from 'react';
@@ -268,7 +269,9 @@ export default memo(function ConfirmReceiptByCorporations({
                 label='مشاهده'
                 color='info'
                 onClick={() => {
-                  setChoosedRow(d);
+                  flushSync(() => {
+                    setChoosedRow(d);
+                  });
                   setDetailsDialog(true);
                 }}
               />

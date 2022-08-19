@@ -1,6 +1,6 @@
 import { defineConfig } from 'cypress';
 import prisma from './prisma/client';
-import sendToMQTTBroker from './mqttClientServer';
+import sendToMQTTBroker from './src/mqttClientNodeJs';
 export default defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
