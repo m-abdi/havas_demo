@@ -256,7 +256,7 @@ type Corporation {
 }
 
 type Havaleh {
-  id                       String?
+  id                       String?  
   deliverer                String?
   transportationName       String?
   transportationTelephone  String?

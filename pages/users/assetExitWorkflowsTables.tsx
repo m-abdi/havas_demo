@@ -51,10 +51,10 @@ export default function AssetExitWorkflowsTables() {
           variant='fullWidth'
           scrollButtons='auto'
         >
-          <Tab label='منتظر تایید مدیریت' />
-          <Tab label='منتظر ثبت توسط RFID' />
-          <Tab label='منتظر تایید دریافت' />
-          <Tab label='تاریخچه' />
+          <Tab label='منتظر تایید مدیریت' id='منتظر تایید مدیریت' />
+          <Tab label='منتظر ثبت توسط RFID' id='منتظر ثبت توسط RFID' />
+          <Tab label='منتظر تایید دریافت' id='منتظر تایید دریافت' />
+          <Tab label='تاریخچه' id='تاریخچه' />
         </Tabs>
         <TabPanel value={tabValue} index={0}>
           <ExitHospitals />

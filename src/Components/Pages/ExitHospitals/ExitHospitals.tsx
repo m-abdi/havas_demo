@@ -527,7 +527,7 @@ export default memo(function ExitHospitals({
           maxWidth: 35,
           Cell: ({ row }: { row: any }) => (
             <IconButton
-              id={row?.original?.terminologyCode + '-options'}
+              id={row?.original?.workflowNumber + '-options'}
               title='گزینه ها'
               sx={{ p: 0, m: 0, color: 'inherit', backgroundColor: 'inherit' }}
               onClick={(e) => {
@@ -963,9 +963,7 @@ export default memo(function ExitHospitals({
             ]}
             setValue={undefined}
             register={register}
-            assets={
-              choosedRow?.passedStages?.[0]?.havaleh?.assets
-            }
+            assets={choosedRow?.passedStages?.[0]?.havaleh?.assets}
             editable={false}
             reset={reset}
           />
@@ -1004,11 +1002,13 @@ export default memo(function ExitHospitals({
         </DialogContent>
         <DialogActions>
           <Button
+            id='no'
             label='خیر'
             color='error'
             onClick={() => setApproveDialog(false)}
           />
           <Button
+            id='yes'
             label='بله'
             color='success'
             onClick={() => {
@@ -1028,6 +1028,7 @@ export default memo(function ExitHospitals({
           !choosedRow?.passedStages?.[1] ? (
             <MenuItem>
               <Button
+                id='approveWorkflow'
                 startIcon={<VerifiedOutlinedIcon />}
                 variant='text'
                 onClick={() => setApproveDialog(true)}

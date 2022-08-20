@@ -170,7 +170,7 @@ function Layout({ children, pageName }) {
       text: 'تگ',
       id: 'tag',
       icon: <StyleRoundedIcon />,
-      
+
       sublists: [
         {
           text: 'تگ جدید',
@@ -276,7 +276,7 @@ function Layout({ children, pageName }) {
     },
     {
       text: 'مجوزها',
-      id: 5,
+      id: 'licences',
       icon: <WorkspacePremiumRoundedIcon />,
       sublistCategoryHeaders: ['ورود', 'خروج'],
       sublists: [
@@ -299,6 +299,7 @@ function Layout({ children, pageName }) {
           path: '/users/newExitCorporation',
           roleName: 'createEnterDeliverExit',
           category: 'ورود',
+          id: "enterWorkflows",
         },
 
         {
@@ -307,6 +308,7 @@ function Layout({ children, pageName }) {
           path: '/users/assetExitWorkflowsTables',
           roleName: 'viewLicense',
           category: 'خروج',
+          id: "exitWorkflows"
         },
 
         {
@@ -337,7 +339,11 @@ function Layout({ children, pageName }) {
             حواس
           </Typography>
           <Stack direction='row' spacing={2} alignItems='center'>
-            <Typography component='p' variant='body1' id="user_first_name_last_name">
+            <Typography
+              component='p'
+              variant='body1'
+              id='user_first_name_last_name'
+            >
               {session?.user?.firstNameAndLastName ?? ''}
             </Typography>
             <Typography

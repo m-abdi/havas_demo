@@ -1,4 +1,4 @@
-import {Main} from "../../src/Screens/NewPerson/NewPerson.stories"
+import {Main} from "../../src/Components/Pages/NewPerson/NewPerson.stories"
 /// <reference types="cypress" />
 const testNewPersonData = {
   id: '123456789123',

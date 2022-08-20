@@ -42,11 +42,14 @@ export default defineConfig({
           return null;
         },
         deleteWorkflow: (workflowNumber: string) => {
-          const equipment = prisma.workflow
-            .delete({
+          prisma.workflow
+            .deleteMany({
               where: { workflowNumber },
             })
-            .then((p) => p)
+            .then((p) => {
+              console.log(p);
+              return p;
+            })
             .catch((e) => null);
           return null;
         },
@@ -204,8 +207,6 @@ export default defineConfig({
             })
             .then((r) => {
               if (r) {
-                console.log(r);
-                
                 return r;
               } else {
                 return undefined;
