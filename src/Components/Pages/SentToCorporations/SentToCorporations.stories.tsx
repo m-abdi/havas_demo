@@ -42,7 +42,6 @@ Main.args = {
 
           havaleh: {
             id: 'شماره حواله',
-            date: '1657952804983',
             deliverer: 'مهدی',
             transportationName: 'نام ترابری',
             transportationTelephone: 'شماره ترابری',

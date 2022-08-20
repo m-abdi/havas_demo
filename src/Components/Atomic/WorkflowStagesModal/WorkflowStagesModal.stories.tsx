@@ -41,7 +41,6 @@ Main.args = {
         },
         havaleh: {
           id: 'xcvcxcv',
-          date: '1659685627933',
           deliverer: null,
           transportationName: 'ee',
           transportationTelephone: 'xcvxcv',
@@ -140,7 +139,6 @@ Main.args = {
         },
         havaleh: {
           id: null,
-          date: null,
           deliverer: null,
           transportationName: null,
           transportationTelephone: null,
@@ -227,7 +225,6 @@ Main.args = {
         },
         havaleh: {
           id: 'xcvcxcvedited',
-          date: '1659685627933',
           transportationName: 'ee',
           transportationTelephone: 'xcvxcv',
           transportationTelephone2: '',

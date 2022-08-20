@@ -36,7 +36,6 @@ Main.args = {
           havaleh: {
             id: 'شماره حواله77',
             deliverer: 'مهدی',
-            date: '1658733661592',
             assets: {
               oxygen_50l: 17,
               bihoshi_50l: null,
@@ -136,7 +135,6 @@ Main.args = {
           havaleh: {
             id: 'شماره حواله',
             deliverer: 'مهدی',
-            date: '1658733307029',
             assets: {
               oxygen_50l: 2,
               bihoshi_50l: 4,
@@ -224,7 +222,6 @@ Main.args = {
           havaleh: {
             id: 'شماره حواله',
             deliverer: 'مهدی',
-            date: '1658733307029',
             assets: {
               oxygen_50l: 2,
               bihoshi_50l: 8,

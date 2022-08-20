@@ -1001,7 +1001,6 @@ const resolvers: Resolvers = {
         transportationTelephone,
         transportationTelephone2,
         corporationRepresentativeId,
-        date,
         assets,
       },
       _context: any
@@ -1142,7 +1141,6 @@ const resolvers: Resolvers = {
 
               havaleh: {
                 id: havalehId,
-                date,
                 deliverer,
                 transportationName,
                 transportationTelephone,
@@ -1176,7 +1174,6 @@ const resolvers: Resolvers = {
         transportationTelephone2,
         corporationRepresentativeId,
         warehouseKeeperId,
-        date,
         assets,
       },
       _context: any
@@ -1312,7 +1309,6 @@ const resolvers: Resolvers = {
         transportationName,
         transportationTelephone,
         transportationTelephone2,
-        date,
         assets,
       },
       _context: any
@@ -1379,7 +1375,6 @@ const resolvers: Resolvers = {
                 },
                 havaleh: {
                   id: havalehId + 'edited',
-                  date,
                   deliverer,
                   transportationName,
                   transportationTelephone,
@@ -1433,7 +1428,6 @@ const resolvers: Resolvers = {
         transportationName,
         transportationTelephone,
         transportationTelephone2,
-        date,
         assets,
       },
       _context: any
@@ -1484,7 +1478,6 @@ const resolvers: Resolvers = {
                 },
                 havaleh: {
                   id: havalehId + 'edited',
-                  date,
                   deliverer,
                   transportationName,
                   transportationTelephone,
