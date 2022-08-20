@@ -337,7 +337,7 @@ function Layout({ children, pageName }) {
             حواس
           </Typography>
           <Stack direction='row' spacing={2} alignItems='center'>
-            <Typography component='p' variant='body1'>
+            <Typography component='p' variant='body1' id="user_first_name_last_name">
               {session?.user?.firstNameAndLastName ?? ''}
             </Typography>
             <Typography

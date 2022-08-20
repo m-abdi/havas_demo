@@ -65,7 +65,7 @@ export default function AssetExitWorkflowsTables() {
         <TabPanel value={tabValue} index={2}>
           <EnteredWarehouseRFID />
         </TabPanel>
-        <Box
+        {/* <Box
           sx={{
             position: 'fixed',
             top: 72,
@@ -83,7 +83,7 @@ export default function AssetExitWorkflowsTables() {
               router.push('/users/newExitCorporation');
             }}
           />
-        </Box>
+        </Box> */}
       </Box>
     </Layout>
   );

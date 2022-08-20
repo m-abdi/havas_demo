@@ -10,7 +10,6 @@ import {
   TextField,
   styled,
 } from '@mui/material';
-import DatePicker, { DateObject } from 'react-multi-date-picker';
 import { memo, useCallback, useEffect, useId, useMemo, useState } from 'react';
 
 import AggregatedTable from '../../Atomic/AggregatedTable';
@@ -36,7 +35,7 @@ const Row1 = styled('div', { name: 'Row1' })(() => ({
   display: 'flex',
   marginBottom: '0.6em',
   alignItems: 'center',
-  maxInlineSize: "100%"
+  maxInlineSize: '100%',
 }));
 
 // دربرگیرنده لیبل و تکست فیلد
@@ -73,7 +72,7 @@ const MenuProps = {
 const S1 = styled('div', { name: 'S1' })(() => ({
   display: 'flex',
   margin: 1,
-  overflow: "hidden",
+  overflow: 'hidden',
   '& .MuiOutlinedInput-root': { flex: '1 0 155px' },
 }));
 
@@ -114,9 +113,7 @@ export default function NewExitHospital({
   corporations: { id: string; label: string }[];
   corporationsLoading: boolean;
   createNewHandler?: (
-    workflowNumber: string,
     havalehId: string,
-    date: string,
     warehouseKeeperId: string,
     description: string,
     transportationName: string,
@@ -174,7 +171,6 @@ export default function NewExitHospital({
     workflowNumber: string,
     editedHavalehData?: {
       havalehId?: string;
-      date?: string;
       description?: string;
       receivingDescription?: string;
       transportationName?: string;
@@ -223,11 +219,7 @@ export default function NewExitHospital({
   ]);
   const [sum, setSum] = useState(0);
   const [scrollPosition, setScrollPosition] = useState(0);
-  const [date, setDate] = useState<any>(
-    existingWorkflow
-      ? parseInt(existingWorkflow?.passedStages?.[0]?.havaleh?.date)
-      : new DateObject()
-  );
+
   const [corporation, setCorporation] =
     useState<{ id: string; label: string }>();
   const [corporationError, setCorporationError] = useState(false);
@@ -250,7 +242,6 @@ export default function NewExitHospital({
       Object.entries(
         existingWorkflow?.passedStages?.[0]?.havaleh?.assets
       ).forEach(([key, value]) => setValue(key, value));
-      setDate(parseInt(existingWorkflow?.passedStages?.[0]?.havaleh?.date));
     }
   }, [existingWorkflow]);
 
@@ -262,7 +253,6 @@ export default function NewExitHospital({
         editable
           ? {
               havalehId: data?.havalehId,
-              date: date.toString(),
               description: data?.description,
               transportationName: data?.transportationName,
               transportationTelephone: data?.transportationTelephone,
@@ -302,9 +292,7 @@ export default function NewExitHospital({
         return;
       }
       await createNewHandler?.(
-        workflowNumber as string,
         data?.havalehId,
-        dateT || new Date(date?.toDate()).getTime().toString(),
         warehouseKeeper?.id as string,
         data?.description,
         data?.transportationName,
@@ -389,60 +377,7 @@ export default function NewExitHospital({
             </Input1>
           </Row1>
         )}
-        <Row1>
-          {/* <Input1>
-            <Label1>شماره ثبت فرم</Label1>
-            <TextField size='small' disabled />
-          </Input1> */}
-          <Input1 sx={{ display: 'none' }}>
-            <Label1>شماره گردش کار</Label1>
-            {loading ? (
-              <Skeleton
-                variant='rectangular'
-                width={300}
-                height={40}
-                sx={{ borderRadius: '5px' }}
-              />
-            ) : (
-              <TextField
-                size='small'
-                disabled
-                id='workflowNumber'
-                inputProps={{
-                  ...register('workflowNumber', {
-                    required: true,
-                    value: workflowNumber || existingWorkflow?.workflowNumber,
-                  }),
-                }}
-                error={errors.workflowNumber?.type === 'required'}
-                helperText={
-                  errors.workflowNumber?.type === 'required' &&
-                  'لطفا این فیلد را پر کنید'
-                }
-              />
-            )}
-          </Input1>
 
-          <Input1 sx={{ display: 'none' }}>
-            <Label1>تاریخ ثبت حواله</Label1>
-
-            <DatePicker
-              calendar={SolarHijri}
-              locale={SolarHijriFarsi}
-              plugins={[<AnalogTimePicker key={useId()} />]}
-              value={date}
-              onChange={(value) => {
-                setDate(value);
-              }}
-              style={{
-                blockSize: '35px',
-                inlineSize: '100%',
-                textAlign: 'center',
-                fontSize: '15pt',
-              }}
-            />
-          </Input1>
-        </Row1>
         <Row1>
           <Input1>
             <Label1>شماره حواله</Label1>

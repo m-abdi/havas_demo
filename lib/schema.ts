@@ -82,20 +82,7 @@ const typeDefs = /* GraphQL */ `
     editedAt: String
   }
 
-  type License {
-    id: ID!
-    fromPerson: Person
-    toPerson: Person
-    fromPlace: Place
-    toPlace: Place
-    type: String
-    numbers: Int
-    date: String
-    description: String
-    createdAt: String
-    editedAt: String
-    confirmedAt: String
-  }
+
   input Permissions {
     viewPerson: Boolean!
     createPerson: Boolean!
@@ -179,7 +166,6 @@ const typeDefs = /* GraphQL */ `
 
   type Havaleh {
     id: String
-    date: String
     deliverer: String
     transportationName: String
     transportationTelephone: String
@@ -609,11 +595,10 @@ const typeDefs = /* GraphQL */ `
       transportationTelephone: String!
       transportationTelephone2: String
       corporationRepresentativeId: String!
-      date: String!
       assets: TransferedAssets
     ): String
     createExitWorkflow(
-      workflowNumber: String!
+      workflowNumber: String
       havalehId: String!
       description: String
       transportationName: String!
@@ -621,7 +606,6 @@ const typeDefs = /* GraphQL */ `
       transportationTelephone2: String
       corporationRepresentativeId: String!
       warehouseKeeperId: String!
-      date: String!
       assets: TransferedAssets
     ): Workflow
     confirmReceiptByHospital(
@@ -633,7 +617,6 @@ const typeDefs = /* GraphQL */ `
       transportationName: String
       transportationTelephone: String
       transportationTelephone2: String
-      date: String
       assets: AggregatedTransferedAssets
     ): Workflow
     confirmReceiptByCorporation(
@@ -645,7 +628,6 @@ const typeDefs = /* GraphQL */ `
       transportationName: String
       transportationTelephone: String
       transportationTelephone2: String
-      date: String
       assets: AggregatedTransferedAssets
     ): Workflow
     updateAssetsStates(ids: [String], status: String!): Int

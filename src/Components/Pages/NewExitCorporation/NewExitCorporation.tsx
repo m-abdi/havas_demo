@@ -10,7 +10,6 @@ import {
   TextField,
   styled,
 } from '@mui/material';
-import DatePicker, { DateObject } from 'react-multi-date-picker';
 import { memo, useCallback, useEffect, useId, useMemo, useState } from 'react';
 
 import AggregatedTable from '../../Atomic/AggregatedTable';
@@ -112,7 +111,6 @@ export default function ExitCorporation({
   createNewHandler?: (
     workflowNumber: string,
     havalehId: string,
-    date: string,
     corporationRepresentativeId: string,
     deliverer: string,
     description: string,
@@ -170,7 +168,6 @@ export default function ExitCorporation({
     workflowNumber: string,
     editedHavalehData: {
       havalehId: string;
-      date: string;
       deliverer: string;
       description: string;
       transportationName: string;
@@ -217,11 +214,7 @@ export default function ExitCorporation({
     'گاز بیهوشی',
   ]);
   const [sum, setSum] = useState(0);
-  const [date, setDate] = useState<any>(
-    existingWorkflow
-      ? parseInt(existingWorkflow?.passedStages?.[0]?.havaleh?.date)
-      : new DateObject()
-  );
+  
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
       const r = Object.entries(value)
@@ -240,7 +233,6 @@ export default function ExitCorporation({
       Object.entries(
         existingWorkflow?.passedStages?.[0]?.havaleh?.assets
       ).forEach(([key, value]) => setValue(key, value));
-      setDate(parseInt(existingWorkflow?.passedStages?.[0]?.havaleh?.date));
     }
   }, [existingWorkflow]);
 
@@ -254,7 +246,6 @@ export default function ExitCorporation({
         editable
           ? {
               havalehId: data?.havalehId,
-              date: date.toString(),
               deliverer: data?.deliverer,
               description: data?.description,
               transportationName: data?.transportationName,
@@ -293,7 +284,6 @@ export default function ExitCorporation({
       await createNewHandler?.(
         workflowNumber as string,
         data?.havalehId,
-        dateT || new Date(date?.toDate()).getTime().toString(),
         corporationRepresentative?.id as string,
         data?.deliverer,
         data?.description,

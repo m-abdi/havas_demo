@@ -1,6 +1,9 @@
+import { AnyCnameRecord } from 'dns';
+import { Workflow } from 'lib/resolvers-types';
 import { defineConfig } from 'cypress';
 import prisma from './prisma/client';
 import sendToMQTTBroker from './src/mqttClientNodeJs';
+
 export default defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
@@ -33,6 +36,15 @@ export default defineConfig({
           const equipment = prisma.tag
             .delete({
               where: { id: tag },
+            })
+            .then((p) => p)
+            .catch((e) => null);
+          return null;
+        },
+        deleteWorkflow: (workflowNumber: string) => {
+          const equipment = prisma.workflow
+            .delete({
+              where: { workflowNumber },
             })
             .then((p) => p)
             .catch((e) => null);
@@ -110,9 +122,9 @@ export default defineConfig({
           return prisma.asset
             .findFirst({
               where: {
-               tag: {id: info?.tag},
-               equipment: {terminologyCode: info?.equipment},
-               place: {name: info?.place},
+                tag: { id: info?.tag },
+                equipment: { terminologyCode: info?.equipment },
+                place: { name: info?.place },
               },
             })
             .then((r) => {
@@ -123,10 +135,87 @@ export default defineConfig({
               }
             });
         },
-        sendToMQTTBroker: (message: string) =>{
+        changeConfig: (ignoreManagerApproval: boolean) => {
+          return prisma.config
+            .updateMany({
+              data: {
+                ignoreManagerApproval,
+              },
+            })
+            .then((r) => {
+              if (r) {
+                return r;
+              } else {
+                return undefined;
+              }
+            });
+        },
+        checkWorkflow: (data: any) => {
+          return prisma.workflow
+            .findFirst({
+              where: data?.nextStageName
+                ? {
+                    nextStageName: data?.nextStageName,
+                    instanceOfProcessId: data?.instanceOfProcessId,
+                    passedStages: {
+                      some: {
+                        submittedByUser: {
+                          is: { firstNameAndLastName: data?.deliverer },
+                        },
+                        havaleh: {
+                          is: {
+                            id: data?.havalehId,
+                            description: data?.description,
+                            transportationName: data?.transportationName,
+                            transportationTelephone:
+                              data?.transportationTelephone,
+                            transportationTelephone2:
+                              data?.transportationTelephone2,
+                            corporation: { is: { name: data?.corporation } },
+                            assets: { is: { ...data?.assets } },
+                          },
+                        },
+                      },
+                    },
+                  }
+                : {
+                    instanceOfProcessId: data?.instanceOfProcessId,
+                    passedStages: {
+                      some: {
+                        submittedByUser: {
+                          is: { firstNameAndLastName: data?.deliverer },
+                        },
+                        havaleh: {
+                          is: {
+                            id: data?.havalehId,
+                            description: data?.description,
+                            transportationName: data?.transportationName,
+                            transportationTelephone:
+                              data?.transportationTelephone,
+                            transportationTelephone2:
+                              data?.transportationTelephone2,
+                            corporation: { is: { name: data?.corporation } },
+                            assets: { is: { ...data?.assets } },
+                          },
+                        },
+                      },
+                    },
+                  },
+            })
+            .then((r) => {
+              if (r) {
+                console.log(r);
+                
+                return r;
+              } else {
+                return undefined;
+              }
+            });
+        },
+        sendToMQTTBroker: (message: string) => {
           sendToMQTTBroker(message);
-          return null
-        }
+          return null;
+        },
       });
     },
     baseUrl: 'http://localhost:3000',

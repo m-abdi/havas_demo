@@ -23,7 +23,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import DatePicker, { Calendar } from 'react-multi-date-picker';
 /* eslint-disable react/jsx-key */
 import React, { useEffect, useMemo, useState } from 'react';
 import {

@@ -132,24 +132,7 @@ model Tag {
   editedAt  DateTime @updatedAt
 }
 
-model License {
-  id           String   @id @default(uuid()) @map("_id")
-  fromPerson   Person   @relation(name: "fromLicenses", fields: [fromPersonId], references: [id])
-  fromPersonId String
-  toPerson     Person   @relation(name: "toLicenses", fields: [toPersonId], references: [id])
-  toPersonId   String
-  fromPlace    Place    @relation(name: "fromLicensesPlace", fields: [fromPlaceId], references: [id])
-  fromPlaceId  String
-  toPlace      Place    @relation(name: "toLicensesPlace", fields: [toPlaceId], references: [id])
-  toPlaceId    String
-  type         String
-  numbers      Int
-  date         String
-  description  String
-  createdAt    DateTime @default(now())
-  editedAt     DateTime @updatedAt
-  confirmedAt  DateTime
-}
+
 
 model Role {
   id                      String   @id @default(uuid()) @map("_id")
@@ -274,7 +257,6 @@ type Corporation {
 
 type Havaleh {
   id                       String?
-  date                     String?
   deliverer                String?
   transportationName       String?
   transportationTelephone  String?

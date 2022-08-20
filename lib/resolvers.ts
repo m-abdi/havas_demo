@@ -1119,13 +1119,15 @@ const resolvers: Resolvers = {
         data: {
           workflowNumber:
             workflowNumber ??
-            (parseInt(
-              (
-                await prisma.workflow.findMany({
-                  orderBy: { dateCreated: 'desc' },
-                })
-              ).shift()?.workflowNumber ?? '0'
-            ) + 1).toString(),
+            (
+              parseInt(
+                (
+                  await prisma.workflow.findMany({
+                    orderBy: { dateCreated: 'desc' },
+                  })
+                ).shift()?.workflowNumber ?? '0'
+              ) + 1
+            ).toString(),
           instanceOfProcess: { connect: { processNumber: 1 } },
           nextStageName: 'تایید تحویل کپسول به بیمارستان',
           passedStages: [
@@ -1203,7 +1205,17 @@ const resolvers: Resolvers = {
       // new exit workflow
       const createdWorkflow = await prisma.workflow.create({
         data: {
-          workflowNumber,
+          workflowNumber:
+            workflowNumber ??
+            (
+              parseInt(
+                (
+                  await prisma.workflow.findMany({
+                    orderBy: { dateCreated: 'desc' },
+                  })
+                ).shift()?.workflowNumber ?? '0'
+              ) + 1
+            ).toString(),
           instanceOfProcess: { connect: { processNumber: 2 } },
           nextStageName: currentConfig?.ignoreManagerApproval
             ? 'RFID ثبت خروج کپسول از انبار توسط'
@@ -1221,7 +1233,6 @@ const resolvers: Resolvers = {
                   },
                   havaleh: {
                     id: havalehId,
-                    date,
                     transportationName,
                     transportationTelephone,
                     transportationTelephone2,
@@ -1269,7 +1280,6 @@ const resolvers: Resolvers = {
                   },
                   havaleh: {
                     id: havalehId,
-                    date,
                     transportationName,
                     transportationTelephone,
                     transportationTelephone2,

@@ -465,7 +465,6 @@ export default function useWorkflows(
     async (
       workflowNumber: string,
       havalehId: string,
-      date: string,
       corporationRepresentativeId: string,
       deliverer: string,
       description: string,
@@ -488,7 +487,6 @@ export default function useWorkflows(
           variables: {
             workflowNumber,
             havalehId,
-            date,
             corporationRepresentativeId,
             transportationName,
             transportationTelephone,
@@ -527,9 +525,7 @@ export default function useWorkflows(
   );
   const createNewExit = useCallback(
     async (
-      workflowNumber: string,
       havalehId: string,
-      date: string,
       warehouseKeeperId: string,
       description: string,
       transportationName: string,
@@ -550,9 +546,7 @@ export default function useWorkflows(
 
         const createdExitWorkflow = await createExitWorkflowMutation({
           variables: {
-            workflowNumber,
             havalehId,
-            date,
             warehouseKeeperId,
             transportationName,
             transportationTelephone,
@@ -593,7 +587,7 @@ export default function useWorkflows(
               'در حال ارسال',
               'منتظر تایید مدیریت'
             );
-            router.push('/users/dashboard');
+            router.push('/users/assetExitWorkflowsTables');
           }
         } else {
           useNotification(
@@ -633,7 +627,6 @@ export default function useWorkflows(
         if (editedHavalehData) {
           const {
             havalehId,
-            date,
             deliverer,
             description,
             transportationName,
@@ -642,7 +635,6 @@ export default function useWorkflows(
             assets,
           }: {
             havalehId: string;
-            date: string;
             deliverer: string;
             description: string;
             transportationName: string;
@@ -657,7 +649,6 @@ export default function useWorkflows(
             variables: {
               workflowNumber,
               havalehId,
-              date,
               transportationName,
               transportationTelephone,
               transportationTelephone2,
@@ -727,7 +718,6 @@ export default function useWorkflows(
         if (editedHavalehData) {
           const {
             havalehId,
-            date,
             description,
             transportationName,
             transportationTelephone,
@@ -735,7 +725,6 @@ export default function useWorkflows(
             assets,
           }: {
             havalehId: string;
-            date: string;
             description: string;
             transportationName: string;
             transportationTelephone: string;
@@ -749,7 +738,6 @@ export default function useWorkflows(
             variables: {
               workflowNumber,
               havalehId,
-              date,
               transportationName,
               transportationTelephone,
               transportationTelephone2,

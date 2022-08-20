@@ -30,7 +30,6 @@ query allWorkflows(
         description
         receivingDescription
         deliverer
-        date
         transportationName
         transportationTelephone
         transportationTelephone2
@@ -123,7 +122,6 @@ query confirmedEnterWorkflows($filters: AssetTransferWorkflowFilter) {
       havaleh {
         id
         deliverer
-        date
         assets {
           oxygen_50l
           bihoshi_50l
@@ -216,7 +214,6 @@ mutation createEnterWorkflow(
   $transportationTelephone: String!
   $transportationTelephone2: String
   $corporationRepresentativeId: String!
-  $date: String!
   $assets: TransferedAssets!
 ) {
   createEnterWorkflow(
@@ -228,12 +225,11 @@ mutation createEnterWorkflow(
     transportationTelephone: $transportationTelephone
     transportationTelephone2: $transportationTelephone2
     corporationRepresentativeId: $corporationRepresentativeId
-    date: $date
     assets: $assets
   )
 }
 mutation createExitWorkflow(
-  $workflowNumber: String!
+  $workflowNumber: String
   $havalehId: String!
   $description: String
   $transportationName: String!
@@ -241,7 +237,6 @@ mutation createExitWorkflow(
   $transportationTelephone2: String
   $corporationRepresentativeId: String!
   $warehouseKeeperId: String!
-  $date: String!
   $assets: TransferedAssets!
 ) {
   createExitWorkflow(
@@ -253,7 +248,6 @@ mutation createExitWorkflow(
     transportationTelephone2: $transportationTelephone2
     corporationRepresentativeId: $corporationRepresentativeId
     warehouseKeeperId: $warehouseKeeperId
-    date: $date
     assets: $assets
   ) {
     workflowNumber
@@ -266,7 +260,6 @@ mutation createExitWorkflow(
       havaleh {
         id
         deliverer
-        date
         assets {
           oxygen_50l
           bihoshi_50l
@@ -357,7 +350,6 @@ mutation confirmReceiptByHospital(
   $transportationName: String
   $transportationTelephone: String
   $transportationTelephone2: String
-  $date: String
   $assets: AggregatedTransferedAssets
 ) {
   confirmReceiptByHospital(
@@ -369,7 +361,6 @@ mutation confirmReceiptByHospital(
     transportationName: $transportationName
     transportationTelephone: $transportationTelephone
     transportationTelephone2: $transportationTelephone2
-    date: $date
     assets: $assets
   ) {
     workflowNumber
@@ -419,7 +410,6 @@ mutation confirmReceiptByCorporation(
   $transportationName: String
   $transportationTelephone: String
   $transportationTelephone2: String
-  $date: String
   $assets: AggregatedTransferedAssets
 ) {
   confirmReceiptByCorporation(
@@ -431,7 +421,6 @@ mutation confirmReceiptByCorporation(
     transportationName: $transportationName
     transportationTelephone: $transportationTelephone
     transportationTelephone2: $transportationTelephone2
-    date: $date
     assets: $assets
   ) {
     workflowNumber
