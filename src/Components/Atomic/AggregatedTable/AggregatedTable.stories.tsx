@@ -22,7 +22,19 @@ let itemsPerPage = 10;
 export const Main = Template.bind({});
 Main.args = {
   editable: false,
-  selectedColumns: ['اکسیژن', 'گاز بیهوشی'],
+  selectedColumns: [
+    'اکسیژن',
+    'گاز بیهوشی',
+    'شفت-فلکه',
+    'شیر کنترل',
+    'Co2',
+    'آرگون',
+    'ازت',
+    'هوای خشک',
+    'آنتونکس',
+    'استیلن',
+    'گاز مایع',
+  ],
   assets: {
     oxygen_50l: 10,
     oxygen_40l: 5,

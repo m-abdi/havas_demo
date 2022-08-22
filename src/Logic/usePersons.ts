@@ -2,11 +2,11 @@ import {
   AllPersonsDocument,
   CreateNewPersonDocument,
   DeletePersonsDocument,
-} from 'lib/graphql-operations';
+} from '../../lib/graphql-operations';
 import { useCallback, useContext } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
-import { PersonFilter } from 'lib/resolvers-types';
+import { PersonFilter } from '../../lib/resolvers-types';
 import { SnackbarContext } from 'pages/_app';
 import useNotification from './useNotification';
 import { useRouter } from 'next/router';

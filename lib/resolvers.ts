@@ -43,7 +43,7 @@ import { RelatedFieldFilter } from './resolvers-types';
 import { Session } from 'next-auth';
 import { getSession } from 'next-auth/react';
 import prisma from '../prisma/client';
-import toNestedObject from '@/src/Logic/toNestedObject';
+import toNestedObject from '../src/Logic/toNestedObject';
 
 const resolvers: Resolvers = {
   Query: {

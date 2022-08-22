@@ -116,6 +116,7 @@ export default function exitWarehouseRFID() {
         direction='column'
         alignItems={'center'}
         justifyContent='space-around'
+        sx={{maxInlineSize: "100%"}}
       >
         {approvedExitWorkflows && !existingWorkflowQuery ? (
           <Autocomplete

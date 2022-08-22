@@ -113,6 +113,7 @@ export default function enterWarehouseRFID() {
         direction='column'
         alignItems={'center'}
         justifyContent='space-around'
+        sx={{ maxInlineSize: '100%' }}
       >
         {confirmedEnterWorkflows && !existingWorkflowQuery ? (
           <Autocomplete

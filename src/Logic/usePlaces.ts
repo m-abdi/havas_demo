@@ -4,12 +4,12 @@ import {
   CreateCategoryDocument,
   CreatePlaceDocument,
   DeletePlacesDocument,
-} from 'lib/graphql-operations';
+  PlacesListDocument,
+} from '../../lib/graphql-operations';
 import React, { useCallback, useContext, useEffect } from 'react';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 
 import { PlaceFilter } from '../../lib/resolvers-types';
-import { PlacesListDocument } from '../../lib/graphql-operations';
 import { SnackbarContext } from '../../pages/_app';
 import useNotification from './useNotification';
 

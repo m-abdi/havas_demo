@@ -113,7 +113,7 @@ export default function EnterWarehouseRFID({
         />
       </Stack>
       <Stack alignItems={'center'} spacing={3}>
-        <Box>
+        <Box sx={{ maxInlineSize: '100%' }}>
           <Typography
             variant='h4'
             component='h3'
@@ -132,7 +132,7 @@ export default function EnterWarehouseRFID({
           </TableContainer>
         </Box>
         <Divider flexItem variant='fullWidth' />
-        <Box>
+        <Box sx={{ maxInlineSize: '100%' }}>
           <Typography
             variant='h4'
             component='h3'
@@ -216,8 +216,7 @@ export default function EnterWarehouseRFID({
           color='success'
           variant='contained'
           onClick={async () => {
-            
-              await submitHandler('موجود در بیمارستان');
+            await submitHandler('موجود در بیمارستان');
           }}
         />
       </Box>

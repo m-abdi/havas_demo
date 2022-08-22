@@ -2,8 +2,20 @@ import { Table, TableBody, TableContainer, TextField } from '@mui/material';
 import { memo, useEffect } from 'react';
 
 import React from 'react';
+import styled from 'styled-components';
 import { useFormContext } from 'react-hook-form';
 
+const MyTable = styled.table`
+  margin-inline: 16px;
+  & td,
+  th {
+    border: 1px solid black;
+    border-collapse: collapse;
+    border-radius: 5px;
+    min-inline-size: 90px;
+    max-inline-size: 150px;
+  }
+`;
 export default function AggregatedTable({
   editable = false,
   selectedColumns = [
@@ -82,10 +94,8 @@ export default function AggregatedTable({
   }, [assets]);
 
   return (
-    <TableContainer sx={{ maxInlineSize: '100%' }}>
-      <Table
-        border={2}
-        sx={{ marginInline: '16px', '& td': { inlineSize: 80 } }}
+    <TableContainer>
+      <MyTable
       >
         <thead>
           <tr>
@@ -912,7 +922,7 @@ export default function AggregatedTable({
             </td>
           </tr>
         </TableBody>
-      </Table>
+      </MyTable>
     </TableContainer>
   );
 }
