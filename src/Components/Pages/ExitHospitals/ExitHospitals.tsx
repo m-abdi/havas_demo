@@ -1040,7 +1040,7 @@ export default memo(function ExitHospitals({
           choosedRow?.passedStages?.[1] ? (
             <MenuItem>
               <Button
-                id={choosedRow?.workflowNumber + '-edit'}
+                id={'registerWorkflow'}
                 startIcon={<SensorsRoundedIcon />}
                 variant='text'
                 onClick={() =>

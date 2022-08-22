@@ -2,7 +2,7 @@ import { AnyCnameRecord } from 'dns';
 import { Workflow } from 'lib/resolvers-types';
 import { defineConfig } from 'cypress';
 import prisma from './prisma/client';
-import sendToMQTTBroker from './src/mqttClientNodeJs';
+import sendToBroker from './src/mqttClientNodeJs';
 
 export default defineConfig({
   e2e: {
@@ -63,6 +63,36 @@ export default defineConfig({
             .then((p) => p)
             .catch((e) => null);
           return null;
+        },
+        createAsset: (equipment: string) => {
+          return prisma.asset
+            .upsert({
+              where: { publicPropertyCode: `${equipment}--assetTest` },
+              update: {},
+              create: {
+                publicPropertyCode: `${equipment}--assetTest`,
+                place: {
+                  connectOrCreate: {
+                    where: { name: 'انبار' },
+                    create: { name: 'انبار' },
+                  },
+                },
+                equipment: {
+                  connect: {
+                    terminologyCode: equipment,
+                  },
+                },
+                tag: {
+                  connectOrCreate: {
+                    where: { id: `${equipment}--tagTest` },
+                    create: { id: `${equipment}--tagTest` },
+                  },
+                },
+              },
+              select: { tag: { select: { id: true } } },
+            })
+            .then((d) => d)
+            .catch((e) => null);
         },
         getAllEquipments: () => {
           prisma.equipment
@@ -214,8 +244,9 @@ export default defineConfig({
             });
         },
         sendToMQTTBroker: (message: string) => {
-          sendToMQTTBroker(message);
-          return null;
+          return sendToBroker(message)
+            .then((d) => d)
+            .catch((e) => null);
         },
       });
     },

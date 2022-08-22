@@ -7,13 +7,13 @@ const options = {
   password: '6aJ5V77Wmzn6)E',
 };
 
-const options1:any = {
+const options1: any = {
   host: 'localhost',
   port: 1883,
   protocol: 'tcp',
 };
 
-export default function main(mess = '') {
+export default async function main(mess = '') {
   //initialize the MQTT client
   let client = mqtt.connect(options1);
 
@@ -37,6 +37,7 @@ export default function main(mess = '') {
   // publish message 'Hello' to topic 'my/test/topic'
   client.publish('rfid', mess);
   client.end();
+  return true;
 }
 
 export function connect(options1: {
