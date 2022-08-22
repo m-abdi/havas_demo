@@ -38,7 +38,7 @@ output: { ok: 1 }
 ```cmd
 yarn prisma generate
 ```
-5.
+6.
 ```cmd
 node ./src/prepareDatabase.js
 ```
