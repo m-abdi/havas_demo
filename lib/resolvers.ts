@@ -1222,7 +1222,7 @@ const resolvers: Resolvers = {
             ? [
                 {
                   stageID: 1,
-                  stageName: 'ثبت خروج کپسول از بیمارستان',
+                  stageName: 'درخواست خروج از بیمارستان',
                   submittedByUser: {
                     id: session?.user?.id,
                     firstNameAndLastName: session?.user?.firstNameAndLastName,
@@ -1269,7 +1269,7 @@ const resolvers: Resolvers = {
             : [
                 {
                   stageID: 1,
-                  stageName: 'ثبت خروج کپسول از بیمارستان',
+                  stageName: 'درخواست خروج از بیمارستان',
                   submittedByUser: {
                     id: session?.user?.id,
                     firstNameAndLastName: session?.user?.firstNameAndLastName,
