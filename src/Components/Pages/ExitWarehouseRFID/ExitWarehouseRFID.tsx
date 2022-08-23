@@ -6,10 +6,12 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
+  Fab,
   IconButton,
   Stack,
   TableContainer,
   TextField,
+  Toolbar,
   Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
@@ -19,6 +21,9 @@ import { Button } from '../../Atomic/Button';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import NewTag from '../NewTag/NewTag';
 import { NewTag as NewTagType } from '../../../../lib/resolvers-types';
+import PAB from '../../Atomic/PAB';
+import SendRoundedIcon from '@mui/icons-material/SendRounded';
+import isSmallScreen from '@/src/isSmallScreen';
 import { useForm } from 'react-hook-form';
 
 export default function EnterWarehouseRFID({
@@ -97,6 +102,8 @@ export default function EnterWarehouseRFID({
   // react-form-hooks
   const { register: register1, setValue: setValue1 } = useForm();
   const { register: register2, setValue: setValue2 } = useForm();
+  //
+  const PABBreakpoint = isSmallScreen();
   return (
     <Container maxWidth='xl' sx={{ position: 'relative' }}>
       <Stack
@@ -201,23 +208,33 @@ export default function EnterWarehouseRFID({
           />
         </DialogContent>
       </Dialog>
-      <Box
-        sx={{
-          position: 'fixed',
-          top: 72,
-          right: 40,
-          zIndex: 40,
-        }}
-      >
-        <Button
-          id='submitButton'
-          label='ارسال'
-          size='large'
-          color='success'
-          variant='contained'
-          onClick={async () => await submitHandler('در حال ارسال')}
-        />
-      </Box>
+      {!PABBreakpoint && (
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 72,
+            right: 40,
+            zIndex: 40,
+          }}
+        >
+          <Button
+            id='submitButton'
+            label='ارسال'
+            size='large'
+            color='success'
+            variant='contained'
+            onClick={async () => await submitHandler('در حال ارسال')}
+          />
+        </Box>
+      )}
+
+      <PAB
+        color='success'
+        icon='ADD'
+        ariaLabel='ایجاد'
+        variant='extended'
+        onClick={async () => await submitHandler('در حال ارسال')}
+      />
     </Container>
   );
 }

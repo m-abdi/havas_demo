@@ -3,11 +3,13 @@ import {
   Checkbox,
   Container,
   Divider,
+  Fab,
   ListItemText,
   MenuItem,
   Select,
   Skeleton,
   TextField,
+  Toolbar,
   styled,
 } from '@mui/material';
 import { memo, useCallback, useEffect, useId, useMemo, useState } from 'react';
@@ -16,9 +18,12 @@ import AggregatedTable from '../../Atomic/AggregatedTable';
 import AnalogTimePicker from 'react-multi-date-picker/plugins/analog_time_picker';
 import { Button } from '../../Atomic/Button';
 import EditableHtmlTable from '../../Atomic/EditableHtmlTable';
+import PAB from '../../Atomic/PAB';
 import React from 'react';
+import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import SolarHijri from 'react-date-object/calendars/persian';
 import SolarHijriFarsi from 'react-date-object/locales/persian_fa';
+import isSmallScreen from '@/src/isSmallScreen';
 import { useForm } from 'react-hook-form';
 
 const Form1 = styled('form', { name: 'form1' })(({ theme }) => ({
@@ -45,8 +50,8 @@ const Input1 = styled('div', { name: 'Input1' })(() => ({
   flexDirection: 'column',
   margin: '1em 1em 0em 1em',
   flexWrap: 'nowrap',
-  maxInlineSize: "100%",
-  overflow: "clip"
+  maxInlineSize: '100%',
+  overflow: 'clip',
 }));
 
 // لیبل بالای تکست فیلد
@@ -72,7 +77,7 @@ const MenuProps = {
 const S1 = styled('div', { name: 'S1' })(() => ({
   display: 'flex',
   margin: 1,
-  overflow: "hidden",
+  overflow: 'hidden',
   '& .MuiOutlinedInput-root': { flex: '1 0 155px' },
 }));
 
@@ -214,7 +219,7 @@ export default function ExitCorporation({
     'گاز بیهوشی',
   ]);
   const [sum, setSum] = useState(0);
-  
+
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
       const r = Object.entries(value)
@@ -235,11 +240,11 @@ export default function ExitCorporation({
       ).forEach(([key, value]) => setValue(key, value));
     }
   }, [existingWorkflow]);
-
+  const usePAB = isSmallScreen();
   // handlers
   const submitHandler = async (data: any) => {
     console.log('xfgd');
-    
+
     if (existingWorkflow) {
       await confirmEnterHandler?.(
         existingWorkflow?.workflowNumber,
@@ -280,7 +285,6 @@ export default function ExitCorporation({
         data?.receivingDescription
       );
     } else {
-      
       await createNewHandler?.(
         workflowNumber as string,
         data?.havalehId,
@@ -369,7 +373,7 @@ export default function ExitCorporation({
             </Input1>
           </Row1>
         )}
-       
+
         <Row1>
           <Input1>
             <Label1>شماره حواله</Label1>
@@ -571,7 +575,6 @@ export default function ExitCorporation({
               register={register}
               assets={existingWorkflow}
               setValue={setValue}
-              
             />
           ) : (
             <AggregatedTable
@@ -581,22 +584,32 @@ export default function ExitCorporation({
             />
           )}
         </Row1>
-        <Box
-          sx={{
-            position: 'fixed',
-            top: 72,
-            right: { xs: 20, md: 100, xl: 400 },
-            zIndex: 40,
-          }}
-        >
-          <Button
-            id='submitButton'
-            label='ارسال'
-            size='large'
-            color='success'
-            variant='contained'
-          />
-        </Box>
+        {!usePAB && (
+          <Box
+            sx={{
+              position: 'fixed',
+              top: 72,
+              right: { xs: 20, md: 100, xl: 400 },
+              zIndex: 40,
+            }}
+          >
+            <Button
+              id='submitButton'
+              label='ارسال'
+              size='large'
+              color='success'
+              variant='contained'
+            />
+          </Box>
+        )}
+        <Toolbar />
+        <PAB
+          color='success'
+          icon='SEND'
+          ariaLabel='ارسال'
+          text='ارسال'
+          variant='extended'
+        />
       </Form1>
     </Container>
   );

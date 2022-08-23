@@ -19,6 +19,8 @@ import { Button } from '../../Atomic/Button';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import NewTag from '../NewTag/NewTag';
 import { NewTag as NewTagType } from '../../../../lib/resolvers-types';
+import PAB from '../../Atomic/PAB';
+import isSmallScreen from '@/src/isSmallScreen';
 import { useForm } from 'react-hook-form';
 
 export default function EnterWarehouseRFID({
@@ -97,6 +99,7 @@ export default function EnterWarehouseRFID({
   // react-form-hooks
   const { register: register1, setValue: setValue1 } = useForm();
   const { register: register2, setValue: setValue2 } = useForm();
+  const usePAB = isSmallScreen();
   return (
     <Container maxWidth='lg' sx={{ position: 'relative' }}>
       <Stack
@@ -201,25 +204,34 @@ export default function EnterWarehouseRFID({
           />
         </DialogContent>
       </Dialog>
-      <Box
-        sx={{
-          position: 'fixed',
-          top: 72,
-          right: 30,
-          zIndex: 40,
-        }}
-      >
-        <Button
-          id='submitButton'
-          label='ارسال'
-          size='large'
-          color='success'
-          variant='contained'
-          onClick={async () => {
-            await submitHandler('موجود در بیمارستان');
+      {!usePAB && (
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 72,
+            right: 30,
+            zIndex: 40,
           }}
-        />
-      </Box>
+        >
+          <Button
+            id='submitButton'
+            label='ارسال'
+            size='large'
+            color='success'
+            variant='contained'
+            onClick={async () => {
+              await submitHandler('موجود در بیمارستان');
+            }}
+          />
+        </Box>
+      )}
+      <PAB
+        color='success'
+        icon='SEND'
+        ariaLabel='ارسال'
+        variant='extended'
+        onClick={async () => await submitHandler('در حال ارسال')}
+      />
     </Container>
   );
 }

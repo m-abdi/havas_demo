@@ -14,7 +14,7 @@ import { useRouter } from 'next/router';
 import useTags from '../../src/Logic/useTags';
 import useWorkflows from '../../src/Logic/useWorkflows';
 
-const pageName = 'ثبت ورود کپسول به انبار توسط RFID';
+const pageName = 'ورود کپسول به انبار توسط RFID';
 export default function enterWarehouseRFID() {
   //
   const [checkedAssets, setCheckedAssets] = useState<any>({

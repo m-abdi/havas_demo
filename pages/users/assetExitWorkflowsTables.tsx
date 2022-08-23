@@ -1,16 +1,25 @@
-import { Box, Tab, TableContainer, Tabs } from '@mui/material';
+import {
+  Box,
+  Fab,
+  Tab,
+  TableContainer,
+  Tabs,
+  useMediaQuery,
+} from '@mui/material';
 import React, { useState } from 'react';
 
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ApprovedExitWorkflows from './approvedExitWorkflows';
 import { Button } from '../../src/Components/Atomic/Button';
 import ExitHospitals from './exitHospitals';
 import Layout from '../../src/Components/Atomic/Layout';
 import ReceivedExitWorkflows from './receivedExitWorkflows';
-import SentExitWorkflows from "./sentExitWorkflows"
+import SentExitWorkflows from './sentExitWorkflows';
+import isSmallScreen from '@/src/isSmallScreen';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
-const pageName = 'جداول حواله های خروجی';
+const pageName = 'حواله های خروجی';
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -41,7 +50,7 @@ export default function AssetExitWorkflowsTables() {
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
-
+  const usePAB = isSmallScreen();
   return (
     <Layout pageName={pageName}>
       <Box sx={{ inlineSize: '100%', p: 1, position: 'relative' }}>
@@ -68,26 +77,42 @@ export default function AssetExitWorkflowsTables() {
         <TabPanel value={tabValue} index={3}>
           <ReceivedExitWorkflows />
         </TabPanel>
-        <Box
-          sx={{
-            position: 'fixed',
-            top: 72,
-            right: 'calc(110px + 20px)',
-            zIndex: 40,
+        {!usePAB && (
+          <Box
+            sx={{
+              position: 'fixed',
+              top: 72,
+              right: 'calc(110px + 20px)',
+              zIndex: 40,
+            }}
+          >
+            <Button
+              label='ایجاد'
+              size='large'
+              color='success'
+              variant='contained'
+              disabled={!session?.user?.role?.createLicense}
+              onClick={() => {
+                router.push('/users/newExitHospital');
+              }}
+            />
+          </Box>
+        )}
+      </Box>
+      {usePAB && (
+        <Fab
+          color='success'
+          aria-label='ایجاد'
+          size='large'
+          sx={{ position: 'fixed', bottom: 16, left: 16 }}
+          disabled={!session?.user?.role?.createLicense}
+          onClick={() => {
+            router.push('/users/newExitHospital');
           }}
         >
-          <Button
-            label='ایجاد'
-            size='large'
-            color='success'
-            variant='contained'
-            disabled={!session?.user?.role?.createLicense}
-            onClick={() => {
-              router.push('/users/newExitHospital');
-            }}
-          />
-        </Box>
-      </Box>
+          <AddRoundedIcon />
+        </Fab>
+      )}
     </Layout>
   );
 }

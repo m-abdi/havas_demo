@@ -3,11 +3,13 @@ import {
   Box,
   Checkbox,
   Container,
+  Fab,
   ListItemText,
   MenuItem,
   Select,
   Skeleton,
   TextField,
+  Toolbar,
   styled,
 } from '@mui/material';
 import { memo, useCallback, useEffect, useId, useMemo, useState } from 'react';
@@ -16,9 +18,12 @@ import AggregatedTable from '../../Atomic/AggregatedTable';
 import AnalogTimePicker from 'react-multi-date-picker/plugins/analog_time_picker';
 import { Button } from '../../Atomic/Button';
 import EditableHtmlTable from '../../Atomic/EditableHtmlTable';
+import PAB from '../../Atomic/PAB';
 import React from 'react';
+import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import SolarHijri from 'react-date-object/calendars/persian';
 import SolarHijriFarsi from 'react-date-object/locales/persian_fa';
+import isSmallScreen from '@/src/isSmallScreen';
 import { useForm } from 'react-hook-form';
 
 const Form1 = styled('form', { name: 'form1' })(({ theme }) => ({
@@ -244,7 +249,7 @@ export default function NewExitHospital({
       ).forEach(([key, value]) => setValue(key, value));
     }
   }, [existingWorkflow]);
-
+  const useFAB = isSmallScreen();
   // handlers
   const submitHandler = async (data: any) => {
     if (existingWorkflow) {
@@ -628,22 +633,31 @@ export default function NewExitHospital({
             />
           )}
         </Row1>
-        <Box
-          sx={{
-            position: 'fixed',
-            top: 72,
-            right: { xs: 20, md: 100, xl: 400 },
-            zIndex: 40,
-          }}
-        >
-          <Button
-            id='submitButton'
-            label='ارسال'
-            size='large'
-            color='success'
-            variant='contained'
-          />
-        </Box>
+        {!useFAB && (
+          <Box
+            sx={{
+              position: 'fixed',
+              top: 72,
+              right: { xs: 20, md: 100, xl: 400 },
+              zIndex: 40,
+            }}
+          >
+            <Button
+              id='submitButton'
+              label='ارسال'
+              size='large'
+              color='success'
+              variant='contained'
+            />
+          </Box>
+        )}
+        <PAB
+          color='success'
+          icon='SEND'
+          ariaLabel='ارسال'
+          text='ارسال'
+          variant='extended'
+        />
       </Form1>
     </Container>
   );
