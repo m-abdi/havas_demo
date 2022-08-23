@@ -13,7 +13,7 @@ import ApprovedExitWorkflows from './approvedExitWorkflows';
 import { Button } from '../../src/Components/Atomic/Button';
 import ExitHospitals from './exitHospitals';
 import Layout from '../../src/Components/Atomic/Layout';
-import PrimaryButton from '@/src/Components/Atomic/PAB';
+import PrimaryButton from '@/src/Components/Atomic/PrimaryButton';
 import ReceivedExitWorkflows from './receivedExitWorkflows';
 import SentExitWorkflows from './sentExitWorkflows';
 import isSmallScreen from '@/src/isSmallScreen';

@@ -21,7 +21,7 @@ import { Button } from '../../Atomic/Button';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import NewTag from '../NewTag/NewTag';
 import { NewTag as NewTagType } from '../../../../lib/resolvers-types';
-import PrimaryButton from '../../Atomic/PAB';
+import PrimaryButton from '../../Atomic/PrimaryButton';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import isSmallScreen from '@/src/isSmallScreen';
 import { useForm } from 'react-hook-form';

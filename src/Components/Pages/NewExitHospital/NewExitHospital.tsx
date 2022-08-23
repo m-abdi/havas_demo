@@ -18,7 +18,7 @@ import AggregatedTable from '../../Atomic/AggregatedTable';
 import AnalogTimePicker from 'react-multi-date-picker/plugins/analog_time_picker';
 import { Button } from '../../Atomic/Button';
 import EditableHtmlTable from '../../Atomic/EditableHtmlTable';
-import PrimaryButton from '../../Atomic/PAB';
+import PrimaryButton from '../../Atomic/PrimaryButton';
 import React from 'react';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import SolarHijri from 'react-date-object/calendars/persian';
