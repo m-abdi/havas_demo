@@ -18,7 +18,7 @@ import AggregatedTable from '../../Atomic/AggregatedTable';
 import AnalogTimePicker from 'react-multi-date-picker/plugins/analog_time_picker';
 import { Button } from '../../Atomic/Button';
 import EditableHtmlTable from '../../Atomic/EditableHtmlTable';
-import PAB from '../../Atomic/PAB';
+import PrimaryButton from '../../Atomic/PAB';
 import React from 'react';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import SolarHijri from 'react-date-object/calendars/persian';
@@ -633,30 +633,17 @@ export default function NewExitHospital({
             />
           )}
         </Row1>
-        {!useFAB && (
-          <Box
-            sx={{
-              position: 'fixed',
-              top: 72,
-              right: { xs: 20, md: 100, xl: 400 },
-              zIndex: 40,
-            }}
-          >
-            <Button
-              id='submitButton'
-              label='ارسال'
-              size='large'
-              color='success'
-              variant='contained'
-            />
-          </Box>
-        )}
-        <PAB
+
+        <PrimaryButton
+          id='submitButton'
+          size='large'
           color='success'
+          right={{ xs: 20, md: 100, xl: 400 }}
+          variant='contained'
           icon='SEND'
           ariaLabel='ارسال'
-          text='ارسال'
-          variant='extended'
+          label='ارسال'
+          fabVariant='extended'
         />
       </Form1>
     </Container>

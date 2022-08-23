@@ -1,2 +1,2 @@
-import PAB from './PAB';
-export default PAB
+import PrimaryButton from './PrimaryButton';
+export default PrimaryButton;
