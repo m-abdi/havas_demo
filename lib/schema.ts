@@ -82,7 +82,6 @@ const typeDefs = /* GraphQL */ `
     editedAt: String
   }
 
-
   input Permissions {
     viewPerson: Boolean!
     createPerson: Boolean!
@@ -179,6 +178,7 @@ const typeDefs = /* GraphQL */ `
     id: String
     ignoreManagerApproval: Boolean
     current: Boolean
+    ignoreRFID: Boolean
   }
   type UserData {
     id: String
@@ -638,7 +638,11 @@ const typeDefs = /* GraphQL */ `
       assets: AggregatedTransferedAssets!
       checkedAssetsIds: [String!]!
     ): Workflow
-    updateCurrentConfig(id: String!, ignoreManagerApproval: Boolean!): Config
+    updateCurrentConfig(
+      id: String!
+      ignoreManagerApproval: Boolean!
+      ignoreRFID: Boolean!
+    ): Config
     approveExitWorkflow(workflowNumber: String!): String
   }
 `;

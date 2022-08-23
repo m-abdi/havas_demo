@@ -22,14 +22,16 @@ export default function Settings({
   session: Session;
   data: Config;
   loading: boolean;
-  submitHandler: (id: string, ignoreManagerApproval: boolean) => Promise<any>;
+  submitHandler: (id: string, ignoreManagerApproval: boolean, ignoreRFID: boolean) => Promise<any>;
 }) {
   // states
   const [isChecked, setIsChecked] = useState(false);
+  const [ignoreRFID, setIgnoreRFID] = useState(false);
   //
   useEffect(() => {
     if (data) {
       setIsChecked(data?.ignoreManagerApproval as boolean);
+      setIgnoreRFID(data?.ignoreRFID ?? false);
     }
   }, [data]);
 
@@ -46,19 +48,31 @@ export default function Settings({
     >
       {/* automatic confirm exit workflows */}
       {/* manager detection */}
-      {session?.user?.role?.deleteLicense && loading ? (
+      {session?.user?.role?.name === 'مدیریت' && loading ? (
         <Skeleton variant='rectangular' width={300} height={20} />
       ) : (
+        session?.user?.role?.name === 'مدیریت' &&
         data && (
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={isChecked}
-                onClick={() => setIsChecked(!isChecked)}
-              />
-            }
-            label='تایید خودکار حواله های خروجی'
-          />
+          <>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={isChecked}
+                  onClick={() => setIsChecked(!isChecked)}
+                />
+              }
+              label='تایید خودکار حواله های خروجی'
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={ignoreRFID}
+                  onClick={() => setIgnoreRFID(!ignoreRFID)}
+                />
+              }
+              label='حذف موقت RFID'
+            />
+          </>
         )
       )}
       <Box
@@ -75,7 +89,7 @@ export default function Settings({
           color='success'
           variant='contained'
           onClick={() => {
-            submitHandler(data?.id as string, isChecked);
+            submitHandler(data?.id as string, isChecked, ignoreRFID);
           }}
         />
       </Box>

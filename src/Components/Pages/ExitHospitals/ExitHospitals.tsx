@@ -1036,7 +1036,7 @@ export default memo(function ExitHospitals({
               />
             </MenuItem>
           ) : null}
-          {session?.user?.role?.['createLicense'] &&
+          {session?.user?.role?.['createLicense'] && choosedRow?.passedStages?.length === 2 &&
           choosedRow?.passedStages?.[1] ? (
             <MenuItem>
               <Button

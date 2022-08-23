@@ -589,6 +589,20 @@ export default function useWorkflows(
             );
             router.push('/users/assetExitWorkflowsTables');
           }
+          else if (
+            createdExitWorkflow?.data?.createExitWorkflow?.passedStages
+              ?.length === 3
+          ) {
+            useNotification(
+              'success',
+              setSnackbarColor,
+              setSnackbarMessage,
+              setSnackbarOpen,
+              'در حال ارسال',
+              'منتظر تایید مدیریت'
+            );
+            router.push('/users/assetExitWorkflowsTables');
+          }
         } else {
           useNotification(
             'error',

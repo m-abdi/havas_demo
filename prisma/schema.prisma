@@ -20,6 +20,7 @@ model Config {
   id                    String  @id @default(uuid()) @map("_id")
   ignoreManagerApproval Boolean
   current               Boolean @default(false)
+  ignoreRFID            Boolean @default(false)
 }
 
 model Person {
@@ -38,8 +39,7 @@ model Person {
   roleId               String
   createdAt            DateTime  @default(now())
   editedAt             DateTime  @updatedAt
-  fromLicenses         License[] @relation("fromLicenses")
-  toLicenses           License[] @relation("toLicenses")
+
   password             String
   // levels               Level     @relation("levelToPerson")
 
@@ -68,8 +68,7 @@ model Place {
   description       String?
   createdAt         String?
   editedAt          String?
-  fromLicenses      License[]   @relation("fromLicensesPlace")
-  toLicenses        License[]   @relation("toLicensesPlace")
+
   assets            Asset[]     @relation("currentPlace")
   Equipment         Equipment[]
   corporationAssets Asset[]     @relation("corporationPlace")
@@ -106,6 +105,7 @@ model Equipment {
   receiving         Int
   outsourced        Int
   sending           Int
+  available         Int
 }
 
 model Asset {
@@ -132,42 +132,40 @@ model Tag {
   editedAt  DateTime @updatedAt
 }
 
-
-
 model Role {
-  id                      String   @id @default(uuid()) @map("_id")
-  name                    String?  @unique
-  viewPerson              Boolean  @default(false)
-  createPerson            Boolean
-  editPerson              Boolean
-  deletePerson            Boolean
-  viewPlace               Boolean  @default(false)
-  createPlace             Boolean
-  editPlace               Boolean
-  deletePlace             Boolean
-  viewEquipment           Boolean  @default(false)
-  createEquipment         Boolean
-  editEquipment           Boolean
-  deleteEquipment         Boolean
-  viewAsset               Boolean  @default(false)
-  createAsset             Boolean
-  editAsset               Boolean
-  deleteAsset             Boolean
-  viewLicense             Boolean  @default(false)
-  createLicense           Boolean
-  editLicense             Boolean
-  deleteLicense           Boolean
-  viewTag                 Boolean  @default(false)
-  createTag               Boolean
-  editTag                 Boolean
-  deleteTag               Boolean
-  viewRole                Boolean  @default(false)
-  createRole              Boolean
-  editRole                Boolean
-  deleteRole              Boolean
+  id                     String   @id @default(uuid()) @map("_id")
+  name                   String?  @unique
+  viewPerson             Boolean  @default(false)
+  createPerson           Boolean
+  editPerson             Boolean
+  deletePerson           Boolean
+  viewPlace              Boolean  @default(false)
+  createPlace            Boolean
+  editPlace              Boolean
+  deletePlace            Boolean
+  viewEquipment          Boolean  @default(false)
+  createEquipment        Boolean
+  editEquipment          Boolean
+  deleteEquipment        Boolean
+  viewAsset              Boolean  @default(false)
+  createAsset            Boolean
+  editAsset              Boolean
+  deleteAsset            Boolean
+  viewLicense            Boolean  @default(false)
+  createLicense          Boolean
+  editLicense            Boolean
+  deleteLicense          Boolean
+  viewTag                Boolean  @default(false)
+  createTag              Boolean
+  editTag                Boolean
+  deleteTag              Boolean
+  viewRole               Boolean  @default(false)
+  createRole             Boolean
+  editRole               Boolean
+  deleteRole             Boolean
   createEnterDeliverExit Boolean  @default(false)
-  Person                  Person[]
-  createdAt               DateTime @default(now())
+  Person                 Person[]
+  createdAt              DateTime @default(now())
 }
 
 // model Level {
@@ -256,7 +254,7 @@ type Corporation {
 }
 
 type Havaleh {
-  id                       String?  
+  id                       String?
   deliverer                String?
   transportationName       String?
   transportationTelephone  String?

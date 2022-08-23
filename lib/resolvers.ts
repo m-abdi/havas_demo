@@ -1,4 +1,5 @@
 import {
+  AggregatedTransferedAssets,
   Asset,
   Config,
   NewTag,
@@ -42,9 +43,23 @@ import { GraphQLYogaError } from '@graphql-yoga/node';
 import { RelatedFieldFilter } from './resolvers-types';
 import { Session } from 'next-auth';
 import { getSession } from 'next-auth/react';
+import isManager from '../src/isManager';
 import prisma from '../prisma/client';
 import toNestedObject from '../src/Logic/toNestedObject';
 
+function giveMeAggregatedAssets(assets: AggregatedTransferedAssets): any {
+  const aggregatedAssets: any = {};
+  Object.entries(assets as TransferedAssets)
+    .map(([key, value]) => [
+      key.replace('_factory', '').replace('_customer', ''),
+      value,
+    ])
+    ?.forEach(([k, v]) => {
+      aggregatedAssets[String(k)] = aggregatedAssets[String(k)]
+        ? aggregatedAssets[String(k)] + v
+        : v;
+    });
+}
 const resolvers: Resolvers = {
   Query: {
     async persons(_, _args, _context): Promise<Person[] | any> {
@@ -569,7 +584,7 @@ const resolvers: Resolvers = {
       const { req } = _context;
       const session = await getSession({ req });
       // manager detection
-      if (!session || !(await canDeleteLicenses(session))) {
+      if (!session || !(isManager(session))) {
         throw new GraphQLYogaError('Unauthorized');
       }
       return await prisma.config.findFirst({ where: { current: true } });
@@ -839,6 +854,7 @@ const resolvers: Resolvers = {
           outsourced: 0,
           sending: 0,
           receiving: 0,
+          available: 0
         },
       });
       return createdEquipment;
@@ -1199,104 +1215,202 @@ const resolvers: Resolvers = {
       const currentConfig = await prisma.config.findFirst({
         where: { current: true },
       });
+      const o: any = [];
       // new exit workflow
-      const createdWorkflow = await prisma.workflow.create({
-        data: {
-          workflowNumber:
-            workflowNumber ??
+      if (currentConfig?.ignoreManagerApproval && currentConfig?.ignoreRFID) {
+        Object.entries(aggregatedAssets).forEach(([k, v]) => {
+          o.push(
+            prisma.equipment.update({
+              where: { terminologyCode: k },
+              data: { sending: { increment: v as number } },
+            })
+          );
+        });
+        const w = prisma.workflow.create({
+          data: {
+            workflowNumber: await autoIncrementId(),
+            instanceOfProcess: { connect: { processNumber: 2 } },
+            nextStageName: 'تایید تحویل به شرکت',
+            passedStages: [
+              {
+                stageID: 1,
+                stageName: 'درخواست خروج از بیمارستان',
+                submittedByUser: {
+                  id: session?.user?.id,
+                  firstNameAndLastName: session?.user?.firstNameAndLastName,
+                  role: session?.user?.role?.name,
+                },
+                havaleh: {
+                  id: havalehId,
+                  transportationName,
+                  transportationTelephone,
+                  transportationTelephone2,
+                  description,
+                  corporation: {
+                    id: corporationRepresentativeId,
+                    name:
+                      (
+                        await prisma.place.findFirst({
+                          where: { id: corporationRepresentativeId },
+                        })
+                      )?.name ?? 'unknown',
+                  },
+                  assets: { ...assets, ...aggregatedAssets },
+                },
+              },
+              {
+                stageID: 2,
+                stageName: 'قبول درخواست توسط مدیریت',
+                submittedByUser: {
+                  id:
+                    (
+                      await prisma.person.findFirst({
+                        where: { role: { name: 'مدیریت' } },
+                      })
+                    )?.id ?? 'unknown',
+                  firstNameAndLastName:
+                    (
+                      await prisma.person.findFirst({
+                        where: { role: { name: 'مدیریت' } },
+                      })
+                    )?.firstNameAndLastName ?? 'unknown',
+                  role: 'مدیریت',
+                },
+              },
+              {
+                stageID: 3,
+                stageName: 'RFID ثبت خروج کپسول از انبار توسط',
+                submittedByUser: {
+                  id:
+                    (
+                      await prisma.person.findFirst({
+                        where: { role: { name: 'مدیریت' } },
+                      })
+                    )?.id ?? 'unknown',
+                  firstNameAndLastName:
+                    (
+                      await prisma.person.findFirst({
+                        where: { role: { name: 'مدیریت' } },
+                      })
+                    )?.firstNameAndLastName ?? 'unknown',
+                  role: 'مدیریت',
+                },
+                havaleh: {
+                  assets: { ...aggregatedAssets },
+                },
+              },
+            ],
+          },
+        });
+        const t = await prisma.$transaction([w, ...o]);
+        return t[0];
+      } else if (
+        currentConfig?.ignoreManagerApproval &&
+        !currentConfig?.ignoreRFID
+      ) {
+        return await prisma.workflow.create({
+          data: {
+            workflowNumber: await autoIncrementId(),
+            instanceOfProcess: { connect: { processNumber: 2 } },
+            nextStageName: 'RFID ثبت خروج کپسول از انبار توسط',
+            passedStages: [
+              {
+                stageID: 1,
+                stageName: 'درخواست خروج از بیمارستان',
+                submittedByUser: {
+                  id: session?.user?.id,
+                  firstNameAndLastName: session?.user?.firstNameAndLastName,
+                  role: session?.user?.role?.name,
+                },
+                havaleh: {
+                  id: havalehId,
+                  transportationName,
+                  transportationTelephone,
+                  transportationTelephone2,
+                  description,
+                  corporation: {
+                    id: corporationRepresentativeId,
+                    name:
+                      (
+                        await prisma.place.findFirst({
+                          where: { id: corporationRepresentativeId },
+                        })
+                      )?.name ?? 'unknown',
+                  },
+                  assets: { ...assets, ...aggregatedAssets },
+                },
+              },
+              {
+                stageID: 2,
+                stageName: 'قبول درخواست توسط مدیریت',
+                submittedByUser: {
+                  id:
+                    (
+                      await prisma.person.findFirst({
+                        where: { role: { name: 'مدیریت' } },
+                      })
+                    )?.id ?? 'unknown',
+                  firstNameAndLastName:
+                    (
+                      await prisma.person.findFirst({
+                        where: { role: { name: 'مدیریت' } },
+                      })
+                    )?.firstNameAndLastName ?? 'unknown',
+                  role: 'مدیریت',
+                },
+              },
+            ],
+          },
+        });
+      } else if (!currentConfig?.ignoreManagerApproval) {
+        return await prisma.workflow.create({
+          data: {
+            workflowNumber: await autoIncrementId(),
+            instanceOfProcess: { connect: { processNumber: 2 } },
+            nextStageName: 'قبول درخواست توسط مدیریت',
+            passedStages: [
+              {
+                stageID: 1,
+                stageName: 'درخواست خروج از بیمارستان',
+                submittedByUser: {
+                  id: session?.user?.id,
+                  firstNameAndLastName: session?.user?.firstNameAndLastName,
+                  role: session?.user?.role?.name,
+                },
+                havaleh: {
+                  id: havalehId,
+                  transportationName,
+                  transportationTelephone,
+                  transportationTelephone2,
+                  description,
+                  corporation: {
+                    id: corporationRepresentativeId,
+                    name:
+                      (
+                        await prisma.place.findFirst({
+                          where: { id: corporationRepresentativeId },
+                        })
+                      )?.name ?? 'unknown',
+                  },
+                  assets: { ...assets, ...aggregatedAssets },
+                },
+              },
+            ],
+          },
+        });
+      }
+
+      async function autoIncrementId(): Promise<string> {
+        return (
+          parseInt(
             (
-              parseInt(
-                (
-                  await prisma.workflow.findMany({
-                    orderBy: { dateCreated: 'desc' },
-                  })
-                ).shift()?.workflowNumber ?? '0'
-              ) + 1
-            ).toString(),
-          instanceOfProcess: { connect: { processNumber: 2 } },
-          nextStageName: currentConfig?.ignoreManagerApproval
-            ? 'RFID ثبت خروج کپسول از انبار توسط'
-            : 'قبول درخواست توسط مدیریت',
-          // do we need to wait for manager approval or not ?
-          passedStages: currentConfig?.ignoreManagerApproval
-            ? [
-                {
-                  stageID: 1,
-                  stageName: 'درخواست خروج از بیمارستان',
-                  submittedByUser: {
-                    id: session?.user?.id,
-                    firstNameAndLastName: session?.user?.firstNameAndLastName,
-                    role: session?.user?.role?.name,
-                  },
-                  havaleh: {
-                    id: havalehId,
-                    transportationName,
-                    transportationTelephone,
-                    transportationTelephone2,
-                    description,
-                    corporation: {
-                      id: corporationRepresentativeId,
-                      name:
-                        (
-                          await prisma.place.findFirst({
-                            where: { id: corporationRepresentativeId },
-                          })
-                        )?.name ?? 'unknown',
-                    },
-                    assets: { ...assets, ...aggregatedAssets },
-                  },
-                },
-                {
-                  stageID: 2,
-                  stageName: 'قبول درخواست توسط مدیریت',
-                  submittedByUser: {
-                    id:
-                      (
-                        await prisma.person.findFirst({
-                          where: { role: { name: 'مدیریت' } },
-                        })
-                      )?.id ?? 'unknown',
-                    firstNameAndLastName:
-                      (
-                        await prisma.person.findFirst({
-                          where: { role: { name: 'مدیریت' } },
-                        })
-                      )?.firstNameAndLastName ?? 'unknown',
-                    role: 'مدیریت',
-                  },
-                },
-              ]
-            : [
-                {
-                  stageID: 1,
-                  stageName: 'درخواست خروج از بیمارستان',
-                  submittedByUser: {
-                    id: session?.user?.id,
-                    firstNameAndLastName: session?.user?.firstNameAndLastName,
-                    role: session?.user?.role?.name,
-                  },
-                  havaleh: {
-                    id: havalehId,
-                    transportationName,
-                    transportationTelephone,
-                    transportationTelephone2,
-                    description,
-                    corporation: {
-                      id: corporationRepresentativeId,
-                      name:
-                        (
-                          await prisma.place.findFirst({
-                            where: { id: corporationRepresentativeId },
-                          })
-                        )?.name ?? 'unknown',
-                    },
-                    assets: { ...assets, ...aggregatedAssets },
-                  },
-                },
-              ],
-        },
-      });
-      return createdWorkflow;
+              await prisma.workflow.findMany({
+                orderBy: { dateCreated: 'desc' },
+              })
+            ).shift()?.workflowNumber ?? '0'
+          ) + 1
+        ).toString();
+      }
     },
     async confirmReceiptByHospital(
       _,
@@ -1322,7 +1436,9 @@ const resolvers: Resolvers = {
       const existingWorkflow = await prisma.workflow.findUnique({
         where: { workflowNumber },
       });
-
+      const currentConfig = await prisma.config.findFirst({
+        where: { current: true },
+      });
       const o: any = [];
       if (assets) {
         Object.entries(
@@ -1355,9 +1471,10 @@ const resolvers: Resolvers = {
             );
           });
       }
+
       // update enter workflow
-      if (havalehId) {
-        const updatedWorkflow = await prisma.workflow.update({
+      if (havalehId && !currentConfig?.ignoreRFID) {
+        const updatedWorkflow = prisma.workflow.update({
           where: {
             workflowNumber,
           },
@@ -1389,9 +1506,72 @@ const resolvers: Resolvers = {
             ],
           },
         });
-        return updatedWorkflow;
-      } else {
-        const updatedWorkflow = await prisma.workflow.update({
+        const transaction = await prisma.$transaction([updatedWorkflow, ...o]);
+
+        return transaction[0];
+      } else if (havalehId && currentConfig?.ignoreRFID) {
+        const updatedWorkflow = prisma.workflow.update({
+          where: {
+            workflowNumber,
+          },
+          data: {
+            nextStageName: '',
+            passedStages: [
+              existingWorkflow?.passedStages?.[0] as any,
+              {
+                stageID: 2,
+                stageName: 'تایید تحویل کپسول به بیمارستان',
+                submittedByUser: {
+                  id: session?.user?.id,
+                  firstNameAndLastName: session?.user?.firstNameAndLastName,
+                  role: session?.user?.role?.name,
+                },
+                havaleh: {
+                  id: havalehId + 'edited',
+                  deliverer,
+                  transportationName,
+                  transportationTelephone,
+                  transportationTelephone2,
+                  description,
+                  receivingDescription,
+                  assets:
+                    assets ||
+                    existingWorkflow?.passedStages?.[0]?.havaleh?.assets,
+                },
+              },
+              {
+                stageID: 3,
+                stageName: 'RFID ثبت ورود کپسول به انبار توسط',
+                submittedByUser: {
+                  id: session?.user?.id,
+                  firstNameAndLastName: session?.user?.firstNameAndLastName,
+                  role: session?.user?.role?.name,
+                },
+                havaleh: {
+                  assets:
+                    assets ||
+                    existingWorkflow?.passedStages?.[0]?.havaleh?.assets,
+                },
+              },
+            ],
+          },
+        });
+        const transaction = await prisma.$transaction([updatedWorkflow, ...o]);
+        Object.entries(
+          giveMeAggregatedAssets(
+            existingWorkflow?.passedStages?.[0]?.havaleh?.assets as any
+          )
+        ).forEach(([k, v]) => {
+          o.push(
+            prisma.equipment.update({
+              where: { terminologyCode: k },
+              data: { available: { increment: v as number } },
+            })
+          );
+        });
+        return transaction[0];
+      } else if (!havalehId && !currentConfig?.ignoreRFID) {
+        const updatedWorkflow = prisma.workflow.update({
           where: {
             workflowNumber,
           },
@@ -1414,7 +1594,46 @@ const resolvers: Resolvers = {
             ],
           },
         });
-        return updatedWorkflow;
+        const transaction = await prisma.$transaction([updatedWorkflow, ...o]);
+        return transaction[0];
+      } else if (!havalehId && currentConfig?.ignoreRFID) {
+        const updatedWorkflow = prisma.workflow.update({
+          where: {
+            workflowNumber,
+          },
+          data: {
+            nextStageName: '',
+            passedStages: [
+              existingWorkflow?.passedStages?.[0] as any,
+              {
+                stageID: 2,
+                stageName: 'تایید تحویل کپسول به بیمارستان',
+                submittedByUser: {
+                  id: session?.user?.id,
+                  firstNameAndLastName: session?.user?.firstNameAndLastName,
+                  role: session?.user?.role?.name,
+                },
+                havaleh: {
+                  receivingDescription,
+                },
+              },
+              {
+                stageID: 3,
+                stageName: 'RFID ثبت ورود کپسول به انبار توسط',
+                submittedByUser: {
+                  id: session?.user?.id,
+                  firstNameAndLastName: session?.user?.firstNameAndLastName,
+                  role: session?.user?.role?.name,
+                },
+                havaleh: {
+                  assets: existingWorkflow?.passedStages?.[0]?.havaleh?.assets,
+                },
+              },
+            ],
+          },
+        });
+        const transaction = await prisma.$transaction([updatedWorkflow, ...o]);
+        return transaction[0];
       }
     },
     async confirmReceiptByCorporation(
@@ -1600,19 +1819,59 @@ const resolvers: Resolvers = {
       if (!session || !(await canCreateLicense(session))) {
         throw new GraphQLYogaError('Unauthorized');
       }
-      const updatedStates = prisma.asset.updateMany({
-        where: { id: { in: checkedAssetsIds as string[] } },
-        data: {
-          status:
-            processId === 1
-              ? 'موجود در بیمارستان'
-              : processId === 2
-              ? 'در حال ارسال'
-              : '',
-        },
-      });
+
       const o: any = [];
-      if (processId === 2) {
+      // Enter Hospital Workflow
+      if (processId === 1) {
+        const updatedStates = prisma.asset.updateMany({
+          where: { id: { in: checkedAssetsIds as string[] } },
+          data: {
+            status: 'موجود در بیمارستان',
+          },
+        });
+        Object.entries(assets).forEach(([k, v]) => {
+          o.push(
+            prisma.equipment.update({
+              where: { terminologyCode: k },
+              data: { available: { increment: v as number } },
+            })
+          );
+        });
+        const updatedWorkflow = prisma.workflow.update({
+          where: { workflowNumber },
+          data: {
+            nextStageName: '',
+            passedStages: {
+              push: {
+                stageID: 3,
+                stageName: 'RFID ثبت ورود کپسول به انبار توسط',
+                submittedByUser: {
+                  id: session?.user?.id,
+                  firstNameAndLastName: session?.user?.firstNameAndLastName,
+                  role: session?.user?.role?.name,
+                },
+                havaleh: {
+                  assets,
+                },
+              },
+            },
+          },
+        });
+        const t = await prisma.$transaction([
+          updatedStates,
+          updatedWorkflow,
+          ...o,
+        ]);
+        return t[1];
+      }
+      // Exit Hospital Workflow
+      else if (processId === 2) {
+        const updatedStates = prisma.asset.updateMany({
+          where: { id: { in: checkedAssetsIds as string[] } },
+          data: {
+            status: 'در حال ارسال',
+          },
+        });
         Object.entries(assets).forEach(([k, v]) => {
           o.push(
             prisma.equipment.update({
@@ -1621,64 +1880,45 @@ const resolvers: Resolvers = {
             })
           );
         });
-      }
-      const updatedWorkflow = prisma.workflow.update({
-        where: { workflowNumber },
-        data:
-          processId === 1
-            ? {
-                nextStageName: '',
-                passedStages: {
-                  push: {
-                    stageID: 3,
-                    stageName: 'RFID ثبت ورود کپسول به انبار توسط',
-                    submittedByUser: {
-                      id: session?.user?.id,
-                      firstNameAndLastName: session?.user?.firstNameAndLastName,
-                      role: session?.user?.role?.name,
-                    },
-                    havaleh: {
-                      assets,
-                    },
-                  },
+        const updatedWorkflow = prisma.workflow.update({
+          where: { workflowNumber },
+          data: {
+            nextStageName: 'تایید تحویل به شرکت',
+            passedStages: {
+              push: {
+                stageID: 3,
+                stageName: 'RFID ثبت خروج کپسول از انبار توسط',
+                submittedByUser: {
+                  id: session?.user?.id,
+                  firstNameAndLastName: session?.user?.firstNameAndLastName,
+                  role: session?.user?.role?.name,
                 },
-              }
-            : {
-                nextStageName: 'تایید تحویل به شرکت',
-                passedStages: {
-                  push: {
-                    stageID: 3,
-                    stageName: 'RFID ثبت خروج کپسول از انبار توسط',
-                    submittedByUser: {
-                      id: session?.user?.id,
-                      firstNameAndLastName: session?.user?.firstNameAndLastName,
-                      role: session?.user?.role?.name,
-                    },
-                    havaleh: {
-                      assets,
-                    },
-                  },
+                havaleh: {
+                  assets,
                 },
               },
-      });
-      const t = await prisma.$transaction([
-        updatedStates,
-        updatedWorkflow,
-        ...o,
-      ]);
-      return t[1];
+            },
+          },
+        });
+        const t = await prisma.$transaction([
+          updatedStates,
+          updatedWorkflow,
+          ...o,
+        ]);
+        return t[1];
+      }
     },
-    async updateCurrentConfig(_, { id, ignoreManagerApproval }, _context) {
+    async updateCurrentConfig(_, { id, ignoreManagerApproval, ignoreRFID }, _context) {
       // check authentication and permission
       const { req } = _context;
       const session = await getSession({ req });
       // manager recognition
-      if (!session || !(await canDeleteLicenses(session))) {
+      if (!session || !(isManager(session))) {
         throw new GraphQLYogaError('Unauthorized');
       }
       return await prisma.config.update({
         where: { id },
-        data: { ignoreManagerApproval },
+        data: { ignoreManagerApproval, ignoreRFID },
       });
     },
     async approveExitWorkflow(_, { workflowNumber }, _context): Promise<any> {
@@ -1689,8 +1929,16 @@ const resolvers: Resolvers = {
       if (!session || session?.user?.role?.name !== 'مدیریت') {
         throw new GraphQLYogaError('Unauthorized');
       }
-      return (
-        await prisma.workflow.update({
+      const currentConfig = await prisma.config.findFirst({
+        where: { current: true },
+      });
+      const o: any = [];
+      // RFID is shut down
+      if (currentConfig?.ignoreRFID) {
+        const stage1 = await prisma.workflow.findFirst({
+          where: { workflowNumber },
+        });
+        const stage2 = prisma.workflow.update({
           where: { workflowNumber },
           data: {
             nextStageName: 'RFID ثبت خروج کپسول از انبار توسط',
@@ -1706,8 +1954,64 @@ const resolvers: Resolvers = {
               },
             },
           },
-        })
-      ).workflowNumber;
+        });
+
+        const stage3 = prisma.workflow.update({
+          where: { workflowNumber },
+          data: {
+            nextStageName: 'تایید تحویل به شرکت',
+            passedStages: {
+              push: {
+                stageID: 3,
+                stageName: 'RFID ثبت خروج کپسول از انبار توسط',
+                submittedByUser: {
+                  id: session?.user?.id,
+                  firstNameAndLastName: session?.user?.firstNameAndLastName,
+                  role: session?.user?.role?.name,
+                },
+                havaleh: {
+                  assets: { ...stage1?.passedStages?.[0]?.havaleh?.assets },
+                },
+              },
+            },
+          },
+        });
+        Object.entries(
+          giveMeAggregatedAssets(
+            stage1?.passedStages?.[0]?.havaleh
+              ?.assets as AggregatedTransferedAssets
+          )
+        ).forEach(([k, v]) => {
+          o.push(
+            prisma.equipment.update({
+              where: { terminologyCode: k },
+              data: { sending: { increment: v as number } },
+            })
+          );
+        });
+        const transaction = await prisma.$transaction([stage2, stage3, ...o]);
+        return transaction?.[0]?.workflowNumber;
+      } else {
+        return (
+          await prisma.workflow.update({
+            where: { workflowNumber },
+            data: {
+              nextStageName: 'RFID ثبت خروج کپسول از انبار توسط',
+              passedStages: {
+                push: {
+                  stageID: 2,
+                  stageName: 'قبول درخواست توسط مدیریت',
+                  submittedByUser: {
+                    id: session?.user?.id,
+                    firstNameAndLastName: session?.user?.firstNameAndLastName,
+                    role: session?.user?.role?.name,
+                  },
+                },
+              },
+            },
+          })
+        )?.workflowNumber;
+      }
     },
   },
   Person: {

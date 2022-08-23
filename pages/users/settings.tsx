@@ -21,9 +21,9 @@ export default function settings() {
     UpdateCurrentConfigDocument
   );
   const submitHandler = useCallback(
-    async (id: string, ignoreManagerApproval: boolean) => {
+    async (id: string, ignoreManagerApproval: boolean, ignoreRFID: boolean) => {
       const r = await updateCurrentConfigMutation({
-        variables: { id, ignoreManagerApproval },
+        variables: { id, ignoreManagerApproval, ignoreRFID },
         refetchQueries: [
           { query: GetCurrentConfigDocument },
           'getCurrentConfigDocument',

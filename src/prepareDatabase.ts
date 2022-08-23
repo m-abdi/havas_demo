@@ -80,6 +80,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         receiving: 0,
         outsourced: 0,
         sending: 0,
+        available: 0,
       },
       {
         name: 'اکسیژن ۴۰ لیتری',
@@ -89,6 +90,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         receiving: 0,
         outsourced: 0,
         sending: 0,
+        available: 0,
       },
       {
         name: 'گاز بیهوشی ۵۰ لیتری',
@@ -98,6 +100,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         receiving: 0,
         outsourced: 0,
         sending: 0,
+        available: 0,
       },
       {
         name: 'گاز بیهوشی ۴۰ لیتری',
@@ -107,6 +110,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         receiving: 0,
         outsourced: 0,
         sending: 0,
+        available: 0,
       },
       {
         name: 'شفت ۵۰ لیتری',
@@ -116,6 +120,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         receiving: 0,
         outsourced: 0,
         sending: 0,
+        available: 0,
       },
       {
         name: 'شفت ۴۰ لیتری',
@@ -125,6 +130,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         receiving: 0,
         outsourced: 0,
         sending: 0,
+        available: 0,
       },
       {
         name: 'شیر کنترل ۵۰ لیتری',
@@ -134,6 +140,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         receiving: 0,
         outsourced: 0,
         sending: 0,
+        available: 0,
       },
       {
         name: 'شیر کنترل ۴۰ لیتری',
@@ -143,6 +150,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         receiving: 0,
         outsourced: 0,
         sending: 0,
+        available: 0,
       },
       {
         name: 'co2 ۵۰ لیتری',
@@ -152,6 +160,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         receiving: 0,
         outsourced: 0,
         sending: 0,
+        available: 0,
       },
       {
         name: 'co2 ۴۰ لیتری',
@@ -161,6 +170,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         receiving: 0,
         outsourced: 0,
         sending: 0,
+        available: 0,
       },
       {
         name: 'آرگون ۵۰ لیتری',
@@ -170,6 +180,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         receiving: 0,
         outsourced: 0,
         sending: 0,
+        available: 0,
       },
       {
         name: 'آرگون ۴۰ لیتری',
@@ -179,6 +190,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         receiving: 0,
         outsourced: 0,
         sending: 0,
+        available: 0,
       },
       {
         name: 'ازت ۵۰ لیتری',
@@ -188,6 +200,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         receiving: 0,
         outsourced: 0,
         sending: 0,
+        available: 0,
       },
       {
         name: 'ازت ۴۰ لیتری',
@@ -197,6 +210,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         receiving: 0,
         outsourced: 0,
         sending: 0,
+        available: 0,
       },
       {
         name: 'هوای خشک ۵۰ لیتری',
@@ -206,6 +220,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         receiving: 0,
         outsourced: 0,
         sending: 0,
+        available: 0,
       },
       {
         name: 'هوای خشک ۴۰ لیتری',
@@ -215,6 +230,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         receiving: 0,
         outsourced: 0,
         sending: 0,
+        available: 0,
       },
       {
         name: 'آنتونکس ۵۰ لیتری',
@@ -224,6 +240,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         receiving: 0,
         outsourced: 0,
         sending: 0,
+        available: 0,
       },
       {
         name: 'آنتونکس ۴۰ لیتری',
@@ -233,6 +250,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         receiving: 0,
         outsourced: 0,
         sending: 0,
+        available: 0,
       },
       {
         name: 'استیلن ۵۰ لیتری',
@@ -242,6 +260,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         receiving: 0,
         outsourced: 0,
         sending: 0,
+        available: 0,
       },
       {
         name: 'استیلن ۴۰ لیتری',
@@ -251,6 +270,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         receiving: 0,
         outsourced: 0,
         sending: 0,
+        available: 0,
       },
       {
         name: 'گاز مایع ۵۰ لیتری',
@@ -260,6 +280,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         receiving: 0,
         outsourced: 0,
         sending: 0,
+        available: 0,
       },
       {
         name: 'گاز مایع ۴۰ لیتری',
@@ -269,6 +290,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         receiving: 0,
         outsourced: 0,
         sending: 0,
+        available: 0,
       },
     ],
   });
