@@ -71,7 +71,6 @@ describe('interaction test for NewPerson page', () => {
         }}
         workflowNumber={testNewEnterWorkflowData?.workflowNumber}
         createNewHandler={onSubmitSpy}
-        dateT={testNewEnterWorkflowData?.date}
       />,
       {
         props: {

@@ -1018,7 +1018,11 @@ const resolvers: Resolvers = {
       // check authentication and permission
       const { req } = _context;
       const session = await getSession({ req });
-      if (!session || !(await canCreateEnterDeliverExit(session))) {
+      if (
+        !session ||
+        (!(await canCreateEnterDeliverExit(session)) &&
+          !(await canCreateLicense(session)))
+      ) {
         throw new GraphQLYogaError('Unauthorized');
       }
       // // new assets that must be created

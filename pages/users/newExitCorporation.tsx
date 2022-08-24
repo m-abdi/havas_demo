@@ -21,21 +21,22 @@ export default function newExitCorporation() {
   const { data: session, status } = useSession();
   //
   // get workflow number from server
-  const { data, loading } = useQuery(GetWorkflowNumberDocument, {fetchPolicy: "cache-and-network"});
+  // const { data, loading } = useQuery(GetWorkflowNumberDocument, {fetchPolicy: "cache-and-network"});
   const { sending, createNewEnter } = useWorkflows();
   return (
     <Layout pageName={pageName}>
 
       <ExitCorporation
         editable={true}
-        loading={loading || status === 'loading'}
+        loading={status === 'loading'}
         sending={sending}
         createNewHandler={createNewEnter}
-        workflowNumber={data?.getWorkflowNumber as string}
+        // workflowNumber={data?.getWorkflowNumber as string}
         corporationRepresentative={{
           id: session?.user?.id as string,
           label: session?.user?.firstNameAndLastName as string,
         }}
+        hospitalClient={Boolean(!session?.user?.role?.createEnterDeliverExit)}
       />
     </Layout>
   );

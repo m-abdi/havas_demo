@@ -10,6 +10,7 @@ import Layout from '../../src/Components/Atomic/Layout';
 import SentToCorporations from './approvedExitWorkflows';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import PrimaryButton from '@/src/Components/Atomic/PrimaryButton';
 
 const pageName = 'حواله های ورودی';
 interface TabPanelProps {
@@ -65,25 +66,21 @@ export default function AssetExitWorkflowsTables() {
         <TabPanel value={tabValue} index={2}>
           <EnteredWarehouseRFID />
         </TabPanel>
-        {/* <Box
-          sx={{
-            position: 'fixed',
-            top: 72,
-            right: 'calc(110px + 20px)',
-            zIndex: 40,
+        <PrimaryButton
+          id='newWorkflowButton'
+          right='calc(120px + 20px)'
+          icon='ADD'
+          ariaLabel='ایجاد'
+          label='ایجاد'
+          size='large'
+          variant='contained'
+          fabVariant='circular'
+          color='success'
+          disabled={Boolean(!session?.user?.role?.createLicense)}
+          onClick={() => {
+            router.push('/users/newExitCorporation');
           }}
-        >
-          <Button
-            label='ایجاد'
-            size='large'
-            color='success'
-            variant='contained'
-            disabled={!session?.user?.role?.createLicense}
-            onClick={() => {
-              router.push('/users/newExitCorporation');
-            }}
-          />
-        </Box> */}
+        />
       </Box>
     </Layout>
   );

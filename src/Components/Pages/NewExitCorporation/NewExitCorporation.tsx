@@ -24,6 +24,7 @@ import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import SolarHijri from 'react-date-object/calendars/persian';
 import SolarHijriFarsi from 'react-date-object/locales/persian_fa';
 import { useForm } from 'react-hook-form';
+import { truncate } from 'cypress/types/lodash';
 
 const Form1 = styled('form', { name: 'form1' })(({ theme }) => ({
   flexBasis: '100%',
@@ -103,7 +104,7 @@ export default function ExitCorporation({
   existingWorkflow = null,
   createNewHandler,
   confirmEnterHandler,
-  dateT,
+  hospitalClient = false, // when the warehouse keeper wants to submit a new workflow and havalehId should not be necessary
 }: {
   loading: boolean;
   sending: boolean;
@@ -111,7 +112,7 @@ export default function ExitCorporation({
   workflowNumber?: string;
   corporationRepresentative?: { id: string; label: string };
   existingWorkflow?: any;
-  dateT?: any;
+  hospitalClient?: boolean;
   createNewHandler?: (
     workflowNumber: string,
     havalehId: string,
@@ -380,7 +381,7 @@ export default function ExitCorporation({
               id='havalehId'
               inputProps={{
                 ...register('havalehId', {
-                  required: true,
+                  required: hospitalClient ? false : true,
                   value: existingWorkflow?.passedStages?.[0]?.havaleh?.id,
                 }),
               }}
@@ -463,7 +464,7 @@ export default function ExitCorporation({
               disabled={!editable}
               inputProps={{
                 ...register('transportationName', {
-                  required: true,
+                  required: hospitalClient ? false : true,
                   value:
                     existingWorkflow?.passedStages?.[0]?.havaleh
                       ?.transportationName,
@@ -484,7 +485,7 @@ export default function ExitCorporation({
               disabled={!editable}
               inputProps={{
                 ...register('transportationTelephone', {
-                  required: true,
+                  required: hospitalClient ? false : true,
                   value:
                     existingWorkflow?.passedStages?.[0]?.havaleh
                       ?.transportationTelephone,
@@ -582,7 +583,7 @@ export default function ExitCorporation({
             />
           )}
         </Row1>
-        
+
         <PrimaryButton
           id='submitButton'
           size='large'
