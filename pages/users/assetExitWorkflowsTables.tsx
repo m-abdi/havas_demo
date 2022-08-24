@@ -79,7 +79,7 @@ export default function AssetExitWorkflowsTables() {
         </TabPanel>
       </Box>
       <PrimaryButton
-        id='submitButton'
+        id='newWorkflowButton'
         right='calc(120px + 20px)'
         icon='ADD'
         ariaLabel='ایجاد'

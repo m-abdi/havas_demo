@@ -47,18 +47,12 @@ import isManager from '../src/isManager';
 import prisma from '../prisma/client';
 import toNestedObject from '../src/Logic/toNestedObject';
 
-function giveMeAggregatedAssets(assets: AggregatedTransferedAssets): any {
-  const aggregatedAssets: any = {};
-  Object.entries(assets as TransferedAssets)
-    .map(([key, value]) => [
-      key.replace('_factory', '').replace('_customer', ''),
-      value,
-    ])
-    ?.forEach(([k, v]) => {
-      aggregatedAssets[String(k)] = aggregatedAssets[String(k)]
-        ? aggregatedAssets[String(k)] + v
-        : v;
-    });
+function giveMeJustAggCounts(assets: AggregatedTransferedAssets): any {
+  return Object.fromEntries(
+    Object.entries(assets).filter(
+      ([k, v]) => !/factory/.test(k) && !/customer/.test(k) && v
+    )
+  );
 }
 const resolvers: Resolvers = {
   Query: {
@@ -278,7 +272,6 @@ const resolvers: Resolvers = {
           },
           where: parsedFilters,
         });
-        console.log(equipmentsDB);
 
         return equipmentsDB?.map((e: any) => ({
           ...e,
@@ -442,7 +435,6 @@ const resolvers: Resolvers = {
         orderBy: { dateCreated: 'desc' },
         include: { instanceOfProcess: true },
       });
-      console.log(workflows.length);
 
       return workflows as any;
     },
@@ -559,7 +551,6 @@ const resolvers: Resolvers = {
             await prisma.workflow.findMany({ orderBy: { dateCreated: 'desc' } })
           ).shift()?.workflowNumber ?? '0'
         ) + 1;
-      console.log(newNumber);
 
       return newNumber.toString();
     },
@@ -1172,10 +1163,8 @@ const resolvers: Resolvers = {
           ],
         },
       });
-      console.log(o);
 
       const t = await prisma.$transaction([...o, createdWorkflow]);
-      console.log(t);
 
       return t?.[1]?.id ?? '';
     },
@@ -1558,7 +1547,7 @@ const resolvers: Resolvers = {
         });
         const transaction = await prisma.$transaction([updatedWorkflow, ...o]);
         Object.entries(
-          giveMeAggregatedAssets(
+          giveMeJustAggCounts(
             existingWorkflow?.passedStages?.[0]?.havaleh?.assets as any
           )
         ).forEach(([k, v]) => {
@@ -1976,8 +1965,10 @@ const resolvers: Resolvers = {
             },
           },
         });
+        
+        
         Object.entries(
-          giveMeAggregatedAssets(
+          giveMeJustAggCounts(
             stage1?.passedStages?.[0]?.havaleh
               ?.assets as AggregatedTransferedAssets
           )

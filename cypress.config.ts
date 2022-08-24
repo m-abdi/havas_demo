@@ -168,11 +168,17 @@ export default defineConfig({
               }
             });
         },
-        changeConfig: (ignoreManagerApproval: boolean) => {
+        changeConfig: ({
+          ignoreManagerApproval,
+          ignoreRFID,
+        }: {
+          [key: string]: boolean;
+        }) => {
           return prisma.config
             .updateMany({
               data: {
                 ignoreManagerApproval,
+                ignoreRFID: ignoreRFID ?? false
               },
             })
             .then((r) => {
