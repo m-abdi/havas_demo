@@ -435,7 +435,10 @@ const resolvers: Resolvers = {
         orderBy: { dateCreated: 'desc' },
         include: { instanceOfProcess: true },
       });
-
+      console.log(filters);
+      
+      console.log(workflows);
+      
       return workflows as any;
     },
     async assetTransferWorkflowsCount(_, _args, _context): Promise<number> {

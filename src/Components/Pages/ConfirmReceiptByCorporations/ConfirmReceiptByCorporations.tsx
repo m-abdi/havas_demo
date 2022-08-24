@@ -60,6 +60,9 @@ import styled from 'styled-components';
 import toNestedObject from '../../../Logic/toNestedObject';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import AggregatedTable from '../../Atomic/AggregatedTable';
+import { useForm } from 'react-hook-form';
+import EditableHtmlTable from '../../Atomic/EditableHtmlTable';
 
 interface Props {
   indeterminate?: boolean;
@@ -167,10 +170,11 @@ export default memo(function ConfirmReceiptByCorporations({
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [detailsDialog, setDetailsDialog] = useState(false);
   const [rawFilters, setRawFilters] = useState({});
-
+const [hDetailsDialog, setHDetailsDialog] = useState(false)
   // const [value, setValue] = React.useState(globalFilter);
   
   // other hooks
+  const {reset, setValue, register} = useForm()
   const { data: session } = useSession();
   const router = useRouter();
   // handlers
@@ -238,7 +242,20 @@ export default memo(function ConfirmReceiptByCorporations({
       },
       {
         Header: 'جزییات حواله',
-        accessor: 'ee', // accessor is the "key" in the data
+        accessor: (d: any) => {
+          return (
+            <Button
+              label='مشاهده'
+              color='info'
+              onClick={(e) => {
+                flushSync(() => {
+                  setChoosedRow(d);
+                });
+                setHDetailsDialog(true);
+              }}
+            />
+          );
+        },
       },
       {
         Header: 'امانتی',
@@ -444,7 +461,6 @@ export default memo(function ConfirmReceiptByCorporations({
       ]);
     }
   );
-
   return (
     <Box sx={{ maxInlineSize: '100%', position: 'relative' }}>
       {/* <button onClick={resetResizing}>Reset Resizing</button> */}
@@ -553,7 +569,7 @@ export default memo(function ConfirmReceiptByCorporations({
                                   }),
                                 });
                                 console.log(filters);
-                                
+
                                 fetchMoreRows(e, 0);
                               }, 1000);
                             }}
@@ -788,6 +804,56 @@ export default memo(function ConfirmReceiptByCorporations({
             warehouseRegisteredAssets={
               choosedRow?.passedStages?.[2].havaleh?.assets
             }
+          />
+        </DialogContent>
+      </Dialog>
+      <Dialog
+        sx={{ zIndex: 7000 }}
+        open={hDetailsDialog}
+        maxWidth='lg'
+        onClose={() => setHDetailsDialog(false)}
+      >
+        <DialogTitle sx={{ textAlign: 'center' }}>
+          <Stack
+            direction='row'
+            alignItems='center'
+            justifyContent={'space-between'}
+          >
+            <span style={{ inlineSize: '10%' }}>
+              <IconButton onClick={() => setHDetailsDialog(false)}>
+                <CloseRoundedIcon />
+              </IconButton>
+            </span>
+            <Typography
+              variant='h5'
+              component='h2'
+              sx={{ flexGrow: 1, textAlign: 'center' }}
+            >
+              جزئیات حواله
+            </Typography>
+            <span style={{ inlineSize: '10%' }}></span>
+          </Stack>
+        </DialogTitle>
+        <DialogContent sx={{ position: 'relative', p: 5 }}>
+          <EditableHtmlTable
+            selectedColumns={[
+              'اکسیژن',
+              'گاز بیهوشی',
+              'شفت-فلکه',
+              'شیر کنترل',
+              'Co2',
+              'آرگون',
+              'ازت',
+              'هوای خشک',
+              'آنتونکس',
+              'استیلن',
+              'گاز مایع',
+            ]}
+            setValue={setValue}
+            register={register}
+            assets={choosedRow?.passedStages?.[0]?.havaleh?.assets}
+            editable={false}
+            reset={reset}
           />
         </DialogContent>
       </Dialog>
