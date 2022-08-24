@@ -287,19 +287,26 @@ function Layout({ children, pageName }) {
           roleName: 'deleteLicense',
         },
         {
+          text: 'تاریخچه گردش کارها',
+          icon: <SearchRoundedIcon />,
+          path: '/users/workflowsForCorporationStaff',
+          roleName: 'createEnterDeliverExit',
+        },
+        {
           text: 'ورود',
           icon: <FileDownloadRoundedIcon />,
           path: '/users/assetEnterWorkflowsTables',
           roleName: 'viewLicense',
           category: 'ورود',
         },
+
         {
-          text: 'ثبت خروج از شرکت',
-          icon: <AddCircleOutlineOutlined />,
-          path: '/users/newExitCorporation',
+          text: 'خروج از شرکت',
+          icon: <FileUploadRoundedIcon />,
+          path: '/users/enterWorkflowsTableCorporation',
           roleName: 'createEnterDeliverExit',
           category: 'ورود',
-          id: "enterWorkflows",
+          id: 'enterWorkflows',
         },
 
         {
@@ -308,13 +315,13 @@ function Layout({ children, pageName }) {
           path: '/users/assetExitWorkflowsTables',
           roleName: 'viewLicense',
           category: 'خروج',
-          id: "exitWorkflows"
+          id: 'exitWorkflows',
         },
 
         {
-          text: 'تایید تحویل به شرکت',
-          icon: <AddCircleOutlineOutlined />,
-          path: '/users/confirmReceiptByCorporation',
+          text: 'ورود به شرکت',
+          icon: <FileDownloadRoundedIcon />,
+          path: '/users/exitWorkflowsTableCorporation',
           roleName: 'createEnterDeliverExit',
           category: 'خروج',
         },

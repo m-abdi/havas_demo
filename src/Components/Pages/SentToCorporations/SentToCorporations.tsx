@@ -948,31 +948,30 @@ export default memo(function SentToCorporations({
           />
         </DialogContent>
       </Dialog>
-      {/* {session?.user?.role?.editPerson ? (
-        <Menu
-          anchorEl={rowOptionsAnchorElement}
-          open={rowOptionsOpen}
-          onClose={handleRowOptionsClose}
-        >
-          {session?.user?.role?.['editPerson'] ? (
-            <MenuItem>
-              <Button
-                id={choosedRow?.terminologyCode + '-edit'}
-                startIcon={<EditRoundedIcon />}
-                variant='text'
-                onClick={() =>
-                  router.push(
-                    `/users/newEquipment?edit=1&equipment=${JSON.stringify(
-                      choosedRow
-                    )}`
-                  )
-                }
-                label='ویرایش'
-              />
-            </MenuItem>
-          ) : null}
-        </Menu>
-      ) : null} */}
+
+      {/* <Menu
+        anchorEl={rowOptionsAnchorElement}
+        open={rowOptionsOpen}
+        onClose={handleRowOptionsClose}
+      >
+        {session?.user?.role?.createEnterDeliverExit && (
+          <MenuItem>
+            <Button
+              id={choosedRow?.workflowNumber + '-confirm'}
+              startIcon={<CheckRoundedIcon />}
+              variant='text'
+              onClick={() =>
+                router.push(
+                  `/users/confirmReceiptByCorporation/?workflow=${JSON.stringify(
+                    choosedRow
+                  )}`
+                )
+              }
+              label='تایید ورود به شرکت'
+            />
+          </MenuItem>
+        )}
+      </Menu> */}
     </Box>
   );
 });

@@ -23,7 +23,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { Check, Satellite } from '@mui/icons-material';
 import DatePicker, { Calendar } from 'react-multi-date-picker';
 /* eslint-disable react/jsx-key */
 import React, { useEffect, useMemo, useState } from 'react';
@@ -42,15 +41,17 @@ import {
 import { Button } from '../../Atomic/Button';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import ContradictionTable from '../../Atomic/ContradictionTable/ContradictionTable';
 import DeleteDialog from '../../Atomic/DeleteRolesDialog';
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import EditableHtmlTable from '../../Atomic/EditableHtmlTable';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
+import { Satellite } from '@mui/icons-material';
 import { Session } from 'next-auth';
-import { Workflow } from 'lib/graphql-operations';
+import { Workflow } from '../../../../lib/resolvers-types';
+import WorkflowStageModal from '../../Atomic/WorkflowStagesModal';
 import { flushSync } from 'react-dom';
 import matchSorter from 'match-sorter';
 /* eslint-disable react/jsx-filename-extension */
@@ -59,7 +60,6 @@ import persianCalender from 'react-date-object/calendars/persian';
 import persianLocale from 'react-date-object/locales/persian_fa';
 import styled from 'styled-components';
 import toNestedObject from '../../../Logic/toNestedObject';
-import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
@@ -67,21 +67,7 @@ interface Props {
   indeterminate?: boolean;
   name?: string;
 }
-interface DataType {
-  name: string;
-  model: string;
-  factory: string;
-  serialNumber: string;
-  productionYear: string;
-  installationYear: string;
-  terminologyCode: string;
-  hasInstructions: boolean;
-  supportCompany: { name: string };
-  supportTelephone1: string;
-  supportTelephone2: string;
-  createdAt: string;
-  editedAt: string;
-}
+
 const Styles = styled.div`
   padding: 1rem;
 
@@ -148,7 +134,7 @@ const Styles = styled.div`
   }
 `;
 var delayTimer: any;
-export default memo(function ExitCorporations({
+export default function WorkflowsForCorporationStaff({
   loading,
   deleting,
   data = [],
@@ -159,7 +145,7 @@ export default memo(function ExitCorporations({
   offset,
   setFilters,
   fetchMoreRows,
-  allEquipmentsCount: allequipmentsCount,
+  allWorkflowsCount,
   deleteHandler,
 }: {
   loading: boolean;
@@ -171,22 +157,21 @@ export default memo(function ExitCorporations({
   setItemsPerPage: any;
   filters: any;
   setFilters: any;
-  allEquipmentsCount: number;
+  allWorkflowsCount: number;
   fetchMoreRows: (e: any, page: number) => void;
-  deleteHandler: (ids: string[], query: string) => Promise<void>;
+  deleteHandler: (ids: string[]) => Promise<void>;
 }) {
   //  states
   const [rowOptionsAnchorElement, setRowOptionsAnchorElement] =
     useState<null | HTMLElement>(null);
   const [choosedRow, setChoosedRow] = useState<any>('');
+  const [rawFilters, setRawFilters] = useState({});
   const [hasInstructions, setHasInstructions] = useState<boolean>();
   const rowOptionsOpen = Boolean(rowOptionsAnchorElement);
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [detailsDialog, setDetailsDialog] = useState(false);
-  const [rawFilters, setRawFilters] = useState({});
 
-  //
-  const { register, reset } = useForm();
+  // const [value, setValue] = React.useState(globalFilter);
 
   // other hooks
   const { data: session } = useSession();
@@ -206,66 +191,37 @@ export default memo(function ExitCorporations({
   const columns: any = useMemo(
     () => [
       {
-        Header: 'شماره پیگیری',
-        accessor: 'workflowNumber', // accessor is the "key" in the data
-      },
-
-      {
-        Header: 'تاریخ ثبت فرم',
-        id: 'date',
-        accessor: (d: any) =>
-          // <DatePicker
-          //   calendar={persianCalender}
-          //   locale={persianLocale}
-          //   style={{ inlineSize: '100px', textAlign: "center", fontSize: 15, }}
-          //   value={parseInt(d?.dateCreated)}
-          // />
-          new Date(parseInt(d?.dateCreated)).toLocaleString('fa-IR'),
-      },
-      {
-        Header: 'نام شرکت',
-        accessor: 'passedStages[0].havaleh.corporation.name', // accessor is the "key" in the data
+        Header: 'شماره گردش کار',
+        accessor: 'workflowNumber',
         width: 200,
       },
 
       {
-        Header: 'نماینده شرکت',
-        accessor: 'passedStages[0].submittedByUser.firstNameAndLastName',
+        Header: 'شماره فرایند',
+        accessor: 'instanceOfProcess.processNumber',
       },
 
       {
-        Header: 'شماره حواله',
-        accessor: 'passedStages[0].havaleh.id',
+        Header: 'نام فرایند',
+        accessor: 'instanceOfProcess.processName',
       },
 
       {
-        Header: 'تحویل دهنده',
-        accessor: 'passedStages[0].havaleh.deliverer', // accessor is the "key" in the data
-      },
-      {
-        Header: 'نام ترابری',
-        accessor: 'passedStages[0].havaleh.transportationName', // accessor is the "key" in the data
-      },
-      {
-        Header: 'شماره تماس ترابری',
-        accessor: (data: any) => {
-          return (
-            <>
-              <div>{data?.passedStages[0].havaleh.transportationTelephone}</div>
-              <div>
-                {data?.passedStages[0].havaleh.transportationTelephone2}
-              </div>
-            </>
-          );
+        Header: 'مرحله فعلی',
+        accessor: (d: any) => {
+          return d?.passedStages?.[d?.passedStages.length - 1]?.stageName;
         },
-        id: 'passedStages[0].havaleh.transportationTelephone',
-        width: 200,
+      },
+
+      {
+        Header: 'مرحله بعدی',
+        accessor: 'nextStageName', // accessor is the "key" in the data
       },
       {
-        Header: 'جزيیات حواله',
-        id: 'details',
+        Header: 'جزئیات',
         disableSortBy: true,
         disableFilters: true,
+        id: 'details',
         accessor: (d: any) => {
           return (
             <Button
@@ -280,39 +236,40 @@ export default memo(function ExitCorporations({
             />
           );
         },
+        width: 110,
       },
       {
-        Header: 'امانتی',
-        id: 'borrowed',
-
+        Header: 'تاریخ شروع گردش کار',
         accessor: (d: any) => {
-          if (
-            Object.entries(d?.passedStages?.[0].havaleh?.assets ?? {})?.some(
-              ([key, value]) => value && /_factory/.test(key)
-            )
-          ) {
-            return <Button variant='contained' label='دارد' color='error' />;
+          return new Date(parseInt(d?.dateCreated)).toLocaleString('fa-IR');
+        },
+        width: 270,
+      },
+
+      {
+        Header: 'پایان',
+        id: 'ended',
+        disableSortBy: true,
+        disableFilters: true,
+        accessor: (d: any) => {
+          if (!d?.nextStageName) {
+            return <CheckRoundedIcon sx={{ color: 'green' }} />;
           } else {
-            return <Button variant='contained' label='ندارد' />;
+            return <CloseRoundedIcon sx={{ color: 'yellow' }} />;
           }
         },
+        width: 100,
       },
       {
-        Header: 'توضیحات ارسال',
-        accessor: 'passedStages[0].havaleh.description',
-        width: 300,
+        Header: 'تاریخ پایان گردش کار',
+        accessor: (d: any) => {
+          if (!d?.nextStageName) {
+            return new Date(parseInt(d?.dateModified)).toLocaleString('fa-IR');
+          }
+          return '';
+        },
+        width: 270,
       },
-      // {
-      //   id: 'hasInstructions',
-      //   Header: 'آموزش کاربری',
-      //   width: 180,
-      //   accessor: (d: any) =>
-      //     d.hasInstructions ? (
-      //       <DoneRoundedIcon sx={{ color: 'success.main' }} />
-      //     ) : (
-      //       <CloseRoundedIcon sx={{ color: 'error.main' }} />
-      //     ), // accessor is the "key" in the data
-      // },
     ],
     [offset, pageNumber]
   );
@@ -341,83 +298,19 @@ export default memo(function ExitCorporations({
     }),
     []
   );
-  // // Define a default UI for filtering
-  // function GlobalFilter({
-  //   preGlobalFilteredRows,
-  //   globalFilter,
-  //   setGlobalFilter,
-  // }) {
-  //   const count = preGlobalFilteredRows.length;
-  //   const onChange = useAsyncDebounce((value) => {
-  //     setGlobalFilter(value || undefined);
-  //   }, 200);
 
-  //   return (
-  //     <span>
-  //       Search:{' '}
-  //       <input
-  //         value={value || ''}
-  //         onChange={(e) => {
-  //           setValue(e.target.value);
-  //           onChange(e.target.value);
-  //         }}
-  //         placeholder={`${count} records...`}
-  //         style={{
-  //           fontSize: '1.1rem',
-  //           border: '0',
-  //         }}
-  //       />
-  //     </span>
-  //   );
-  // }
-  // Define a default UI for filtering
-  // function DefaultColumnFilter({
-  //   column: { filterValue, preFilteredRows, setFilter, id },
-  // }) {
-  //   const count = preFilteredRows.length;
-
-  //   return (
-  //     <TextField
-  //       size='small'
-  //       color='secondary'
-  //       variant='standard'
-  //       // value={filterValue || ''}
-  //       value={filters[id]}
-  //       onChange={(e) => {
-  //         setFilters({ ...filters, [id]: e.target.value });
-  //         // setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
-  //       }}
-  //       onClick={(e) => {
-  //         e.preventDefault();
-  //         e.stopPropagation();
-  //       }}
-  //       sx={{
-  //         color: 'whitesmoke',
-  //         inlineSize: '90%',
-  //         backgroundColor: 'whitesmoke',
-  //         borderRadius: '20px',
-  //         px: 1,
-  //       }}
-  //       InputProps={{
-  //         disableUnderline: true,
-  //       }}
-  //       placeholder={`جستجو ...`}
-  //     />
-  //   );
-  // }
   const defaultColumn = useMemo(
     () => ({
       minWidth: 30,
       width: 148,
       maxWidth: 400,
-      // Filter: DefaultColumnFilter,
     }),
     []
   );
   const useCombinedRefs = (...refs: any): React.MutableRefObject<any> => {
     const targetRef = React.useRef();
 
-    React.useEffect(() => {
+    useEffect(() => {
       refs.forEach((ref: any) => {
         if (!ref) return;
 
@@ -532,34 +425,6 @@ export default memo(function ExitCorporations({
     }
   );
 
-  // if (false) {
-  //   return (
-  //     <Box sx={{ maxInlineSize: '100%', position: 'relative' }}>
-  //       <Styles>
-  //         <TableContainer>
-  //           <Stack spacing={0.3}>
-  //             <Stack direction={'row'} alignItems='center' spacing={0.5}>
-  //               <Skeleton width={35} height={109} variant='rectangular' />
-  //               <Skeleton width={35} height={109} variant='rectangular' />
-  //               <Skeleton width={35} height={109} variant='rectangular' />
-  //               <Skeleton width={148} height={109} variant='rectangular' />
-  //               <Skeleton width={148} height={109} variant='rectangular' />
-  //               <Skeleton width={148} height={109} variant='rectangular' />
-  //               <Skeleton width={148} height={109} variant='rectangular' />
-  //               <Skeleton width={148} height={109} variant='rectangular' />
-  //               <Skeleton width={148} height={109} variant='rectangular' />
-  //               <Skeleton width={148} height={109} variant='rectangular' />
-  //               <Skeleton width={148} height={109} variant='rectangular' />
-  //               <Skeleton width={148} height={109} variant='rectangular' />
-  //               <Skeleton width={148} height={109} variant='rectangular' />
-  //               <Skeleton width={148} height={109} variant='rectangular' />
-  //             </Stack>
-  //           </Stack>
-  //         </TableContainer>
-  //       </Styles>
-  //     </Box>
-  //   );
-  // }
   return (
     <Box sx={{ maxInlineSize: '100%', position: 'relative' }}>
       {/* <button onClick={resetResizing}>Reset Resizing</button> */}
@@ -589,7 +454,7 @@ export default memo(function ExitCorporations({
                             'selectAll',
                             'options',
                             'details',
-                            'detailsOfHavaleh',
+                            'ended',
                           ].includes(column?.id) && column.isSorted ? (
                             column.isSortedDesc ? (
                               <KeyboardArrowDownRoundedIcon />
@@ -600,18 +465,21 @@ export default memo(function ExitCorporations({
                             ''
                           )}
                         </Stack>
-                        {![
-                          'index',
-                          'selectAll',
-                          'options',
-                          'downloads',
-                          'details',
-                          'detailsOfHavaleh',
-                          'date',
-                          'borrowed',
-                        ].includes(column?.id) && (
-                          <Divider flexItem variant='fullWidth' />
-                        )}
+                        <Divider
+                          flexItem
+                          variant='fullWidth'
+                          sx={{
+                            display: [
+                              'index',
+                              'selectAll',
+                              'options',
+                              'details',
+                              'ended',
+                            ].includes(column?.id)
+                              ? 'none'
+                              : 'auto',
+                          }}
+                        />
                         {/* Render the columns filter UI
                         {!['index', 'selectAll', 'options'].includes(
                           column?.id
@@ -623,11 +491,9 @@ export default memo(function ExitCorporations({
                           'options',
                           'index',
                           'hasInstructions',
-                          'downloads',
-                          'date',
                           'details',
-                          'detailsOfHavaleh',
-                          'borrowed',
+
+                          'ended',
                         ].includes(column?.id) && (
                           <TextField
                             size='small'
@@ -645,6 +511,7 @@ export default memo(function ExitCorporations({
                               const newRawFilters = {
                                 [column.id
                                   .replace('[0]', '')
+                                  .replace('[1]', '')
                                   .replace(
                                     'passedStages.',
                                     'passedStages.some.'
@@ -664,7 +531,6 @@ export default memo(function ExitCorporations({
                                 ...rawFilters,
                                 ...newRawFilters,
                               });
-
                               clearTimeout(delayTimer);
                               delayTimer = setTimeout(function () {
                                 setFilters({
@@ -693,7 +559,7 @@ export default memo(function ExitCorporations({
                             placeholder={`جستجو ...`}
                           />
                         )}
-                        {/* {['hasInstructions'].includes(column.id) && (
+                        {['hasInstructions'].includes(column.id) && (
                           <FormControl>
                             <Box
                               onClick={(e) => {
@@ -720,27 +586,18 @@ export default memo(function ExitCorporations({
                                     delayTimer = setTimeout(function () {
                                       setFilters({
                                         ...filters,
-                                        ...toNestedObject({
-                                          [column.id
-                                            .replace('[0]', '')
-                                            .replace(
-                                              'passedStages.',
-                                              'passedStages.some.'
-                                            )
-                                            .replace('havaleh.', 'havaleh.is.')
-                                            .replace(
-                                              'submittedByUser.',
-                                              'submittedByUser.is.'
-                                            )
-                                            .replace(
-                                              'corporation.',
-                                              'corporation.is.'
-                                            )
-                                            .replace('assets.', 'assets.is.')]:
-                                            {
-                                              contains: e.target.value,
-                                            },
-                                        }),
+                                        [column.id === 'supportCompany.name'
+                                          ? 'supportCompany'
+                                          : column.id]:
+                                          column.id === 'supportCompany.name'
+                                            ? {
+                                                name: {
+                                                  contains: e.target.value,
+                                                },
+                                              }
+                                            : column.id === 'hasInstructions'
+                                            ? !hasInstructions
+                                            : { contains: e.target.value },
                                       });
                                       fetchMoreRows(e, 0);
                                     }, 1000);
@@ -750,7 +607,7 @@ export default memo(function ExitCorporations({
                               </Stack>
                             </Box>
                           </FormControl>
-                        )} */}
+                        )}
                       </Stack>
                       {/* Use column.getResizerProps to hook up the events correctly */}
                       <div
@@ -777,17 +634,15 @@ export default memo(function ExitCorporations({
                     <Skeleton width={34} height={42} variant='rectangular' />
                     <Skeleton width={34} height={42} variant='rectangular' />
                     <Skeleton width={34} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={148} height={42} variant='rectangular' />
                     <Skeleton width={198} height={42} variant='rectangular' />
+                    <Skeleton width={149} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
-                    <Skeleton width={146} height={42} variant='rectangular' />
-                    <Skeleton width={198} height={42} variant='rectangular' />
-                    <Skeleton width={146} height={42} variant='rectangular' />
-                    <Skeleton width={146} height={42} variant='rectangular' />
-                    <Skeleton width={298} height={42} variant='rectangular' />
+                    <Skeleton width={100} height={42} variant='rectangular' />
+                    <Skeleton width={270} height={42} variant='rectangular' />
+                    <Skeleton width={100} height={42} variant='rectangular' />
+                    <Skeleton width={270} height={42} variant='rectangular' />
                   </Stack>
                 ))}
               </Stack>
@@ -810,49 +665,17 @@ export default memo(function ExitCorporations({
               </div>
             )}
           </div>
-
-          {/* <div>
-            <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-              Previous Page
-            </button>
-            <button onClick={() => nextPage()} disabled={!canNextPage}>
-              Next Page
-            </button>
-            <div>
-              Page{' '}
-              <em>
-                {pageIndex + 1} of {pageOptions.length}
-              </em>
-            </div>
-            <div>Go to page:</div>
-            <input
-              type='number'
-              defaultValue={pageIndex + 1 || 1}
-              onChange={(e) => {
-                const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                gotoPage(page);
-              }}
-            />
-          </div> */}
-          {/* <select
-         value={pageSize}
-         onChange={e => {
-           setPageSize(Number(e.target.value))
-         }}
-       >
-         {pageSizeOptions.map(pageSize => (
-           <option key={pageSize} value={pageSize}>
-             Show {pageSize}
-           </option>
-         ))}
-       </select> */}
         </TableContainer>
         <TablePagination
           component={'div'}
           rowsPerPageOptions={[5, 10, 15, 20, 30, 50]}
           page={pageNumber}
-          count={allequipmentsCount}
-          onPageChange={fetchMoreRows}
+          count={allWorkflowsCount}
+          onPageChange={(e, p) => {
+            console.log('----', p);
+
+            fetchMoreRows(e, p);
+          }}
           onRowsPerPageChange={(
             event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
           ) => {
@@ -889,7 +712,7 @@ export default memo(function ExitCorporations({
             variant='contained'
             disabled={
               selectedFlatRows.length === 0 ||
-              !session?.user?.role?.deleteEquipment
+              !session?.user?.role?.deleteLicense
                 ? true
                 : false
             }
@@ -900,15 +723,12 @@ export default memo(function ExitCorporations({
         </Box>
       </Styles>
       <DeleteDialog
-        text='با این کار تمامی گردش کارهای انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
+        text='با این کار تمامی تجهیزات انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
         open={deleteDialog}
         closeDialog={() => setDeleteDialog(false)}
         confirmDelete={async () => {
           await deleteHandler(
-            selectedFlatRows.map(
-              (p) => p?.original?.workflowNumber
-            ) as string[],
-            'exitCorporations'
+            selectedFlatRows.map((p) => p?.original?.workflowNumber) as string[]
           );
           setDeleteDialog(false);
         }}
@@ -935,75 +755,40 @@ export default memo(function ExitCorporations({
               component='h2'
               sx={{ flexGrow: 1, textAlign: 'center' }}
             >
-              جزئیات حواله
+              جزئیات
             </Typography>
             <span style={{ inlineSize: '10%' }}></span>
           </Stack>
         </DialogTitle>
         <DialogContent sx={{ position: 'relative', p: 5 }}>
-          <EditableHtmlTable
-            selectedColumns={[
-              'اکسیژن',
-              'گاز بیهوشی',
-              'شفت-فلکه',
-              'شیر کنترل',
-              'Co2',
-              'آرگون',
-              'ازت',
-              'هوای خشک',
-              'آنتونکس',
-              'استیلن',
-              'گاز مایع',
-            ]}
-            setValue={undefined}
-            register={register}
-            assets={choosedRow?.passedStages?.[0]?.havaleh?.assets}
-            editable={false}
-            reset={reset}
-          />
+          <WorkflowStageModal data={choosedRow} />
         </DialogContent>
       </Dialog>
-      
+      {/* {session?.user?.role?.editPerson ? (
         <Menu
           anchorEl={rowOptionsAnchorElement}
           open={rowOptionsOpen}
           onClose={handleRowOptionsClose}
         >
-          {session?.user?.role?.createLicense && (
+          {session?.user?.role?.['editPerson'] ? (
             <MenuItem>
               <Button
                 id={choosedRow?.terminologyCode + '-edit'}
-                startIcon={<CheckRoundedIcon />}
+                startIcon={<EditRoundedIcon />}
                 variant='text'
                 onClick={() =>
                   router.push(
-                    `/users/confirmReceiptByHospital/?workflow=${JSON.stringify(
+                    `/users/newEquipment?edit=1&equipment=${JSON.stringify(
                       choosedRow
                     )}`
                   )
                 }
-                label='تایید ورود به بیمارستان'
+                label='ویرایش'
               />
             </MenuItem>
-          )}
-         
+          ) : null}
         </Menu>
-    
+      ) : null} */}
     </Box>
   );
-});
-
-//  <tr>
-//    <th
-//      colSpan={visibleColumns.length}
-//      style={{
-//        textAlign: 'left',
-//      }}
-//    >
-//      <GlobalFilter
-//        preGlobalFilteredRows={preGlobalFilteredRows}
-//        globalFilter={state.globalFilter}
-//        setGlobalFilter={setGlobalFilter}
-//      />
-//    </th>
-//  </tr>;
+}

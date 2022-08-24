@@ -24,7 +24,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import DatePicker, { Calendar } from 'react-multi-date-picker';
 /* eslint-disable react/jsx-key */
 import React, { useEffect, useMemo, useState } from 'react';
 import {
@@ -39,7 +38,9 @@ import {
   useTable,
 } from 'react-table';
 
+import AggregatedTable from '../../Atomic/AggregatedTable';
 import { Button } from '../../Atomic/Button';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import DeleteDialog from '../../Atomic/DeleteRolesDialog';
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
@@ -64,7 +65,6 @@ import toNestedObject from '../../../Logic/toNestedObject';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import AggregatedTable from '../../Atomic/AggregatedTable';
 
 interface Props {
   indeterminate?: boolean;
@@ -1018,7 +1018,6 @@ export default memo(function ExitHospitals({
           />
         </DialogActions>
       </Dialog>
-      {session?.user?.role?.createLicense ? (
         <Menu
           anchorEl={rowOptionsAnchorElement}
           open={rowOptionsOpen}
@@ -1036,7 +1035,8 @@ export default memo(function ExitHospitals({
               />
             </MenuItem>
           ) : null}
-          {session?.user?.role?.['createLicense'] && choosedRow?.passedStages?.length === 2 &&
+          {session?.user?.role?.['createLicense'] &&
+          choosedRow?.passedStages?.length === 2 &&
           choosedRow?.passedStages?.[1] ? (
             <MenuItem>
               <Button
@@ -1054,8 +1054,25 @@ export default memo(function ExitHospitals({
               />
             </MenuItem>
           ) : null}
+          {session?.user?.role?.createEnterDeliverExit && (
+            <MenuItem>
+              <Button
+                id={choosedRow?.workflowNumber + '-confirm'}
+                startIcon={<CheckRoundedIcon />}
+                variant='text'
+                onClick={() =>
+                  router.push(
+                    `/users/confirmReceiptByCorporation/?workflow=${JSON.stringify(
+                      choosedRow
+                    )}`
+                  )
+                }
+                label='تایید ورود به شرکت'
+              />
+            </MenuItem>
+          )}
         </Menu>
-      ) : null}
+
     </Box>
   );
 });

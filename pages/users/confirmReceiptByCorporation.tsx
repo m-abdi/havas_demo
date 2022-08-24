@@ -7,7 +7,7 @@ import {
   Stack,
   TextField,
 } from '@mui/material';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { Button } from '../../src/Components/Atomic/Button';
 import Head from 'next/head';
@@ -24,7 +24,7 @@ export default function confirmReceiptByCorporation() {
   const [havaleh, setHavaleh] = useState<{ id: string; label: string }>();
   const [existingWorkflow, setExistingWorkflow] = useState<any>();
   const [editable, setEditable] = useState(false);
-
+  const router = useRouter();
   // data hooks
   const { placesList, placesListLoading } = usePlaces(
     undefined,
@@ -56,8 +56,11 @@ export default function confirmReceiptByCorporation() {
     true
   );
   //
-
-  const router = useRouter();
+  useEffect(() => {
+    if (router?.query?.workflow) {
+      setExistingWorkflow(JSON.parse(router?.query?.workflow as string));
+    }
+  }, [router.isReady]);
   return (
     <Layout pageName={pageName}>
       <Container maxWidth='lg' sx={{ position: 'relative' }}>
