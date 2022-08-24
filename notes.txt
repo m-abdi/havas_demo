@@ -2,4 +2,3 @@
 // seperating corporation from hospital departments
 // a page for creating corporations
 // place for default manager 
-// prevent negetive values for assets
