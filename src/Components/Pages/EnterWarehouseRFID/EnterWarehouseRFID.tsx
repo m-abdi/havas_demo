@@ -20,7 +20,6 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import NewTag from '../NewTag/NewTag';
 import { NewTag as NewTagType } from '../../../../lib/resolvers-types';
 import PrimaryButton from '../../Atomic/PrimaryButton';
-import isSmallScreen from '@/src/isSmallScreen';
 import { useForm } from 'react-hook-form';
 
 export default function EnterWarehouseRFID({
@@ -99,7 +98,6 @@ export default function EnterWarehouseRFID({
   // react-form-hooks
   const { register: register1, setValue: setValue1 } = useForm();
   const { register: register2, setValue: setValue2 } = useForm();
-  const usePAB = isSmallScreen();
   return (
     <Container maxWidth='lg' sx={{ position: 'relative' }}>
       <Stack

@@ -23,7 +23,6 @@ import React from 'react';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import SolarHijri from 'react-date-object/calendars/persian';
 import SolarHijriFarsi from 'react-date-object/locales/persian_fa';
-import isSmallScreen from '@/src/isSmallScreen';
 import { useForm } from 'react-hook-form';
 
 const Form1 = styled('form', { name: 'form1' })(({ theme }) => ({
@@ -240,7 +239,6 @@ export default function ExitCorporation({
       ).forEach(([key, value]) => setValue(key, value));
     }
   }, [existingWorkflow]);
-  const usePAB = isSmallScreen();
   // handlers
   const submitHandler = async (data: any) => {
     console.log('xfgd');

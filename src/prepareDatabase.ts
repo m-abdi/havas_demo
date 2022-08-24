@@ -83,7 +83,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         available: 0,
       },
       {
-        name: 'اکسیژن ۴۰ لیتری',
+        name: 'اکسیژن ۱۰ لیتری',
         terminologyCode: 'oxygen_40l',
         serialNumber: 'سریال',
         hasInstructions: false,
@@ -103,7 +103,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         available: 0,
       },
       {
-        name: 'گاز بیهوشی ۴۰ لیتری',
+        name: 'گاز بیهوشی ۱۰ لیتری',
         terminologyCode: 'bihoshi_40l',
         serialNumber: 'سریال',
         hasInstructions: false,
@@ -123,7 +123,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         available: 0,
       },
       {
-        name: 'شفت ۴۰ لیتری',
+        name: 'شفت ۱۰ لیتری',
         terminologyCode: 'shaft_40l',
         serialNumber: 'سریال',
         hasInstructions: false,
@@ -143,7 +143,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         available: 0,
       },
       {
-        name: 'شیر کنترل ۴۰ لیتری',
+        name: 'شیر کنترل ۱۰ لیتری',
         terminologyCode: 'controlValve_40l',
         serialNumber: 'سریال',
         hasInstructions: false,
@@ -163,7 +163,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         available: 0,
       },
       {
-        name: 'co2 ۴۰ لیتری',
+        name: 'co2 ۱۰ لیتری',
         terminologyCode: 'co2_40l',
         serialNumber: 'سریال',
         hasInstructions: false,
@@ -183,7 +183,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         available: 0,
       },
       {
-        name: 'آرگون ۴۰ لیتری',
+        name: 'آرگون ۱۰ لیتری',
         terminologyCode: 'argon_40l',
         serialNumber: 'سریال',
         hasInstructions: false,
@@ -203,7 +203,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         available: 0,
       },
       {
-        name: 'ازت ۴۰ لیتری',
+        name: 'ازت ۱۰ لیتری',
         terminologyCode: 'azete_40l',
         serialNumber: 'سریال',
         hasInstructions: false,
@@ -223,7 +223,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         available: 0,
       },
       {
-        name: 'هوای خشک ۴۰ لیتری',
+        name: 'هوای خشک ۱۰ لیتری',
         terminologyCode: 'dryAir_40l',
         serialNumber: 'سریال',
         hasInstructions: false,
@@ -243,7 +243,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         available: 0,
       },
       {
-        name: 'آنتونکس ۴۰ لیتری',
+        name: 'آنتونکس ۱۰ لیتری',
         terminologyCode: 'entonox_40l',
         serialNumber: 'سریال',
         hasInstructions: false,
@@ -263,7 +263,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         available: 0,
       },
       {
-        name: 'استیلن ۴۰ لیتری',
+        name: 'استیلن ۱۰ لیتری',
         terminologyCode: 'acetylene_40l',
         serialNumber: 'سریال',
         hasInstructions: false,
@@ -283,7 +283,7 @@ if (process.env.NODE_ENV === 'development') global.prisma = prisma;(async () => 
         available: 0,
       },
       {
-        name: 'گاز مایع ۴۰ لیتری',
+        name: 'گاز مایع ۱۰ لیتری',
         terminologyCode: 'lpg_40l',
         serialNumber: 'سریال',
         hasInstructions: false,

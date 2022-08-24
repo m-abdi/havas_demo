@@ -23,7 +23,6 @@ import NewTag from '../NewTag/NewTag';
 import { NewTag as NewTagType } from '../../../../lib/resolvers-types';
 import PrimaryButton from '../../Atomic/PrimaryButton';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
-import isSmallScreen from '@/src/isSmallScreen';
 import { useForm } from 'react-hook-form';
 
 export default function EnterWarehouseRFID({
@@ -103,7 +102,6 @@ export default function EnterWarehouseRFID({
   const { register: register1, setValue: setValue1 } = useForm();
   const { register: register2, setValue: setValue2 } = useForm();
   //
-  const PABBreakpoint = isSmallScreen();
   return (
     <Container maxWidth='xl' sx={{ position: 'relative' }}>
       <Stack

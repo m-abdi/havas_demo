@@ -4,7 +4,7 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { Button } from '../Button';
 import React from 'react';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
-import isSmallScreen from '@/src/isSmallScreen';
+import isSmallScreen from '../../../isSmallScreen';
 
 export default function PrimaryButton({
   id,

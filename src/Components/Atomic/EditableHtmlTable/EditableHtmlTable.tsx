@@ -176,7 +176,7 @@ export default memo(function EditableHtmlTable({
           <tr>
             {/* نوع سیلندر */}
             <td rowSpan={2} style={{ textAlign: 'center' }}>
-              50لیتری
+              ۵۰ لیتری
             </td>
             {/* ک-م */}
             <td>کارخانه</td>
@@ -817,7 +817,7 @@ export default memo(function EditableHtmlTable({
           <tr>
             {/* نوع سیلندر */}
             <td rowSpan={2} style={{ textAlign: 'center' }}>
-              40لیتری
+              ۱۰ لیتری
             </td>
             {/* ک-م */}
             <td>کارخانه</td>

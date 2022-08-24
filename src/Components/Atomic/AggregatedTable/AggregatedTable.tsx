@@ -222,7 +222,7 @@ export default function AggregatedTable({
         <TableBody sx={{ '& input': { textAlign: 'center' } }}>
           <tr>
             {/* نوع سیلندر */}
-            <td style={{ textAlign: 'center' }}>50لیتری</td>
+            <td style={{ textAlign: 'center' }}>۵۰ لیتری</td>
 
             {/* اکسیژن */}
             <td
@@ -573,7 +573,7 @@ export default function AggregatedTable({
 
           <tr>
             {/* نوع سیلندر */}
-            <td style={{ textAlign: 'center' }}>40لیتری</td>
+            <td style={{ textAlign: 'center' }}>۱۰ لیتری</td>
             {/* اکسیژن */}
             <td
               style={{
