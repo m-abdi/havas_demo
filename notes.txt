@@ -1,4 +1,2 @@
-// manager recognition
 // seperating corporation from hospital departments
 // a page for creating corporations
-// place for default manager 
