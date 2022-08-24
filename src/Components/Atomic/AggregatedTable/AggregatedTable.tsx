@@ -66,8 +66,7 @@ export default function AggregatedTable({
 }) {
   // update react-hook-form state after rfid operation
   useEffect(() => {
-    console.log('xxxxx');
-    console.log(assets?.oxygen_50l);
+
 
     setValue?.('oxygen_50l', assets?.oxygen_50l);
     setValue?.('bihoshi_50l', assets?.bihoshi_50l);

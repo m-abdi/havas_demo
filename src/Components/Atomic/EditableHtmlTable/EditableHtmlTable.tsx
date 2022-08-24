@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react';
 import { Table, TableBody, TableContainer, TextField } from '@mui/material';
 
+import {
+  AggregatedTransferedAssets,
+  TransferedAssets,
+} from 'lib/resolvers-types';
 import { memo } from 'react';
 import { toEnglishDigit } from '@/src/Logic/toEnglishDigit';
 
@@ -12,40 +16,42 @@ export default memo(function EditableHtmlTable({
   reset,
   setValue,
 }: {
-  selectedColumns: any;
+  selectedColumns: string[];
   register?: any;
-  assets: any;
+  assets: TransferedAssets;
   editable?: boolean;
   reset?: any;
   setValue?: any;
 }) {
   // update react-hook-form state after rfid operation
   useEffect(() => {
-    reset?.()
-    setValue?.('oxygen_50l', assets?.oxygen_50l);
-    setValue?.('bihoshi_50l', assets?.bihoshi_50l);
-    setValue?.('shaft_50l', assets?.shaft_50l);
-    setValue?.('controlValve_50l', assets?.controlValve_50l);
-    setValue?.('co2_50l', assets?.co2_50l);
-    setValue?.('argon_50l', assets?.argon_50l);
-    setValue?.('azete_50l', assets?.azete_50l);
-    setValue?.('dryAir_50l', assets?.dryAir_50l);
-    setValue?.('entonox_50l', assets?.entonox_50l);
-    setValue?.('acetylene_50l', assets?.acetylene_50l);
-    setValue?.('lpg_50l', assets?.lpg_50l);
-    setValue?.('oxygen_40l', assets?.oxygen_40l);
-    setValue?.('bihoshi_40l', assets?.bihoshi_40l);
-    setValue?.('shaft_40l', assets?.shaft_40l);
-    setValue?.('controlValve_40l', assets?.controlValve_40l);
-    setValue?.('co2_40l', assets?.co2_40l);
-    setValue?.('argon_40l', assets?.argon_40l);
-    setValue?.('azete_40l', assets?.azete_40l);
-    setValue?.('dryAir_40l', assets?.dryAir_40l);
-    setValue?.('entonox_40l', assets?.entonox_40l);
-    setValue?.('acetylene_40l', assets?.acetylene_40l);
-    setValue?.('lpg_40l', assets?.lpg_40l);
+    reset?.();
   }, [assets]);
-
+  const m: any = {
+    oxygen: 'اکسیژن',
+    bihoshi: 'گاز بیهوشی',
+    shaft: 'شفت-فلکه',
+    controlVale: 'شیر کنترل',
+    co2: 'Co2',
+    argon: 'آرگون',
+    azete: 'ازت',
+    dryAir: 'هوای خشگ',
+    entonox: 'آنتونکس',
+    acetylene: 'استیلن',
+    lpg: 'گاز مایع',
+  };
+  if (assets) {
+    const ik = Object.entries(assets)
+      .filter(([k, v]) => v)
+      .map(([k, v]) =>
+        k
+          .replace('_50l_factory', '')
+          .replace('_40l_factory', '')
+          .replace('_50l_customer', '')
+          .replace('_40l_customer', '')
+      );
+    selectedColumns = ik.map((a: keyof typeof m) => m[a]);
+  }
   return (
     <TableContainer sx={{ maxInlineSize: '100%' }}>
       <Table border={2} sx={{ '& td': { minInlineSize: 80 } }}>
