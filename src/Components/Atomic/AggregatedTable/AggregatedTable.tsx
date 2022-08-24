@@ -64,9 +64,33 @@ export default function AggregatedTable({
     lpg_40l?: number;
   };
 }) {
+  const m: any = {
+    oxygen: 'اکسیژن',
+    bihoshi: 'گاز بیهوشی',
+    shaft: 'شفت-فلکه',
+    controlVale: 'شیر کنترل',
+    co2: 'Co2',
+    argon: 'آرگون',
+    azete: 'ازت',
+    dryAir: 'هوای خشگ',
+    entonox: 'آنتونکس',
+    acetylene: 'استیلن',
+    lpg: 'گاز مایع',
+  };
+  if (assets) {
+    const ik = Object.entries(assets)
+      .filter(([k, v]) => v)
+      .map(([k, v]) =>
+        k
+          .replace('_50l_factory', '')
+          .replace('_40l_factory', '')
+          .replace('_50l_customer', '')
+          .replace('_40l_customer', '')
+      );
+    selectedColumns = ik.map((a: keyof typeof m) => m[a]);
+  }
   // update react-hook-form state after rfid operation
   useEffect(() => {
-
 
     setValue?.('oxygen_50l', assets?.oxygen_50l);
     setValue?.('bihoshi_50l', assets?.bihoshi_50l);

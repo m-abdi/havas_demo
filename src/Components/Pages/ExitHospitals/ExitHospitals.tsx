@@ -64,6 +64,7 @@ import toNestedObject from '../../../Logic/toNestedObject';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import AggregatedTable from '../../Atomic/AggregatedTable';
 
 interface Props {
   indeterminate?: boolean;
@@ -190,7 +191,7 @@ export default memo(function ExitHospitals({
   const [rawFilters, setRawFilters] = useState({});
   const [approveDialog, setApproveDialog] = useState(false);
   //
-  const { register, reset } = useForm();
+  const { register, reset, setValue } = useForm();
 
   // other hooks
   const { data: session } = useSession();
@@ -947,7 +948,7 @@ export default memo(function ExitHospitals({
           </Stack>
         </DialogTitle>
         <DialogContent sx={{ position: 'relative', p: 5 }}>
-          <EditableHtmlTable
+          <AggregatedTable
             selectedColumns={[
               'اکسیژن',
               'گاز بیهوشی',
@@ -961,11 +962,10 @@ export default memo(function ExitHospitals({
               'استیلن',
               'گاز مایع',
             ]}
-            setValue={undefined}
+            setValue={setValue}
             register={register}
             assets={choosedRow?.passedStages?.[0]?.havaleh?.assets}
             editable={false}
-            reset={reset}
           />
         </DialogContent>
       </Dialog>

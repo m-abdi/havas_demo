@@ -70,7 +70,7 @@ export default function Settings({
                   onClick={() => setIgnoreRFID(!ignoreRFID)}
                 />
               }
-              label='حذف موقت RFID'
+              label='تایید خودکار ثبت توسط RFID'
             />
           </>
         )
