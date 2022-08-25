@@ -867,7 +867,7 @@ export default memo(function ConfirmReceiptByHospitals({
             <span style={{ inlineSize: '10%' }}></span>
           </Stack>
         </DialogTitle>
-        <DialogContent sx={{ position: 'relative', p: 5 }}>
+        <DialogContent sx={{ position: 'relative', py: 5, px: 1 }}>
           <EditableHtmlTable
             selectedColumns={[
               'اکسیژن',

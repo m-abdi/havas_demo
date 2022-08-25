@@ -926,7 +926,7 @@ export default memo(function SentToCorporations({
             <span style={{ inlineSize: '10%' }}></span>
           </Stack>
         </DialogTitle>
-        <DialogContent sx={{ position: 'relative', p: 5 }}>
+        <DialogContent sx={{ position: 'relative', py: 3, px: 1 }}>
           <AggregatedTable
             selectedColumns={[
               'اکسیژن',

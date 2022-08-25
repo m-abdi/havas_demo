@@ -50,6 +50,7 @@ import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownR
 import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import { Session } from 'next-auth';
+import TransferedAssetsDetailsModal from '../../Atomic/TransferedAssetsDetailsModal';
 import { Workflow } from 'lib/graphql-operations';
 import { flushSync } from 'react-dom';
 import matchSorter from 'match-sorter';
@@ -186,7 +187,7 @@ export default memo(function ExitCorporations({
   const [rawFilters, setRawFilters] = useState({});
 
   //
-  const { register, reset } = useForm();
+  const { register, reset, setValue } = useForm();
 
   // other hooks
   const { data: session } = useSession();
@@ -913,82 +914,39 @@ export default memo(function ExitCorporations({
           setDeleteDialog(false);
         }}
       />
-      <Dialog
-        sx={{ zIndex: 7000 }}
-        open={detailsDialog}
-        maxWidth='lg'
-        onClose={() => setDetailsDialog(false)}
+      <TransferedAssetsDetailsModal
+        detailsDialog={detailsDialog}
+        setDetailsDialog={setDetailsDialog}
+        setValue={setValue}
+        reset={reset}
+        register={register}
+        choosedRow={choosedRow}
+        aggregated={false}
+      />
+
+      <Menu
+        anchorEl={rowOptionsAnchorElement}
+        open={rowOptionsOpen}
+        onClose={handleRowOptionsClose}
       >
-        <DialogTitle sx={{ textAlign: 'center' }}>
-          <Stack
-            direction='row'
-            alignItems='center'
-            justifyContent={'space-between'}
-          >
-            <span style={{ inlineSize: '10%' }}>
-              <IconButton onClick={() => setDetailsDialog(false)}>
-                <CloseRoundedIcon />
-              </IconButton>
-            </span>
-            <Typography
-              variant='h5'
-              component='h2'
-              sx={{ flexGrow: 1, textAlign: 'center' }}
-            >
-              جزئیات حواله
-            </Typography>
-            <span style={{ inlineSize: '10%' }}></span>
-          </Stack>
-        </DialogTitle>
-        <DialogContent sx={{ position: 'relative', p: 5 }}>
-          <EditableHtmlTable
-            selectedColumns={[
-              'اکسیژن',
-              'گاز بیهوشی',
-              'شفت-فلکه',
-              'شیر کنترل',
-              'Co2',
-              'آرگون',
-              'ازت',
-              'هوای خشک',
-              'آنتونکس',
-              'استیلن',
-              'گاز مایع',
-            ]}
-            setValue={undefined}
-            register={register}
-            assets={choosedRow?.passedStages?.[0]?.havaleh?.assets}
-            editable={false}
-            reset={reset}
-          />
-        </DialogContent>
-      </Dialog>
-      
-        <Menu
-          anchorEl={rowOptionsAnchorElement}
-          open={rowOptionsOpen}
-          onClose={handleRowOptionsClose}
-        >
-          {session?.user?.role?.createLicense && (
-            <MenuItem>
-              <Button
-                id={choosedRow?.terminologyCode + '-edit'}
-                startIcon={<CheckRoundedIcon />}
-                variant='text'
-                onClick={() =>
-                  router.push(
-                    `/users/confirmReceiptByHospital/?workflow=${JSON.stringify(
-                      choosedRow
-                    )}`
-                  )
-                }
-                label='تایید ورود به بیمارستان'
-              />
-            </MenuItem>
-          )}
-         
-        </Menu>
-    
+        {session?.user?.role?.createLicense && (
+          <MenuItem>
+            <Button
+              id={choosedRow?.terminologyCode + '-edit'}
+              startIcon={<CheckRoundedIcon />}
+              variant='text'
+              onClick={() =>
+                router.push(
+                  `/users/confirmReceiptByHospital/?workflow=${JSON.stringify(
+                    choosedRow
+                  )}`
+                )
+              }
+              label='تایید ورود به بیمارستان'
+            />
+          </MenuItem>
+        )}
+      </Menu>
     </Box>
   );
 });

@@ -38,12 +38,14 @@ import {
   useTable,
 } from 'react-table';
 
+import AggregatedTable from '../../Atomic/AggregatedTable';
 import { Button } from '../../Atomic/Button';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ContradictionTable from '../../Atomic/ContradictionTable';
 import DeleteDialog from '../../Atomic/DeleteRolesDialog';
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import EditableHtmlTable from '../../Atomic/EditableHtmlTable';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
@@ -58,11 +60,9 @@ import persianCalender from 'react-date-object/calendars/persian';
 import persianLocale from 'react-date-object/locales/persian_fa';
 import styled from 'styled-components';
 import toNestedObject from '../../../Logic/toNestedObject';
+import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import AggregatedTable from '../../Atomic/AggregatedTable';
-import { useForm } from 'react-hook-form';
-import EditableHtmlTable from '../../Atomic/EditableHtmlTable';
 
 interface Props {
   indeterminate?: boolean;
@@ -834,7 +834,7 @@ const [hDetailsDialog, setHDetailsDialog] = useState(false)
             <span style={{ inlineSize: '10%' }}></span>
           </Stack>
         </DialogTitle>
-        <DialogContent sx={{ position: 'relative', p: 5 }}>
+        <DialogContent sx={{ position: 'relative', py: 3, px: 1 }}>
           <EditableHtmlTable
             selectedColumns={[
               'اکسیژن',
