@@ -118,6 +118,7 @@ export default function ConfirmReceiptByHospital() {
             editable={editable}
             confirmEnterHandler={confirmEnterHandler}
             existingWorkflow={existingWorkflow}
+            hospitalClient={true}
           />
         )}
       </Container>

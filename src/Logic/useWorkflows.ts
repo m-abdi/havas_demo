@@ -688,11 +688,16 @@ export default function useWorkflows(
             setSnackbarMessage,
             setSnackbarOpen
           );
-          router.push(
-            `/users/enterWarehouseRFID?workflow=${JSON.stringify(
-              updatedEnterWorkflow?.data?.confirmReceiptByHospital
-            )}`
-          );
+        
+          
+          if (updatedEnterWorkflow?.data?.confirmReceiptByHospital?.passedStages?.length === 2) {
+            router.push(
+              `/users/enterWarehouseRFID?workflow=${JSON.stringify(
+                updatedEnterWorkflow?.data?.confirmReceiptByHospital
+              )}`
+            );
+          } 
+          router.push("/users/dashboard")
         } else {
           useNotification(
             'error',

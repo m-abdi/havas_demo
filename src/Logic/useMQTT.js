@@ -19,23 +19,24 @@ export default function useMQTT(channel = 'rfid') {
   // show notification every time a new mqtt message is received
   useEffect(() => {
     useNotification(
-      'تگ جدید',
+      'newTag',
       setSnackbarColor,
       setSnackbarMessage,
-      setSnackbarOpen
+      setSnackbarOpen,
+
     );
   }, [mqttMessage]);
 
   // show notification every time a new mqtt message is received
   useEffect(() => {
-    if (mqttStatus === "CONNECTED") {
+    if (mqttStatus === 'CONNECTED') {
       useNotification(
-        "success",
+        'success',
         setSnackbarColor,
         setSnackbarMessage,
         setSnackbarOpen,
-        "", "اتصال با RFID برقرار شد"
-        
+        '',
+        'اتصال با RFID برقرار شد'
       );
     } else if (mqttStatus === 'DISCONNECTED') {
       useNotification(
@@ -43,7 +44,7 @@ export default function useMQTT(channel = 'rfid') {
         setSnackbarColor,
         setSnackbarMessage,
         setSnackbarOpen,
-        'در حال برقراری اتصال با RFID',
+        'در حال برقراری اتصال با RFID'
       );
     }
   }, [mqttStatus]);

@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { SnackbarContext } from 'pages/_app';
 
 export default function useNotification(
-  type: 'sending' | 'success' | 'error',
+  type: 'sending' | 'success' | 'error' | 'newTag',
   setSnackbarColor: any,
   setSnackbarMessage: any,
   setSnackbarOpen: any,
