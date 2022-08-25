@@ -67,6 +67,15 @@ export default function useMQTT(channel = 'rfid') {
       if (responseObject.errorCode !== 0) {
         console.log(`onConnectionLost:${responseObject.errorMessage}`);
       }
+      client.connect({
+        onSuccess: onConnect,
+        useSSL:
+          process.env.NEXT_PUBLIC_MQTT_BROKER_URL === 'localhost'
+            ? false
+            : true,
+        userName: process.env.NEXT_PUBLIC_MQTT_BROKER_USERNAME,
+        password: process.env.NEXT_PUBLIC_MQTT_BROKER_PASSWORD,
+      });
     }
 
     // called when a message arrives
