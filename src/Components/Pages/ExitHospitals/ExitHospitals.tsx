@@ -38,7 +38,6 @@ import {
   useTable,
 } from 'react-table';
 
-import AggregatedTable from '../../Atomic/AggregatedTable';
 import { Button } from '../../Atomic/Button';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
@@ -52,6 +51,7 @@ import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import { Satellite } from '@mui/icons-material';
 import SensorsRoundedIcon from '@mui/icons-material/SensorsRounded';
 import { Session } from 'next-auth';
+import TransferedAssetsDetailsModal from '../../Atomic/TransferedAssetsDetailsModal';
 import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined';
 import { Workflow } from 'lib/graphql-operations';
 import { flushSync } from 'react-dom';
@@ -920,55 +920,15 @@ export default memo(function ExitHospitals({
           setDeleteDialog(false);
         }}
       />
-      <Dialog
-        sx={{ zIndex: 7000 }}
-        open={detailsDialog}
-        maxWidth='lg'
-        onClose={() => setDetailsDialog(false)}
-      >
-        <DialogTitle sx={{ textAlign: 'center' }}>
-          <Stack
-            direction='row'
-            alignItems='center'
-            justifyContent={'space-between'}
-          >
-            <span style={{ inlineSize: '10%' }}>
-              <IconButton onClick={() => setDetailsDialog(false)}>
-                <CloseRoundedIcon />
-              </IconButton>
-            </span>
-            <Typography
-              variant='h5'
-              component='h2'
-              sx={{ flexGrow: 1, textAlign: 'center' }}
-            >
-              جزئیات حواله
-            </Typography>
-            <span style={{ inlineSize: '10%' }}></span>
-          </Stack>
-        </DialogTitle>
-        <DialogContent sx={{ position: 'relative', p: 5 }}>
-          <AggregatedTable
-            selectedColumns={[
-              'اکسیژن',
-              'گاز بیهوشی',
-              'شفت-فلکه',
-              'شیر کنترل',
-              'Co2',
-              'آرگون',
-              'ازت',
-              'هوای خشک',
-              'آنتونکس',
-              'استیلن',
-              'گاز مایع',
-            ]}
-            setValue={setValue}
-            register={register}
-            assets={choosedRow?.passedStages?.[0]?.havaleh?.assets}
-            editable={false}
-          />
-        </DialogContent>
-      </Dialog>
+      <TransferedAssetsDetailsModal
+        detailsDialog={detailsDialog}
+        setDetailsDialog={setDetailsDialog}
+        setValue={setValue}
+        reset={reset}
+        register={register}
+        choosedRow={choosedRow}
+        aggregated={true}
+      />
       <Dialog
         sx={{ zIndex: 7000 }}
         open={approveDialog}
@@ -1018,76 +978,60 @@ export default memo(function ExitHospitals({
           />
         </DialogActions>
       </Dialog>
-        <Menu
-          anchorEl={rowOptionsAnchorElement}
-          open={rowOptionsOpen}
-          onClose={handleRowOptionsClose}
-        >
-          {session?.user?.role?.name === 'مدیریت' &&
-          !choosedRow?.passedStages?.[1] ? (
-            <MenuItem>
-              <Button
-                id='approveWorkflow'
-                startIcon={<VerifiedOutlinedIcon />}
-                variant='text'
-                onClick={() => setApproveDialog(true)}
-                label='تایید خروج'
-              />
-            </MenuItem>
-          ) : null}
-          {session?.user?.role?.['createLicense'] &&
-          choosedRow?.passedStages?.length === 2 &&
-          choosedRow?.passedStages?.[1] ? (
-            <MenuItem>
-              <Button
-                id={'registerWorkflow'}
-                startIcon={<SensorsRoundedIcon />}
-                variant='text'
-                onClick={() =>
-                  router.push(
-                    `/users/exitWarehouseRFID?workflow=${JSON.stringify(
-                      choosedRow
-                    )}`
-                  )
-                }
-                label='ثبت خروج توسط RFID'
-              />
-            </MenuItem>
-          ) : null}
-          {session?.user?.role?.createEnterDeliverExit && (
-            <MenuItem>
-              <Button
-                id={choosedRow?.workflowNumber + '-confirm'}
-                startIcon={<CheckRoundedIcon />}
-                variant='text'
-                onClick={() =>
-                  router.push(
-                    `/users/confirmReceiptByCorporation/?workflow=${JSON.stringify(
-                      choosedRow
-                    )}`
-                  )
-                }
-                label='تایید ورود به شرکت'
-              />
-            </MenuItem>
-          )}
-        </Menu>
-
+      <Menu
+        anchorEl={rowOptionsAnchorElement}
+        open={rowOptionsOpen}
+        onClose={handleRowOptionsClose}
+      >
+        {session?.user?.role?.name === 'مدیریت' &&
+        !choosedRow?.passedStages?.[1] ? (
+          <MenuItem>
+            <Button
+              id='approveWorkflow'
+              startIcon={<VerifiedOutlinedIcon />}
+              variant='text'
+              onClick={() => setApproveDialog(true)}
+              label='تایید خروج'
+            />
+          </MenuItem>
+        ) : null}
+        {session?.user?.role?.['createLicense'] &&
+        choosedRow?.passedStages?.length === 2 &&
+        choosedRow?.passedStages?.[1] ? (
+          <MenuItem>
+            <Button
+              id={'registerWorkflow'}
+              startIcon={<SensorsRoundedIcon />}
+              variant='text'
+              onClick={() =>
+                router.push(
+                  `/users/exitWarehouseRFID?workflow=${JSON.stringify(
+                    choosedRow
+                  )}`
+                )
+              }
+              label='ثبت خروج توسط RFID'
+            />
+          </MenuItem>
+        ) : null}
+        {session?.user?.role?.createEnterDeliverExit && (
+          <MenuItem>
+            <Button
+              id={choosedRow?.workflowNumber + '-confirm'}
+              startIcon={<CheckRoundedIcon />}
+              variant='text'
+              onClick={() =>
+                router.push(
+                  `/users/confirmReceiptByCorporation/?workflow=${JSON.stringify(
+                    choosedRow
+                  )}`
+                )
+              }
+              label='تایید ورود به شرکت'
+            />
+          </MenuItem>
+        )}
+      </Menu>
     </Box>
   );
 });
-
-//  <tr>
-//    <th
-//      colSpan={visibleColumns.length}
-//      style={{
-//        textAlign: 'left',
-//      }}
-//    >
-//      <GlobalFilter
-//        preGlobalFilteredRows={preGlobalFilteredRows}
-//        globalFilter={state.globalFilter}
-//        setGlobalFilter={setGlobalFilter}
-//      />
-//    </th>
-//  </tr>;
