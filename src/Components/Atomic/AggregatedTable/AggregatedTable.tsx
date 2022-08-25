@@ -1,5 +1,5 @@
 import { Table, TableBody, TableContainer, TextField } from '@mui/material';
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useState } from 'react';
 
 import React from 'react';
 import styled from 'styled-components';
@@ -16,6 +16,12 @@ const MyTable = styled.table`
     max-inline-size: 150px;
   }
 `;
+
+//forceUpdate hook
+function useForceUpdate() {
+  const [value, setValue] = useState<number>(0); // integer state
+  return () => setValue((value: number) => value + 1); // update state to force render
+}
 export default function AggregatedTable({
   editable = false,
   selectedColumns = [
@@ -34,10 +40,14 @@ export default function AggregatedTable({
   register,
   setValue,
   assets,
+  reset,
+  ignoreColumnCheck = false,
 }: {
   editable: boolean;
   register?: any;
   setValue?: any;
+  reset?: any;
+  ignoreColumnCheck? : boolean;
   selectedColumns?: string[];
   assets: {
     oxygen_50l?: number;
@@ -64,6 +74,7 @@ export default function AggregatedTable({
     lpg_40l?: number;
   };
 }) {
+  const forceUpdate = useForceUpdate()
   const m: any = {
     oxygen: 'اکسیژن',
     bihoshi: 'گاز بیهوشی',
@@ -77,7 +88,7 @@ export default function AggregatedTable({
     acetylene: 'استیلن',
     lpg: 'گاز مایع',
   };
-  if (assets) {
+  if (assets && !ignoreColumnCheck) {
     const ik = Object.entries(assets)
       .filter(([k, v]) => v)
       .map(([k, v]) =>
@@ -89,9 +100,12 @@ export default function AggregatedTable({
       );
     selectedColumns = ik.map((a: keyof typeof m) => m[a]);
   }
+
+
+
   // update react-hook-form state after rfid operation
   useEffect(() => {
-
+    reset?.();
     setValue?.('oxygen_50l', assets?.oxygen_50l);
     setValue?.('bihoshi_50l', assets?.bihoshi_50l);
     setValue?.('shaft_50l', assets?.shaft_50l);
@@ -118,8 +132,7 @@ export default function AggregatedTable({
 
   return (
     <TableContainer>
-      <MyTable
-      >
+      <MyTable>
         <thead>
           <tr>
             <th>نوع سیلندر</th>

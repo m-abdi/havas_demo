@@ -14,7 +14,7 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import AggregatedTable from '../../Atomic/AggregatedTable';
 import { Button } from '../../Atomic/Button';
@@ -99,9 +99,11 @@ export default function EnterWarehouseRFID({
   // states
   const [newTagDialogIsOpened, setNewTagDialogIsOpened] = useState(false);
   // react-form-hooks
-  const { register: register1, setValue: setValue1 } = useForm();
-  const { register: register2, setValue: setValue2 } = useForm();
+  const { register: register1, setValue: setValue1, reset: reset1 } = useForm();
+  const { register: register2, setValue: setValue2, reset: reset2 } = useForm();
   //
+
+
   return (
     <Container maxWidth='xl' sx={{ position: 'relative' }}>
       <Stack
@@ -152,6 +154,8 @@ export default function EnterWarehouseRFID({
               setValue={setValue2}
               editable={false}
               assets={checkedAssets}
+              reset={reset2}
+              ignoreColumnCheck={true}
             />
           </TableContainer>
         </Box>

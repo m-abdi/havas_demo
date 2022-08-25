@@ -148,6 +148,7 @@ export default function EnterWarehouseRFID({
               setValue={setValue2}
               editable={false}
               assets={checkedAssets}
+              ignoreColumnCheck={true}
             />
           </TableContainer>
         </Box>
