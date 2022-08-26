@@ -13,11 +13,7 @@ import {
   Typography,
   styled,
 } from '@mui/material';
-import React, {
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
@@ -101,7 +97,6 @@ export default function newPerson({
   createNewPlaceHandler,
   createNewCategoryHandler,
   deletePlacesHandler,
-
 }: {
   loading: boolean;
   sending: boolean;
@@ -445,36 +440,37 @@ export default function newPerson({
             </Titr>
             <Row1>
               <Input1>
-                <Label1>تلفن</Label1>
-                <TextField
-                  id='telephoneInput'
-                  size='small'
-                  inputProps={{
-                    ...register('telephone', {
-                      required: true,
-                      setValueAs: (v) => toEnglishDigit(v),
-                      value: existingPerson?.telephone,
-                    }),
-                  }}
-                  error={errors.telephone?.type === 'required'}
-                  helperText={
-                    errors.telephone?.type === 'required' &&
-                    'لطفا این فیلد را پر کنید'
-                  }
-                />
-              </Input1>
-              <Input1>
                 <Label1>موبایل</Label1>
                 <TextField
                   id='mobileNumberInput'
                   size='small'
                   inputProps={{
                     ...register('mobileNumber', {
+                      required: true,
+                      setValueAs: (v) => toEnglishDigit(v),
                       value: existingPerson?.mobileNumber,
+                    }),
+                  }}
+                  error={errors.mobileNumber?.type === 'required'}
+                  helperText={
+                    errors.mobileNumber?.type === 'required' &&
+                    'لطفا این فیلد را پر کنید'
+                  }
+                />
+              </Input1>
+              <Input1>
+                <Label1>تلفن</Label1>
+                <TextField
+                  id='telephoneInput'
+                  size='small'
+                  inputProps={{
+                    ...register('telephone', {
+                      value: existingPerson?.telephone,
                     }),
                   }}
                 />
               </Input1>
+
               <Input1>
                 <Label1>وبسایت</Label1>
                 <TextField
@@ -593,7 +589,7 @@ export default function newPerson({
                 const newRole = await createNew(name, permissions, edit);
                 if (newRole) {
                   const r = { id: newRole?.id, label: newRole?.name };
-                 
+
                   setNewRoleDialogIsOpened(false);
                   setRolesList([...rolesList, r]);
                   setRole(r);

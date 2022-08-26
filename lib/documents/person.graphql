@@ -47,7 +47,7 @@ mutation createNewPerson(
   $postalCode: String
   $address: String
   $telephone: String
-  $mobileNumber: String
+  $mobileNumber: String!
   $website: String
   $edit: String
 ) {

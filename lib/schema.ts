@@ -541,7 +541,7 @@ const typeDefs = /* GraphQL */ `
       postalCode: String
       address: String
       telephone: String
-      mobileNumber: String
+      mobileNumber: String!
       website: String
       edit: String
     ): Person!

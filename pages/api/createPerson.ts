@@ -7,7 +7,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-    
   const {
     id,
     firstNameAndLastName,
@@ -22,10 +21,9 @@ export default async function handler(
     website,
   } = req?.body;
 
-  
   // hash salt
   const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(telephone as string, salt);
+  const hashedPassword = await bcrypt.hash(mobileNumber as string, salt);
   try {
     const createdPerson = await prisma.person.create({
       data: {
@@ -45,6 +43,6 @@ export default async function handler(
     });
     return res.status(201).json(createdPerson);
   } catch (e: any) {
-    return res.status(500).send(e?.message ?? "database connection error");
+    return res.status(500).send(e?.message ?? 'database connection error');
   }
 }
