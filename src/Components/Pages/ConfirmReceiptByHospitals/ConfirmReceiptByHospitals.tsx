@@ -129,6 +129,30 @@ export default memo(function ConfirmReceiptByHospitals({
   const columns: any = useMemo(
     () => [
       {
+        Header: 'جزئیات',
+        id: 'details',
+        accessor: (d: any) => {
+          if (
+            d?.passedStages?.[1]?.havaleh?.assets &&
+            Object.values(d?.passedStages?.[1]?.havaleh?.assets).some((v) => v)
+          ) {
+            return (
+              <Button
+                label='مشاهده'
+                color='info'
+                onClick={() => {
+                  flushSync(() => {
+                    setChoosedRow(d);
+                  });
+                  setDetailsDialog(true);
+                }}
+              />
+            );
+          }
+        },
+        width: 200,
+      },
+      {
         Header: 'نوع',
         id: 'type',
         width: 230,
@@ -164,6 +188,18 @@ export default memo(function ConfirmReceiptByHospitals({
       {
         Header: 'شماره پیگیری',
         accessor: 'workflowNumber', // accessor is the "key" in the data
+      },
+      {
+        Header: 'تاریخ ثبت فرم',
+        id: 'date',
+        accessor: (d: any) =>
+          // <DatePicker
+          //   calendar={persianCalender}
+          //   locale={persianLocale}
+          //   style={{ inlineSize: '100px', textAlign: "center", fontSize: 15, }}
+          //   value={parseInt(d?.dateCreated)}
+          // />
+          new Date(parseInt(d?.dateCreated)).toLocaleString('fa-IR'),
       },
       {
         Header: 'تحویل گیرنده',
@@ -206,26 +242,26 @@ export default memo(function ConfirmReceiptByHospitals({
           );
         },
       },
-      {
-        Header: 'جزییات حواله',
-        id: 'detailsOfHavaleh',
-        disableSortBy: true,
-        disableFilters: true,
-        accessor: (d: any) => {
-          return (
-            <Button
-              label='مشاهده'
-              color='info'
-              onClick={(e) => {
-                flushSync(() => {
-                  setChoosedRow(d);
-                });
-                setHavalehDialog(true);
-              }}
-            />
-          );
-        },
-      },
+      // {
+      //   Header: 'جزییات حواله',
+      //   id: 'detailsOfHavaleh',
+      //   disableSortBy: true,
+      //   disableFilters: true,
+      //   accessor: (d: any) => {
+      //     return (
+      //       <Button
+      //         label='مشاهده'
+      //         color='info'
+      //         onClick={(e) => {
+      //           flushSync(() => {
+      //             setChoosedRow(d);
+      //           });
+      //           setHavalehDialog(true);
+      //         }}
+      //       />
+      //     );
+      //   },
+      // },
       {
         Header: 'امانتی',
         id: 'borrowed',
@@ -242,30 +278,7 @@ export default memo(function ConfirmReceiptByHospitals({
         },
         width: 200,
       },
-      {
-        Header: 'جزییات مغایرت',
-        id: 'details',
-        accessor: (d: any) => {
-          if (
-            d?.passedStages?.[1]?.havaleh?.assets &&
-            Object.values(d?.passedStages?.[1]?.havaleh?.assets).some((v) => v)
-          ) {
-            return (
-              <Button
-                label='مشاهده'
-                color='info'
-                onClick={() => {
-                  flushSync(() => {
-                    setChoosedRow(d);
-                  });
-                  setDetailsDialog(true);
-                }}
-              />
-            );
-          }
-        },
-        width: 200,
-      },
+
       {
         Header: 'توضیحات ارسال',
         accessor: 'passedStages[0].havaleh.description',
@@ -835,7 +848,7 @@ export default memo(function ConfirmReceiptByHospitals({
           open={rowOptionsOpen}
           onClose={handleRowOptionsClose}
         >
-          {session?.user?.role?.['createLicense'] &&
+          {session?.user?.role?.['createLicense'] && choosedRow?.passedStages?.length === 2 &&
           choosedRow?.passedStages?.[1] ? (
             <MenuItem>
               <Button

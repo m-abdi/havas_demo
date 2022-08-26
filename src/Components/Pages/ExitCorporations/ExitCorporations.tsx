@@ -144,6 +144,26 @@ export default memo(function ExitCorporations({
   const columns: any = useMemo(
     () => [
       {
+        Header: 'جزيیات حواله',
+        id: 'details',
+        disableSortBy: true,
+        disableFilters: true,
+        accessor: (d: any) => {
+          return (
+            <Button
+              label='مشاهده'
+              color='info'
+              onClick={(e) => {
+                flushSync(() => {
+                  setChoosedRow(d);
+                });
+                setDetailsDialog(true);
+              }}
+            />
+          );
+        },
+      },
+      {
         Header: 'شماره پیگیری',
         accessor: 'workflowNumber', // accessor is the "key" in the data
       },
@@ -199,26 +219,7 @@ export default memo(function ExitCorporations({
         id: 'passedStages[0].havaleh.transportationTelephone',
         width: 200,
       },
-      {
-        Header: 'جزيیات حواله',
-        id: 'details',
-        disableSortBy: true,
-        disableFilters: true,
-        accessor: (d: any) => {
-          return (
-            <Button
-              label='مشاهده'
-              color='info'
-              onClick={(e) => {
-                flushSync(() => {
-                  setChoosedRow(d);
-                });
-                setDetailsDialog(true);
-              }}
-            />
-          );
-        },
-      },
+
       {
         Header: 'امانتی',
         id: 'borrowed',

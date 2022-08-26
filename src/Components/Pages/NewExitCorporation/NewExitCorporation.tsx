@@ -23,8 +23,8 @@ import React from 'react';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import SolarHijri from 'react-date-object/calendars/persian';
 import SolarHijriFarsi from 'react-date-object/locales/persian_fa';
-import { useForm } from 'react-hook-form';
 import { truncate } from 'cypress/types/lodash';
+import { useForm } from 'react-hook-form';
 
 const Form1 = styled('form', { name: 'form1' })(({ theme }) => ({
   flexBasis: '100%',

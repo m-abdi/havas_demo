@@ -77,6 +77,7 @@ export default function TransferedAssetsDetailsModal({
             register={register}
             assets={choosedRow?.passedStages?.[0]?.havaleh?.assets}
             editable={false}
+            reset={reset}
           />
         ) : (
           <EditableHtmlTable
@@ -93,7 +94,7 @@ export default function TransferedAssetsDetailsModal({
               'استیلن',
               'گاز مایع',
             ]}
-            setValue={undefined}
+            setValue={setValue}
             register={register}
             assets={choosedRow?.passedStages?.[0]?.havaleh?.assets}
             editable={false}

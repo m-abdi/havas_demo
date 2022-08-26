@@ -53,7 +53,7 @@ export default function AssetExitWorkflowsTables() {
           variant='fullWidth'
           scrollButtons='auto'
         >
-          <Tab label='منتظر تایید دریافت' />
+          <Tab label='خروج های ثبت شده' />
           <Tab label='تاریخچه' />
         </Tabs>
         <TabPanel value={tabValue} index={0}>
