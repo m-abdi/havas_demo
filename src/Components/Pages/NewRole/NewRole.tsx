@@ -355,7 +355,7 @@ export default memo(function NewRole({
                     }
                   />
                 }
-                label='نماینده شرکت(ثبت مجوز ورود / تحویل حواله خروجی)'
+                label='نماینده شرکت گاز های طبی'
               />
               <FormControlLabel
                 control={

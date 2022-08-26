@@ -436,9 +436,9 @@ const resolvers: Resolvers = {
         include: { instanceOfProcess: true },
       });
       console.log(filters);
-      
+
       console.log(workflows);
-      
+
       return workflows as any;
     },
     async assetTransferWorkflowsCount(_, _args, _context): Promise<number> {
@@ -578,7 +578,7 @@ const resolvers: Resolvers = {
       const { req } = _context;
       const session = await getSession({ req });
       // manager detection
-      if (!session || !(isManager(session))) {
+      if (!session || !isManager(session)) {
         throw new GraphQLYogaError('Unauthorized');
       }
       return await prisma.config.findFirst({ where: { current: true } });
@@ -848,7 +848,7 @@ const resolvers: Resolvers = {
           outsourced: 0,
           sending: 0,
           receiving: 0,
-          available: 0
+          available: 0,
         },
       });
       return createdEquipment;
@@ -954,15 +954,36 @@ const resolvers: Resolvers = {
       // check authentication and permission
       const { req } = _context;
       const session = await getSession({ req });
-      if (!session || !(await canDeleteEquipments(session))) {
+      if (
+        !session ||
+        !(await canDeleteEquipments(session)) || canNotDeleteThisEquipment()
+      ) {
         throw new GraphQLYogaError('Unauthorized');
       }
+      console.log(equipmentIds);
 
       const deletedEquipments = await prisma.equipment.deleteMany({
         where: { terminologyCode: { in: equipmentIds } },
       });
-
+      console.log(canNotDeleteThisEquipment());
+      
       return deletedEquipments?.count;
+
+      function canNotDeleteThisEquipment(): boolean {
+        for (const i of [
+          'oxygen_50l',
+          'co2_50l, azete_50l',
+          'bihoshi_50l',
+          'oxygen_40l',
+          'co2_40l, azete_40l',
+          'bihoshi_40l',
+        ]) {
+          if (equipmentIds.includes(i)) {
+            return true;
+          }
+        }
+        return false
+      }
     },
     async deleteAssets(
       _: any,
@@ -1904,12 +1925,16 @@ const resolvers: Resolvers = {
         return t[1];
       }
     },
-    async updateCurrentConfig(_, { id, ignoreManagerApproval, ignoreRFID }, _context) {
+    async updateCurrentConfig(
+      _,
+      { id, ignoreManagerApproval, ignoreRFID },
+      _context
+    ) {
       // check authentication and permission
       const { req } = _context;
       const session = await getSession({ req });
       // manager recognition
-      if (!session || !(isManager(session))) {
+      if (!session || !isManager(session)) {
         throw new GraphQLYogaError('Unauthorized');
       }
       return await prisma.config.update({
@@ -1972,8 +1997,7 @@ const resolvers: Resolvers = {
             },
           },
         });
-        
-        
+
         Object.entries(
           giveMeJustAggCounts(
             stage1?.passedStages?.[0]?.havaleh
