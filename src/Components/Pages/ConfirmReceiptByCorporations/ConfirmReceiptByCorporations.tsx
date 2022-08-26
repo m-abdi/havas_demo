@@ -136,7 +136,10 @@ const [hDetailsDialog, setHDetailsDialog] = useState(false)
           // عدم مغایرت و ثبت توسط شرکت
           if (!d?.passedStages?.[3].havaleh?.assets) {
             return <Button label='کامل' color='success' />;
-          } else if (d?.passedStages?.[3].havaleh?.assets) {
+          } else if (
+            d?.passedStages?.[3].havaleh?.assets &&
+            Object.values(d?.passedStages?.[3].havaleh?.assets).some((v) => v)
+          ) {
             return <Button label='مغایرت حواله با دریافتی' color='error' />;
           }
         },
