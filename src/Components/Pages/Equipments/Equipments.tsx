@@ -398,20 +398,20 @@ export default memo(function Equipments({
           ),
         },
         ...columns,
-        {
-          id: 'downloads',
-          disableResizing: false,
-          minWidth: 35,
-          width: 90,
-          maxWidth: 90,
-          disableSortBy: true,
-          disableFilters: true,
-          Header: () => <>دانلودها</>,
+        // {
+        //   id: 'downloads',
+        //   disableResizing: false,
+        //   minWidth: 35,
+        //   width: 90,
+        //   maxWidth: 90,
+        //   disableSortBy: true,
+        //   disableFilters: true,
+        //   Header: () => <>دانلودها</>,
 
-          Cell: ({ row }: { row: any }) => (
-            <>{row.index + 1 + offset * pageNumber}</>
-          ),
-        },
+        //   Cell: ({ row }: { row: any }) => (
+        //     <>{row.index + 1 + offset * pageNumber}</>
+        //   ),
+        // },
       ]);
     }
   );

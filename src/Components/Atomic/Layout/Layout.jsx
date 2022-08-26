@@ -293,7 +293,7 @@ function Layout({ children, pageName }) {
           roleName: 'createEnterDeliverExit',
         },
         {
-          text: 'ورود',
+          text: 'ورود به بیمارستان',
           icon: <FileDownloadRoundedIcon />,
           path: '/users/assetEnterWorkflowsTables',
           roleName: 'viewLicense',
@@ -310,7 +310,7 @@ function Layout({ children, pageName }) {
         },
 
         {
-          text: 'خروج',
+          text: 'خروج از بیمارستان',
           icon: <FileUploadRoundedIcon />,
           path: '/users/assetExitWorkflowsTables',
           roleName: 'viewLicense',

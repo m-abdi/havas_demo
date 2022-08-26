@@ -964,7 +964,7 @@ const resolvers: Resolvers = {
 
       const deletedEquipments = await prisma.equipment.deleteMany({
         where: { terminologyCode: { in: equipmentIds } },
-      });
+    });
       console.log(canNotDeleteThisEquipment());
       
       return deletedEquipments?.count;
