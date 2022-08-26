@@ -138,7 +138,9 @@ const [hDetailsDialog, setHDetailsDialog] = useState(false)
             return <Button label='کامل' color='success' />;
           } else if (
             d?.passedStages?.[3].havaleh?.assets &&
-            Object.values(d?.passedStages?.[3].havaleh?.assets).some((v) => v)
+            Object.entries(d?.passedStages?.[3].havaleh?.assets).some(
+              ([k, v]) => !/_typename/.test(k) && v
+            )
           ) {
             return <Button label='مغایرت حواله با دریافتی' color='error' />;
           }
@@ -219,7 +221,7 @@ const [hDetailsDialog, setHDetailsDialog] = useState(false)
         accessor: (d: any) => {
           if (
             d?.passedStages?.[3]?.havaleh?.assets &&
-            Object.values(d?.passedStages?.[3]?.havaleh?.assets).some((v) => v)
+            Object.entries(d?.passedStages?.[3]?.havaleh?.assets).some(([k,v]) => !/_typename/.test(k) && v)
           ) {
             return (
               <Button

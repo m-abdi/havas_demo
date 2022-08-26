@@ -242,26 +242,26 @@ export default memo(function ConfirmReceiptByHospitals({
           );
         },
       },
-      // {
-      //   Header: 'جزییات حواله',
-      //   id: 'detailsOfHavaleh',
-      //   disableSortBy: true,
-      //   disableFilters: true,
-      //   accessor: (d: any) => {
-      //     return (
-      //       <Button
-      //         label='مشاهده'
-      //         color='info'
-      //         onClick={(e) => {
-      //           flushSync(() => {
-      //             setChoosedRow(d);
-      //           });
-      //           setHavalehDialog(true);
-      //         }}
-      //       />
-      //     );
-      //   },
-      // },
+      {
+        Header: 'جزییات حواله',
+        id: 'detailsOfHavaleh',
+        disableSortBy: true,
+        disableFilters: true,
+        accessor: (d: any) => {
+          return (
+            <Button
+              label='مشاهده'
+              color='info'
+              onClick={(e) => {
+                flushSync(() => {
+                  setChoosedRow(d);
+                });
+                setHavalehDialog(true);
+              }}
+            />
+          );
+        },
+      },
       {
         Header: 'امانتی',
         id: 'borrowed',
