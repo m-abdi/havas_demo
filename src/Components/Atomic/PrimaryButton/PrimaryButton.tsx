@@ -18,6 +18,7 @@ export default function PrimaryButton({
   fabVariant,
   label,
   right,
+  title,
 }: {
   id: string;
   icon: 'SEND' | 'ADD';
@@ -29,6 +30,7 @@ export default function PrimaryButton({
   label: string;
   right: any;
   disabled?: boolean;
+  title ?: string;
   size?: 'small' | 'large' | 'medium';
 }) {
   const match = isSmallScreen();
@@ -56,6 +58,7 @@ export default function PrimaryButton({
     </>
   ) : (
     <Box
+    
       sx={{
         position: 'fixed',
         top: 72,
@@ -71,6 +74,7 @@ export default function PrimaryButton({
         variant='contained'
         onClick={onClick}
         disabled={disabled}
+        title={title}
       />
     </Box>
   );

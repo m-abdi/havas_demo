@@ -83,6 +83,7 @@ export default function AssetExitWorkflowsTables() {
         icon='ADD'
         ariaLabel='ایجاد'
         label='ایجاد'
+        title='ثبت خروج از بیمارستان'
         size='large'
         variant='contained'
         fabVariant='circular'
