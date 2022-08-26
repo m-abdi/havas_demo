@@ -51,6 +51,7 @@ import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import { Satellite } from '@mui/icons-material';
 import SensorsRoundedIcon from '@mui/icons-material/SensorsRounded';
 import { Session } from 'next-auth';
+import Styles from "../../../TableStyles"
 import { Workflow } from '../../../../lib/resolvers-types';
 import { flushSync } from 'react-dom';
 import matchSorter from 'match-sorter';
@@ -69,71 +70,7 @@ interface Props {
   name?: string;
 }
 
-const Styles = styled.div`
-  padding: 1rem;
 
-  .table {
-    display: inline-block;
-    border-spacing: 0;
-    border: 1px solid black;
-    text-align: center;
-    font-family: Vazir;
-
-    .tr {
-      :last-child {
-        .td {
-          border-bottom: 0;
-        }
-      }
-    }
-    .thead {
-      background-color: #68c5db;
-    }
-    .th {
-      font-weight: bold;
-      font-size: calc(14px + (21 - 14) * ((100vw - 300px) / (1600 - 300)));
-    }
-    .td {
-      overflow: hidden;
-      font-size: calc(14px + (17 - 14) * ((100vw - 300px) / (1600 - 300)));
-    }
-    .th,
-    .td {
-      margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-
-      ${
-        '' /* In this example we use an absolutely position resizer,
-       so this is required. */
-      }
-      position: relative;
-
-      :last-child {
-        border-left: 0;
-      }
-
-      .resizer {
-        display: inline-block;
-        background: #fcde67;
-        width: 3px;
-        height: 100%;
-        position: absolute;
-        right: 0;
-        top: 0;
-        transform: translateX(50%);
-        z-index: 1;
-        ${'' /* prevents from scrolling while dragging on touch devices */}
-        touch-action:none;
-
-        &.isResizing {
-          background: red;
-        }
-      }
-    }
-  }
-`;
 var delayTimer: any;
 export default memo(function ConfirmReceiptByHospitals({
   loading,

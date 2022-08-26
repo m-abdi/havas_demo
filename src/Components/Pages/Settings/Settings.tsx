@@ -61,7 +61,7 @@ export default function Settings({
                   onClick={() => setIsChecked(!isChecked)}
                 />
               }
-              label='تایید خودکار حواله های خروجی'
+              label='تایید خودکار درخواست های خروجی کپسول از بیمارستان'
             />
             <FormControlLabel
               control={

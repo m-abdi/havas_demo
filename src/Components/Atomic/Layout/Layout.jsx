@@ -335,7 +335,6 @@ function Layout({ children, pageName }) {
     >
       {/* First Appbar */}
       <AppBar
-        elevation={2}
         sx={{
           '&.MuiAppBar-root': { backgroundColor: '#304967', zIndex: 6000 },
           blockSize: 64,

@@ -51,6 +51,7 @@ import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import { Satellite } from '@mui/icons-material';
 import SensorsRoundedIcon from '@mui/icons-material/SensorsRounded';
 import { Session } from 'next-auth';
+import  Styles  from '../../../TableStyles';
 import TransferedAssetsDetailsModal from '../../Atomic/TransferedAssetsDetailsModal';
 import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined';
 import { Workflow } from 'lib/graphql-operations';
@@ -60,7 +61,6 @@ import matchSorter from 'match-sorter';
 import { memo } from 'react';
 import persianCalender from 'react-date-object/calendars/persian';
 import persianLocale from 'react-date-object/locales/persian_fa';
-import styled from 'styled-components';
 import toNestedObject from '../../../Logic/toNestedObject';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
@@ -70,86 +70,7 @@ interface Props {
   indeterminate?: boolean;
   name?: string;
 }
-interface DataType {
-  name: string;
-  model: string;
-  factory: string;
-  serialNumber: string;
-  productionYear: string;
-  installationYear: string;
-  terminologyCode: string;
-  hasInstructions: boolean;
-  supportCompany: { name: string };
-  supportTelephone1: string;
-  supportTelephone2: string;
-  createdAt: string;
-  editedAt: string;
-}
-const Styles = styled.div`
-  padding: 1rem;
 
-  .table {
-    display: inline-block;
-    border-spacing: 0;
-    border: 1px solid black;
-    text-align: center;
-    font-family: Vazir;
-
-    .tr {
-      :last-child {
-        .td {
-          border-bottom: 0;
-        }
-      }
-    }
-    .thead {
-      background-color: #68c5db;
-    }
-    .th {
-      font-weight: bold;
-      font-size: calc(14px + (21 - 14) * ((100vw - 300px) / (1600 - 300)));
-    }
-    .td {
-      overflow: hidden;
-      font-size: calc(14px + (17 - 14) * ((100vw - 300px) / (1600 - 300)));
-    }
-    .th,
-    .td {
-      margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-
-      ${
-        '' /* In this example we use an absolutely position resizer,
-       so this is required. */
-      }
-      position: relative;
-
-      :last-child {
-        border-left: 0;
-      }
-
-      .resizer {
-        display: inline-block;
-        background: #fcde67;
-        width: 3px;
-        height: 100%;
-        position: absolute;
-        right: 0;
-        top: 0;
-        transform: translateX(50%);
-        z-index: 1;
-        ${'' /* prevents from scrolling while dragging on touch devices */}
-        touch-action:none;
-
-        &.isResizing {
-          background: red;
-        }
-      }
-    }
-  }
-`;
 var delayTimer: any;
 export default memo(function ExitHospitals({
   loading,
