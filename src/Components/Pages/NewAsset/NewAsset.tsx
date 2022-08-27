@@ -104,12 +104,14 @@ export default function NewAsset({
   createHandler: (
     equipmentId: string,
     placeId: string,
+    count: number,
     edit: string
   ) => Promise<void>;
 }) {
   // states
   const [equipment, setEquipment] = useState<{ id: string; label: string }>();
   const [place, setPlace] = useState<{ id: string; label: string }>();
+  const [count, setCount] = useState(1);
   // react-form-hooks
   const {
     register,
@@ -139,10 +141,11 @@ export default function NewAsset({
       place?.id as string,
       existingAsset?.id ?? '',
     ]);
-    
+
     await createHandler(
       equipment?.id as string,
       place?.id as string,
+      count ?? 1,
       existingAsset?.id ?? ''
     );
   };
@@ -262,6 +265,21 @@ export default function NewAsset({
             )}
           </Input1>
         </Row1>
+        {!existingAsset && (
+          <Row1>
+            <Input1>
+              <Label1>تعداد</Label1>
+              <TextField
+                type={'number'}
+                id='count'
+                size='small'
+                value={count}
+                onChange={(e) => setCount(parseInt(e.target.value))}
+                inputProps={{ min: '1' }}
+              />
+            </Input1>
+          </Row1>
+        )}
         {!submitOnChange && (
           <Box
             sx={{

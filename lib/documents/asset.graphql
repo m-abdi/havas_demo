@@ -25,10 +25,8 @@ query assetsList {
   }
 }
 
-mutation createAsset($equipmentId: String!, $placeId: String!, $edit: String) {
-  createAsset(equipmentId: $equipmentId, placeId: $placeId, edit: $edit) {
-    id
-  }
+mutation createAsset($equipmentId: String!, $placeId: String!, $count: Int = 1, $edit: String) {
+  createAsset(equipmentId: $equipmentId, placeId: $placeId, count: $count, edit: $edit)
 }
 
 mutation deleteAssets($assetIds: [String!]!) {

@@ -584,7 +584,7 @@ const typeDefs = /* GraphQL */ `
       supportTelephone2: String
       edit: String
     ): Equipment!
-    createAsset(equipmentId: String!, placeId: String!, edit: String): Place!
+    createAsset(equipmentId: String!, placeId: String!, count: Int, edit: String): Int!
     createCategory(name: String!, superPlaceId: String): ID!
     createEnterWorkflow(
       workflowNumber: String

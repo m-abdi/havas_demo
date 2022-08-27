@@ -852,7 +852,7 @@ const resolvers: Resolvers = {
     },
     async createAsset(
       _,
-      { equipmentId, placeId, edit }: any,
+      { equipmentId, placeId, count, edit },
       _context: any
     ): Promise<any> {
       // check authentication and permission
@@ -873,16 +873,21 @@ const resolvers: Resolvers = {
             status: 'موجود در بیمارستان',
           },
         });
-        return editedAsset;
+        return 1;
       }
-      const createdAsset = await prisma.asset.create({
-        data: {
-          equipment: { connect: { terminologyCode: equipmentId } },
-          place: { connect: { id: placeId } },
+      count = count ?? 1
+      let a = [];
+      for (let i = 0; i < count; i++) {
+        a.push({
+          equipmentId,
+          placeId,
           status: 'موجود در بیمارستان',
-        },
+        });
+      }
+      const resp = await prisma.asset.createMany({
+        data: a,
       });
-      return createdAsset;
+      return resp?.count;
     },
     async deleteRoles(_parent, _args, _context, _info): Promise<any> {
       // check authentication and permission
@@ -1233,7 +1238,7 @@ const resolvers: Resolvers = {
         where: { current: true },
       });
       const o: any = [];
-      
+
       // new exit workflow
       if (currentConfig?.ignoreManagerApproval && currentConfig?.ignoreRFID) {
         Object.entries(aggregatedAssets).forEach(([k, v]) => {
@@ -2059,7 +2064,7 @@ async function repetitiveHavalehId(havalehId: string): Promise<boolean> {
     where: { passedStages: { some: { havaleh: { is: { id: havalehId } } } } },
   });
   if (repetativeHavaleh) {
-    return true
+    return true;
   }
-  return false
+  return false;
 }

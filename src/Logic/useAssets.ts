@@ -89,18 +89,21 @@ export default function useAssets(
   );
   // creation handler
   const createNew = useCallback(
-    async (equipmentId: string, placeId: string, edit: string) => {
+    async (equipmentId: string, placeId: string, count: number = 1,  edit: string) => {
       useNotification(
         'sending',
         setSnackbarColor,
         setSnackbarMessage,
         setSnackbarOpen
       );
+      console.log(count);
+      
       try {
         const createdAsset = await createAssetMutation({
           variables: {
             equipmentId,
             placeId,
+            count,
             edit,
           },
         });

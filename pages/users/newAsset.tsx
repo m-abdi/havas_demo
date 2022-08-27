@@ -28,10 +28,7 @@ export default function newAsset() {
   const { createNew, sending } = useAssets();
   // if editing => extract existing asset data from query param
   const existingAsset = useMemo(
-    () =>
-      JSON.parse(
-        router?.query?.asset ? (router?.query?.asset as string) : '{}'
-      ),
+    () => (router?.query?.asset ? JSON.parse(router.query.asset as string) : false),
     [router?.isReady]
   );
 
