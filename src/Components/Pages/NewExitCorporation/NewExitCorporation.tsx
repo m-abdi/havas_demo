@@ -381,7 +381,7 @@ export default function ExitCorporation({
               id='havalehId'
               inputProps={{
                 ...register('havalehId', {
-                  required: hospitalClient ? false : true,
+                  required: true,
                   value: existingWorkflow?.passedStages?.[0]?.havaleh?.id,
                 }),
               }}
@@ -464,7 +464,7 @@ export default function ExitCorporation({
               disabled={!editable}
               inputProps={{
                 ...register('transportationName', {
-                  required: hospitalClient ? false : true,
+                  required:  true,
                   value:
                     existingWorkflow?.passedStages?.[0]?.havaleh
                       ?.transportationName,
@@ -485,7 +485,7 @@ export default function ExitCorporation({
               disabled={!editable}
               inputProps={{
                 ...register('transportationTelephone', {
-                  required: hospitalClient ? false : true,
+                  required:  true,
                   value:
                     existingWorkflow?.passedStages?.[0]?.havaleh
                       ?.transportationTelephone,

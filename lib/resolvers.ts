@@ -435,9 +435,6 @@ const resolvers: Resolvers = {
         orderBy: { dateCreated: 'desc' },
         include: { instanceOfProcess: true },
       });
-      console.log(filters);
-
-      console.log(workflows);
 
       return workflows as any;
     },
@@ -956,17 +953,16 @@ const resolvers: Resolvers = {
       const session = await getSession({ req });
       if (
         !session ||
-        !(await canDeleteEquipments(session)) || canNotDeleteThisEquipment()
+        !(await canDeleteEquipments(session)) ||
+        canNotDeleteThisEquipment()
       ) {
         throw new GraphQLYogaError('Unauthorized');
       }
-      console.log(equipmentIds);
 
       const deletedEquipments = await prisma.equipment.deleteMany({
         where: { terminologyCode: { in: equipmentIds } },
-    });
-      console.log(canNotDeleteThisEquipment());
-      
+      });
+
       return deletedEquipments?.count;
 
       function canNotDeleteThisEquipment(): boolean {
@@ -982,7 +978,7 @@ const resolvers: Resolvers = {
             return true;
           }
         }
-        return false
+        return false;
       }
     },
     async deleteAssets(
@@ -1044,7 +1040,9 @@ const resolvers: Resolvers = {
         (!(await canCreateEnterDeliverExit(session)) &&
           !(await canCreateLicense(session)))
       ) {
-        throw new GraphQLYogaError('Unauthorized');
+        throw new GraphQLYogaError('خطا');
+      } else if (await repetitiveHavalehId(havalehId)) {
+        throw new GraphQLYogaError('شماره حواله تکراری');
       }
       // // new assets that must be created
       // const factoryAssets = Object.entries(assets)
@@ -1215,7 +1213,9 @@ const resolvers: Resolvers = {
       const { req } = _context;
       const session = await getSession({ req });
       if (!session || !(await canCreateEquipment(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+        throw new GraphQLYogaError('خطا');
+      } else if (await repetitiveHavalehId(havalehId)) {
+        throw new GraphQLYogaError('شماره حواله تکراری');
       }
       const aggregatedAssets: any = {};
       Object.entries(assets as any)
@@ -1233,6 +1233,7 @@ const resolvers: Resolvers = {
         where: { current: true },
       });
       const o: any = [];
+      
       // new exit workflow
       if (currentConfig?.ignoreManagerApproval && currentConfig?.ignoreRFID) {
         Object.entries(aggregatedAssets).forEach(([k, v]) => {
@@ -2053,3 +2054,12 @@ const resolvers: Resolvers = {
 };
 
 export default resolvers;
+async function repetitiveHavalehId(havalehId: string): Promise<boolean> {
+  const repetativeHavaleh = await prisma.workflow.findFirst({
+    where: { passedStages: { some: { havaleh: { is: { id: havalehId } } } } },
+  });
+  if (repetativeHavaleh) {
+    return true
+  }
+  return false
+}

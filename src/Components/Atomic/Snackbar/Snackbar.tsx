@@ -39,7 +39,8 @@ export default function Snackbar(props: any) {
           alignItems: 'center',
         }}
       >
-        {snackbarMessage}
+        {' '}
+        <span id="notificationMessage">{snackbarMessage}</span>
       </Alert>
     </MuiSnackbar>
   );

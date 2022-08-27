@@ -181,7 +181,12 @@ export default function useWorkflows(
   // fetch All enter workflows
   const [
     allEnterWorkflowsQuery,
-    { data: allEnterWorkflowsData, error, loading, fetchMore: fetchMoreEnterWorkflows },
+    {
+      data: allEnterWorkflowsData,
+      error,
+      loading,
+      fetchMore: fetchMoreEnterWorkflows,
+    },
   ] = useLazyQuery(AllWorkflowsDocument, {
     fetchPolicy: 'cache-and-network',
     variables: {
@@ -353,8 +358,10 @@ export default function useWorkflows(
     CreateEnterWorkflowDocument
   );
   // new exit worflow mutation to server
-  const [createExitWorkflowMutation, { loading: sendingNewExitWorkflow }] =
-    useMutation(CreateExitWorkflowDocument);
+  const [
+    createExitWorkflowMutation,
+    { loading: sendingNewExitWorkflow, error: createExitWorkflowError },
+  ] = useMutation(CreateExitWorkflowDocument);
   // confirm existing enter worflow mutation to server
   const [
     confirmReceiptByHospitalMutation,
@@ -483,19 +490,20 @@ export default function useWorkflows(
         // drop NaN values
         const filteredAssets = dropNullValues(assets);
 
-        const createdEnterWorkflow = await createEnterWorkflowMutation({
-          variables: {
-            workflowNumber,
-            havalehId,
-            corporationRepresentativeId,
-            transportationName,
-            transportationTelephone,
-            transportationTelephone2,
-            description,
-            deliverer,
-            assets: filteredAssets,
-          },
-        });
+        const { data: createdEnterWorkflow, errors: createEnterWorkflowError } =
+          await createEnterWorkflowMutation({
+            variables: {
+              workflowNumber,
+              havalehId,
+              corporationRepresentativeId,
+              transportationName,
+              transportationTelephone,
+              transportationTelephone2,
+              description,
+              deliverer,
+              assets: filteredAssets,
+            },
+          });
         if (createdEnterWorkflow) {
           useNotification(
             'success',
@@ -504,6 +512,16 @@ export default function useWorkflows(
             setSnackbarOpen
           );
           router.push('/users/dashboard');
+        } else if (createEnterWorkflowError) {
+          useNotification(
+            'error',
+            setSnackbarColor,
+            setSnackbarMessage,
+            setSnackbarOpen,
+            '',
+            '',
+            createEnterWorkflowError?.toString()
+          );
         } else {
           useNotification(
             'error',
@@ -512,12 +530,15 @@ export default function useWorkflows(
             setSnackbarOpen
           );
         }
-      } catch (e) {
+      } catch (e: any) {
         useNotification(
           'error',
           setSnackbarColor,
           setSnackbarMessage,
-          setSnackbarOpen
+          setSnackbarOpen,
+          '',
+          '',
+          e?.message
         );
       }
     },
@@ -544,23 +565,25 @@ export default function useWorkflows(
         // drop NaN values
         const filteredAssets = dropNullValues(assets);
 
-        const createdExitWorkflow = await createExitWorkflowMutation({
-          variables: {
-            havalehId,
-            warehouseKeeperId,
-            transportationName,
-            transportationTelephone,
-            transportationTelephone2,
-            corporationRepresentativeId,
-            description,
-            assets: filteredAssets,
-          },
-        });
+        const { data: createdExitWorkflow, errors: createExitWorkflowError } =
+          await createExitWorkflowMutation({
+            variables: {
+              havalehId,
+              warehouseKeeperId,
+              transportationName,
+              transportationTelephone,
+              transportationTelephone2,
+              corporationRepresentativeId,
+              description,
+              assets: filteredAssets,
+            },
+          });
+        console.log(createExitWorkflowError);
+
         if (createdExitWorkflow) {
           // automatically approved by manager
           if (
-            createdExitWorkflow?.data?.createExitWorkflow?.passedStages
-              ?.length === 2
+            createdExitWorkflow?.createExitWorkflow?.passedStages?.length === 2
           ) {
             useNotification(
               'success',
@@ -570,14 +593,25 @@ export default function useWorkflows(
             );
             router.push(
               `/users/exitWarehouseRFID?workflow=${JSON.stringify(
-                createdExitWorkflow?.data?.createExitWorkflow
+                createdExitWorkflow?.createExitWorkflow
               )}`
             );
           }
           // needs approval -> direct to dashboard
           else if (
-            createdExitWorkflow?.data?.createExitWorkflow?.passedStages
-              ?.length === 1
+            createdExitWorkflow?.createExitWorkflow?.passedStages?.length === 1
+          ) {
+            useNotification(
+              'success',
+              setSnackbarColor,
+              setSnackbarMessage,
+              setSnackbarOpen,
+              'در حال ارسال',
+              'منتظر تایید مدیریت'
+            );
+            router.push('/users/assetExitWorkflowsTables');
+          } else if (
+            createdExitWorkflow?.createExitWorkflow?.passedStages?.length === 3
           ) {
             useNotification(
               'success',
@@ -589,20 +623,16 @@ export default function useWorkflows(
             );
             router.push('/users/assetExitWorkflowsTables');
           }
-          else if (
-            createdExitWorkflow?.data?.createExitWorkflow?.passedStages
-              ?.length === 3
-          ) {
-            useNotification(
-              'success',
-              setSnackbarColor,
-              setSnackbarMessage,
-              setSnackbarOpen,
-              'در حال ارسال',
-              'منتظر تایید مدیریت'
-            );
-            router.push('/users/assetExitWorkflowsTables');
-          }
+        } else if (createExitWorkflowError) {
+          useNotification(
+            'error',
+            setSnackbarColor,
+            setSnackbarMessage,
+            setSnackbarOpen,
+            '',
+            '',
+            createExitWorkflowError?.toString()
+          );
         } else {
           useNotification(
             'error',
@@ -611,16 +641,19 @@ export default function useWorkflows(
             setSnackbarOpen
           );
         }
-      } catch (e) {
+      } catch (e: any) {
         useNotification(
           'error',
           setSnackbarColor,
           setSnackbarMessage,
-          setSnackbarOpen
+          setSnackbarOpen,
+          '',
+          '',
+          e?.message
         );
       }
     },
-    []
+    [createExitWorkflowError]
   );
   // confirming handler
   const confirmEnterHandler = useCallback(
@@ -688,16 +721,18 @@ export default function useWorkflows(
             setSnackbarMessage,
             setSnackbarOpen
           );
-        
-          
-          if (updatedEnterWorkflow?.data?.confirmReceiptByHospital?.passedStages?.length === 2) {
+
+          if (
+            updatedEnterWorkflow?.data?.confirmReceiptByHospital?.passedStages
+              ?.length === 2
+          ) {
             router.push(
               `/users/enterWarehouseRFID?workflow=${JSON.stringify(
                 updatedEnterWorkflow?.data?.confirmReceiptByHospital
               )}`
             );
-          } 
-          router.push("/users/dashboard")
+          }
+          router.push('/users/dashboard');
         } else {
           useNotification(
             'error',

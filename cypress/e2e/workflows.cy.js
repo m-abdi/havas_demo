@@ -11,7 +11,7 @@ const newExitWorkflowData = {
   transportationTelephone: '123456',
   transportationTelephone2: '123456',
   assets: {
-    oxygen_50l_factory: 1,
+    oxygen_50l_customer: 1,
     oxygen_50l: 1,
   },
 };
@@ -27,7 +27,7 @@ const newExitWorkflowData2 = {
   transportationTelephone: '123456',
   transportationTelephone2: '123456',
   assets: {
-    oxygen_50l_factory: 1,
+    oxygen_50l_customer: 1,
     oxygen_50l: 1,
   },
 };
@@ -43,7 +43,7 @@ const newExitWorkflowData3 = {
   transportationTelephone: '123456',
   transportationTelephone2: '123456',
   assets: {
-    oxygen_50l_factory: 1,
+    oxygen_50l_customer: 1,
     oxygen_50l: 1,
   },
 };
@@ -59,7 +59,7 @@ const newExitWorkflowData4 = {
   transportationTelephone: '123456',
   transportationTelephone2: '123456',
   assets: {
-    oxygen_50l_factory: 1,
+    oxygen_50l_customer: 1,
     oxygen_50l: 1,
   },
 };
@@ -96,6 +96,9 @@ const testNewPersonData2 = {
   description: 'توضیحات مکان',
 };
 
+
+
+
 describe('New Exit Asset Workflow', () => {
   beforeEach(() => {
     cy.task('createPlace', newExitWorkflowData?.corporation);
@@ -128,8 +131,8 @@ describe('New Exit Asset Workflow', () => {
     cy.get('#transportationTelephone2').type(
       newExitWorkflowData?.transportationTelephone2
     );
-    cy.get('#oxygen_50l_factory').type(
-      newExitWorkflowData?.assets?.oxygen_50l_factory
+    cy.get('#oxygen_50l_customer').type(
+      newExitWorkflowData?.assets?.oxygen_50l_customer
     );
 
     cy.get('#submitButton').click();
@@ -145,6 +148,44 @@ describe('New Exit Asset Workflow', () => {
       instanceOfProcessId: 2,
       nextStageName: 'قبول درخواست توسط مدیریت',
     });
+  });
+  it('creates a new exit workflow without automatic manager approval with repetitive havalehId', () => {
+    cy.task('changeConfig', { ignoreManagerApproval: false });
+    cy.get('#licences').click();
+    cy.get('#exitWorkflows').click();
+    cy.get('#newWorkflowButton', { timeout: 20000 }).click();
+    cy.get('#warehouseKeeper', { timeout: 20000 });
+    cy.get('#corporation', { timeout: 20000 });
+    cy.wait(4000);
+    cy.get('#havalehId', { timeout: 20000 }).type(
+      newExitWorkflowData?.havalehId
+    );
+    cy.get('#corporation').type(newExitWorkflowData?.corporation);
+    cy.get('#description', { timeout: 4000 }).type(
+      newExitWorkflowData?.description
+    );
+    cy.get('#transportationName').type(newExitWorkflowData?.transportationName);
+    cy.get('#transportationTelephone').type(
+      newExitWorkflowData?.transportationTelephone
+    );
+    cy.get('#transportationTelephone2').type(
+      newExitWorkflowData?.transportationTelephone2
+    );
+    cy.get('#oxygen_50l_customer').type(
+      newExitWorkflowData?.assets?.oxygen_50l_customer
+    );
+
+    cy.get('#submitButton').click();
+    cy.get('#notification').should('be.visible');
+    cy.get('#notificationMessage')
+      .should('be.visible')
+      .should('contain', 'شماره حواله تکراری');
+    cy.wait(4000);
+    cy.location('pathname', { timeout: 20000 }).should(
+      'include',
+      '/users/newExitHospital'
+    );
+ 
   });
   it('creates a new exit workflow without automatic manager approval and rfid ignorence', () => {
     cy.task('changeConfig', {
@@ -173,8 +214,8 @@ describe('New Exit Asset Workflow', () => {
     cy.get('#transportationTelephone2').type(
       newExitWorkflowData4?.transportationTelephone2
     );
-    cy.get('#oxygen_50l_factory').type(
-      newExitWorkflowData4?.assets?.oxygen_50l_factory
+    cy.get('#oxygen_50l_customer').type(
+      newExitWorkflowData4?.assets?.oxygen_50l_customer
     );
 
     cy.get('#submitButton').click();
@@ -215,8 +256,8 @@ describe('New Exit Asset Workflow', () => {
     cy.get('#transportationTelephone2').type(
       newExitWorkflowData2?.transportationTelephone2
     );
-    cy.get('#oxygen_50l_factory').type(
-      newExitWorkflowData2?.assets?.oxygen_50l_factory
+    cy.get('#oxygen_50l_customer').type(
+      newExitWorkflowData2?.assets?.oxygen_50l_customer
     );
     cy.get('#submitButton').click();
     cy.get('#notification').should('be.visible');
@@ -256,8 +297,8 @@ describe('New Exit Asset Workflow', () => {
     cy.get('#transportationTelephone2').type(
       newExitWorkflowData3?.transportationTelephone2
     );
-    cy.get('#oxygen_50l_factory').type(
-      newExitWorkflowData3?.assets?.oxygen_50l_factory
+    cy.get('#oxygen_50l_customer').type(
+      newExitWorkflowData3?.assets?.oxygen_50l_customer
     );
     cy.get('#submitButton').click();
     cy.get('#notification').should('be.visible');

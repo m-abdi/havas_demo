@@ -588,11 +588,11 @@ const typeDefs = /* GraphQL */ `
     createCategory(name: String!, superPlaceId: String): ID!
     createEnterWorkflow(
       workflowNumber: String
-      havalehId: String
+      havalehId: String!
       deliverer: String
       description: String
-      transportationName: String
-      transportationTelephone: String
+      transportationName: String!
+      transportationTelephone: String!
       transportationTelephone2: String
       corporationRepresentativeId: String!
       assets: TransferedAssets
