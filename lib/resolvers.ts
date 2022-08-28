@@ -425,11 +425,7 @@ const resolvers: Resolvers = {
               ...filters,
               'passedStages.some.havaleh.is.corporation.is.id':
                 session?.user?.place?.id,
-              nextStageName:
-                filters?.nextStageName === '' ||
-                filters?.nextStageName === 'تایید تحویل به شرکت'
-                  ? filters?.nextStageName
-                  : '',
+            
             })
           : filters,
         orderBy: { dateCreated: 'desc' },
@@ -468,11 +464,7 @@ const resolvers: Resolvers = {
               ...filters,
               'passedStages.some.havaleh.is.corporation.is.id':
                 session?.user?.place?.id,
-              nextStageName:
-                filters?.nextStageName === '' ||
-                filters?.nextStageName === 'تایید تحویل به شرکت'
-                  ? filters?.nextStageName
-                  : '',
+            
             })
           : filters,
       })) as number;

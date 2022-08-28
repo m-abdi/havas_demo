@@ -57,7 +57,15 @@ export default function AssetExitWorkflowsTables() {
           <Tab label='تاریخچه' />
         </Tabs>
         <TabPanel value={tabValue} index={0}>
-          <ExitCorporations />
+          <ExitCorporations
+            nsn={{
+              in: [
+                'تایید تحویل کپسول به بیمارستان',
+                'RFID ثبت ورود کپسول به انبار توسط',
+              ],
+            }}
+            showProcessStages={true}
+          />
         </TabPanel>
         <TabPanel value={tabValue} index={1}>
           <EnteredWarehouseRFID />

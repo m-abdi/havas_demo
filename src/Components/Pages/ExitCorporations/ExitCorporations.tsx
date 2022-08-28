@@ -55,6 +55,7 @@ import { Session } from 'next-auth';
 import Styles from '../../../TableStyles';
 import TransferedAssetsDetailsModal from '../../Atomic/TransferedAssetsDetailsModal';
 import { Workflow } from 'lib/graphql-operations';
+import WorkflowStageModal from '../../Atomic/WorkflowStagesModal';
 import { flushSync } from 'react-dom';
 import matchSorter from 'match-sorter';
 /* eslint-disable react/jsx-filename-extension */
@@ -71,21 +72,7 @@ interface Props {
   indeterminate?: boolean;
   name?: string;
 }
-interface DataType {
-  name: string;
-  model: string;
-  factory: string;
-  serialNumber: string;
-  productionYear: string;
-  installationYear: string;
-  terminologyCode: string;
-  hasInstructions: boolean;
-  supportCompany: { name: string };
-  supportTelephone1: string;
-  supportTelephone2: string;
-  createdAt: string;
-  editedAt: string;
-}
+
 
 var delayTimer: any;
 export default memo(function ExitCorporations({
@@ -100,6 +87,7 @@ export default memo(function ExitCorporations({
   setFilters,
   fetchMoreRows,
   allEquipmentsCount: allequipmentsCount,
+  showProcessStages,
   deleteHandler,
   confirmEnterHandler,
 }: {
@@ -114,6 +102,7 @@ export default memo(function ExitCorporations({
   setFilters: any;
   allEquipmentsCount: number;
   fetchMoreRows: (e: any, page: number) => void;
+  showProcessStages: boolean | undefined;
   deleteHandler: (ids: string[], query: string) => Promise<void>;
   confirmEnterHandler?: (
     workflowNumber: string,
@@ -160,6 +149,7 @@ export default memo(function ExitCorporations({
   const rowOptionsOpen = Boolean(rowOptionsAnchorElement);
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [detailsDialog, setDetailsDialog] = useState(false);
+  const [processDetails, setProcessDetails] = useState(false);
   const [rawFilters, setRawFilters] = useState({});
 
   //
@@ -181,118 +171,261 @@ export default memo(function ExitCorporations({
   };
 
   const columns: any = useMemo(
-    () => [
-      {
-        Header: 'جزيیات حواله',
-        id: 'details',
-        disableSortBy: true,
-        disableFilters: true,
-        accessor: (d: any) => {
-          return (
-            <Button
-              label='مشاهده'
-              color='info'
-              onClick={(e) => {
-                flushSync(() => {
-                  setChoosedRow(d);
-                });
-                setDetailsDialog(true);
-              }}
-            />
-          );
-        },
-      },
-      {
-        Header: 'شماره پیگیری',
-        accessor: 'workflowNumber', // accessor is the "key" in the data
-      },
+    () =>
+      showProcessStages
+        ? [
+            {
+              Header: 'جزيیات حواله',
+              id: 'details',
+              disableSortBy: true,
+              disableFilters: true,
+              accessor: (d: any) => {
+                return (
+                  <Button
+                    label='مشاهده'
+                    color='info'
+                    onClick={(e) => {
+                      flushSync(() => {
+                        setChoosedRow(d);
+                      });
+                      setDetailsDialog(true);
+                    }}
+                  />
+                );
+              },
+            },
+            {
+              Header: 'شماره پیگیری',
+              accessor: 'workflowNumber', // accessor is the "key" in the data
+            },
 
-      {
-        Header: 'تاریخ ثبت فرم',
-        id: 'date',
-        accessor: (d: any) =>
-          // <DatePicker
-          //   calendar={persianCalender}
-          //   locale={persianLocale}
-          //   style={{ inlineSize: '100px', textAlign: "center", fontSize: 15, }}
-          //   value={parseInt(d?.dateCreated)}
-          // />
-          new Date(parseInt(d?.dateCreated)).toLocaleString('fa-IR'),
-      },
-      {
-        Header: 'نام شرکت',
-        accessor: 'passedStages[0].havaleh.corporation.name', // accessor is the "key" in the data
-        width: 200,
-      },
+            {
+              Header: 'تاریخ ثبت فرم',
+              id: 'date',
+              accessor: (d: any) =>
+                // <DatePicker
+                //   calendar={persianCalender}
+                //   locale={persianLocale}
+                //   style={{ inlineSize: '100px', textAlign: "center", fontSize: 15, }}
+                //   value={parseInt(d?.dateCreated)}
+                // />
+                new Date(parseInt(d?.dateCreated)).toLocaleString('fa-IR'),
+            },
+            {
+              Header: 'جزئیات گردش کار',
+              disableSortBy: true,
+              disableFilters: true,
+              id: 'processDetails',
+              accessor: (d: any) => {
+                return (
+                  <Button
+                    label='مشاهده'
+                    color='info'
+                    onClick={(e) => {
+                      flushSync(() => {
+                        setChoosedRow(d);
+                      });
+                      setProcessDetails(true);
+                    }}
+                  />
+                );
+              },
+              width: 170,
+            },
+            {
+              Header: 'نام شرکت',
+              accessor: 'passedStages[0].havaleh.corporation.name', // accessor is the "key" in the data
+              width: 200,
+            },
 
-      {
-        Header: 'نماینده شرکت',
-        accessor: 'passedStages[0].submittedByUser.firstNameAndLastName',
-      },
+            {
+              Header: 'نماینده شرکت',
+              accessor: 'passedStages[0].submittedByUser.firstNameAndLastName',
+            },
 
-      {
-        Header: 'شماره حواله',
-        accessor: 'passedStages[0].havaleh.id',
-      },
+            {
+              Header: 'شماره حواله',
+              accessor: 'passedStages[0].havaleh.id',
+            },
 
-      {
-        Header: 'تحویل دهنده',
-        accessor: 'passedStages[0].havaleh.deliverer', // accessor is the "key" in the data
-      },
-      {
-        Header: 'نام ترابری',
-        accessor: 'passedStages[0].havaleh.transportationName', // accessor is the "key" in the data
-      },
-      {
-        Header: 'شماره تماس ترابری',
-        accessor: (data: any) => {
-          return (
-            <>
-              <div>{data?.passedStages[0].havaleh.transportationTelephone}</div>
-              <div>
-                {data?.passedStages[0].havaleh.transportationTelephone2}
-              </div>
-            </>
-          );
-        },
-        id: 'passedStages[0].havaleh.transportationTelephone',
-        width: 200,
-      },
+            {
+              Header: 'تحویل دهنده',
+              accessor: 'passedStages[0].havaleh.deliverer', // accessor is the "key" in the data
+            },
+            {
+              Header: 'نام ترابری',
+              accessor: 'passedStages[0].havaleh.transportationName', // accessor is the "key" in the data
+            },
+            {
+              Header: 'شماره تماس ترابری',
+              accessor: (data: any) => {
+                return (
+                  <>
+                    <div>
+                      {data?.passedStages[0].havaleh.transportationTelephone}
+                    </div>
+                    <div>
+                      {data?.passedStages[0].havaleh.transportationTelephone2}
+                    </div>
+                  </>
+                );
+              },
+              id: 'passedStages[0].havaleh.transportationTelephone',
+              width: 200,
+            },
 
-      {
-        Header: 'امانتی',
-        id: 'borrowed',
+            {
+              Header: 'امانتی',
+              id: 'borrowed',
 
-        accessor: (d: any) => {
-          if (
-            Object.entries(d?.passedStages?.[0].havaleh?.assets ?? {})?.some(
-              ([key, value]) => value && /_factory/.test(key)
-            )
-          ) {
-            return <Button variant='contained' label='دارد' color='error' />;
-          } else {
-            return <Button variant='contained' label='ندارد' />;
-          }
-        },
-      },
-      {
-        Header: 'توضیحات ارسال',
-        accessor: 'passedStages[0].havaleh.description',
-        width: 300,
-      },
-      // {
-      //   id: 'hasInstructions',
-      //   Header: 'آموزش کاربری',
-      //   width: 180,
-      //   accessor: (d: any) =>
-      //     d.hasInstructions ? (
-      //       <DoneRoundedIcon sx={{ color: 'success.main' }} />
-      //     ) : (
-      //       <CloseRoundedIcon sx={{ color: 'error.main' }} />
-      //     ), // accessor is the "key" in the data
-      // },
-    ],
-    [offset, pageNumber]
+              accessor: (d: any) => {
+                if (
+                  Object.entries(
+                    d?.passedStages?.[0].havaleh?.assets ?? {}
+                  )?.some(([key, value]) => value && /_factory/.test(key))
+                ) {
+                  return (
+                    <Button variant='contained' label='دارد' color='error' />
+                  );
+                } else {
+                  return <Button variant='contained' label='ندارد' />;
+                }
+              },
+            },
+            {
+              Header: 'توضیحات ارسال',
+              accessor: 'passedStages[0].havaleh.description',
+              width: 300,
+            },
+            // {
+            //   id: 'hasInstructions',
+            //   Header: 'آموزش کاربری',
+            //   width: 180,
+            //   accessor: (d: any) =>
+            //     d.hasInstructions ? (
+            //       <DoneRoundedIcon sx={{ color: 'success.main' }} />
+            //     ) : (
+            //       <CloseRoundedIcon sx={{ color: 'error.main' }} />
+            //     ), // accessor is the "key" in the data
+            // },
+          ]
+        : [
+            {
+              Header: 'جزيیات حواله',
+              id: 'details',
+              disableSortBy: true,
+              disableFilters: true,
+              accessor: (d: any) => {
+                return (
+                  <Button
+                    label='مشاهده'
+                    color='info'
+                    onClick={(e) => {
+                      flushSync(() => {
+                        setChoosedRow(d);
+                      });
+                      setDetailsDialog(true);
+                    }}
+                  />
+                );
+              },
+            },
+            {
+              Header: 'شماره پیگیری',
+              accessor: 'workflowNumber', // accessor is the "key" in the data
+            },
+
+            {
+              Header: 'تاریخ ثبت فرم',
+              id: 'date',
+              accessor: (d: any) =>
+                // <DatePicker
+                //   calendar={persianCalender}
+                //   locale={persianLocale}
+                //   style={{ inlineSize: '100px', textAlign: "center", fontSize: 15, }}
+                //   value={parseInt(d?.dateCreated)}
+                // />
+                new Date(parseInt(d?.dateCreated)).toLocaleString('fa-IR'),
+            },
+           
+            {
+              Header: 'نام شرکت',
+              accessor: 'passedStages[0].havaleh.corporation.name', // accessor is the "key" in the data
+              width: 200,
+            },
+
+            {
+              Header: 'نماینده شرکت',
+              accessor: 'passedStages[0].submittedByUser.firstNameAndLastName',
+            },
+
+            {
+              Header: 'شماره حواله',
+              accessor: 'passedStages[0].havaleh.id',
+            },
+
+            {
+              Header: 'تحویل دهنده',
+              accessor: 'passedStages[0].havaleh.deliverer', // accessor is the "key" in the data
+            },
+            {
+              Header: 'نام ترابری',
+              accessor: 'passedStages[0].havaleh.transportationName', // accessor is the "key" in the data
+            },
+            {
+              Header: 'شماره تماس ترابری',
+              accessor: (data: any) => {
+                return (
+                  <>
+                    <div>
+                      {data?.passedStages[0].havaleh.transportationTelephone}
+                    </div>
+                    <div>
+                      {data?.passedStages[0].havaleh.transportationTelephone2}
+                    </div>
+                  </>
+                );
+              },
+              id: 'passedStages[0].havaleh.transportationTelephone',
+              width: 200,
+            },
+
+            {
+              Header: 'امانتی',
+              id: 'borrowed',
+
+              accessor: (d: any) => {
+                if (
+                  Object.entries(
+                    d?.passedStages?.[0].havaleh?.assets ?? {}
+                  )?.some(([key, value]) => value && /_factory/.test(key))
+                ) {
+                  return (
+                    <Button variant='contained' label='دارد' color='error' />
+                  );
+                } else {
+                  return <Button variant='contained' label='ندارد' />;
+                }
+              },
+            },
+            {
+              Header: 'توضیحات ارسال',
+              accessor: 'passedStages[0].havaleh.description',
+              width: 300,
+            },
+            // {
+            //   id: 'hasInstructions',
+            //   Header: 'آموزش کاربری',
+            //   width: 180,
+            //   accessor: (d: any) =>
+            //     d.hasInstructions ? (
+            //       <DoneRoundedIcon sx={{ color: 'success.main' }} />
+            //     ) : (
+            //       <CloseRoundedIcon sx={{ color: 'error.main' }} />
+            //     ), // accessor is the "key" in the data
+            // },
+          ],
+    [offset, pageNumber, showProcessStages]
   );
   // function fuzzyTextFilterFn(rows, id, filterValue) {
   //   return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
@@ -573,6 +706,7 @@ export default memo(function ExitCorporations({
                             'options',
                             'details',
                             'detailsOfHavaleh',
+                            'processDetails',
                           ].includes(column?.id) && column.isSorted ? (
                             column.isSortedDesc ? (
                               <KeyboardArrowDownRoundedIcon />
@@ -592,6 +726,7 @@ export default memo(function ExitCorporations({
                           'detailsOfHavaleh',
                           'date',
                           'borrowed',
+                          'processDetails',
                         ].includes(column?.id) && (
                           <Divider flexItem variant='fullWidth' />
                         )}
@@ -611,6 +746,7 @@ export default memo(function ExitCorporations({
                           'details',
                           'detailsOfHavaleh',
                           'borrowed',
+                          'processDetails',
                         ].includes(column?.id) && (
                           <TextField
                             size='small'
@@ -872,6 +1008,37 @@ export default memo(function ExitCorporations({
           setDeleteDialog(false);
         }}
       />
+      <Dialog
+        sx={{ zIndex: 7000 }}
+        open={processDetails}
+        maxWidth='lg'
+        onClose={() => setProcessDetails(false)}
+      >
+        <DialogTitle sx={{ textAlign: 'center' }}>
+          <Stack
+            direction='row'
+            alignItems='center'
+            justifyContent={'space-between'}
+          >
+            <span style={{ inlineSize: '10%' }}>
+              <IconButton onClick={() => setProcessDetails(false)}>
+                <CloseRoundedIcon />
+              </IconButton>
+            </span>
+            <Typography
+              variant='h5'
+              component='h2'
+              sx={{ flexGrow: 1, textAlign: 'center' }}
+            >
+              جزئیات
+            </Typography>
+            <span style={{ inlineSize: '10%' }}></span>
+          </Stack>
+        </DialogTitle>
+        <DialogContent sx={{ position: 'relative', p: 5 }}>
+          <WorkflowStageModal data={choosedRow} />
+        </DialogContent>
+      </Dialog>
       <TransferedAssetsDetailsModal
         detailsDialog={detailsDialog}
         setDetailsDialog={setDetailsDialog}
