@@ -636,7 +636,7 @@ export default function NewExitHospital({
           size='large'
           color='success'
           right={40}
-          top={-45}
+          top={-68}
           variant='contained'
           icon='SEND'
           ariaLabel='ارسال'

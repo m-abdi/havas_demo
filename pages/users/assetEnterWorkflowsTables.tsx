@@ -69,6 +69,7 @@ export default function AssetExitWorkflowsTables() {
         <PrimaryButton
           id='newWorkflowButton'
           right='calc(120px + 20px)'
+          top={-68}
           icon='ADD'
           ariaLabel='ایجاد'
           label='ایجاد'

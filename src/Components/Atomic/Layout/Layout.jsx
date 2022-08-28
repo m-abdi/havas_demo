@@ -46,7 +46,6 @@ import { InfoContext } from '../../../../pages/_app';
 import Inventory2RoundedIcon from '@mui/icons-material/Inventory2Rounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Button as MyButton } from '../Button';
 import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
 import PermIdentityRoundedIcon from '@mui/icons-material/PermIdentityRounded';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
@@ -64,6 +63,7 @@ export const secAppbarHeight = 64;
 const ToolbarOffest = styled('div', { name: 'ToolbarOffest' })(({ theme }) => ({
   ...theme.mixins.toolbar,
   backgroundColor: 'inherit',
+  blockSize: secAppbarHeight
 }));
 
 const AppBar2 = styled('nav')({
@@ -73,8 +73,6 @@ const AppBar2 = styled('nav')({
   paddingRight: '1.2rem',
   background: '#bbc6d4',
   position: 'sticky',
-  top: '56px',
-  zIndex: 20,
 });
 
 const MainContent = styled('div', {
@@ -84,7 +82,6 @@ const MainContent = styled('div', {
   zIndex: '3',
   width: '100%',
   marginLeft: -drawerWidth,
- 
   transition: theme.transitions.create(['margin', 'width'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -112,7 +109,6 @@ const PageContent = styled('main', { name: 'PageContent' })(({ theme }) => ({
   height: 'fit-content',
   padding: 15,
   inlineSize: '100% !important',
-
 }));
 
 function Layout({ children, pageName }) {
@@ -144,7 +140,7 @@ function Layout({ children, pageName }) {
     6: false,
   });
   //
-  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.up('sm'));
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.up('md'));
   useEffect(() => {
     setDrawOpen(
       getCookie('drawOpen') === 'true' || !getCookie('drawOpen') ? true : false
@@ -337,21 +333,18 @@ function Layout({ children, pageName }) {
     >
       {/* First Appbar */}
       <AppBar
+        elevation={2}
         sx={{
+          blockSize: secAppbarHeight,
           '&.MuiAppBar-root': { backgroundColor: '#304967', zIndex: 6000 },
-          blockSize: 64,
         }}
       >
-        <Toolbar sx={{ justifyContent: 'space-between' }}>
+        <Toolbar sx={{ justifyContent: 'space-between', blockSize: secAppbarHeight }}>
           <Typography variant='h5' sx={{ display: 'inline-block', margin: 1 }}>
             حواس
           </Typography>
           <Stack direction='row' spacing={2} alignItems='center'>
-            <Typography
-              component='p'
-              variant='body1'
-              id='user_first_name_last_name'
-            >
+            <Typography component='p' variant='body1'>
               {session?.user?.firstNameAndLastName ?? ''}
             </Typography>
             <Typography
@@ -370,7 +363,6 @@ function Layout({ children, pageName }) {
                 e.stopPropagation();
                 handleAccountOptionsClick(e);
               }}
-              sx={{ zIndex: 10000 }}
             >
               <Avatar />
             </IconButton>
@@ -390,7 +382,6 @@ function Layout({ children, pageName }) {
                     height: 32,
                     ml: -0.5,
                     mr: 1,
-                    zIndex: 10000,
                   },
                   '&:before': {
                     content: '""',
@@ -451,9 +442,7 @@ function Layout({ children, pageName }) {
             </AppBar2>
 
             {/* اطلاعات صفحه */}
-            <PageContent sx={{ inlineSize: 'inherit', overflow: 'auto' }}>
-              {children}
-            </PageContent>
+            <PageContent sx={{ inlineSize: 'inherit' }}>{children}</PageContent>
           </MainContent>
         ) : (
           <MainContentMobile drawOpen={drawOpen}>
@@ -471,40 +460,10 @@ function Layout({ children, pageName }) {
                 {' '}
                 {infoContext?.pageName}
               </Typography>
-              {/* <Stack
-                direction={'row'}
-                alignItems='center'
-                spacing={1}
-                justifyContent='space-around'
-                sx={{ display: infoContext?.buttons ? 'flex' : 'none' }}
-              >
-                <MyButton
-                  id='submitButton'
-                  label='ارسال'
-                  color='success'
-                  size='large'
-                  sx={{
-                    display: infoContext?.buttons?.submit ? 'flex' : 'none',
-                  }}
-                  onClick={infoContext?.buttons?.submit()}
-                />
-                <MyButton
-                  id='deleteButton'
-                  label='حذف'
-                  color='error'
-                  size='large'
-                  sx={{
-                    display: infoContext?.buttons?.delete ? 'flex' : 'none',
-                  }}
-                  onClick={infoContext?.buttons?.delete()}
-                />
-              </Stack> */}
             </AppBar2>
 
             {/* اطلاعات صفحه */}
-            <PageContent sx={{ inlineSize: 'inherit', overflow: 'auto' }}>
-              {children}
-            </PageContent>
+            <PageContent sx={{ inlineSize: 'inherit' }}>{children}</PageContent>
           </MainContentMobile>
         )}
       </ClickAwayListener>

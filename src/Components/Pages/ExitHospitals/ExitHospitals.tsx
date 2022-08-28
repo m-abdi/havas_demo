@@ -41,6 +41,7 @@ import {
 import { Button } from '../../Atomic/Button';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import  DeleteButton  from '../../Atomic/DeleteButton';
 import DeleteDialog from '../../Atomic/DeleteRolesDialog';
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
@@ -50,8 +51,7 @@ import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRound
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import { Satellite } from '@mui/icons-material';
 import SensorsRoundedIcon from '@mui/icons-material/SensorsRounded';
-import { Session } from 'next-auth';
-import  Styles  from '../../../TableStyles';
+import Styles from '../../../TableStyles';
 import TransferedAssetsDetailsModal from '../../Atomic/TransferedAssetsDetailsModal';
 import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined';
 import { Workflow } from 'lib/graphql-operations';
@@ -496,29 +496,11 @@ export default memo(function ExitHospitals({
   return (
     <Box sx={{ maxInlineSize: '100%', position: 'relative' }}>
       {/* <button onClick={resetResizing}>Reset Resizing</button> */}
-      <Box
-        sx={{
-          position: 'fixed',
-          top: 72,
-          right: 40,
-          zIndex: 40,
-        }}
-      >
-        <Button
-          label='حذف'
-          size='large'
-          color='error'
-          variant='contained'
-          disabled={
-            selectedFlatRows.length === 0 || !session?.user?.role?.deleteLicense
-              ? true
-              : false
-          }
-          onClick={() => {
-            setDeleteDialog(true);
-          }}
-        />
-      </Box>
+      <DeleteButton
+        selectedFlatRows={selectedFlatRows}
+        session={session}
+        setDeleteDialog={setDeleteDialog}
+      />
       <Styles>
         <TableContainer sx={{ position: 'relative !important' }}>
           <div {...getTableProps()} className='table'>

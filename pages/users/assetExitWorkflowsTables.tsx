@@ -76,10 +76,10 @@ export default function AssetExitWorkflowsTables() {
         <TabPanel value={tabValue} index={3}>
           <ReceivedExitWorkflows />
         </TabPanel>
-      </Box>
       <PrimaryButton
         id='newWorkflowButton'
         right='calc(120px + 20px)'
+        top={-68}
         icon='ADD'
         ariaLabel='ایجاد'
         label='ایجاد'
@@ -93,6 +93,7 @@ export default function AssetExitWorkflowsTables() {
           router.push('/users/newExitHospital');
         }}
       />
+      </Box>
     </Layout>
   );
 }

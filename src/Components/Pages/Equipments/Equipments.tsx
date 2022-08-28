@@ -737,7 +737,7 @@ export default memo(function Equipments({
         <Box
           sx={{
             position: 'fixed',
-            top: 72,
+            top: 75,
             right: 40,
             zIndex: 40,
           }}

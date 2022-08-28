@@ -29,7 +29,7 @@ export default function PrimaryButton({
   fabVariant: 'circular' | 'extended';
   onClick?: any;
   label: string;
-  right: number;
+  right: any;
   top: number;
   disabled?: boolean;
   title?: string;

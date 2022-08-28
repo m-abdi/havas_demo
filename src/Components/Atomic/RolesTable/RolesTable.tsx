@@ -30,7 +30,6 @@ import { Session } from 'next-auth';
 import { TableContainer } from '@mui/material';
 import { TablePagination } from '@mui/material';
 
-
 const PermissionColumnStyle = {
   transform: 'rotate(-90deg)',
   whiteSpace: 'nowrap',
@@ -701,7 +700,7 @@ export default memo(function RolesTable({
       <Box
         sx={{
           position: 'fixed',
-          top: 72,
+          top: 75,
           right: 40,
           zIndex: 40,
         }}

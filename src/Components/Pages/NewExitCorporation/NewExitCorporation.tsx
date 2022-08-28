@@ -589,7 +589,7 @@ export default function ExitCorporation({
           size='large'
           color='success'
           right={40}
-          top={-35}
+          top={-68}
           variant='contained'
           icon='SEND'
           ariaLabel='ارسال'

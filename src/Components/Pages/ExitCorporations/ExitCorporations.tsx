@@ -42,6 +42,7 @@ import {
 import { Button } from '../../Atomic/Button';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import DeleteButton from '../../Atomic/DeleteButton';
 import DeleteDialog from '../../Atomic/DeleteRolesDialog';
 import DifferenceRoundedIcon from '@mui/icons-material/DifferenceRounded';
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
@@ -540,6 +541,11 @@ export default memo(function ExitCorporations({
   return (
     <Box sx={{ maxInlineSize: '100%', position: 'relative' }}>
       {/* <button onClick={resetResizing}>Reset Resizing</button> */}
+      <DeleteButton
+        selectedFlatRows={selectedFlatRows}
+        session={session}
+        setDeleteDialog={setDeleteDialog}
+      />
       <Styles>
         <TableContainer sx={{ position: 'relative !important' }}>
           <div {...getTableProps()} className='table'>
@@ -851,30 +857,6 @@ export default memo(function ExitCorporations({
             },
           }}
         />
-        <Box
-          sx={{
-            position: 'fixed',
-            top: 72,
-            right: 40,
-            zIndex: 40,
-          }}
-        >
-          <Button
-            label='حذف'
-            size='large'
-            color='error'
-            variant='contained'
-            disabled={
-              selectedFlatRows.length === 0 ||
-              !session?.user?.role?.deleteEquipment
-                ? true
-                : false
-            }
-            onClick={() => {
-              setDeleteDialog(true);
-            }}
-          />
-        </Box>
       </Styles>
       <DeleteDialog
         text='با این کار تمامی گردش کارهای انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
