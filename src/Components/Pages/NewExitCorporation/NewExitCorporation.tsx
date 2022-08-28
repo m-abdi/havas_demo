@@ -519,7 +519,7 @@ export default function ExitCorporation({
   }
 
   return (
-    <Container maxWidth='lg' sx={{ position: 'relative' }}>
+    <Container maxWidth='lg' sx={{ position: 'relative', zIndex: 1000 }}>
       <Form1 onSubmit={handleSubmit(submitHandler)}>
         <ExitCorporationForm />
         <Input1>
@@ -588,7 +588,8 @@ export default function ExitCorporation({
           id='submitButton'
           size='large'
           color='success'
-          right={{ xs: 20, md: 100, xl: 400 }}
+          right={40}
+          top={-35}
           variant='contained'
           icon='SEND'
           ariaLabel='ارسال'

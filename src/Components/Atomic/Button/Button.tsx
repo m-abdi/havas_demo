@@ -66,7 +66,7 @@ export default memo(function Button({
       color={color}
       disabled={disabled}
       {...props}
-      sx={{ borderRadius: '13px', backgroundColor }}
+      sx={{ borderRadius: '13px', backgroundColor, boxShadow: "none !important", zIndex: "inherit" }}
       startIcon={startIcon}
       title={title ?? ''}
     >

@@ -84,6 +84,7 @@ const MainContent = styled('div', {
   zIndex: '3',
   width: '100%',
   marginLeft: -drawerWidth,
+ 
   transition: theme.transitions.create(['margin', 'width'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -111,6 +112,7 @@ const PageContent = styled('main', { name: 'PageContent' })(({ theme }) => ({
   height: 'fit-content',
   padding: 15,
   inlineSize: '100% !important',
+
 }));
 
 function Layout({ children, pageName }) {
@@ -368,6 +370,7 @@ function Layout({ children, pageName }) {
                 e.stopPropagation();
                 handleAccountOptionsClick(e);
               }}
+              sx={{ zIndex: 10000 }}
             >
               <Avatar />
             </IconButton>
@@ -387,6 +390,7 @@ function Layout({ children, pageName }) {
                     height: 32,
                     ml: -0.5,
                     mr: 1,
+                    zIndex: 10000,
                   },
                   '&:before': {
                     content: '""',

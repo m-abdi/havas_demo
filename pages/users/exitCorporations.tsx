@@ -31,6 +31,7 @@ export default function exitCorporations() {
     fetchMore,
     deleting,
     deleteHandler,
+    confirmEnterHandler,
   } = useWorkflows(
     offset,
     pageNumber,
@@ -54,6 +55,7 @@ export default function exitCorporations() {
       setFilters={setFilters}
       fetchMoreRows={fetchMore}
       deleting={deleting}
+      confirmEnterHandler={confirmEnterHandler}
       deleteHandler={async (workflowIds) =>
         deleteHandler(workflowIds, 'exitCorporations')
       }

@@ -43,6 +43,7 @@ import { Button } from '../../Atomic/Button';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import DeleteDialog from '../../Atomic/DeleteRolesDialog';
+import DifferenceRoundedIcon from '@mui/icons-material/DifferenceRounded';
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import EditableHtmlTable from '../../Atomic/EditableHtmlTable';
@@ -50,7 +51,7 @@ import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownR
 import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import { Session } from 'next-auth';
-import Styles from "../../../TableStyles"
+import Styles from '../../../TableStyles';
 import TransferedAssetsDetailsModal from '../../Atomic/TransferedAssetsDetailsModal';
 import { Workflow } from 'lib/graphql-operations';
 import { flushSync } from 'react-dom';
@@ -99,6 +100,7 @@ export default memo(function ExitCorporations({
   fetchMoreRows,
   allEquipmentsCount: allequipmentsCount,
   deleteHandler,
+  confirmEnterHandler,
 }: {
   loading: boolean;
   deleting: boolean;
@@ -112,6 +114,42 @@ export default memo(function ExitCorporations({
   allEquipmentsCount: number;
   fetchMoreRows: (e: any, page: number) => void;
   deleteHandler: (ids: string[], query: string) => Promise<void>;
+  confirmEnterHandler?: (
+    workflowNumber: string,
+    editedHavalehData: {
+      havalehId: string;
+      deliverer: string;
+      description: string;
+      transportationName: string;
+      transportationTelephone: string;
+      transportationTelephone2: string;
+      assets: {
+        oxygen_50l?: number;
+        bihoshi_50l?: number;
+        shaft_50l?: number;
+        controlValve_50l?: number;
+        co2_50l?: number;
+        argon_50l?: number;
+        azete_50l?: number;
+        dryAir_50l?: number;
+        entonox_50l?: number;
+        acetylene_50l?: number;
+        lpg_50l?: number;
+        oxygen_40l?: number;
+        bihoshi_40l?: number;
+        shaft_40l?: number;
+        controlValve_40l?: number;
+        co2_40l?: number;
+        argon_40l?: number;
+        azete_40l?: number;
+        dryAir_40l?: number;
+        entonox_40l?: number;
+        acetylene_40l?: number;
+        lpg_40l?: number;
+      };
+    } | null,
+    receivingDescription: string
+  ) => Promise<void>;
 }) {
   //  states
   const [rowOptionsAnchorElement, setRowOptionsAnchorElement] =
@@ -870,17 +908,39 @@ export default memo(function ExitCorporations({
         {session?.user?.role?.createLicense && (
           <MenuItem>
             <Button
-              id={choosedRow?.terminologyCode + '-edit'}
+              id={choosedRow?.workflowNumber + '-confirm'}
               startIcon={<CheckRoundedIcon />}
               variant='text'
-              onClick={() =>
+              onClick={async () => {
+                // router.push(
+                //   `/users/confirmReceiptByHospital/?workflow=${JSON.stringify(
+                //     choosedRow
+                //   )}`
+                // )
+                await confirmEnterHandler?.(
+                  choosedRow?.workflowNumber,
+                  null,
+                  ''
+                );
+              }}
+              label='تایید ورود به بیمارستان'
+            />
+          </MenuItem>
+        )}
+        {session?.user?.role?.createLicense && (
+          <MenuItem>
+            <Button
+              id={choosedRow?.workflowNumber + '-contradiction'}
+              startIcon={<DifferenceRoundedIcon />}
+              variant='text'
+              onClick={async () => {
                 router.push(
                   `/users/confirmReceiptByHospital/?workflow=${JSON.stringify(
                     choosedRow
                   )}`
-                )
-              }
-              label='تایید ورود به بیمارستان'
+                );
+              }}
+              label='ثبت مغایرت'
             />
           </MenuItem>
         )}
@@ -888,5 +948,3 @@ export default memo(function ExitCorporations({
     </Box>
   );
 });
-
-

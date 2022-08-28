@@ -222,7 +222,6 @@ export default function NewExitHospital({
     'گاز بیهوشی',
   ]);
   const [sum, setSum] = useState(0);
-  const [scrollPosition, setScrollPosition] = useState(0);
 
   const [corporation, setCorporation] =
     useState<{ id: string; label: string }>();
@@ -636,7 +635,8 @@ export default function NewExitHospital({
           id='submitButton'
           size='large'
           color='success'
-          right={{ xs: 20, md: 100, xl: 400 }}
+          right={40}
+          top={-45}
           variant='contained'
           icon='SEND'
           ariaLabel='ارسال'

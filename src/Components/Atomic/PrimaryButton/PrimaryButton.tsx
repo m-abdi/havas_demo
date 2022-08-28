@@ -4,7 +4,7 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { Button } from '../Button';
 import React from 'react';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
-import isSmallScreen from '../../../isSmallScreen';
+import useScreenSize from '../../../Logic/useScreenSize';
 
 export default function PrimaryButton({
   id,
@@ -18,6 +18,7 @@ export default function PrimaryButton({
   fabVariant,
   label,
   right,
+  top,
   title,
 }: {
   id: string;
@@ -28,13 +29,14 @@ export default function PrimaryButton({
   fabVariant: 'circular' | 'extended';
   onClick?: any;
   label: string;
-  right: any;
+  right: number;
+  top: number;
   disabled?: boolean;
-  title ?: string;
+  title?: string;
   size?: 'small' | 'large' | 'medium';
 }) {
-  const match = isSmallScreen();
-  return match ? (
+  const { small, medium } = useScreenSize();
+  return medium ? (
     <>
       <Toolbar />
       <Fab
@@ -58,12 +60,10 @@ export default function PrimaryButton({
     </>
   ) : (
     <Box
-    
       sx={{
-        position: 'fixed',
-        top: 72,
+        position: 'absolute',
+        top: top,
         right: right,
-        zIndex: 40,
       }}
     >
       <Button
