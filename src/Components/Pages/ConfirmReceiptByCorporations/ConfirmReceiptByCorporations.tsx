@@ -41,6 +41,7 @@ import {
 import AggregatedTable from '../../Atomic/AggregatedTable';
 import { Button } from '../../Atomic/Button';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import ContradictionButton from '../../Atomic/ContradictionButton';
 import ContradictionTable from '../../Atomic/ContradictionTable';
 import DeleteDialog from '../../Atomic/DeleteRolesDialog';
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
@@ -51,9 +52,10 @@ import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRound
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import { Satellite } from '@mui/icons-material';
 import { Session } from 'next-auth';
-import Styles from "../../../TableStyles"
+import Styles from '../../../TableStyles';
 import { Workflow } from '../../../../lib/resolvers-types';
 import { flushSync } from 'react-dom';
+import isContradicted from '@/src/Logic/isContradicted';
 import matchSorter from 'match-sorter';
 /* eslint-disable react/jsx-filename-extension */
 import { memo } from 'react';
@@ -69,7 +71,6 @@ interface Props {
   indeterminate?: boolean;
   name?: string;
 }
-
 
 var delayTimer: any;
 export default memo(function ConfirmReceiptByCorporations({
@@ -107,11 +108,11 @@ export default memo(function ConfirmReceiptByCorporations({
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [detailsDialog, setDetailsDialog] = useState(false);
   const [rawFilters, setRawFilters] = useState({});
-const [hDetailsDialog, setHDetailsDialog] = useState(false)
+  const [hDetailsDialog, setHDetailsDialog] = useState(false);
   // const [value, setValue] = React.useState(globalFilter);
-  
+
   // other hooks
-  const {reset, setValue, register} = useForm()
+  const { reset, setValue, register } = useForm();
   const { data: session } = useSession();
   const router = useRouter();
   // handlers
@@ -134,16 +135,8 @@ const [hDetailsDialog, setHDetailsDialog] = useState(false)
         width: 230,
         accessor: (d: any) => {
           // عدم مغایرت و ثبت توسط شرکت
-          if (!d?.passedStages?.[3].havaleh?.assets) {
-            return <Button label='کامل' color='success' />;
-          } else if (
-            d?.passedStages?.[3].havaleh?.assets &&
-            Object.entries(d?.passedStages?.[3].havaleh?.assets).some(
-              ([k, v]) => !/_typename/.test(k) && v
-            )
-          ) {
-            return <Button label='مغایرت حواله با دریافتی' color='error' />;
-          }
+
+          return <ContradictionButton type='EXIT' data={d} />
         },
       },
 
@@ -220,8 +213,7 @@ const [hDetailsDialog, setHDetailsDialog] = useState(false)
         id: 'details',
         accessor: (d: any) => {
           if (
-            d?.passedStages?.[3]?.havaleh?.assets &&
-            Object.entries(d?.passedStages?.[3]?.havaleh?.assets).some(([k,v]) => !/_typename/.test(k) && v)
+            isContradicted('EXIT', d)
           ) {
             return (
               <Button

@@ -33,6 +33,7 @@ query allWorkflows(
         transportationName
         transportationTelephone
         transportationTelephone2
+        contradiction
         corporation {
           id
           name
@@ -122,6 +123,7 @@ query confirmedEnterWorkflows($filters: AssetTransferWorkflowFilter) {
       havaleh {
         id
         deliverer
+        contradiction
         assets {
           oxygen_50l
           bihoshi_50l

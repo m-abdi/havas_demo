@@ -173,6 +173,7 @@ const typeDefs = /* GraphQL */ `
     receivingDescription: String
     corporation: CorporationData
     assets: AggregatedTransferedAssetsOutput
+    contradiction: Boolean
   }
   type Config {
     id: String

@@ -436,7 +436,13 @@ const resolvers: Resolvers = {
         include: { instanceOfProcess: true },
       });
 
-      return workflows as any;
+      // workflows?.forEach((w) => {
+      //   if (w?.passedStages?.[3]?.havaleh?.assets) {
+      //     w.passedStages[3].havaleh.contradiction = true
+      //   }
+      // });
+
+      return workflows;
     },
     async assetTransferWorkflowsCount(_, _args, _context): Promise<number> {
       // check authentication and permission
@@ -875,7 +881,7 @@ const resolvers: Resolvers = {
         });
         return 1;
       }
-      count = count ?? 1
+      count = count ?? 1;
       let a = [];
       for (let i = 0; i < count; i++) {
         a.push({
@@ -1513,6 +1519,7 @@ const resolvers: Resolvers = {
                   firstNameAndLastName: session?.user?.firstNameAndLastName,
                   role: session?.user?.role?.name,
                 },
+                
                 havaleh: {
                   id: havalehId + 'edited',
                   deliverer,
@@ -1521,6 +1528,7 @@ const resolvers: Resolvers = {
                   transportationTelephone2,
                   description,
                   receivingDescription,
+                  contradiction: true,
                   assets:
                     assets ||
                     existingWorkflow?.passedStages?.[0]?.havaleh?.assets,
@@ -1557,6 +1565,7 @@ const resolvers: Resolvers = {
                   transportationTelephone2,
                   description,
                   receivingDescription,
+                  contradiction: true,
                   assets:
                     assets ||
                     existingWorkflow?.passedStages?.[0]?.havaleh?.assets,
@@ -1726,6 +1735,7 @@ const resolvers: Resolvers = {
                   transportationTelephone2,
                   description,
                   receivingDescription,
+                  contradiction: true,
                   assets:
                     assets ||
                     existingWorkflow?.passedStages?.[0]?.havaleh?.assets,

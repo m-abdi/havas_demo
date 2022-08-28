@@ -40,6 +40,7 @@ import {
 
 import { Button } from '../../Atomic/Button';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import ContradictionButton from '../../Atomic/ContradictionButton';
 import ContradictionTable from '../../Atomic/ContradictionTable/ContradictionTable';
 import DeleteDialog from '../../Atomic/DeleteRolesDialog';
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
@@ -51,9 +52,10 @@ import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import { Satellite } from '@mui/icons-material';
 import SensorsRoundedIcon from '@mui/icons-material/SensorsRounded';
 import { Session } from 'next-auth';
-import Styles from "../../../TableStyles"
+import Styles from '../../../TableStyles';
 import { Workflow } from '../../../../lib/resolvers-types';
 import { flushSync } from 'react-dom';
+import isContradicted from '@/src/Logic/isContradicted';
 import matchSorter from 'match-sorter';
 /* eslint-disable react/jsx-filename-extension */
 import { memo } from 'react';
@@ -69,7 +71,6 @@ interface Props {
   indeterminate?: boolean;
   name?: string;
 }
-
 
 var delayTimer: any;
 export default memo(function ConfirmReceiptByHospitals({
@@ -129,13 +130,12 @@ export default memo(function ConfirmReceiptByHospitals({
   const columns: any = useMemo(
     () => [
       {
-        Header: 'جزئیات',
+        Header: 'جزئیات مغایرت',
         id: 'details',
         accessor: (d: any) => {
-          if (
-            d?.passedStages?.[1]?.havaleh?.assets &&
-            Object.values(d?.passedStages?.[1]?.havaleh?.assets).some((v) => v)
-          ) {
+          console.log(isContradicted('ENTER', d));
+          
+          if (isContradicted('ENTER', d)) {
             return (
               <Button
                 label='مشاهده'
@@ -158,30 +158,7 @@ export default memo(function ConfirmReceiptByHospitals({
         width: 230,
         accessor: (d: any) => {
           // عدم مغایرت و ثبت توسط شرکت
-          if (
-            !d?.passedStages?.[1].havaleh?.assets &&
-            d?.passedStages?.[0].submittedByUser?.id !==
-              d?.passedStages?.[1].submittedByUser?.id
-          ) {
-            return <Button label='ثبت حواله توسط شرکت' color='success' />;
-          } else if (
-            d?.passedStages?.[1].havaleh?.assets &&
-            Object.values(d?.passedStages?.[1].havaleh?.assets).some((v) => v)
-          ) {
-            return (
-              <Button label='مغایرت حواله شرکت با دریافتی' color='error' />
-            );
-          } else if (
-            d?.passedStages?.[0].submittedByUser?.id ===
-            d?.passedStages?.[1].submittedByUser?.id
-          ) {
-            return (
-              <Button
-                label='ثبت حواله توسط انباردار'
-                backgroundColor='purple'
-              />
-            );
-          }
+          return <ContradictionButton type='ENTER' data={d} />;
         },
       },
 
@@ -286,7 +263,9 @@ export default memo(function ConfirmReceiptByHospitals({
       },
       {
         Header: 'توضیحات دریافت',
-        accessor: 'passedStages[1].havaleh.receivingDescription',
+        accessor: (d: any)=>{
+          return d?.passedStages?.[1].havaleh?.receivingDescription ?? ""
+        },
         width: 300,
       },
     ],
@@ -834,9 +813,7 @@ export default memo(function ConfirmReceiptByHospitals({
             ]}
             setValue={undefined}
             register={register}
-            assets={
-              choosedRow?.passedStages?.[0]?.havaleh?.assets
-            }
+            assets={choosedRow?.passedStages?.[0]?.havaleh?.assets}
             editable={false}
             reset={reset}
           />
@@ -848,7 +825,8 @@ export default memo(function ConfirmReceiptByHospitals({
           open={rowOptionsOpen}
           onClose={handleRowOptionsClose}
         >
-          {session?.user?.role?.['createLicense'] && choosedRow?.passedStages?.length === 2 &&
+          {session?.user?.role?.['createLicense'] &&
+          choosedRow?.passedStages?.length === 2 &&
           choosedRow?.passedStages?.[1] ? (
             <MenuItem>
               <Button

@@ -311,7 +311,7 @@ export default function useWorkflows(
       fetchMore: fetchMoreRecievedExitWorkflows,
     },
   ] = useLazyQuery(AllWorkflowsDocument, {
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'network-only',
     variables: {
       offset,
       limit: itemsPerPage,
@@ -578,7 +578,6 @@ export default function useWorkflows(
               assets: filteredAssets,
             },
           });
-        console.log(createExitWorkflowError);
 
         if (createdExitWorkflow) {
           // automatically approved by manager
@@ -642,6 +641,8 @@ export default function useWorkflows(
           );
         }
       } catch (e: any) {
+        console.log(e);
+        
         useNotification(
           'error',
           setSnackbarColor,

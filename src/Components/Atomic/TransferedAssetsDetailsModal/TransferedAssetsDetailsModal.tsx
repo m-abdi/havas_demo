@@ -78,6 +78,7 @@ export default function TransferedAssetsDetailsModal({
             assets={choosedRow?.passedStages?.[0]?.havaleh?.assets}
             editable={false}
             reset={reset}
+            ignoreColumnCheck={false}
           />
         ) : (
           <EditableHtmlTable

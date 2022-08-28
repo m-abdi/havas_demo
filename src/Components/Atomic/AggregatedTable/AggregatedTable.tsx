@@ -47,7 +47,7 @@ export default function AggregatedTable({
   register?: any;
   setValue?: any;
   reset?: any;
-  ignoreColumnCheck? : boolean;
+  ignoreColumnCheck?: boolean;
   selectedColumns?: string[];
   assets: {
     oxygen_50l?: number;
@@ -74,7 +74,6 @@ export default function AggregatedTable({
     lpg_40l?: number;
   };
 }) {
-  const forceUpdate = useForceUpdate()
   const m: any = {
     oxygen: 'اکسیژن',
     bihoshi: 'گاز بیهوشی',
@@ -83,7 +82,7 @@ export default function AggregatedTable({
     co2: 'Co2',
     argon: 'آرگون',
     azete: 'ازت',
-    dryAir: 'هوای خشگ',
+    dryAir: 'هوای خشک',
     entonox: 'آنتونکس',
     acetylene: 'استیلن',
     lpg: 'گاز مایع',
@@ -98,10 +97,29 @@ export default function AggregatedTable({
           .replace('_50l_customer', '')
           .replace('_40l_customer', '')
       );
-    selectedColumns = ik.map((a: keyof typeof m) => m[a]);
+
+    selectedColumns = ik.filter((a: keyof typeof m) => m[a]).map((a) => m[a]);
   }
+  const [selectedColumnCutomized, setSelectedColumnCutomized] =
+    useState(selectedColumns);
 
+  useEffect(() => {
+    if (assets && !ignoreColumnCheck) {
+      const ik = Object.entries(assets)
+        .filter(([k, v]) => v)
+        .map(([k, v]) =>
+          k
+            .replace('_50l_factory', '')
+            .replace('_40l_factory', '')
+            .replace('_50l_customer', '')
+            .replace('_40l_customer', '')
+        );
 
+      setSelectedColumnCutomized(
+        ik.filter((a: keyof typeof m) => m[a]).map((a) => m[a])
+      );
+    }
+  }, [assets]);
 
   // update react-hook-form state after rfid operation
   useEffect(() => {
@@ -141,7 +159,7 @@ export default function AggregatedTable({
             <th
               style={{
                 display:
-                  selectedColumns.indexOf('اکسیژن') > -1
+                  selectedColumnCutomized.indexOf('اکسیژن') > -1
                     ? 'table-cell'
                     : 'none',
               }}
@@ -152,7 +170,7 @@ export default function AggregatedTable({
             <th
               style={{
                 display:
-                  selectedColumns.indexOf('گاز بیهوشی') > -1
+                  selectedColumnCutomized.indexOf('گاز بیهوشی') > -1
                     ? 'table-cell'
                     : 'none',
               }}
@@ -163,7 +181,7 @@ export default function AggregatedTable({
             <th
               style={{
                 display:
-                  selectedColumns.indexOf('شفت-فلکه') > -1
+                  selectedColumnCutomized.indexOf('شفت-فلکه') > -1
                     ? 'table-cell'
                     : 'none',
               }}
@@ -174,7 +192,7 @@ export default function AggregatedTable({
             <th
               style={{
                 display:
-                  selectedColumns.indexOf('شیر کنترل') > -1
+                  selectedColumnCutomized.indexOf('شیر کنترل') > -1
                     ? 'table-cell'
                     : 'none',
               }}
@@ -185,7 +203,9 @@ export default function AggregatedTable({
             <th
               style={{
                 display:
-                  selectedColumns.indexOf('Co2') > -1 ? 'table-cell' : 'none',
+                  selectedColumnCutomized.indexOf('Co2') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
             >
               Co2
@@ -194,7 +214,9 @@ export default function AggregatedTable({
             <th
               style={{
                 display:
-                  selectedColumns.indexOf('آرگون') > -1 ? 'table-cell' : 'none',
+                  selectedColumnCutomized.indexOf('آرگون') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
             >
               آرگون
@@ -203,7 +225,9 @@ export default function AggregatedTable({
             <th
               style={{
                 display:
-                  selectedColumns.indexOf('ازت') > -1 ? 'table-cell' : 'none',
+                  selectedColumnCutomized.indexOf('ازت') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
             >
               ازت
@@ -212,7 +236,7 @@ export default function AggregatedTable({
             <th
               style={{
                 display:
-                  selectedColumns.indexOf('هوای خشک') > -1
+                  selectedColumnCutomized.indexOf('هوای خشک') > -1
                     ? 'table-cell'
                     : 'none',
               }}
@@ -223,7 +247,7 @@ export default function AggregatedTable({
             <th
               style={{
                 display:
-                  selectedColumns.indexOf('آنتونکس') > -1
+                  selectedColumnCutomized.indexOf('آنتونکس') > -1
                     ? 'table-cell'
                     : 'none',
               }}
@@ -234,7 +258,7 @@ export default function AggregatedTable({
             <th
               style={{
                 display:
-                  selectedColumns.indexOf('استیلن') > -1
+                  selectedColumnCutomized.indexOf('استیلن') > -1
                     ? 'table-cell'
                     : 'none',
               }}
@@ -245,7 +269,7 @@ export default function AggregatedTable({
             <th
               style={{
                 display:
-                  selectedColumns.indexOf('گاز مایع') > -1
+                  selectedColumnCutomized.indexOf('گاز مایع') > -1
                     ? 'table-cell'
                     : 'none',
               }}
@@ -264,7 +288,7 @@ export default function AggregatedTable({
             <td
               style={{
                 display:
-                  selectedColumns.indexOf('اکسیژن') > -1
+                  selectedColumnCutomized.indexOf('اکسیژن') > -1
                     ? 'table-cell'
                     : 'none',
               }}
@@ -295,7 +319,7 @@ export default function AggregatedTable({
             <td
               style={{
                 display:
-                  selectedColumns.indexOf('گاز بیهوشی') > -1
+                  selectedColumnCutomized.indexOf('گاز بیهوشی') > -1
                     ? 'table-cell'
                     : 'none',
               }}
@@ -327,7 +351,7 @@ export default function AggregatedTable({
             <td
               style={{
                 display:
-                  selectedColumns.indexOf('شفت-فلکه') > -1
+                  selectedColumnCutomized.indexOf('شفت-فلکه') > -1
                     ? 'table-cell'
                     : 'none',
               }}
@@ -359,7 +383,7 @@ export default function AggregatedTable({
             <td
               style={{
                 display:
-                  selectedColumns.indexOf('شیر کنترل') > -1
+                  selectedColumnCutomized.indexOf('شیر کنترل') > -1
                     ? 'table-cell'
                     : 'none',
               }}
@@ -391,7 +415,9 @@ export default function AggregatedTable({
             <td
               style={{
                 display:
-                  selectedColumns.indexOf('Co2') > -1 ? 'table-cell' : 'none',
+                  selectedColumnCutomized.indexOf('Co2') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
             >
               <TextField
@@ -421,7 +447,9 @@ export default function AggregatedTable({
             <td
               style={{
                 display:
-                  selectedColumns.indexOf('آرگون') > -1 ? 'table-cell' : 'none',
+                  selectedColumnCutomized.indexOf('آرگون') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
             >
               <TextField
@@ -451,7 +479,9 @@ export default function AggregatedTable({
             <td
               style={{
                 display:
-                  selectedColumns.indexOf('ازت') > -1 ? 'table-cell' : 'none',
+                  selectedColumnCutomized.indexOf('ازت') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
             >
               <TextField
@@ -481,7 +511,7 @@ export default function AggregatedTable({
             <td
               style={{
                 display:
-                  selectedColumns.indexOf('هوای خشک') > -1
+                  selectedColumnCutomized.indexOf('هوای خشک') > -1
                     ? 'table-cell'
                     : 'none',
               }}
@@ -513,7 +543,7 @@ export default function AggregatedTable({
             <td
               style={{
                 display:
-                  selectedColumns.indexOf('آنتونکس') > -1
+                  selectedColumnCutomized.indexOf('آنتونکس') > -1
                     ? 'table-cell'
                     : 'none',
               }}
@@ -545,7 +575,7 @@ export default function AggregatedTable({
             <td
               style={{
                 display:
-                  selectedColumns.indexOf('استیلن') > -1
+                  selectedColumnCutomized.indexOf('استیلن') > -1
                     ? 'table-cell'
                     : 'none',
               }}
@@ -577,7 +607,7 @@ export default function AggregatedTable({
             <td
               style={{
                 display:
-                  selectedColumns.indexOf('گاز مایع') > -1
+                  selectedColumnCutomized.indexOf('گاز مایع') > -1
                     ? 'table-cell'
                     : 'none',
               }}
@@ -614,7 +644,7 @@ export default function AggregatedTable({
             <td
               style={{
                 display:
-                  selectedColumns.indexOf('اکسیژن') > -1
+                  selectedColumnCutomized.indexOf('اکسیژن') > -1
                     ? 'table-cell'
                     : 'none',
               }}
@@ -646,7 +676,7 @@ export default function AggregatedTable({
             <td
               style={{
                 display:
-                  selectedColumns.indexOf('گاز بیهوشی') > -1
+                  selectedColumnCutomized.indexOf('گاز بیهوشی') > -1
                     ? 'table-cell'
                     : 'none',
               }}
@@ -678,7 +708,7 @@ export default function AggregatedTable({
             <td
               style={{
                 display:
-                  selectedColumns.indexOf('شفت-فلکه') > -1
+                  selectedColumnCutomized.indexOf('شفت-فلکه') > -1
                     ? 'table-cell'
                     : 'none',
               }}
@@ -710,7 +740,7 @@ export default function AggregatedTable({
             <td
               style={{
                 display:
-                  selectedColumns.indexOf('شیر کنترل') > -1
+                  selectedColumnCutomized.indexOf('شیر کنترل') > -1
                     ? 'table-cell'
                     : 'none',
               }}
@@ -742,7 +772,9 @@ export default function AggregatedTable({
             <td
               style={{
                 display:
-                  selectedColumns.indexOf('Co2') > -1 ? 'table-cell' : 'none',
+                  selectedColumnCutomized.indexOf('Co2') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
             >
               <TextField
@@ -772,7 +804,9 @@ export default function AggregatedTable({
             <td
               style={{
                 display:
-                  selectedColumns.indexOf('آرگون') > -1 ? 'table-cell' : 'none',
+                  selectedColumnCutomized.indexOf('آرگون') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
             >
               <TextField
@@ -802,7 +836,9 @@ export default function AggregatedTable({
             <td
               style={{
                 display:
-                  selectedColumns.indexOf('ازت') > -1 ? 'table-cell' : 'none',
+                  selectedColumnCutomized.indexOf('ازت') > -1
+                    ? 'table-cell'
+                    : 'none',
               }}
             >
               <TextField
@@ -832,7 +868,7 @@ export default function AggregatedTable({
             <td
               style={{
                 display:
-                  selectedColumns.indexOf('هوای خشک') > -1
+                  selectedColumnCutomized.indexOf('هوای خشک') > -1
                     ? 'table-cell'
                     : 'none',
               }}
@@ -864,7 +900,7 @@ export default function AggregatedTable({
             <td
               style={{
                 display:
-                  selectedColumns.indexOf('آنتونکس') > -1
+                  selectedColumnCutomized.indexOf('آنتونکس') > -1
                     ? 'table-cell'
                     : 'none',
               }}
@@ -896,7 +932,7 @@ export default function AggregatedTable({
             <td
               style={{
                 display:
-                  selectedColumns.indexOf('استیلن') > -1
+                  selectedColumnCutomized.indexOf('استیلن') > -1
                     ? 'table-cell'
                     : 'none',
               }}
@@ -928,7 +964,7 @@ export default function AggregatedTable({
             <td
               style={{
                 display:
-                  selectedColumns.indexOf('گاز مایع') > -1
+                  selectedColumnCutomized.indexOf('گاز مایع') > -1
                     ? 'table-cell'
                     : 'none',
               }}

@@ -47,6 +47,7 @@ export default function confirmReceiptByCorporations() {
     undefined,
     true
   );
+    console.log(recievedExitWorkflows);
     
   return (
     <ConfirmReceiptByCorporations
