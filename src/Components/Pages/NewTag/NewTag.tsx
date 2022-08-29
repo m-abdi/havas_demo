@@ -277,26 +277,52 @@ export default memo(function NewTag({
           <Divider flexItem />
         </Stack>
       ))}
-     
-      <PrimaryButton
-        id='submitButton'
-        size='large'
-        color='success'
-        right={40}
-        top={-68}
-        variant='contained'
-        icon='SEND'
-        ariaLabel='ارسال'
-        label='ارسال'
-        fabVariant='extended'
-        onClick={async () => {
-          if (tags.some((t) => !t.tagId)) {
-            setTagError(true);
-            return false;
-          }
-          await createTagHandler(tags);
-        }}
-      />
+      {modal ? (
+        <Box
+          sx={{
+            position: modal ? 'static' : 'fixed',
+
+            top: 72,
+            right: 'calc(110px + 20px)',
+            zIndex: 40,
+          }}
+        >
+          <Button
+            id='submitButton'
+            label='ارسال'
+            size='large'
+            color='success'
+            variant='contained'
+            onClick={async () => {
+              if (tags.some((t) => !t.tagId)) {
+                setTagError(true);
+                return false;
+              }
+              await createTagHandler(tags);
+            }}
+          />
+        </Box>
+      ) : (
+        <PrimaryButton
+          id='submitButton'
+          size='large'
+          color='success'
+          right={40}
+          top={-68}
+          variant='contained'
+          icon='SEND'
+          ariaLabel='ارسال'
+          label='ارسال'
+          fabVariant='extended'
+          onClick={async () => {
+            if (tags.some((t) => !t.tagId)) {
+              setTagError(true);
+              return false;
+            }
+            await createTagHandler(tags);
+          }}
+        />
+      )}
     </Container>
   );
 });
