@@ -91,7 +91,7 @@ export default memo(function RolesTable({
   };
 
   return rows.length > 0 ? (
-    <Container maxWidth='xl' sx={{ position: 'relative', p: 0 }}>
+    <Container maxWidth='xl' sx={{ position: 'relative', p: "0px !important", mx: "0px !important" }}>
       <Box sx={{ maxInlineSize: '100%' }}>
         <Box>
           <TableContainer>

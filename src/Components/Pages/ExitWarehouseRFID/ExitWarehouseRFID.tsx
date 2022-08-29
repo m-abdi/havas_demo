@@ -217,7 +217,7 @@ export default function EnterWarehouseRFID({
         size='large'
         color='success'
         variant='contained'
-        icon='ADD'
+        icon='SEND'
         right={40}
         top={-68}
         ariaLabel='ایجاد'

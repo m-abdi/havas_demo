@@ -94,6 +94,7 @@ export default function NewAsset({
   existingAsset = '',
   createHandler,
   submitOnChange = false,
+  newTag = false
 }: {
   loading: boolean;
   sending: boolean;
@@ -101,6 +102,7 @@ export default function NewAsset({
   equipments: { id: string; label: string }[];
   existingAsset?: any;
   submitOnChange?: boolean;
+  newTag?: boolean;
   createHandler: (
     equipmentId: string,
     placeId: string,
@@ -265,7 +267,7 @@ export default function NewAsset({
             )}
           </Input1>
         </Row1>
-        {!existingAsset && (
+        {!existingAsset && !newTag && (
           <Row1>
             <Input1>
               <Label1>تعداد</Label1>

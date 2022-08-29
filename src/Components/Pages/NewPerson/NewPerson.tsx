@@ -489,7 +489,7 @@ export default function newPerson({
           <Box
             sx={{
               position: 'fixed',
-              top: 72,
+              top: 75,
               right: { xs: 10, md: 40, lg: 200, xl: 420 },
               zIndex: 40,
             }}

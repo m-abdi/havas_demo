@@ -18,6 +18,7 @@ import Head from 'next/head';
 import HeartBeat from '../../Atomic/HeartBeat/HeartBeat';
 import NewAsset from '../NewAsset';
 import { NewTag as NewTagType } from '../../../../lib/resolvers-types';
+import PrimaryButton from '../../Atomic/PrimaryButton';
 import RFID from '../../Atomic/RFID';
 import React from 'react';
 import Typography from '@mui/material/Typography';
@@ -200,6 +201,7 @@ export default memo(function NewTag({
               equipments={equipments as any}
               places={places as any}
               submitOnChange={true}
+              newTag={true}
               createHandler={async (equipmentId: string, placeId: string) => {
                 setTags([
                   ...tags.filter((t) => t?.tagId !== tag?.tagId),
@@ -275,30 +277,26 @@ export default memo(function NewTag({
           <Divider flexItem />
         </Stack>
       ))}
-      <Box
-        sx={{
-          position: modal ? 'static' : 'fixed',
-          
-          top: 72,
-          right: 'calc(110px + 20px)',
-          zIndex: 40,
+     
+      <PrimaryButton
+        id='submitButton'
+        size='large'
+        color='success'
+        right={40}
+        top={-68}
+        variant='contained'
+        icon='SEND'
+        ariaLabel='ارسال'
+        label='ارسال'
+        fabVariant='extended'
+        onClick={async () => {
+          if (tags.some((t) => !t.tagId)) {
+            setTagError(true);
+            return false;
+          }
+          await createTagHandler(tags);
         }}
-      >
-        <Button
-          id='submitButton'
-          label='ارسال'
-          size='large'
-          color='success'
-          variant='contained'
-          onClick={async () => {
-            if (tags.some((t) => !t.tagId)) {
-              setTagError(true);
-              return false;
-            }
-            await createTagHandler(tags);
-          }}
-        />
-      </Box>
+      />
     </Container>
   );
 });

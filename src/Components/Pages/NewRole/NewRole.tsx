@@ -13,6 +13,7 @@ import {
 import React, { memo, useEffect, useState } from 'react';
 
 import { Button as MyButton } from '../../Atomic/Button';
+import PrimaryButton from '../../Atomic/PrimaryButton';
 import { styled } from '@mui/material/styles';
 
 const Button = styled(MyButton)({});
@@ -92,7 +93,7 @@ export default memo(function NewRole({
       spacing={2}
       divider={<Divider flexItem />}
       alignItems='center'
-      sx={{ p: 2, maxInlineSize: '100%' }}
+      sx={{ p: 2, maxInlineSize: '100%', position: "relative" }}
     >
       <TextField
         name='name'
@@ -455,12 +456,19 @@ export default memo(function NewRole({
           </FormControl>
         </Stack>
       </Box>
-      <Button
+      
+
+      <PrimaryButton
         id='submit'
-        label='ثبت'
-        color='success'
         size='large'
-        sx={{ alignSelf: 'flex-end' }}
+        color='success'
+        right={40}
+        top={-84}
+        variant='contained'
+        icon='SEND'
+        ariaLabel='ارسال'
+        label='ارسال'
+        fabVariant='extended'
         onClick={() =>
           onSubmit(
             name,
