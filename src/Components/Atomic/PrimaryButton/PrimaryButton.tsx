@@ -20,6 +20,7 @@ export default function PrimaryButton({
   right,
   top,
   title,
+  modal =false
 }: {
   id: string;
   icon: 'SEND' | 'ADD';
@@ -31,12 +32,13 @@ export default function PrimaryButton({
   label: string;
   right: any;
   top: number;
+  modal?: boolean;
   disabled?: boolean;
   title?: string;
   size?: 'small' | 'large' | 'medium';
 }) {
   const { small, medium } = useScreenSize();
-  return medium ? (
+  return !medium ? (
     <>
       <Toolbar />
       <Fab
@@ -61,7 +63,7 @@ export default function PrimaryButton({
   ) : (
     <Box
       sx={{
-        position: 'absolute',
+        position: modal ? "static" : 'absolute',
         top: top,
         right: right,
       }}

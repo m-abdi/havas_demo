@@ -425,7 +425,6 @@ const resolvers: Resolvers = {
               ...filters,
               'passedStages.some.havaleh.is.corporation.is.id':
                 session?.user?.place?.id,
-            
             })
           : filters,
         orderBy: { dateCreated: 'desc' },
@@ -464,7 +463,6 @@ const resolvers: Resolvers = {
               ...filters,
               'passedStages.some.havaleh.is.corporation.is.id':
                 session?.user?.place?.id,
-            
             })
           : filters,
       })) as number;
@@ -640,6 +638,60 @@ const resolvers: Resolvers = {
         });
         return editedPerson as any;
       }
+      
+      if (_args?.newPlace) {
+        if (!session || !(await canCreatePlace(session))) {
+          throw new GraphQLYogaError('Unauthorized');
+        }
+        const createdPlace = prisma.place.create({
+          data: {
+            name: _args?.newPlace?.name,
+            typeOfWork: _args?.newPlace?.typeOfWork,
+            state: _args?.newPlace?.state,
+            city: _args?.newPlace?.city,
+            postalCode: _args?.newPlace?.postalCode,
+            address: _args?.newPlace?.address,
+            telephone: _args?.newPlace?.telephone,
+            mobileNumber: _args?.newPlace?.mobileNumber,
+            website: _args?.newPlace?.website,
+            nationalId: _args?.newPlace?.nationalId,
+            economicalCode: _args?.newPlace?.economicalCode,
+            registeredNumber: _args?.newPlace?.registeredNumber,
+            description: _args?.newPlace?.description,
+          },
+        });
+        const createdPerson = prisma.person.create({
+          data: {
+            id: _args.id as string,
+            firstNameAndLastName: _args.firstNameAndLastName,
+            password: _args.telephone as string,
+            place: { connect: { name: _args?.newPlace?.name } },
+            role: { connect: { id: _args.roleId } },
+            address: _args.address,
+            state: _args.state,
+            city: _args.city,
+            postalCode: _args.postalCode,
+            telephone: _args.telephone,
+            mobileNumber: _args.mobileNumber,
+            website: _args.website,
+          },
+        });
+        const connectedPlaceToPerson = prisma.place.update({
+          where: { name: _args?.newPlace?.name },
+          data: {
+            representative: { connect: { id: _args.id as string } },
+          },
+        });
+        const transaction = await prisma.$transaction([
+          createdPlace,
+          createdPerson,
+          connectedPlaceToPerson,
+        ]);
+        return transaction?.[1] as any;
+      }
+      console.log(_args?.newPlace);
+      console.log("_args?.newPlace");
+      
       const createdPerson = await prisma.person.create({
         data: {
           id: _args.id as string,
@@ -723,7 +775,6 @@ const resolvers: Resolvers = {
           data: {
             name,
             typeOfWork,
-            superPlace: { connect: { id: superPlaceId as string } },
             representative: { connect: { id: representativeId as string } },
             state,
             city,
@@ -1203,6 +1254,8 @@ const resolvers: Resolvers = {
         workflowNumber,
         havalehId,
         description,
+        receiver,
+        receiverTelephone,
         transportationName,
         transportationTelephone,
         transportationTelephone2,
@@ -1267,6 +1320,8 @@ const resolvers: Resolvers = {
                   transportationTelephone,
                   transportationTelephone2,
                   description,
+                  receiver,
+                  receiverTelephone,
                   corporation: {
                     id: corporationRepresentativeId,
                     name:
@@ -1349,6 +1404,8 @@ const resolvers: Resolvers = {
                   transportationTelephone,
                   transportationTelephone2,
                   description,
+                  receiver,
+                  receiverTelephone,
                   corporation: {
                     id: corporationRepresentativeId,
                     name:
@@ -1404,6 +1461,8 @@ const resolvers: Resolvers = {
                   transportationTelephone,
                   transportationTelephone2,
                   description,
+                  receiver,
+                  receiverTelephone,
                   corporation: {
                     id: corporationRepresentativeId,
                     name:
@@ -1511,7 +1570,7 @@ const resolvers: Resolvers = {
                   firstNameAndLastName: session?.user?.firstNameAndLastName,
                   role: session?.user?.role?.name,
                 },
-                
+
                 havaleh: {
                   id: havalehId + 'edited',
                   deliverer,

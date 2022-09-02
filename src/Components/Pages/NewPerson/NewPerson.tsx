@@ -13,6 +13,7 @@ import {
   Typography,
   styled,
 } from '@mui/material';
+import { NewPlace as NewPlaceType, Permissions } from 'lib/resolvers-types';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
@@ -25,8 +26,8 @@ import HomeIcon from '@mui/icons-material/Home';
 import Loader from '../../Atomic/Loader';
 import NewPlace from '../NewPlace';
 import { NewRole } from '../NewRole';
-import { Permissions } from 'lib/resolvers-types';
-import  toEnglishDigit  from '../../../Logic/toEnglishDigit';
+import { flushSync } from 'react-dom';
+import toEnglishDigit from '../../../Logic/toEnglishDigit';
 import { useForm } from 'react-hook-form';
 import useRoles from '../../../Logic/useRoles';
 import { useRouter } from 'next/router';
@@ -116,7 +117,8 @@ export default function newPerson({
     telephone: string,
     mobileNumber: string,
     website: string,
-    edit: string
+    edit: string,
+    newPlace: NewPlaceType | null
   ) => Promise<void>;
   createNewPlaceHandler: (
     name: string,
@@ -151,11 +153,14 @@ export default function newPerson({
   // states
   const [editRoleCheck, setEditRoleCheck] = useState(false);
   const [role, setRole] = useState<{ id: string; label: string }>();
+  const [placesList, setPlacesList] =
+    useState<{ id: string; label: string }[]>(places);
   const [place, setPlace] = useState<{ id: string; label: string }>();
   const [rolesList, setRolesList] = useState(roles);
   const [roleError, setRoleError] = useState(false);
   const [placeError, setPlaceError] = useState(false);
   const [newPlaceDialogOpen, setNewPlaceDialogOpen] = useState(false);
+  const [newPlaceData, setNewPlaceData] = useState<any>();
   const [newRoleDialogIsOpened, setNewRoleDialogIsOpened] = useState(false);
   // other hooks
   const router = useRouter();
@@ -163,6 +168,9 @@ export default function newPerson({
   // handers
   const placeCreationHandler = (newPlace?: any) => {
     if (newPlace) {
+      flushSync(() => {
+        setPlacesList([...placesList, newPlace]);
+      });
       setPlace(newPlace);
     } else {
       setNewPlaceDialogOpen(false);
@@ -194,7 +202,8 @@ export default function newPerson({
       allFieldsData?.telephone,
       allFieldsData?.mobileNumber,
       allFieldsData?.website,
-      existingPerson?.id ? existingPerson?.id : ''
+      existingPerson?.id ? existingPerson?.id : '',
+      places.some((p: any) => p?.id === place?.id) ? null : newPlaceData
     );
   };
   // if editing => extract existing user data from query param
@@ -205,6 +214,10 @@ export default function newPerson({
       ),
     [router?.isReady]
   );
+  useEffect(() => {
+    setPlacesList(places);
+  }, [places]);
+
   // check for editing mode
   useEffect(() => {
     if (router?.isReady) {
@@ -312,6 +325,7 @@ export default function newPerson({
                     ...register('id', {
                       required: true,
                       value: existingPerson?.id,
+                      setValueAs: (v) => toEnglishDigit(v),
                     }),
                   }}
                   error={errors.id?.type === 'required'}
@@ -326,7 +340,7 @@ export default function newPerson({
                   <Autocomplete
                     disablePortal
                     id='placeInput'
-                    options={places?.filter((p: any) => !p.isCategory)}
+                    options={placesList?.filter((p: any) => !p.isCategory)}
                     sx={{ flexGrow: 1 }}
                     defaultValue={
                       existingPerson?.place
@@ -533,7 +547,44 @@ export default function newPerson({
             <NewPlace
               modal={true}
               places={allPlaces}
-              createNewPlaceHandler={createNewPlaceHandler}
+              createNewPlaceHandler={async (
+                name: string,
+                superPlaceId: string | null,
+                reperesentativeId: string,
+                typeOfWork: string,
+                state: string,
+                city: string,
+                postalCode: string,
+                address: string,
+                telephone: string,
+                mobileNumber: string,
+                website: string,
+                nationalId: string,
+                economicalCode: string,
+                registeredNumber: string,
+                description: string,
+                edit: string
+              ) => {
+                setNewPlaceData({
+                  name,
+                  superPlaceId,
+                  reperesentativeId,
+                  typeOfWork,
+                  state,
+                  city,
+                  postalCode,
+                  address,
+                  telephone,
+                  mobileNumber,
+                  website,
+                  nationalId,
+                  economicalCode,
+                  registeredNumber,
+                  description,
+                  edit,
+                });
+                return { id: 'toBeCreated', label: name };
+              }}
               placeCreationHandler={placeCreationHandler}
               createNewCategoryHandler={createNewCategoryHandler}
               deletePlacesHandler={deletePlacesHandler}
@@ -581,6 +632,7 @@ export default function newPerson({
           </DialogTitle>
           <DialogContent sx={{ position: 'relative', p: '1px' }}>
             <NewRole
+              modal={true}
               onSubmit={async (
                 name: string,
                 permissions: Permissions,

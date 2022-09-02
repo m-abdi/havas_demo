@@ -50,6 +50,7 @@ mutation createNewPerson(
   $mobileNumber: String!
   $website: String
   $edit: String
+  $newPlace: NewPlace
 ) {
   createPerson(
     id: $id
@@ -64,6 +65,7 @@ mutation createNewPerson(
     mobileNumber: $mobileNumber
     website: $website
     edit: $edit
+    newPlace:$newPlace
   ) {
     firstNameAndLastName
   }

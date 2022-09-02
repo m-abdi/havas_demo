@@ -549,6 +549,8 @@ export default function useWorkflows(
       havalehId: string,
       warehouseKeeperId: string,
       description: string,
+      receiver:string,
+      receiverTelephone:string,
       transportationName: string,
       transportationTelephone: string,
       transportationTelephone2: string,
@@ -575,6 +577,8 @@ export default function useWorkflows(
               transportationTelephone2,
               corporationRepresentativeId,
               description,
+              receiver,
+              receiverTelephone,
               assets: filteredAssets,
             },
           });

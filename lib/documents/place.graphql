@@ -34,6 +34,11 @@ query placesList {
   places(limit: 2000000, offset: 0) {
     id
     label: name
+    representative {
+      firstNameAndLastName
+      telephone
+      mobileNumber
+    }
   }
 }
 

@@ -506,6 +506,23 @@ const typeDefs = /* GraphQL */ `
     assetId: String
     newAsset: NewAsset
   }
+  input NewPlace {
+    name: String!
+    superPlaceId: String
+    representativeId: String
+    typeOfWork: String
+    state: String
+    city: String
+    postalCode: String
+    address: String
+    telephone: String
+    mobileNumber: String
+    website: String
+    nationalId: String
+    economicalCode: String
+    registeredNumber: String
+    description: String
+  }
   type Query {
     persons(limit: Int, offset: Int, filters: PersonFilter): [Person]!
     personsCount(filters: PersonFilter): Int
@@ -545,6 +562,7 @@ const typeDefs = /* GraphQL */ `
       mobileNumber: String!
       website: String
       edit: String
+      newPlace: NewPlace
     ): Person!
 
     deleteRoles(roleIds: [String!]!): [String!]!
@@ -585,7 +603,12 @@ const typeDefs = /* GraphQL */ `
       supportTelephone2: String
       edit: String
     ): Equipment!
-    createAsset(equipmentId: String!, placeId: String!, count: Int, edit: String): Int!
+    createAsset(
+      equipmentId: String!
+      placeId: String!
+      count: Int
+      edit: String
+    ): Int!
     createCategory(name: String!, superPlaceId: String): ID!
     createEnterWorkflow(
       workflowNumber: String
@@ -602,6 +625,8 @@ const typeDefs = /* GraphQL */ `
       workflowNumber: String
       havalehId: String!
       description: String
+      receiver: String
+      receiverTelephone: String
       transportationName: String!
       transportationTelephone: String!
       transportationTelephone2: String

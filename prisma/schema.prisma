@@ -39,7 +39,7 @@ model Person {
   roleId               String
   createdAt            DateTime @default(now())
   editedAt             DateTime @updatedAt
-
+  placeOfRespresentative  Place[] @relation("representativeOfPlace")
   password String
   // levels               Level     @relation("levelToPerson")
 
@@ -53,7 +53,9 @@ model Place {
   superPlaceId     String?
   subset           Place[] @relation("SuperPlaceSubset")
   isCategory       Boolean @default(false)
-  representative   Person?
+  employees         Person[] 
+  representative   Person? @relation("representativeOfPlace", fields: [representativeId], references: [id])
+  representativeId String? 
   typeOfWork       String?
   state            String?
   city             String?
@@ -256,6 +258,8 @@ type Corporation {
 type Havaleh {
   id                       String?
   deliverer                String?
+  receiver                String?
+  receiverTelephone                String?
   transportationName       String?
   transportationTelephone  String?
   transportationTelephone2 String?

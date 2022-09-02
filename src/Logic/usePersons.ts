@@ -3,10 +3,10 @@ import {
   CreateNewPersonDocument,
   DeletePersonsDocument,
 } from '../../lib/graphql-operations';
+import { NewPlace, PersonFilter } from '../../lib/resolvers-types';
 import { useCallback, useContext } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
-import { PersonFilter } from '../../lib/resolvers-types';
 import { SnackbarContext } from 'pages/_app';
 import useNotification from './useNotification';
 import { useRouter } from 'next/router';
@@ -83,7 +83,8 @@ export default function usePersons(
       telephone: string,
       mobileNumber: string,
       website: string,
-      edit: string
+      edit: string,
+      newPlace: NewPlace | null
     ) => {
       useNotification(
         'sending',
@@ -112,6 +113,7 @@ export default function usePersons(
               mobileNumber,
               website,
               edit,
+              newPlace
             }),
           });
           if (resp.ok) {

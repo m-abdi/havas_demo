@@ -234,6 +234,8 @@ mutation createExitWorkflow(
   $workflowNumber: String
   $havalehId: String!
   $description: String
+  $receiver: String
+  $receiverTelephone: String
   $transportationName: String!
   $transportationTelephone: String!
   $transportationTelephone2: String
@@ -245,6 +247,8 @@ mutation createExitWorkflow(
     havalehId: $havalehId
     workflowNumber: $workflowNumber
     description: $description
+    receiver: $receiver
+    receiverTelephone: $receiverTelephone
     transportationName: $transportationName
     transportationTelephone: $transportationTelephone
     transportationTelephone2: $transportationTelephone2

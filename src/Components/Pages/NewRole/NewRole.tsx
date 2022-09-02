@@ -20,9 +20,11 @@ const Button = styled(MyButton)({});
 export default memo(function NewRole({
   existingRoleData,
   onSubmit,
+  modal = false,
 }: {
   existingRoleData?: RoleType;
   onSubmit: (name: string, permissions: any, edit: string) => Promise<void>;
+  modal?: boolean;
 }) {
   // states
   const [name, setName] = useState('');
@@ -93,7 +95,7 @@ export default memo(function NewRole({
       spacing={2}
       divider={<Divider flexItem />}
       alignItems='center'
-      sx={{ p: 2, maxInlineSize: '100%', position: "relative" }}
+      sx={{ p: 2, maxInlineSize: '100%', position: 'relative' }}
     >
       <TextField
         name='name'
@@ -456,7 +458,6 @@ export default memo(function NewRole({
           </FormControl>
         </Stack>
       </Box>
-      
 
       <PrimaryButton
         id='submit'
@@ -469,6 +470,7 @@ export default memo(function NewRole({
         ariaLabel='ارسال'
         label='ارسال'
         fabVariant='extended'
+        modal={true}
         onClick={() =>
           onSubmit(
             name,

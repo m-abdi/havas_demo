@@ -27,10 +27,10 @@ Main.args = {
     {
       id: '3489',
       label: 'بیتا',
-      representitive: {
+      representative: {
         firstNameAndLastName: 'علی مصلحی',
         telephone: '۸۶۳۵۴۱۲',
-        
+        mobileNumber: "",
       },
     },
   ],

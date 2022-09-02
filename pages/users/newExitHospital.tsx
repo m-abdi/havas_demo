@@ -6,8 +6,6 @@ import {
 import React, { useMemo } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
-import ExitCorporation from '../../src/Components/Pages/NewExitCorporation';
-import Head from 'next/head';
 import Layout from '../../src/Components/Atomic/Layout';
 import NewExitHospital from '../../src/Components/Pages/NewExitHospital';
 import usePlaces from '../../src/Logic/usePlaces';
@@ -26,7 +24,7 @@ export default function newExitCorporation() {
     fetchPolicy: 'cache-and-network',
   });
   const { sending, createNewExit } = useWorkflows();
- const {placesList, placesListLoading} =  usePlaces(undefined, undefined, undefined, undefined, undefined, undefined, false, true)
+  const { placesList, placesListLoading } =  usePlaces(undefined, undefined, undefined, undefined, undefined, undefined, false, true)
   return (
     <Layout pageName={pageName}>
       <NewExitHospital

@@ -117,13 +117,19 @@ export default function NewExitHospital({
   corporations: {
     id: string;
     label: string;
-    representitive: { firstNameAndLastName: string; telephone: string };
+    representative: {
+      firstNameAndLastName: string;
+      telephone: string;
+      mobileNumber: string;
+    };
   }[];
   corporationsLoading: boolean;
   createNewHandler?: (
     havalehId: string,
     warehouseKeeperId: string,
     description: string,
+    receiver: string,
+    receiverTelephone: string,
     transportationName: string,
     transportationTelephone: string,
     transportationTelephone2: string,
@@ -228,7 +234,15 @@ export default function NewExitHospital({
   const [sum, setSum] = useState(0);
 
   const [corporation, setCorporation] =
-    useState<{ id: string; label: string, representitive: {firstNameAndLastName: string, telephone: string} }>();
+    useState<{
+      id: string;
+      label: string;
+      representative: {
+        firstNameAndLastName: string;
+        telephone: string;
+        mobileNumber: string;
+      };
+    }>();
   const [corporationError, setCorporationError] = useState(false);
   //
   useEffect(() => {
@@ -255,12 +269,13 @@ export default function NewExitHospital({
   useEffect(() => {
     if (corporation) {
       updateReceiverInfo(
-        corporation.representitive.firstNameAndLastName,
-        corporation.representitive.telephone
+        corporation?.representative?.firstNameAndLastName,
+        corporation?.representative?.telephone ||
+          corporation?.representative?.mobileNumber
       );
     }
-  }, [corporation])
-  
+  }, [corporation]);
+
   // handlers
   const submitHandler = async (data: any) => {
     if (existingWorkflow) {
@@ -311,6 +326,8 @@ export default function NewExitHospital({
         data?.havalehId,
         warehouseKeeper?.id as string,
         data?.description,
+        data?.receiver,
+        data?.receiverTelephone,
         data?.transportationName,
         data?.transportationTelephone,
         data?.transportationTelephone2,
@@ -473,10 +490,8 @@ export default function NewExitHospital({
                 value={corporation}
                 onChange={(event, newValue) => {
                   if (newValue) {
-                   
                     setCorporation(newValue as any);
                     setCorporationError(false);
-                    
                   }
                 }}
                 onInputChange={(event, newInput) => {
@@ -487,7 +502,7 @@ export default function NewExitHospital({
                     const matchCorporation = corporations.find(
                       (r) => r.label === newInput
                     ) as any;
-                    
+
                     setCorporation(matchCorporation);
                     setCorporationError(false);
                   }
@@ -506,11 +521,11 @@ export default function NewExitHospital({
           </Input1>
         </Row1>
         <Box
-        component={'section'}
+          component={'section'}
           sx={{
             flex: ' 0 0 100%',
             flexWrap: 'wrap',
-            display: corporation ? "flex" : "none",
+            display: corporation ? 'flex' : 'none',
             marginBottom: '0.6em',
             alignItems: 'center',
             maxInlineSize: '100%',
@@ -709,7 +724,7 @@ export default function NewExitHospital({
 
   function updateReceiverInfo(name: string, tel: string) {
     console.log(name, tel);
-    
+
     setValue('receiver', name);
     setValue('receiverTelephone', tel);
   }
