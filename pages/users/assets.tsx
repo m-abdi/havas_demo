@@ -9,13 +9,13 @@ import { AssetFilter, EquipmentFilter } from 'lib/resolvers-types';
 import React, { useCallback, useContext, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
-import Assets from '@/src/Components/Pages/Assets';
+import Assets from '../../src/Components/Pages/Assets';
 import AuthenticationRequired from 'src/AuthenticationRequired';
-import Equipments from '@/src/Components/Pages/Equipments';
+import Equipments from '../../src/Components/Pages/Equipments';
 import Head from 'next/head';
 import Layout from 'src/Components/Atomic/Layout';
-import Persons from '@/src/Components/Pages/Persons';
-import Places from '@/src/Components/Pages/Places';
+import Persons from '../../src/Components/Pages/Persons';
+import Places from '../../src/Components/Pages/Places';
 import Snackbar from 'src/Components/Atomic/Snackbar';
 import { SnackbarContext } from 'pages/_app';
 import useAssets from 'src/Logic/useAssets';

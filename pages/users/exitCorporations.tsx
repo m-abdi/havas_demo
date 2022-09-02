@@ -13,7 +13,7 @@ import AuthenticationRequired from '../../src/AuthenticationRequired';
 import Equipments from '../../src/Components/Pages/Equipments';
 import ExitCorporations from '../../src/Components/Pages/ExitCorporations';
 import Head from 'next/head';
-import Layout from '@/src/Components/Atomic/Layout';
+import Layout from '../../src/Components/Atomic/Layout';
 import useWorkflows from '../../src/Logic/useWorkflows';
 
 const pageName = 'حواله های خروج از شرکت';

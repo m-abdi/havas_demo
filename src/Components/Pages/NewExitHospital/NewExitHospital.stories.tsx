@@ -23,7 +23,17 @@ let itemsPerPage = 10;
 export const Main = Template.bind({});
 Main.args = {
   warehouseKeeper: { id: '2123', label: 'مهدی عبدی' },
-  corporations : [{id: "3489", label: "بیتا"}]
+  corporations: [
+    {
+      id: '3489',
+      label: 'بیتا',
+      representitive: {
+        firstNameAndLastName: 'علی مصلحی',
+        telephone: '۸۶۳۵۴۱۲',
+        
+      },
+    },
+  ],
 };
 
 // export const Loading = Template.bind({});

@@ -8,7 +8,7 @@ import { useMutation, useQuery } from '@apollo/client';
 
 import ExitCorporation from '../../src/Components/Pages/NewExitCorporation';
 import Head from 'next/head';
-import Layout from '@/src/Components/Atomic/Layout';
+import Layout from '../../src/Components/Atomic/Layout';
 import NewExitHospital from '../../src/Components/Pages/NewExitHospital';
 import usePlaces from '../../src/Logic/usePlaces';
 import { useRouter } from 'next/router';

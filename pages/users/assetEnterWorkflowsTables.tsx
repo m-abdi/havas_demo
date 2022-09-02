@@ -7,7 +7,7 @@ import EnteredWarehouseRFID from './enteredWarehouseRFID';
 import ExitCorporations from './exitCorporations';
 import ExitHospitals from './exitHospitals';
 import Layout from '../../src/Components/Atomic/Layout';
-import PrimaryButton from '@/src/Components/Atomic/PrimaryButton';
+import PrimaryButton from '../../src/Components/Atomic/PrimaryButton';
 import SentToCorporations from './approvedExitWorkflows';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';

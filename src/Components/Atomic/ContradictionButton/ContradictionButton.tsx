@@ -1,7 +1,7 @@
 import { Button } from '../Button';
 import React from 'react';
 import { Workflow } from 'lib/resolvers-types';
-import isContradicted from '@/src/Logic/isContradicted';
+import isContradicted from '../../../Logic/isContradicted';
 
 export default function ContradictionButton({
   type,

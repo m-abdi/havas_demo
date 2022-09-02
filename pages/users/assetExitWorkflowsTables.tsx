@@ -13,11 +13,11 @@ import ApprovedExitWorkflows from './approvedExitWorkflows';
 import { Button } from '../../src/Components/Atomic/Button';
 import ExitHospitals from './exitHospitals';
 import Layout from '../../src/Components/Atomic/Layout';
-import PrimaryButton from '@/src/Components/Atomic/PrimaryButton';
+import PrimaryButton from '../../src/Components/Atomic/PrimaryButton';
 import ReceivedExitWorkflows from './receivedExitWorkflows';
 import SentExitWorkflows from './sentExitWorkflows';
 import { useRouter } from 'next/router';
-import useScreenSize from '@/src/Logic/useScreenSize';
+import useScreenSize from '../../src/Logic/useScreenSize';
 import { useSession } from 'next-auth/react';
 
 const pageName = 'حواله های خروجی';

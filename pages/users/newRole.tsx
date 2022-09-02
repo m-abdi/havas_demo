@@ -6,13 +6,13 @@ import { AllRolesDocument } from 'lib/graphql-operations';
 import AuthenticationRequired from 'src/AuthenticationRequired';
 import { CreateRoleDocument } from '../../lib/graphql-operations';
 import Head from 'next/head';
-import Layout from '@/src/Components/Atomic/Layout';
-import Loader from '@/src/Components/Atomic/Loader';
-import { NewRole } from '@/src/Components/Pages/NewRole';
-import Snackbar from '@/src/Components/Atomic/Snackbar';
+import Layout from '../../src/Components/Atomic/Layout';
+import Loader from '../../src/Components/Atomic/Loader';
+import { NewRole } from '../../src/Components/Pages/NewRole';
+import Snackbar from '../../src/Components/Atomic/Snackbar';
 import { useContext } from 'react';
+import useRoles from '../../src/Logic/useRoles';
 import { useRouter } from 'next/router';
-import useRoles from '@/src/Logic/useRoles';
 
 const pageName = 'نقش جدید';
 export default function newRole() {

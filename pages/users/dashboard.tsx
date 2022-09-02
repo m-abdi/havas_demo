@@ -1,12 +1,12 @@
 import React, { useContext, useEffect } from 'react';
 
 import AuthenticationRequired from 'src/AuthenticationRequired';
-import EquipmentsOverviewCarousel from '@/src/Components/Composite/EquipmentsOverviewCarousel/EquipmentsOverviewCarousel';
+import EquipmentsOverviewCarousel from '../../src/Components/Composite/EquipmentsOverviewCarousel/EquipmentsOverviewCarousel';
 import Head from 'next/head';
 import { InfoContext } from 'pages/_app';
-import Layout from '@/src/Components/Atomic/Layout';
-import Loader from '@/src/Components/Atomic/Loader';
-import useEquipments from '@/src/Logic/useEquipments';
+import Layout from '../../src/Components/Atomic/Layout';
+import Loader from '../../src/Components/Atomic/Loader';
+import useEquipments from '../../src/Logic/useEquipments';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 

@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useState } from 'react';
 
 import { AssetTransferWorkflowFilter } from 'lib/graphql-operations';
 import ConfirmReceiptByHospitals from '../../src/Components/Pages/ConfirmReceiptByHospitals';
-import Layout from '@/src/Components/Atomic/Layout';
+import Layout from '../../src/Components/Atomic/Layout';
 import { Workflow } from '../../lib/resolvers-types';
 import useEquipments from '../../src/Logic/useEquipments';
 import useWorkflows from '../../src/Logic/useWorkflows';

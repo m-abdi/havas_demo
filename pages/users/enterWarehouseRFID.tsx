@@ -5,7 +5,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import EnterWarehouseRFID from '../../src/Components/Pages/EnterWarehouseRFID';
 import { EquipmentsAndPlacesDocument } from '../../lib/graphql-operations';
 import Head from 'next/head';
-import Layout from '@/src/Components/Atomic/Layout';
+import Layout from '../../src/Components/Atomic/Layout';
 import { UpdateAssetsStatesDocument } from '../../lib/graphql-operations';
 import { getQueryDefinition } from '@apollo/client/utilities';
 import useAssets from '../../src/Logic/useAssets';

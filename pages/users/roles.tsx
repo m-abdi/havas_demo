@@ -10,11 +10,11 @@ import { useApolloClient, useMutation, useQuery } from '@apollo/client';
 
 import AuthenticationRequired from 'src/AuthenticationRequired';
 import { Button } from '../../src/Components/Atomic/Button';
-import DeleteDialog from '@/src/Components/Atomic/DeleteRolesDialog';
+import DeleteDialog from '../../src/Components/Atomic/DeleteRolesDialog';
 import Head from 'next/head';
-import Layout from '@/src/Components/Atomic/Layout';
-import Loader from '@/src/Components/Atomic/Loader';
-import RolesTable from '@/src/Components/Atomic/RolesTable/RolesTable';
+import Layout from '../../src/Components/Atomic/Layout';
+import Loader from '../../src/Components/Atomic/Loader';
+import RolesTable from '../../src/Components/Atomic/RolesTable/RolesTable';
 import Snackbar from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';

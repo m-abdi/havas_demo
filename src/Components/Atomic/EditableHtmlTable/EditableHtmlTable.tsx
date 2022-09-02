@@ -6,7 +6,7 @@ import { Box, Table, TableBody, TableContainer, TextField } from '@mui/material'
 import React, { useEffect } from 'react';
 
 import { memo } from 'react';
-import { toEnglishDigit } from '@/src/Logic/toEnglishDigit';
+import  toEnglishDigit  from '../../../../src/Logic/toEnglishDigit';
 
 export default memo(function EditableHtmlTable({
   selectedColumns,

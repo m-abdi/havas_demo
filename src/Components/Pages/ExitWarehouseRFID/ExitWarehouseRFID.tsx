@@ -24,7 +24,7 @@ import { NewTag as NewTagType } from '../../../../lib/resolvers-types';
 import PrimaryButton from '../../Atomic/PrimaryButton';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import { useForm } from 'react-hook-form';
-import useMQTT from '@/src/Logic/useMQTT';
+import useMQTT from '../../../../src/Logic/useMQTT';
 
 export default function EnterWarehouseRFID({
   equipmentsLoading,

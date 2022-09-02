@@ -114,7 +114,11 @@ export default function NewExitHospital({
   warehouseKeeper?: { id: string; label: string };
   existingWorkflow?: any;
   dateT?: any;
-  corporations: { id: string; label: string }[];
+  corporations: {
+    id: string;
+    label: string;
+    representitive: { firstNameAndLastName: string; telephone: string };
+  }[];
   corporationsLoading: boolean;
   createNewHandler?: (
     havalehId: string,
@@ -224,7 +228,7 @@ export default function NewExitHospital({
   const [sum, setSum] = useState(0);
 
   const [corporation, setCorporation] =
-    useState<{ id: string; label: string }>();
+    useState<{ id: string; label: string, representitive: {firstNameAndLastName: string, telephone: string} }>();
   const [corporationError, setCorporationError] = useState(false);
   //
   useEffect(() => {
@@ -247,6 +251,16 @@ export default function NewExitHospital({
       ).forEach(([key, value]) => setValue(key, value));
     }
   }, [existingWorkflow]);
+  // update receiver info
+  useEffect(() => {
+    if (corporation) {
+      updateReceiverInfo(
+        corporation.representitive.firstNameAndLastName,
+        corporation.representitive.telephone
+      );
+    }
+  }, [corporation])
+  
   // handlers
   const submitHandler = async (data: any) => {
     if (existingWorkflow) {
@@ -458,17 +472,23 @@ export default function NewExitHospital({
                 disabled={existingWorkflow}
                 value={corporation}
                 onChange={(event, newValue) => {
-                  setCorporation(newValue as any);
-                  setCorporationError(false);
+                  if (newValue) {
+                   
+                    setCorporation(newValue as any);
+                    setCorporationError(false);
+                    
+                  }
                 }}
                 onInputChange={(event, newInput) => {
                   if (
                     corporations.length > 0 &&
                     corporations.some((r) => r.label === newInput)
                   ) {
-                    setCorporation(
-                      corporations.find((r) => r.label === newInput) as any
-                    );
+                    const matchCorporation = corporations.find(
+                      (r) => r.label === newInput
+                    ) as any;
+                    
+                    setCorporation(matchCorporation);
                     setCorporationError(false);
                   }
                 }}
@@ -485,6 +505,46 @@ export default function NewExitHospital({
             )}
           </Input1>
         </Row1>
+        <Box
+        component={'section'}
+          sx={{
+            flex: ' 0 0 100%',
+            flexWrap: 'wrap',
+            display: corporation ? "flex" : "none",
+            marginBottom: '0.6em',
+            alignItems: 'center',
+            maxInlineSize: '100%',
+          }}
+        >
+          <Input1>
+            <Label1>تحویل گیرنده</Label1>
+            <TextField
+              size='small'
+              id='receiver'
+              disabled={Boolean(existingWorkflow)}
+              inputProps={{
+                ...register('receiver', {
+                  value: existingWorkflow?.passedStages?.[0]?.havaleh?.receiver,
+                }),
+              }}
+            />
+          </Input1>
+          <Input1>
+            <Label1>شماره تماس تحویل گیرنده</Label1>
+            <TextField
+              size='small'
+              id='receiverTelephone'
+              disabled={Boolean(existingWorkflow)}
+              inputProps={{
+                ...register('receiverTelephone', {
+                  value:
+                    existingWorkflow?.passedStages?.[0]?.havaleh
+                      ?.receiverTelephone,
+                }),
+              }}
+            />
+          </Input1>
+        </Box>
         <Row1>
           <Input1>
             <Label1>توضیحات ارسال</Label1>
@@ -646,4 +706,11 @@ export default function NewExitHospital({
       </Form1>
     </Container>
   );
+
+  function updateReceiverInfo(name: string, tel: string) {
+    console.log(name, tel);
+    
+    setValue('receiver', name);
+    setValue('receiverTelephone', tel);
+  }
 }

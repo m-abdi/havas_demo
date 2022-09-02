@@ -26,7 +26,7 @@ import Loader from '../../Atomic/Loader';
 import NewPlace from '../NewPlace';
 import { NewRole } from '../NewRole';
 import { Permissions } from 'lib/resolvers-types';
-import { toEnglishDigit } from '../../../Logic/toEnglishDigit';
+import  toEnglishDigit  from '../../../Logic/toEnglishDigit';
 import { useForm } from 'react-hook-form';
 import useRoles from '../../../Logic/useRoles';
 import { useRouter } from 'next/router';

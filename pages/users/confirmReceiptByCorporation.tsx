@@ -11,7 +11,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { Button } from '../../src/Components/Atomic/Button';
 import Head from 'next/head';
-import Layout from '@/src/Components/Atomic/Layout';
+import Layout from '../../src/Components/Atomic/Layout';
 import NewExitCorporation from '../../src/Components/Pages/NewExitCorporation';
 import NewExitHospital from '../../src/Components/Pages/NewExitHospital';
 import usePlaces from '../../src/Logic/usePlaces';

@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import type { Session } from 'next-auth';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { toEnglishDigit } from '../../src/Logic/toEnglishDigit';
+import  toEnglishDigit  from '../../src/Logic/toEnglishDigit';
 import { useRouter } from 'next/router';
 
 export default function SignIn() {

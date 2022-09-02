@@ -2,11 +2,11 @@ import React, { useMemo } from 'react';
 
 import { AllPersonsOptionsDocument } from 'lib/graphql-operations';
 import Head from 'next/head';
-import Layout from '@/src/Components/Atomic/Layout';
-import NewEquipment from '@/src/Components/Pages/NewEquipment/NewEquipment';
-import NewPerson from '@/src/Components/Pages/NewPerson';
-import NewPlace from '@/src/Components/Pages/NewPlace';
-import Snackbar from '@/src/Components/Atomic/Snackbar';
+import Layout from '../../src/Components/Atomic/Layout';
+import NewEquipment from '../../src/Components/Pages/NewEquipment/NewEquipment';
+import NewPerson from '../../src/Components/Pages/NewPerson';
+import NewPlace from '../../src/Components/Pages/NewPlace';
+import Snackbar from '../../src/Components/Atomic/Snackbar';
 import useEquipments from 'src/Logic/useEquipments';
 import usePlaces from 'src/Logic/usePlaces';
 import { useQuery } from '@apollo/client';

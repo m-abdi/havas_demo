@@ -56,7 +56,7 @@ import { Session } from 'next-auth';
 import Styles from '../../../TableStyles';
 import { Workflow } from '../../../../lib/resolvers-types';
 import { flushSync } from 'react-dom';
-import isContradicted from '@/src/Logic/isContradicted';
+import isContradicted from '../../../Logic/isContradicted';
 import matchSorter from 'match-sorter';
 /* eslint-disable react/jsx-filename-extension */
 import { memo } from 'react';
