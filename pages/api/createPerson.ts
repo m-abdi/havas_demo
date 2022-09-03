@@ -56,7 +56,7 @@ export default async function handler(
         data: {
           id: id as string,
           firstNameAndLastName: firstNameAndLastName,
-          password: telephone as string,
+          password: hashedPassword,
           place: { connect: { name: newPlace?.name } },
           role: { connect: { id: roleId } },
           address: address,
