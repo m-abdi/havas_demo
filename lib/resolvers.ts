@@ -1078,6 +1078,8 @@ const resolvers: Resolvers = {
         havalehId,
         deliverer,
         description,
+        receiver,
+      receiverTelephone,
         transportationName,
         transportationTelephone,
         transportationTelephone2,
@@ -1232,6 +1234,8 @@ const resolvers: Resolvers = {
                 transportationName,
                 transportationTelephone,
                 transportationTelephone2,
+                receiver,
+                receiverTelephone,
                 description,
                 corporation: {
                   id: session?.user?.place?.id ?? '',

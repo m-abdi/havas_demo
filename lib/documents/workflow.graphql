@@ -212,6 +212,8 @@ mutation createEnterWorkflow(
   $havalehId: String!
   $deliverer: String
   $description: String
+  $receiver: String
+  $receiverTelephone: String
   $transportationName: String!
   $transportationTelephone: String!
   $transportationTelephone2: String
@@ -223,6 +225,8 @@ mutation createEnterWorkflow(
     havalehId: $havalehId
     deliverer: $deliverer
     description: $description
+    receiver: $receiver
+    receiverTelephone: $receiverTelephone
     transportationName: $transportationName
     transportationTelephone: $transportationTelephone
     transportationTelephone2: $transportationTelephone2

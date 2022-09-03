@@ -615,6 +615,8 @@ const typeDefs = /* GraphQL */ `
       havalehId: String!
       deliverer: String
       description: String
+      receiver: String
+      receiverTelephone: String
       transportationName: String!
       transportationTelephone: String!
       transportationTelephone2: String

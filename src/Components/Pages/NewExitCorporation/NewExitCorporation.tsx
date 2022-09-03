@@ -118,7 +118,9 @@ export default function NewExitCorporation({
     havalehId: string,
     corporationRepresentativeId: string,
     deliverer: string,
-    description: string,
+    description: string, 
+    receiver: string, 
+    receiverTelephone: string, 
     transportationName: string,
     transportationTelephone: string,
     transportationTelephone2: string,
@@ -290,6 +292,8 @@ export default function NewExitCorporation({
         corporationRepresentative?.id as string,
         data?.deliverer,
         data?.description,
+        data?.receiver,
+        data?.receiverTelephone,
         data?.transportationName,
         data?.transportationTelephone,
         data?.transportationTelephone2,
@@ -440,6 +444,46 @@ export default function NewExitCorporation({
             />
           </Input1>
         </Row1>
+        <Box
+          component={'section'}
+          sx={{
+            flex: ' 0 0 100%',
+            flexWrap: 'wrap',
+            display:  'flex' ,
+            marginBottom: '0.6em',
+            alignItems: 'center',
+            maxInlineSize: '100%',
+          }}
+        >
+          <Input1>
+            <Label1>تحویل گیرنده</Label1>
+            <TextField
+              size='small'
+              id='receiver'
+              disabled={Boolean(existingWorkflow)}
+              inputProps={{
+                ...register('receiver', {
+                  value: existingWorkflow?.passedStages?.[0]?.havaleh?.receiver,
+                }),
+              }}
+            />
+          </Input1>
+          <Input1>
+            <Label1>شماره تماس تحویل گیرنده</Label1>
+            <TextField
+              size='small'
+              id='receiverTelephone'
+              disabled={Boolean(existingWorkflow)}
+              inputProps={{
+                ...register('receiverTelephone', {
+                  value:
+                    existingWorkflow?.passedStages?.[0]?.havaleh
+                      ?.receiverTelephone,
+                }),
+              }}
+            />
+          </Input1>
+        </Box>
         <Row1>
           <Input1>
             <Label1>توضیحات ارسال</Label1>
