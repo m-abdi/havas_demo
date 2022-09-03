@@ -25,7 +25,6 @@ export default function newExitCorporation() {
   const { sending, createNewEnter } = useWorkflows();
   return (
     <Layout pageName={pageName}>
-
       <ExitCorporation
         editable={true}
         loading={status === 'loading'}
@@ -33,8 +32,8 @@ export default function newExitCorporation() {
         createNewHandler={createNewEnter}
         // workflowNumber={data?.getWorkflowNumber as string}
         corporationRepresentative={{
-          id: session?.user?.id as string,
-          label: session?.user?.firstNameAndLastName as string,
+          id: session?.user?.place?.representative?.id as string,
+          label: session?.user?.place?.representative?.firstNameAndLastName as string,
         }}
         hospitalClient={Boolean(!session?.user?.role?.createEnterDeliverExit)}
       />

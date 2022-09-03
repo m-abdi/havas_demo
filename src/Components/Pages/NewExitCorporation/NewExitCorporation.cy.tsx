@@ -1,5 +1,5 @@
-import ExitCorporation from './NewExitCorporation';
 import { Main } from './NewExitCorporation.stories';
+import NewExitCorporation from './NewExitCorporation';
 export const testNewEnterWorkflowData = {
   workflowNumber: 'شماره گردش کاری',
   havalehId: 'شماره حواله',
@@ -61,7 +61,7 @@ describe('interaction test for NewPerson page', () => {
     const onSubmitSpy = cy.stub().as('onSubmitSpy');
 
     cy.mount(
-      <ExitCorporation
+      <NewExitCorporation
         editable={true}
         loading={false}
         sending={false}

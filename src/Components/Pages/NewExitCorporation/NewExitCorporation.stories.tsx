@@ -1,12 +1,12 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import ExitCorporation from './NewExitCorporation';
+import NewExitCorporation from './NewExitCorporation';
 import React from 'react';
 import StoriesDecorator from '../../../StoriesDecorator';
 
 export default {
   title: 'Pages/NewExitCorporation',
-  component: ExitCorporation,
+  component: NewExitCorporation,
   decorators: [
     (Story) => (
       <StoriesDecorator>
@@ -14,13 +14,15 @@ export default {
       </StoriesDecorator>
     ),
   ],
-} as ComponentMeta<typeof ExitCorporation>;
+} as ComponentMeta<typeof NewExitCorporation>;
 
-const Template: ComponentStory<typeof ExitCorporation> = (args) => <ExitCorporation {...args} />;
+const Template: ComponentStory<typeof NewExitCorporation> = (args) => (
+  <NewExitCorporation {...args} />
+);
 let itemsPerPage = 10;
 export const Main = Template.bind({});
 Main.args = {
-  corporationRepresentative: {id: "2123", label: "مهدی عبدی"}
+  corporationRepresentative: { id: '2123', label: 'مهدی عبدی' },
 };
 
 // export const Loading = Template.bind({});

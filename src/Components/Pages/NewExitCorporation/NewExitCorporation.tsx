@@ -95,7 +95,7 @@ const columns = [
   'گاز مایع',
 ];
 
-export default function ExitCorporation({
+export default function NewExitCorporation({
   loading,
   sending,
   editable = true,
@@ -430,6 +430,7 @@ export default function ExitCorporation({
               size='small'
               id='deliverer'
               disabled={!editable}
+              defaultValue={corporationRepresentative?.label}
               inputProps={{
                 ...register('deliverer', {
                   value:
@@ -464,7 +465,7 @@ export default function ExitCorporation({
               disabled={!editable}
               inputProps={{
                 ...register('transportationName', {
-                  required:  true,
+                  required: true,
                   value:
                     existingWorkflow?.passedStages?.[0]?.havaleh
                       ?.transportationName,
@@ -485,7 +486,7 @@ export default function ExitCorporation({
               disabled={!editable}
               inputProps={{
                 ...register('transportationTelephone', {
-                  required:  true,
+                  required: true,
                   value:
                     existingWorkflow?.passedStages?.[0]?.havaleh
                       ?.transportationTelephone,
