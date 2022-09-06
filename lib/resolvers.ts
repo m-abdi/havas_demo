@@ -50,7 +50,7 @@ import toNestedObject from '../src/Logic/toNestedObject';
 function giveMeJustAggCounts(assets: AggregatedTransferedAssets): any {
   return Object.fromEntries(
     Object.entries(assets).filter(
-      ([k, v]) => !/factory/.test(k) && !/customer/.test(k) && v
+      ([k, v]) => !/typename/.test(k) && !/factory/.test(k) && !/customer/.test(k) && v
     )
   );
 }
@@ -1300,7 +1300,10 @@ const resolvers: Resolvers = {
           o.push(
             prisma.equipment.update({
               where: { terminologyCode: k },
-              data: { sending: { increment: v as number } },
+              data: { 
+                sending: { increment: v as number },
+                available: { decrement: v as number },
+              },
             })
           );
         });
@@ -1527,37 +1530,20 @@ const resolvers: Resolvers = {
         where: { current: true },
       });
       const o: any = [];
-      if (assets) {
-        Object.entries(
+        Object.entries(giveMeJustAggCounts(
           existingWorkflow?.passedStages?.[0]?.havaleh?.assets as any
-        )
-          .filter(([k, v]) => v && !/factory/.test(k) && !/customer/.test(k))
+        ))
           .forEach(([k, v]) => {
             o.push(
               prisma.equipment.update({
                 where: { terminologyCode: k },
                 data: {
                   receiving: { decrement: v as number },
+                  available:{increment: v as number}
                 },
               })
             );
           });
-      } else {
-        Object.entries(
-          existingWorkflow?.passedStages?.[0]?.havaleh?.assets as any
-        )
-          .filter(([k, v]) => v && !/factory/.test(k) && !/customer/.test(k))
-          .forEach(([k, v]) => {
-            o.push(
-              prisma.equipment.update({
-                where: { terminologyCode: k },
-                data: {
-                  receiving: { decrement: v as number },
-                },
-              })
-            );
-          });
-      }
 
       // update enter workflow
       if (havalehId && !currentConfig?.ignoreRFID) {
@@ -1647,18 +1633,6 @@ const resolvers: Resolvers = {
           },
         });
         const transaction = await prisma.$transaction([updatedWorkflow, ...o]);
-        Object.entries(
-          giveMeJustAggCounts(
-            existingWorkflow?.passedStages?.[0]?.havaleh?.assets as any
-          )
-        ).forEach(([k, v]) => {
-          o.push(
-            prisma.equipment.update({
-              where: { terminologyCode: k },
-              data: { available: { increment: v as number } },
-            })
-          );
-        });
         return transaction[0];
       } else if (!havalehId && !currentConfig?.ignoreRFID) {
         const updatedWorkflow = prisma.workflow.update({
@@ -1967,7 +1941,7 @@ const resolvers: Resolvers = {
           o.push(
             prisma.equipment.update({
               where: { terminologyCode: k },
-              data: { sending: { increment: v as number } },
+              data: { sending: { increment: v as number }, available:{decrement: v as number} },
             })
           );
         });

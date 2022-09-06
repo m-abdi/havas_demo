@@ -5,7 +5,7 @@ const newExitWorkflowData = {
   corporation: 'نام کارخانه',
   corporationRepresentativeId: 'آی دی نماینده شرکت',
   corporationRepresentativeName: 'نام نماینده شرکت',
-  deliverer: 'مهدی عبدی',
+  deliverer: 'غلام کاووسی',
   description: 'توضیحات',
   transportationName: 'نام ترابری',
   transportationTelephone: '123456',
@@ -114,12 +114,14 @@ describe('New Exit Asset Workflow', () => {
     cy.get('#licences').click();
     cy.get('#exitWorkflows').click();
     cy.get('#newWorkflowButton', { timeout: 20000 }).click();
-    cy.get('#warehouseKeeper', { timeout: 20000 });
+    cy.get('#deliverer', { timeout: 20000 });
     cy.get('#corporation', { timeout: 20000 });
-    cy.wait(4000);
+    cy.wait(2000);
     cy.get('#havalehId', { timeout: 20000 }).type(
       newExitWorkflowData?.havalehId
     );
+    cy.get('#deliverer', { timeout: 20000 }).clear().type("شاهین اسدی")
+
     cy.get('#corporation').type(newExitWorkflowData?.corporation);
     cy.get('#description', { timeout: 4000 }).type(
       newExitWorkflowData?.description
@@ -137,7 +139,7 @@ describe('New Exit Asset Workflow', () => {
 
     cy.get('#submitButton').click();
     cy.get('#notification').should('be.visible');
-    cy.wait(4000);
+    cy.wait(2000);
 
     cy.location('pathname', { timeout: 20000 }).should(
       'include',
@@ -154,9 +156,9 @@ describe('New Exit Asset Workflow', () => {
     cy.get('#licences').click();
     cy.get('#exitWorkflows').click();
     cy.get('#newWorkflowButton', { timeout: 20000 }).click();
-    cy.get('#warehouseKeeper', { timeout: 20000 });
+    cy.get('#deliverer', { timeout: 20000 });
     cy.get('#corporation', { timeout: 20000 });
-    cy.wait(4000);
+    cy.wait(2000);
     cy.get('#havalehId', { timeout: 20000 }).type(
       newExitWorkflowData?.havalehId
     );
@@ -180,7 +182,7 @@ describe('New Exit Asset Workflow', () => {
     cy.get('#notificationMessage')
       .should('be.visible')
       .should('contain', 'شماره حواله تکراری');
-    cy.wait(4000);
+    cy.wait(2000);
     cy.location('pathname', { timeout: 20000 }).should(
       'include',
       '/users/newExitHospital'
@@ -195,9 +197,9 @@ describe('New Exit Asset Workflow', () => {
     cy.get('#licences').click();
     cy.get('#exitWorkflows').click();
     cy.get('#newWorkflowButton', { timeout: 20000 }).click();
-    cy.get('#warehouseKeeper', { timeout: 20000 });
+    cy.get('#deliverer', { timeout: 20000 });
     cy.get('#corporation', { timeout: 20000 });
-    cy.wait(4000);
+    cy.wait(2000);
     cy.get('#havalehId', { timeout: 20000 }).type(
       newExitWorkflowData4?.havalehId
     );
@@ -220,7 +222,7 @@ describe('New Exit Asset Workflow', () => {
 
     cy.get('#submitButton').click();
     cy.get('#notification').should('be.visible');
-    cy.wait(4000);
+    cy.wait(2000);
 
     cy.location('pathname', { timeout: 20000 }).should(
       'include',
@@ -237,9 +239,9 @@ describe('New Exit Asset Workflow', () => {
     cy.get('#licences').click();
     cy.get('#exitWorkflows').click();
     cy.get('#newWorkflowButton', { timeout: 20000 }).click();
-    cy.get('#warehouseKeeper', { timeout: 20000 });
+    cy.get('#deliverer', { timeout: 20000 });
     cy.get('#corporation', { timeout: 20000 });
-    cy.wait(4000);
+    cy.wait(2000);
     cy.get('#havalehId', { timeout: 20000 }).type(
       newExitWorkflowData2?.havalehId
     );
@@ -261,7 +263,7 @@ describe('New Exit Asset Workflow', () => {
     );
     cy.get('#submitButton').click();
     cy.get('#notification').should('be.visible');
-    cy.wait(4000);
+    cy.wait(2000);
 
     cy.location('pathname', { timeout: 20000 }).should(
       'include',
@@ -278,9 +280,9 @@ describe('New Exit Asset Workflow', () => {
     cy.get('#licences').click();
     cy.get('#exitWorkflows').click();
     cy.get('#newWorkflowButton', { timeout: 20000 }).click();
-    cy.get('#warehouseKeeper', { timeout: 20000 });
+    cy.get('#deliverer', { timeout: 20000 });
     cy.get('#corporation', { timeout: 20000 });
-    cy.wait(4000);
+    cy.wait(2000);
     cy.get('#havalehId', { timeout: 20000 }).type(
       newExitWorkflowData3?.havalehId
     );
@@ -302,7 +304,7 @@ describe('New Exit Asset Workflow', () => {
     );
     cy.get('#submitButton').click();
     cy.get('#notification').should('be.visible');
-    cy.wait(4000);
+    cy.wait(2000);
 
     cy.task('checkWorkflow', {
       ...newExitWorkflowData3,

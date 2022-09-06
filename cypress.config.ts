@@ -199,7 +199,7 @@ export default defineConfig({
                     passedStages: {
                       some: {
                         submittedByUser: {
-                          is: { firstNameAndLastName: data?.deliverer },
+                          is: { firstNameAndLastName: 'مهدی عبدی' },
                         },
                         havaleh: {
                           is: {
