@@ -292,7 +292,7 @@ const resolvers: Resolvers = {
 
       return equipmentsDB?.map((e: any) => ({
         ...e,
-        available: e?.assets?.length ?? 0,
+        // available: e?.assets?.length ?? 0,
       })) as any;
     },
     async equipmentsCount(_, _args, _context): Promise<number> {
@@ -638,7 +638,7 @@ const resolvers: Resolvers = {
         });
         return editedPerson as any;
       }
-      
+
       if (_args?.newPlace) {
         if (!session || !(await canCreatePlace(session))) {
           throw new GraphQLYogaError('Unauthorized');
@@ -690,8 +690,8 @@ const resolvers: Resolvers = {
         return transaction?.[1] as any;
       }
       console.log(_args?.newPlace);
-      console.log("_args?.newPlace");
-      
+      console.log('_args?.newPlace');
+
       const createdPerson = await prisma.person.create({
         data: {
           id: _args.id as string,
@@ -1079,7 +1079,7 @@ const resolvers: Resolvers = {
         deliverer,
         description,
         receiver,
-      receiverTelephone,
+        receiverTelephone,
         transportationName,
         transportationTelephone,
         transportationTelephone2,
@@ -1264,7 +1264,7 @@ const resolvers: Resolvers = {
         transportationTelephone,
         transportationTelephone2,
         corporationRepresentativeId,
-        warehouseKeeperId,
+        deliverer,
         assets,
       },
       _context: any
@@ -1323,6 +1323,7 @@ const resolvers: Resolvers = {
                   transportationName,
                   transportationTelephone,
                   transportationTelephone2,
+                  deliverer,
                   description,
                   receiver,
                   receiverTelephone,
@@ -1407,6 +1408,7 @@ const resolvers: Resolvers = {
                   transportationName,
                   transportationTelephone,
                   transportationTelephone2,
+                  deliverer,
                   description,
                   receiver,
                   receiverTelephone,
@@ -1464,6 +1466,7 @@ const resolvers: Resolvers = {
                   transportationName,
                   transportationTelephone,
                   transportationTelephone2,
+                  deliverer,
                   description,
                   receiver,
                   receiverTelephone,

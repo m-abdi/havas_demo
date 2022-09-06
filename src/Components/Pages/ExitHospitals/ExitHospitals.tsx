@@ -133,7 +133,7 @@ export default memo(function ExitHospitals({
     () => [
       {
         Header: 'شماره پیگیری',
-        accessor: 'workflowNumber', // accessor is the "key" in the data
+        accessor: 'workflowNumber', 
       },
       {
         Header: 'وضعیت',
@@ -162,7 +162,7 @@ export default memo(function ExitHospitals({
       },
       {
         Header: 'نام شرکت',
-        accessor: 'passedStages[0].havaleh.corporation.name', // accessor is the "key" in the data
+        accessor: 'passedStages[0].havaleh.corporation.name', 
         width: 200,
       },
 
@@ -172,12 +172,16 @@ export default memo(function ExitHospitals({
       },
 
       {
-        Header: 'درخواست دهنده',
-        accessor: 'passedStages[0].submittedByUser.firstNameAndLastName', // accessor is the "key" in the data
+        Header: 'ثبت کننده فرم',
+        accessor: 'passedStages[0].submittedByUser.firstNameAndLastName', 
+      },
+      {
+        Header: 'تحویل دهنده',
+        accessor: 'passedStages[0].havaleh.deliverer', 
       },
       {
         Header: 'نام ترابری',
-        accessor: 'passedStages[0].havaleh.transportationName', // accessor is the "key" in the data
+        accessor: 'passedStages[0].havaleh.transportationName', 
       },
       {
         Header: 'شماره تماس ترابری',
@@ -244,7 +248,7 @@ export default memo(function ExitHospitals({
       //       <DoneRoundedIcon sx={{ color: 'success.main' }} />
       //     ) : (
       //       <CloseRoundedIcon sx={{ color: 'error.main' }} />
-      //     ), // accessor is the "key" in the data
+      //     ), 
       // },
     ],
     [offset, pageNumber]

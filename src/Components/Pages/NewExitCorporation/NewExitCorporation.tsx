@@ -118,9 +118,9 @@ export default function NewExitCorporation({
     havalehId: string,
     corporationRepresentativeId: string,
     deliverer: string,
-    description: string, 
-    receiver: string, 
-    receiverTelephone: string, 
+    description: string,
+    receiver: string,
+    receiverTelephone: string,
     transportationName: string,
     transportationTelephone: string,
     transportationTelephone2: string,
@@ -443,13 +443,22 @@ export default function NewExitCorporation({
               }}
             />
           </Input1>
+          <Input1>
+            <Label1>ارسال به</Label1>
+            <TextField
+              size='small'
+              id='destination'
+              disabled
+              value={'بیمارستان صاحب الزمان'}
+            />
+          </Input1>
         </Row1>
         <Box
           component={'section'}
           sx={{
             flex: ' 0 0 100%',
             flexWrap: 'wrap',
-            display:  'flex' ,
+            display: 'flex',
             marginBottom: '0.6em',
             alignItems: 'center',
             maxInlineSize: '100%',

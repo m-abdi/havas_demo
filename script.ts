@@ -13,5 +13,5 @@ const prisma =
 
 if (process.env.NODE_ENV === 'development') global.prisma = prisma;
 (async () => {
-await prisma.equipment.updateMany({ data: { available: 0 } });
+await prisma.equipment.updateMany({ where: {name: {contains: "۴۰"}}, data: {name:"kl"}});
 })();

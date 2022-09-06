@@ -633,7 +633,7 @@ const typeDefs = /* GraphQL */ `
       transportationTelephone: String!
       transportationTelephone2: String
       corporationRepresentativeId: String!
-      warehouseKeeperId: String!
+      deliverer: String!
       assets: TransferedAssets
     ): Workflow
     confirmReceiptByHospital(

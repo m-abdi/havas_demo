@@ -551,7 +551,7 @@ export default function useWorkflows(
   const createNewExit = useCallback(
     async (
       havalehId: string,
-      warehouseKeeperId: string,
+      deliverer: string,
       description: string,
       receiver:string,
       receiverTelephone:string,
@@ -575,7 +575,7 @@ export default function useWorkflows(
           await createExitWorkflowMutation({
             variables: {
               havalehId,
-              warehouseKeeperId,
+              deliverer,
               transportationName,
               transportationTelephone,
               transportationTelephone2,

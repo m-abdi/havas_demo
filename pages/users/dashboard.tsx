@@ -6,6 +6,7 @@ import Head from 'next/head';
 import { InfoContext } from 'pages/_app';
 import Layout from '../../src/Components/Atomic/Layout';
 import Loader from '../../src/Components/Atomic/Loader';
+import isManager from 'src/isManager';
 import useEquipments from '../../src/Logic/useEquipments';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
@@ -23,17 +24,20 @@ export default function dashboard() {
     false,
     true
   );
-  
+  const { data: session } = useSession();
+
   return (
     <AuthenticationRequired>
       <Layout pageName={pageName}>
         <Head>
           <title>{`${pageName}`} | حواس</title>
         </Head>
-        {<EquipmentsOverviewCarousel
-          equipments={equipmentsStatus as any}
-          loading={equipmentsStatusLoading}
-        />}
+        {session && isManager(session) && (
+          <EquipmentsOverviewCarousel
+            equipments={equipmentsStatus as any}
+            loading={equipmentsStatusLoading}
+          />
+        )}
       </Layout>
     </AuthenticationRequired>
   );

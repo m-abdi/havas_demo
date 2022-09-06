@@ -126,7 +126,7 @@ export default function NewExitHospital({
   corporationsLoading: boolean;
   createNewHandler?: (
     havalehId: string,
-    warehouseKeeperId: string,
+    deliverer: string,
     description: string,
     receiver: string,
     receiverTelephone: string,
@@ -324,7 +324,7 @@ export default function NewExitHospital({
       }
       await createNewHandler?.(
         data?.havalehId,
-        warehouseKeeper?.id as string,
+        data?.deliverer,
         data?.description,
         data?.receiver,
         data?.receiverTelephone,
@@ -443,20 +443,17 @@ export default function NewExitHospital({
             ) : (
               <TextField
                 size='small'
-                disabled
-                id='warehouseKeeper'
+                id='deliverer'
                 inputProps={{
-                  ...register('warehouseKeeper', {
-                    required: true,
+                  ...register('deliverer', {
                     value:
                       warehouseKeeper?.label ||
-                      existingWorkflow?.passedStages?.[0]?.submittedByUser
-                        ?.firstNameAndLastName,
+                      existingWorkflow?.passedStages?.[0]?.havaleh?.deliverer,
                   }),
                 }}
-                error={errors.warehouseKeeper?.type === 'required'}
+                error={errors.deliverer?.type === 'required'}
                 helperText={
-                  errors.warehouseKeeper?.type === 'required' &&
+                  errors.deliverer?.type === 'required' &&
                   'لطفا این فیلد را پر کنید'
                 }
               />
@@ -711,7 +708,7 @@ export default function NewExitHospital({
           size='large'
           color='success'
           right={40}
-          top={-68}
+          top={existingWorkflow ? -186 :-68}
           variant='contained'
           icon='SEND'
           ariaLabel='ارسال'
