@@ -1,14 +1,14 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import { Box } from '@mui/material';
-import EquipmentsOverviewCarousel from './EquipmentsOverviewCarousel';
+import EquipmentsOverviewContainer from './EquipmentsOverviewContainer';
 import React from 'react';
 import StoriesDecorator from '../../../StoriesDecorator';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'Composites/Equipments Overview Carousel',
-  component: EquipmentsOverviewCarousel,
+  title: 'Composites/Equipments Overview Container',
+  component: EquipmentsOverviewContainer,
   decorators: [
     (Story) => (
       <StoriesDecorator>
@@ -18,11 +18,11 @@ export default {
       </StoriesDecorator>
     ),
   ],
-} as ComponentMeta<typeof EquipmentsOverviewCarousel>;
+} as ComponentMeta<typeof EquipmentsOverviewContainer>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof EquipmentsOverviewCarousel> = (args) => (
-  <EquipmentsOverviewCarousel {...args} />
+const Template: ComponentStory<typeof EquipmentsOverviewContainer> = (args) => (
+  <EquipmentsOverviewContainer {...args} />
 );
 
 export const Main = Template.bind({});

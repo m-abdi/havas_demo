@@ -14,11 +14,14 @@ export default function EquipmentOverview({
   return (
     <Paper
       sx={{
-        inlineSize: 300,
+        inlineSize: {xs: 250, md:280},
         blockSize: 250,
         borderRadius: 3,
         boxShadow: 5,
         p: 1,
+        "& h6": {
+          direction: "rtl"
+        }
       }}
     >
       <Stack
@@ -40,7 +43,7 @@ export default function EquipmentOverview({
           </Typography>
           <img
             src={picture}
-            width='170px'
+            width='150px'
             style={{
               objectFit: 'contain',
               transform: 'rotate(15deg)',

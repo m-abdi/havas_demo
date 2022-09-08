@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 
 import AuthenticationRequired from 'src/AuthenticationRequired';
-import EquipmentsOverviewCarousel from '../../src/Components/Composite/EquipmentsOverviewCarousel/EquipmentsOverviewCarousel';
+import EquipmentsOverviewContainer from '../../src/Components/Composite/EquipmentsOverviewCarousel/EquipmentsOverviewContainer';
 import Head from 'next/head';
 import { InfoContext } from 'pages/_app';
 import Layout from '../../src/Components/Atomic/Layout';
@@ -33,7 +33,7 @@ export default function dashboard() {
           <title>{`${pageName}`} | حواس</title>
         </Head>
         {session && isManager(session) && (
-          <EquipmentsOverviewCarousel
+          <EquipmentsOverviewContainer
             equipments={equipmentsStatus as any}
             loading={equipmentsStatusLoading}
           />

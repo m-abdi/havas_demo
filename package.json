@@ -38,6 +38,7 @@
     "@types/paho-mqtt": "^1.0.6",
     "@types/stylis": "^4.0.2",
     "bcrypt": "^5.0.1",
+    "carousel-react-rcdev": "^0.0.5",
     "crypto-js": "^4.1.1",
     "graphql": "15.6.0",
     "graphql-tag": "^2.12.6",

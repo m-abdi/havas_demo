@@ -1,11 +1,12 @@
-import { Divider, Skeleton, Stack, Typography } from '@mui/material';
+import { Box, Divider, Skeleton, Stack, Typography } from '@mui/material';
 
-import Carousel from 'react-grid-carousel';
+import Carousel from 'carousel-react-rcdev';
+// import Carousel from 'react-grid-carousel';
 import { Equipment } from 'lib/resolvers-types';
 import EquipmentOverview from '../../Atomic/EquipmentOverview';
 import React from 'react';
 
-export default function EquipmentsOverviewCarousel({
+export default function EquipmentsOverviewContainer({
   equipments,
   loading,
 }: {
@@ -14,6 +15,7 @@ export default function EquipmentsOverviewCarousel({
 }) {
   return (
     <Stack
+      component={'article'}
       alignItems={'start'}
       justifyContent='space-between'
       spacing={2}
@@ -24,23 +26,19 @@ export default function EquipmentsOverviewCarousel({
       </Typography>
       <Divider variant='fullWidth' flexItem />
       {equipments.length > 0 && (
-        <Carousel
-          breakpoint={700}
-          cols={equipments?.length}
-          rows={1}
-          gap={30}
-          loop
-          autoplay={5000}
-          containerStyle={{ maxInlineSize: '100%' }}
+        <Stack
+          direction={'row'}
+          flexWrap={'wrap'}
+          alignItems='center'
+          justifyContent={'center'}
+          sx={{ overflow: 'auto', inlineSize: "100%" }}
         >
           {equipments.map((e) => (
-            <Carousel.Item key={e?.terminologyCode}>
-              <div style={{ marginBlock: '40px' }}>
-                <EquipmentOverview equipment={e} />
-              </div>
-            </Carousel.Item>
+            <div style={{ margin: '30px', direction: 'rtl' }}>
+              <EquipmentOverview equipment={e} />
+            </div>
           ))}
-        </Carousel>
+        </Stack>
       )}
       {(!equipments || equipments?.length === 0) && loading && (
         <Stack

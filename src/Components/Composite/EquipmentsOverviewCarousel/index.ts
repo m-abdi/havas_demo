@@ -1,2 +1,2 @@
-import EquipmentsOverviewCarousel from './EquipmentsOverviewCarousel';
-export default EquipmentsOverviewCarousel;
+import EquipmentsOverviewContainer from './EquipmentsOverviewContainer';
+export default EquipmentsOverviewContainer;

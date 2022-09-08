@@ -6006,6 +6006,13 @@ capture-exit@^2.0.0:
   dependencies:
     rsvp "^4.8.4"
 
+carousel-react-rcdev@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/carousel-react-rcdev/-/carousel-react-rcdev-0.0.5.tgz#493c81a989943762ed0f75a4e63a227225325cf9"
+  integrity sha512-WsF9XMW/aV3dQiZR98cHWfnCWMqkGW4FtnsRH2dj6SeBu0ecNUATHmnozF51CA1WEHJtFXbKkU7bg4VlBkKDtw==
+  dependencies:
+    styled-components "^5.3.5"
+
 case-sensitive-paths-webpack-plugin@^2.3.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/case-sensitive-paths-webpack-plugin/-/case-sensitive-paths-webpack-plugin-2.4.0.tgz#db64066c6422eed2e08cc14b986ca43796dbc6d4"
