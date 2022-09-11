@@ -28,6 +28,6 @@ rs.initiate(config, { force: true });
 rs.status();
 EOF
 
-echo "****** Waiting for ${DELAY} seconds for replicaset configuration to be applied ******"
+echo "****** Done ! ******"
 
 # sleep $DELAY

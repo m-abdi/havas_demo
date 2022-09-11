@@ -56,6 +56,7 @@ import StyleRoundedIcon from '@mui/icons-material/StyleRounded';
 import WorkspacePremiumRoundedIcon from '@mui/icons-material/WorkspacePremiumRounded';
 import { red } from '@mui/material/colors';
 import { useRouter } from 'next/router';
+import useScreenSize from 'src/Logic/useScreenSize';
 
 export const drawerWidth = 240;
 export const secAppbarHeight = 64;
@@ -147,7 +148,7 @@ function Layout({ children, pageName }) {
       getCookie('drawOpen') === 'true' || !getCookie('drawOpen') ? true : false
     );
   }, []);
-
+  const { small }  = useScreenSize()
   //
   const handleDrawer = () => {
     setCookie('drawOpen', !drawOpen);
@@ -428,7 +429,7 @@ function Layout({ children, pageName }) {
           <MainContent drawOpen={drawOpen}>
             <ToolbarOffest />
             {/* Secend Appbar */}
-            <AppBar2 drawOpen={drawOpen}>
+            <AppBar2 drawOpen={drawOpen} >
               <IconButton color='primary'>
                 <ArrowForwardIcon sx={{ ml: '1rem', fontSize: '1.2rem' }} />
               </IconButton>
@@ -449,7 +450,7 @@ function Layout({ children, pageName }) {
           <MainContentMobile drawOpen={drawOpen}>
             <ToolbarOffest />
             {/* Secend Appbar */}
-            <AppBar2 drawOpen={drawOpen}>
+            <AppBar2 drawOpen={drawOpen} sx={{zIndex: 10}}>
               <IconButton color='primary'>
                 <ArrowForwardIcon sx={{ ml: '1rem', fontSize: '1.2rem' }} />
               </IconButton>
