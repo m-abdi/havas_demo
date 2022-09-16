@@ -54,7 +54,7 @@ export default function useMQTT(channel = 'rfid') {
       process.env.NEXT_PUBLIC_MQTT_BROKER_URL,
       Number(process.env.NEXT_PUBLIC_MQTT_BROKER_PORT),
       '/mqtt',
-      ''
+      'mqttx_5938e5fb'
     );
     // called when the client connects
     function onConnect() {
