@@ -22,8 +22,7 @@ export default function useMQTT(channel = 'rfid') {
       'newTag',
       setSnackbarColor,
       setSnackbarMessage,
-      setSnackbarOpen,
-
+      setSnackbarOpen
     );
   }, [mqttMessage]);
 
@@ -89,8 +88,7 @@ export default function useMQTT(channel = 'rfid') {
     // connect the client
     client.connect({
       onSuccess: onConnect,
-      useSSL:
-        process.env.NEXT_PUBLIC_MQTT_BROKER_URL === 'localhost' ? false : true,
+      useSSL: true,
       userName: process.env.NEXT_PUBLIC_MQTT_BROKER_USERNAME,
       password: process.env.NEXT_PUBLIC_MQTT_BROKER_PASSWORD,
     });

@@ -39,11 +39,11 @@ if (process.env.NODE_ENV === 'development')
     });
     // hash salt
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash('123456', salt);
+    const hashedPassword = await bcrypt.hash(process.env.MANAGER_PASSWORD, salt);
     await prisma.person.create({
         data: {
-            id: '0520926458',
-            firstNameAndLastName: 'مهدی عبدی',
+            id: process.env.MANAGER_ID,
+            firstNameAndLastName: process.env.MANAGER_FIRST_NAME_AND_LAST_NAME,
             role: { connect: { name: 'مدیریت' } },
             password: hashedPassword,
         },

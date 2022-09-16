@@ -1,6 +1,5 @@
 import { Box, Divider, Skeleton, Stack, Typography } from '@mui/material';
 
-import Carousel from 'carousel-react-rcdev';
 // import Carousel from 'react-grid-carousel';
 import { Equipment } from 'lib/resolvers-types';
 import EquipmentOverview from '../../Atomic/EquipmentOverview';
