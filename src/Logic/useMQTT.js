@@ -68,10 +68,7 @@ export default function useMQTT(channel = 'rfid') {
       }
       client.connect({
         onSuccess: onConnect,
-        useSSL:
-          process.env.NEXT_PUBLIC_MQTT_BROKER_URL === 'localhost'
-            ? false
-            : true,
+        useSSL:false,
         userName: process.env.NEXT_PUBLIC_MQTT_BROKER_USERNAME,
         password: process.env.NEXT_PUBLIC_MQTT_BROKER_PASSWORD,
       });
@@ -88,7 +85,7 @@ export default function useMQTT(channel = 'rfid') {
     // connect the client
     client.connect({
       onSuccess: onConnect,
-      useSSL: true,
+      useSSL: false,
       userName: process.env.NEXT_PUBLIC_MQTT_BROKER_USERNAME,
       password: process.env.NEXT_PUBLIC_MQTT_BROKER_PASSWORD,
     });

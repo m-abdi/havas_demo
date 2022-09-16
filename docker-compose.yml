@@ -9,6 +9,7 @@ services:
       - mongoData:/data/db
     networks:
       havas_docker_network:
+        aliases: havas-db
         ipv4_address: "172.18.200.5"
     ports:
       - 27017:27017
