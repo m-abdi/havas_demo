@@ -31,7 +31,7 @@ export default function EquipmentsOverviewContainer({
           flexWrap={'wrap'}
           alignItems='center'
           justifyContent={'center'}
-          sx={{ overflow: 'auto', inlineSize: "100%" }}
+          sx={{ overflow: 'auto', inlineSize: '100%' }}
         >
           {equipments.map((e) => (
             <div style={{ margin: '30px', direction: 'rtl' }}>
@@ -43,11 +43,12 @@ export default function EquipmentsOverviewContainer({
       {(!equipments || equipments?.length === 0) && loading && (
         <Stack
           direction={'row'}
+          flexWrap={'wrap'}
           alignItems='center'
-          justifyContent={'start'}
+          justifyContent={'center'}
           spacing={3}
         >
-          {[1, 2, 3].map((e) => (
+          {[1, 2, 3, 4, 5, 6, 7].map((e) => (
             <Skeleton
               variant='rectangular'
               width={300}

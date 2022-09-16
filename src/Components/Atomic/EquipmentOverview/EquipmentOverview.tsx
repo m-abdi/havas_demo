@@ -14,14 +14,14 @@ export default function EquipmentOverview({
   return (
     <Paper
       sx={{
-        inlineSize: {xs: 250, md:280},
+        inlineSize: { xs: 250, md: 280 },
         blockSize: 250,
         borderRadius: 3,
         boxShadow: 5,
         p: 1,
-        "& h6": {
-          direction: "rtl"
-        }
+        '& h6': {
+          direction: 'rtl',
+        },
       }}
     >
       <Stack
@@ -65,7 +65,11 @@ export default function EquipmentOverview({
             justifyContent='center'
             sx={{ borderBottom: 1, borderRight: 1, p: 0.3 }}
           >
-            <Typography component={'h6'} variant='body1'>
+            <Typography
+              component={'h6'}
+              variant='body1'
+              sx={{ color: equipment?.available && equipment.available <= 5 ? "red" : "auto" }}
+            >
               {toPersianDigit(
                 (equipment.available?.toString() as string) ?? '0'
               )}
