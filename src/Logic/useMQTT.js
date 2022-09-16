@@ -50,11 +50,17 @@ export default function useMQTT(channel = 'rfid') {
 
   // connection manager
   function startConnection() {
+    console.log('-------connection details ------');
+    console.log(process.env.NEXT_PUBLIC_MQTT_BROKER_URL);
+    console.log(process.env.NEXT_PUBLIC_MQTT_BROKER_PORT);
+    console.log(process.env.NEXT_PUBLIC_MQTT_BROKER_SSL);
+    console.log(Boolean(parseInt(process.env.NEXT_PUBLIC_MQTT_BROKER_SSL)));
+    console.log('-------end ------');
     const client = new MqttClient(
       process.env.NEXT_PUBLIC_MQTT_BROKER_URL,
       Number(process.env.NEXT_PUBLIC_MQTT_BROKER_PORT),
       '/mqtt',
-      'mqttx_5938e5fb'
+      '',
     );
     // called when the client connects
     function onConnect() {
