@@ -1,0 +1,12 @@
+FROM python:3.10.6
+# install dependencies
+RUN pip install paho-mqtt
+#
+WORKDIR /python/RFIDReaderResponses
+# expose port
+EXPOSE 4002 1883
+# Put files at the image
+COPY multiThread_socketProg_mqttClient.py .
+# execute the command
+SHELL ["/bin/bash", "-c"]
+CMD [ "python", "multiThread_socketProg_mqttClient.py" ]

@@ -8,13 +8,13 @@ services:
       - ./scripts/rs-init.sh:/scripts/rs-init.sh
       - mongoData:/data/db
     networks:
-      - mongo-network
+      havas_docker_network:
+        aliases:
+          - havas.mongodb
+        ipv4_address: "172.18.200.5"
     ports:
       - 27017:27017
     depends_on:
-      - mongo2
-      - mongo3
-    links:
       - mongo2
       - mongo3
     restart: always
@@ -25,7 +25,7 @@ services:
     container_name: mongo2
     image: mongo:5.0.9
     networks:
-      - mongo-network
+      - havas_docker_network
     ports:
       - 27018:27017
     restart: always
@@ -34,7 +34,7 @@ services:
     container_name: mongo3
     image: mongo:5.0.9
     networks:
-      - mongo-network
+      - havas_docker_network
     ports:
       - 27019:27017
     restart: always
@@ -43,25 +43,56 @@ services:
     container_name: nextjs
     image: abdimehdi/havas:latest
     networks:
-      - mongo-network
+      havas_docker_network:
+        aliases:
+          - havas.nextjs
+        ipv4_address: "172.18.200.7"
     ports:
       - 3000:3000
     depends_on:
       - mongo1
     env_file:
       - .env.docker
-  mqttBroker:
-    container_name: mqttBroker
-    image: hivemq/hivemq-ce
+  emqx:
+    image: emqx/emqx:latest
+    container_name: havas-emqx-broker
+    networks:
+      havas_docker_network:
+        aliases:
+          - havas.emqx.broker
+        ipv4_address: "172.18.200.3"
     ports:
-      - 1883:1883
-      - 8000:8000
+      - "18083:18083" #Admin Dashboard
+      - "1883:1883" #tcp
+      - "8000:8083" #ws
+      - "8001:8084" #wss
     restart: always
+
+  rfid:
+    build:
+      context: .
+      dockerfile: Dockerfile_RFID
+    container_name: havas-rfid-python
+    networks:
+      havas_docker_network:
+        aliases:
+          - havas.rfid.python
+        ipv4_address: "172.18.200.2"
+    ports:
+      - "4002:4002"
+    depends_on:
+      - emqx
 
 
 volumes:
   mongoData:
 
 networks:
-  mongo-network:
+  havas_docker_network:
     driver: bridge
+    enable_ipv6: false
+    ipam:
+      driver: default
+      config:
+        - subnet : "172.18.200.0/24"
+          gateway : "172.18.200.1"

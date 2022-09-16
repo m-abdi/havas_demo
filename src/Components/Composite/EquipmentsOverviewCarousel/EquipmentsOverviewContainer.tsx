@@ -25,7 +25,7 @@ export default function EquipmentsOverviewContainer({
         موجودی تجهیزات
       </Typography>
       <Divider variant='fullWidth' flexItem />
-      {equipments.length > 0 && (
+      {equipments?.length > 0 && (
         <Stack
           direction={'row'}
           flexWrap={'wrap'}
@@ -51,9 +51,9 @@ export default function EquipmentsOverviewContainer({
           {[1, 2, 3, 4, 5, 6, 7].map((e) => (
             <Skeleton
               variant='rectangular'
-              width={300}
-              height={250}
-              sx={{ borderRadius: 3, boxShadow: 5 }}
+              width={280}
+              height={240}
+              sx={{ borderRadius: 3, boxShadow: 5, margin: '30px' }}
             />
           ))}
         </Stack>

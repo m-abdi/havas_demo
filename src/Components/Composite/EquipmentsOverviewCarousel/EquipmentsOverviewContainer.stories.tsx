@@ -46,4 +46,10 @@ Main.args = {
       available: 3,
     },
   ],
+  loading: false,
+};
+
+export const Loading = Template.bind({});
+Loading.args = {
+  loading: true,
 };

@@ -76,13 +76,14 @@ export default function SignIn() {
             >
               {errorMessage}
             </Typography>
-            <Alert severity='info' variant='filled'>
+            {/* sample credentials for development */}
+            {/* <Alert severity='info' variant='filled'>
               <Typography sx={{ mx: 2, fontWeight: 'bold' }} variant='body2'>
                 کد ملی: ۰۵۲۰۹۲۶۴۵۸
                 <br />
                 رمز عبور: ۱۲۳۴۵۶
               </Typography>
-            </Alert>
+            </Alert> */}
             <Box component='form' sx={{ mt: 1 }}>
               <TextField
                 margin='normal'
