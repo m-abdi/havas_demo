@@ -10,6 +10,16 @@ query getTagData($tagId: ID!) {
   }
 }
 
+query giveMeRFIDCredentials {
+  giveMeRFIDCredentials {
+    host
+    port
+    username
+    password
+    useSSL
+  }
+}
+
 mutation createTags($tags: [NewTag!]!) {
   createTags(tags: $tags)
 }

@@ -8,6 +8,7 @@ import {
   Place,
   PlaceFilter,
   Resolvers,
+  RfidCredentials,
   Role,
   Stage,
   Tag,
@@ -50,7 +51,8 @@ import toNestedObject from '../src/Logic/toNestedObject';
 function giveMeJustAggCounts(assets: AggregatedTransferedAssets): any {
   return Object.fromEntries(
     Object.entries(assets).filter(
-      ([k, v]) => !/typename/.test(k) && !/factory/.test(k) && !/customer/.test(k) && v
+      ([k, v]) =>
+        !/typename/.test(k) && !/factory/.test(k) && !/customer/.test(k) && v
     )
   );
 }
@@ -575,6 +577,27 @@ const resolvers: Resolvers = {
         throw new GraphQLYogaError('Unauthorized');
       }
       return await prisma.config.findFirst({ where: { current: true } });
+    },
+    async giveMeRFIDCredentials(
+      _,
+      __,
+      _context
+    ): Promise<RfidCredentials | null> {
+      // check authentication and permission
+      const { req } = _context;
+      const session = await getSession({ req });
+      if (!session || !(await canCreateTags(session))) {
+        throw new GraphQLYogaError('Unauthorized');
+      }
+      return {
+        host: process.env.NEXT_PUBLIC_MQTT_BROKER_URL,
+        port: process.env.NEXT_PUBLIC_MQTT_BROKER_PORT,
+        username: process.env.NEXT_PUBLIC_MQTT_BROKER_USERNAME,
+        password: process.env.NEXT_PUBLIC_MQTT_BROKER_PASSWORD,
+        useSSL: Boolean(
+          parseInt(process.env.NEXT_PUBLIC_MQTT_BROKER_SSL ?? '0')
+        ),
+      };
     },
   },
   Mutation: {
@@ -1300,7 +1323,7 @@ const resolvers: Resolvers = {
           o.push(
             prisma.equipment.update({
               where: { terminologyCode: k },
-              data: { 
+              data: {
                 sending: { increment: v as number },
                 available: { decrement: v as number },
               },
@@ -1530,20 +1553,21 @@ const resolvers: Resolvers = {
         where: { current: true },
       });
       const o: any = [];
-        Object.entries(giveMeJustAggCounts(
+      Object.entries(
+        giveMeJustAggCounts(
           existingWorkflow?.passedStages?.[0]?.havaleh?.assets as any
-        ))
-          .forEach(([k, v]) => {
-            o.push(
-              prisma.equipment.update({
-                where: { terminologyCode: k },
-                data: {
-                  receiving: { decrement: v as number },
-                  available:{increment: v as number}
-                },
-              })
-            );
-          });
+        )
+      ).forEach(([k, v]) => {
+        o.push(
+          prisma.equipment.update({
+            where: { terminologyCode: k },
+            data: {
+              receiving: { decrement: v as number },
+              available: { increment: v as number },
+            },
+          })
+        );
+      });
 
       // update enter workflow
       if (havalehId && !currentConfig?.ignoreRFID) {
@@ -1941,7 +1965,10 @@ const resolvers: Resolvers = {
           o.push(
             prisma.equipment.update({
               where: { terminologyCode: k },
-              data: { sending: { increment: v as number }, available:{decrement: v as number} },
+              data: {
+                sending: { increment: v as number },
+                available: { decrement: v as number },
+              },
             })
           );
         });

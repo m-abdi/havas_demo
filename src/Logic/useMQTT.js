@@ -1,8 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
 
+import { GiveMeRfidCredentialsDocument } from 'lib/graphql-operations';
 import { Client as MqttClient } from '../paho-mqtt';
 import { SnackbarContext } from '../../pages/_app';
 import useNotification from './useNotification';
+import { useQuery } from '@apollo/client';
 
 export default function useMQTT(channel = 'rfid') {
   // states
@@ -11,11 +13,31 @@ export default function useMQTT(channel = 'rfid') {
   //
   const { setSnackbarOpen, setSnackbarMessage, setSnackbarColor } =
     useContext(SnackbarContext);
-
-  // start mqtt websocket connection in browser
+  // ask for mqtt connection credentials from server
+  const { data, loading, error } = useQuery(GiveMeRfidCredentialsDocument, {
+    fetchPolicy: 'network-only',
+  });
   useEffect(() => {
-    startConnection();
-  }, []);
+    // start mqtt websocket connection in browser
+    if (data) {
+      const credentials = data?.giveMeRFIDCredentials;
+      startConnection(
+        credentials?.host,
+        credentials?.port,
+        credentials?.username,
+        credentials?.password,
+        credentials?.useSSL
+      );
+    } else if (error) {
+      useNotification(
+        'error',
+        setSnackbarColor,
+        setSnackbarMessage,
+        setSnackbarOpen,
+        'دسترسی غیر مجاز'
+      );
+    }
+  }, [data, error]);
   // show notification every time a new mqtt message is received
   useEffect(() => {
     useNotification(
@@ -49,19 +71,8 @@ export default function useMQTT(channel = 'rfid') {
   }, [mqttStatus]);
 
   // connection manager
-  function startConnection() {
-    console.log('-------connection details ------');
-    console.log(process.env.NEXT_PUBLIC_MQTT_BROKER_URL);
-    console.log(process.env.NEXT_PUBLIC_MQTT_BROKER_PORT);
-    console.log(process.env.NEXT_PUBLIC_MQTT_BROKER_SSL);
-    console.log(Boolean(parseInt(process.env.NEXT_PUBLIC_MQTT_BROKER_SSL)));
-    console.log('-------end ------');
-    const client = new MqttClient(
-      process.env.NEXT_PUBLIC_MQTT_BROKER_URL,
-      Number(process.env.NEXT_PUBLIC_MQTT_BROKER_PORT),
-      '/mqtt',
-      '',
-    );
+  function startConnection(host, port, username, password, useSSL) {
+    const client = new MqttClient(host, Number(port), '/mqtt', '');
     // called when the client connects
     function onConnect() {
       setMqttStatus('CONNECTED');
@@ -74,9 +85,9 @@ export default function useMQTT(channel = 'rfid') {
       }
       client.connect({
         onSuccess: onConnect,
-        useSSL: Boolean(parseInt(process.env.NEXT_PUBLIC_MQTT_BROKER_SSL)),
-        userName: process.env.NEXT_PUBLIC_MQTT_BROKER_USERNAME,
-        password: process.env.NEXT_PUBLIC_MQTT_BROKER_PASSWORD,
+        useSSL: useSSL,
+        userName: username,
+        password: password,
       });
     }
 
@@ -91,9 +102,9 @@ export default function useMQTT(channel = 'rfid') {
     // connect the client
     client.connect({
       onSuccess: onConnect,
-      useSSL: Boolean(parseInt(process.env.NEXT_PUBLIC_MQTT_BROKER_SSL)),
-      userName: process.env.NEXT_PUBLIC_MQTT_BROKER_USERNAME,
-      password: process.env.NEXT_PUBLIC_MQTT_BROKER_PASSWORD,
+      useSSL: useSSL,
+      userName: username,
+      password: password,
     });
   }
 

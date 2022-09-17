@@ -200,6 +200,14 @@ const typeDefs = /* GraphQL */ `
     processName: String!
   }
 
+  type RFIDCredentials {
+    host: String!
+    port: String!
+    username: String!
+    password: String!
+    useSSL: Boolean!
+  }
+
   type Workflow {
     id: ID!
     workflowNumber: String
@@ -545,6 +553,7 @@ const typeDefs = /* GraphQL */ `
     getWorkflowNumber: String!
     tagData(tagId: ID!): Tag
     getCurrentConfig: Config
+    giveMeRFIDCredentials: RFIDCredentials
   }
 
   type Mutation {
