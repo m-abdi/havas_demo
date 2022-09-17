@@ -9,7 +9,6 @@ services:
       - mongoData:/data/db
     networks:
       havas_docker_network:
-        aliases: havas-db
         ipv4_address: "172.18.200.5"
     ports:
       - 27017:27017
@@ -80,7 +79,8 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile_init
-    network_mode: "host"
+    networks:
+      - havas_docker_network
     depends_on:
       - nextjs
     env_file:
