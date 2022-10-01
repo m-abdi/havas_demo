@@ -1850,7 +1850,7 @@ const resolvers: Resolvers = {
     },
     async createTags(
       _,
-      { tags }: { tags: NewTag[] },
+      { tags },
       _context
     ): Promise<number> {
       // check authentication and permission
@@ -1895,8 +1895,7 @@ const resolvers: Resolvers = {
           operations.push(w);
         }
       });
-      const r = await prisma.$transaction(operations);
-      console.log(r);
+      await prisma.$transaction(operations);
       
       
       return 2;

@@ -79,6 +79,8 @@ export default function useTags(
       setSnackbarMessage,
       setSnackbarOpen
     );
+    console.log(tags, '---');
+    
     try {
       const createdTag = await createTagMutation({
         variables: {

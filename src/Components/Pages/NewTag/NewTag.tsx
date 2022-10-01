@@ -224,9 +224,10 @@ export default memo(function NewTag({
                   : null
               }
               value={assetId}
+              disabled={!mqttMessage}
               noOptionsText={'هیچ موجودی ثبت نشده است'}
               onChange={(event, newValue) => {
-                setAssetId(newValue as any);
+                // setAssetId(newValue as any);
                 setAssetIdError(false);
                 setTags([
                   ...(tags.filter((t) => t?.tagId !== tag?.tagId) as any),
@@ -236,24 +237,7 @@ export default memo(function NewTag({
                   },
                 ]);
               }}
-              onInputChange={(event, newInput) => {
-                if (
-                  assetIds?.length > 0 &&
-                  assetIds?.some((r) => r.label === newInput)
-                ) {
-                  setAssetId(
-                    assetIds?.find((r) => r.label === newInput) as any
-                  );
-                  setAssetIdError(false);
-                  setTags([
-                    ...(tags.filter((t) => t?.tagId !== tag?.tagId) as any),
-                    {
-                      tagId: tag?.tagId,
-                      assetId: newInput,
-                    },
-                  ]);
-                }
-              }}
+             
               renderInput={(params) => (
                 <TextField
                   {...params}
