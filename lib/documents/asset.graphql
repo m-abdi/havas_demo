@@ -5,6 +5,9 @@ query assets($limit: Int = 1000000, $offset: Int = 0, $filters: AssetFilter) {
       id: terminologyCode
       name
     }
+    tag  {
+      id
+    }
     publicPropertyCode
     place {
       id

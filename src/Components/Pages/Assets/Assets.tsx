@@ -115,6 +115,10 @@ export default memo(function Assets({
   const columns: any = useMemo(
     () => [
       {
+        Header: 'تگ',
+        accessor: 'tag.id', // accessor is the "key" in the data
+      },
+      {
         Header: 'نام تجهیز',
         accessor: 'equipment.name', // accessor is the "key" in the data
       },
@@ -514,6 +518,7 @@ export default memo(function Assets({
                     <Skeleton width={34} height={42} variant='rectangular' />
                     <Skeleton width={34} height={42} variant='rectangular' />
                     <Skeleton width={34} height={42} variant='rectangular' />
+                    <Skeleton width={148} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />
                     <Skeleton width={148} height={42} variant='rectangular' />

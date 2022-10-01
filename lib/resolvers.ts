@@ -356,7 +356,7 @@ const resolvers: Resolvers = {
         const assetsDB = await prisma.asset.findMany({
           take: limit ?? 2000000,
           skip: offset ?? 0,
-          include: { equipment: true, place: true },
+          include: { equipment: true, place: true, tag: true },
           where: parsedFilters,
         });
 
@@ -365,7 +365,7 @@ const resolvers: Resolvers = {
       const assetsDB = await prisma.asset.findMany({
         take: limit ?? 2000000,
         skip: offset ?? 0,
-        include: { equipment: true, place: true },
+        include: { equipment: true, place: true, tag: true },
       });
 
       return assetsDB as any;
@@ -1866,6 +1866,8 @@ const resolvers: Resolvers = {
 
       let operations: any = [];
       tags.forEach(async (tag) => {
+      console.log(tag);
+
         if (tag?.newAsset) {
           let w = prisma.tag.create({
             data: {
@@ -1893,8 +1895,10 @@ const resolvers: Resolvers = {
           operations.push(w);
         }
       });
-      await prisma.$transaction(operations);
-
+      const r = await prisma.$transaction(operations);
+      console.log(r);
+      
+      
       return 2;
     },
     async rfidCheckWorkflows(
