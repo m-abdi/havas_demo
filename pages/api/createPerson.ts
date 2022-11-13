@@ -79,7 +79,6 @@ export default async function handler(
         createdPerson,
         connectedPlaceToPerson,
       ]);
-      console.log(transaction[2]);
       return res.status(201).json(transaction?.[1]);
     }
     const createdPerson = await prisma.person.create({

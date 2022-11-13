@@ -63,7 +63,6 @@ export default function roles() {
   // handlers
   const deleteRoles = useCallback(async (): Promise<any> => {
     const roleIds = Object.keys(checkedItems).filter((k) => checkedItems[k]);
-    console.log(roleIds);
 
     // provide a response for user interaction(sending...)
     setLoading(true);
@@ -102,7 +101,6 @@ export default function roles() {
 
   const fetchMoreRows = useCallback(
     (event: React.MouseEvent<HTMLButtonElement> | null, page: number) => {
-      console.log('----', itemsPerPage * page, itemsPerPage);
 
       fetchMore({
         variables: { offset: itemsPerPage * page, limit: itemsPerPage },

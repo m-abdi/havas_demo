@@ -45,7 +45,7 @@ export default function WorkflowStageModal({ data }: { data: Workflow }) {
         </TableHead>
         <TableBody>
           {data?.passedStages?.map((s, i) => (
-            <TableRow>
+            <TableRow key={i + "wsm"}>
               <TableCell>{i + 1}</TableCell>
               <TableCell>{s?.stageName}</TableCell>
               <TableCell align='center'>

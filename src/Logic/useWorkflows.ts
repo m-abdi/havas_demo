@@ -649,7 +649,6 @@ export default function useWorkflows(
           );
         }
       } catch (e: any) {
-        console.log(e);
         
         useNotification(
           'error',
@@ -677,7 +676,6 @@ export default function useWorkflows(
         setSnackbarMessage,
         setSnackbarOpen
       );
-      console.log('hello obama');
 
       try {
         if (editedHavalehData) {
@@ -751,7 +749,6 @@ export default function useWorkflows(
           );
         }
       } catch (e: any) {
-        console.log(e.message);
 
         useNotification(
           'error',
@@ -835,7 +832,6 @@ export default function useWorkflows(
           );
         }
       } catch (e: any) {
-        console.log(e.message);
 
         useNotification(
           'error',
@@ -880,7 +876,6 @@ export default function useWorkflows(
         assets: { [key: string]: number },
         checkedAssets: { [key: string]: number }
       ) {
-        console.log(assets, checkedAssets);
 
         Object.keys(assets).forEach((ak) => {
           if (!Object.keys(checkedAssets).includes(ak)) {
@@ -962,7 +957,6 @@ export default function useWorkflows(
           );
         }
       } catch (e: any) {
-        console.log(e.message);
 
         useNotification(
           'error',

@@ -134,7 +134,6 @@ export default memo(function ConfirmReceiptByHospitals({
         Header: 'جزئیات مغایرت',
         id: 'details',
         accessor: (d: any) => {
-          console.log(isContradicted('ENTER', d));
           
           if (isContradicted('ENTER', d)) {
             return (

@@ -6,6 +6,7 @@ import { SnackbarContext } from '../../pages/_app';
 import useNotification from './useNotification';
 import { useQuery } from '@apollo/client';
 
+var mqttTimer;
 export default function useMQTT(channel = 'rfid') {
   // states
   const [mqttMessage, setMqttMessage] = useState();
@@ -70,6 +71,9 @@ export default function useMQTT(channel = 'rfid') {
     }
   }, [mqttStatus]);
 
+  function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
   // connection manager
   function startConnection(host, port, username, password, useSSL) {
     const client = new MqttClient(host, Number(port), '/mqtt', '');
@@ -78,34 +82,46 @@ export default function useMQTT(channel = 'rfid') {
       setMqttStatus('CONNECTED');
       client.subscribe(channel);
     }
+    // called when a message arrives
+    function onMessageArrived(message) {
+      setMqttMessage(message.payloadString);
+    }
     // called when the client loses its connection
     function onConnectionLost(responseObject) {
+      setMqttStatus('DISCONNECTED');
       if (responseObject.errorCode !== 0) {
         console.log(`onConnectionLost:${responseObject.errorMessage}`);
       }
+      try {
+        clearInterval(mqttTimer);
+        mqttTimer = setInterval(() => {
+          if (!client.isConnected()) {
+            client.connect({
+              onSuccess: onConnect,
+              useSSL: useSSL,
+              userName: username,
+              password: password,
+            });
+          }
+        }, 3000);
+      } catch {}
+    }
+
+    try {
+      // set callback handlers
+      client.onConnectionLost = onConnectionLost;
+      client.onMessageArrived = onMessageArrived;
+
+      // connect the client
       client.connect({
         onSuccess: onConnect,
         useSSL: useSSL,
         userName: username,
         password: password,
       });
+    } catch {
+      onConnectionLost();
     }
-
-    // called when a message arrives
-    function onMessageArrived(message) {
-      setMqttMessage(message.payloadString);
-    }
-    // set callback handlers
-    client.onConnectionLost = onConnectionLost;
-    client.onMessageArrived = onMessageArrived;
-
-    // connect the client
-    client.connect({
-      onSuccess: onConnect,
-      useSSL: useSSL,
-      userName: username,
-      password: password,
-    });
   }
 
   return { mqttMessage, mqttStatus };

@@ -32,8 +32,8 @@ export default function EquipmentsOverviewContainer({
           justifyContent={'center'}
           sx={{ overflow: 'auto', inlineSize: '100%' }}
         >
-          {equipments.map((e) => (
-            <div style={{ margin: '30px', direction: 'rtl' }}>
+          {equipments.map((e, i) => (
+            <div key={i + '--eoc'} style={{ margin: '30px', direction: 'rtl' }}>
               <EquipmentOverview equipment={e} />
             </div>
           ))}
@@ -47,8 +47,9 @@ export default function EquipmentsOverviewContainer({
           justifyContent={'center'}
           spacing={3}
         >
-          {[1, 2, 3, 4, 5, 6, 7].map((e) => (
+          {[1, 2, 3, 4, 5, 6, 7].map((e, i) => (
             <Skeleton
+              key={i + 'eoc'}
               variant='rectangular'
               width={280}
               height={240}

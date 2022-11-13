@@ -429,7 +429,7 @@ function Layout({ children, pageName }) {
           <MainContent drawOpen={drawOpen}>
             <ToolbarOffest />
             {/* Secend Appbar */}
-            <AppBar2 drawOpen={drawOpen} >
+            <AppBar2 >
               <IconButton color='primary'>
                 <ArrowForwardIcon sx={{ ml: '1rem', fontSize: '1.2rem' }} />
               </IconButton>
@@ -450,7 +450,7 @@ function Layout({ children, pageName }) {
           <MainContentMobile drawOpen={drawOpen}>
             <ToolbarOffest />
             {/* Secend Appbar */}
-            <AppBar2 drawOpen={drawOpen} sx={{zIndex: 10}}>
+            <AppBar2 sx={{zIndex: 10}}>
               <IconButton color='primary'>
                 <ArrowForwardIcon sx={{ ml: '1rem', fontSize: '1.2rem' }} />
               </IconButton>

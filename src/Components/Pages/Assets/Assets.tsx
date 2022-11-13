@@ -18,7 +18,7 @@ import {
   Typography,
 } from '@mui/material';
 /* eslint-disable react/jsx-key */
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useId, useMemo, useState } from 'react';
 import {
   TableInstance,
   useBlockLayout,
@@ -41,7 +41,7 @@ import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRound
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import { Satellite } from '@mui/icons-material';
 import { Session } from 'next-auth';
-import Styles from "../../../TableStyles"
+import Styles from '../../../TableStyles';
 import matchSorter from 'match-sorter';
 /* eslint-disable react/jsx-filename-extension */
 import { memo } from 'react';
@@ -514,7 +514,11 @@ export default memo(function Assets({
             {loading ? (
               <Stack spacing={0.5}>
                 {[...Array(itemsPerPage)].map((i) => (
-                  <Stack direction={'row'} alignItems='center' spacing={0.13}>
+                  <Stack
+                    direction={'row'}
+                    alignItems='center'
+                    spacing={0.13}
+                  >
                     <Skeleton width={34} height={42} variant='rectangular' />
                     <Skeleton width={34} height={42} variant='rectangular' />
                     <Skeleton width={34} height={42} variant='rectangular' />

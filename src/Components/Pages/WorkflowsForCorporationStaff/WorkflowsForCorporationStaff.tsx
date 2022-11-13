@@ -678,8 +678,6 @@ export default function WorkflowsForCorporationStaff({
           page={pageNumber}
           count={allWorkflowsCount}
           onPageChange={(e, p) => {
-            console.log('----', p);
-
             fetchMoreRows(e, p);
           }}
           onRowsPerPageChange={(

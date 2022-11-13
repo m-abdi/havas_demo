@@ -508,7 +508,6 @@ export default memo(function ConfirmReceiptByCorporations({
                                     ...newRawFilters,
                                   }),
                                 });
-                                console.log(filters);
 
                                 fetchMoreRows(e, 0);
                               }, 1000);

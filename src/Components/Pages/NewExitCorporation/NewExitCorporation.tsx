@@ -244,7 +244,6 @@ export default function NewExitCorporation({
   }, [existingWorkflow]);
   // handlers
   const submitHandler = async (data: any) => {
-    console.log('xfgd');
 
     if (existingWorkflow) {
       await confirmEnterHandler?.(

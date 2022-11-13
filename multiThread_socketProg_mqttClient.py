@@ -8,13 +8,13 @@ import logging
 from logging.handlers import RotatingFileHandler
 
 
-IP_Mqtt_Broker = "havas.emqx.broker"
+IP_Mqtt_Broker = "172.18.200.4"
 # IP_Mqtt_Broker = "192.168.1.102"
 Port_Mqtt_Broker = 1883
 mqtt_topic = "havas/rfid/warehouse/dl920/1"
 mqtt_client_id = "laptop1"
 
-IP_dl920_RFID_Reader = '192.168.1.2'
+IP_dl920_RFID_Reader = '192.168.1.200'
 Port_dl920_RFID_Reader = 4002
 
 
@@ -25,11 +25,11 @@ def connect_mqtt():
         else:
             logger.info("Failed to connect, return code %d\n", rc)
 
-    clientt = mqtt_client.Client(mqtt_client_id)
+    client = mqtt_client.Client(mqtt_client_id)
     # client.username_pw_set(username, password)
-    # clientt.on_connect = on_connect
-    clientt.connect_async(IP_Mqtt_Broker, Port_Mqtt_Broker)
-    return clientt
+    client.on_connect = on_connect
+    client.connect_async(IP_Mqtt_Broker, Port_Mqtt_Broker)
+    return client
 
 
 def publish(client, msg):
@@ -153,8 +153,6 @@ logger.addHandler(consoleHandler)
 logger.info("Trying to connect MQTT Broker...")
 client = connect_mqtt()
 client.loop_start()
-if not client.is_connected():
-    logger.info("Mqtt Not connected!!!")
 
 # connect to Rfid Reader
 logger.info("Trying to connect socket RFID Reader...")

@@ -74,7 +74,7 @@ const newTag: NextPage = () => {
       <Head>
         <title>{`${pageName}`} | حواس</title>
       </Head>
-      {mqttStatus === 'DISCONNECTED' || mqttStatus === 'CONNECTING' ? (
+      {mqttStatus === 'CONNECTING' ? (
         <RFID status='CONNECTING' />
       ) : (
         <Container

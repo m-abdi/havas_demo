@@ -23,6 +23,18 @@ import RFID from '../../Atomic/RFID';
 import React from 'react';
 import Typography from '@mui/material/Typography';
 
+function giveMeStatus(mqttStatus: any) {
+  switch (mqttStatus) {
+    case 'CONNECTED':
+      return 'متصل';
+    case 'CONNECTING':
+      return 'در حال اتصال';
+    case 'DISCONNECTED':
+      return 'عدم اتصال';
+    default:
+      return 'عدم اتصال';
+  }
+}
 export default memo(function NewTag({
   mqttMessage,
   mqttStatus,
@@ -92,7 +104,7 @@ export default memo(function NewTag({
   }, [tags]);
 
   // ui
-  if (mqttStatus === 'DISCONNECTED' || mqttStatus === 'CONNECTING') {
+  if (mqttStatus === 'CONNECTING') {
     return <RFID status='CONNECTING' />;
   }
   return (
@@ -127,12 +139,7 @@ export default memo(function NewTag({
           color: mqttStatus === 'CONNECTED' ? 'green' : 'red',
         }}
       >
-        وضعیت :{' '}
-        {mqttStatus === 'CONNECTED'
-          ? 'متصل'
-          : mqttStatus === 'CONNECTING'
-          ? 'در حال اتصال'
-          : mqttStatus === 'DISCONNECTED' && 'عدم اتصال'}
+        وضعیت : {giveMeStatus(mqttStatus)}
       </Typography>
       {/* <RFID status='CONNECTED' /> */}
       <Divider flexItem />
@@ -237,7 +244,6 @@ export default memo(function NewTag({
                   },
                 ]);
               }}
-             
               renderInput={(params) => (
                 <TextField
                   {...params}

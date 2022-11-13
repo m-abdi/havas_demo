@@ -712,8 +712,6 @@ const resolvers: Resolvers = {
         ]);
         return transaction?.[1] as any;
       }
-      console.log(_args?.newPlace);
-      console.log('_args?.newPlace');
 
       const createdPerson = await prisma.person.create({
         data: {
@@ -1866,7 +1864,6 @@ const resolvers: Resolvers = {
 
       let operations: any = [];
       tags.forEach(async (tag) => {
-      console.log(tag);
 
         if (tag?.newAsset) {
           let w = prisma.tag.create({

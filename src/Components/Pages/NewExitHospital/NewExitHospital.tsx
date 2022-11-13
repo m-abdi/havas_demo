@@ -720,7 +720,6 @@ export default function NewExitHospital({
   );
 
   function updateReceiverInfo(name: string, tel: string) {
-    console.log(name, tel);
 
     setValue('receiver', name);
     setValue('receiverTelephone', tel);

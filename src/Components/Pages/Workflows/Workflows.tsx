@@ -615,7 +615,6 @@ export default function Workflows({
           page={pageNumber}
           count={allWorkflowsCount}
           onPageChange={(e, p) => {
-            console.log('----', p);
 
             fetchMoreRows(e, p);
           }}

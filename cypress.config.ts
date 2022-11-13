@@ -47,7 +47,6 @@ export default defineConfig({
               where: { workflowNumber },
             })
             .then((p) => {
-              console.log(p);
               return p;
             })
             .catch((e) => null);

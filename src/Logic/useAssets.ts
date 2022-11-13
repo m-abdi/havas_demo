@@ -96,7 +96,6 @@ export default function useAssets(
         setSnackbarMessage,
         setSnackbarOpen
       );
-      console.log(count);
       
       try {
         const createdAsset = await createAssetMutation({
