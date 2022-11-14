@@ -5,11 +5,10 @@
 ```sh
 
 docker login -u abdimehdi -p <ACCESS_TOKEN> && \
-chmod +x ./scripts/startReplicaSetEnvironment.sh && \
+chmod +x ./scripts/start.sh && \
 chmod +x ./scripts/rs-init.sh && \
-./scripts/startReplicaSetEnvironment.sh && \
-yarn && yarn prisma generate &&
-node src/prepareDatabase.js
+sudo systemctl restart docker.service && \
+./scripts/start.sh
 
 ```
 
@@ -36,12 +35,9 @@ output: { ok: 1 }
 
 5.
 ```cmd
-yarn prisma generate
+docker container restart havas-initialization
 ```
-6.
-```cmd
-node ./src/prepareDatabase.js
-```
+
 
 
 ------

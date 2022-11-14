@@ -79,6 +79,7 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile_init
+    container_name: havas-initialization
     networks:
       - havas_docker_network
     depends_on:
