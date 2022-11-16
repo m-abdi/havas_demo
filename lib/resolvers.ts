@@ -39,11 +39,7 @@ import {
   canViewRoles,
 } from './permissions';
 
-import { Equipment } from '@prisma/client';
-import { GraphQLYogaError } from '@graphql-yoga/node';
-import { RelatedFieldFilter } from './resolvers-types';
-import { Session } from 'next-auth';
-import { getSession } from 'next-auth/react';
+import { GraphQLError } from 'graphql';
 import isManager from '../src/isManager';
 import prisma from '../prisma/client';
 import toNestedObject from '../src/Logic/toNestedObject';
@@ -60,10 +56,9 @@ const resolvers: Resolvers = {
   Query: {
     async persons(_, _args, _context): Promise<Person[] | any> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canViewPerson(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canViewPerson(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
       const { limit, offset, filters } = _args;
       if (filters) {
@@ -102,10 +97,9 @@ const resolvers: Resolvers = {
     },
     async personsCount(_, _args, _context): Promise<number> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canViewPerson(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canViewPerson(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
       const { filters } = _args;
       if (filters) {
@@ -124,10 +118,9 @@ const resolvers: Resolvers = {
     },
     async places(_, _args, _context): Promise<any> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canViewPlaces(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canViewPlaces(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
       const { limit, offset, filters } = _args;
       if (filters) {
@@ -187,10 +180,9 @@ const resolvers: Resolvers = {
     },
     async placesCount(_, _args, _context): Promise<number> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canViewPlaces(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canViewPlaces(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
       const { filters } = _args;
 
@@ -234,10 +226,10 @@ const resolvers: Resolvers = {
     },
     async equipments(_, _args, _context): Promise<any> {
       // check authentication and permission
-      // const { req } = _context;
-      // const session = await getSession({ req });
-      // if (!session || !(await canViewEquipments(session))) {
-      //   throw new GraphQLYogaError('Unauthorized');
+      //
+      //
+      // if (!_context?.session || !(await canViewEquipments(_context?.session))) {
+      //   throw new GraphQLError('Not authenticated or authorized');
       // }
       const { limit, offset, filters } = _args;
       if (filters) {
@@ -299,10 +291,10 @@ const resolvers: Resolvers = {
     },
     async equipmentsCount(_, _args, _context): Promise<number> {
       // check authentication and permission
-      // const { req } = _context;
-      // const session = await getSession({ req });
-      // if (!session || !(await canViewEquipments(session))) {
-      //   throw new GraphQLYogaError('Unauthorized');
+      //
+      //
+      // if (!_context?.session || !(await canViewEquipments(_context?.session))) {
+      //   throw new GraphQLError('Not authenticated or authorized');
       // }
       const { filters } = _args;
 
@@ -336,10 +328,9 @@ const resolvers: Resolvers = {
     },
     async assets(_, _args, _context): Promise<any> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canViewAssets(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canViewAssets(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
       const { limit, offset, filters } = _args;
       if (filters) {
@@ -372,10 +363,9 @@ const resolvers: Resolvers = {
     },
     async assetsCount(_, _args, _context): Promise<number> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canViewEquipments(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canViewEquipments(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
       const { filters } = _args;
 
@@ -398,14 +388,13 @@ const resolvers: Resolvers = {
     },
     async assetTransferWorkflows(_, _args, _context): Promise<any> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
+
       if (
-        !session ||
-        (!(await canViewLicenses(session)) &&
-          !(await canCreateEnterDeliverExit(session)))
+        !_context?.session ||
+        (!(await canViewLicenses(_context?.session)) &&
+          !(await canCreateEnterDeliverExit(_context?.session)))
       ) {
-        throw new GraphQLYogaError('Unauthorized');
+        throw new GraphQLError('Not authenticated or authorized');
       }
       let {
         limit,
@@ -422,11 +411,11 @@ const resolvers: Resolvers = {
       const workflows = await prisma.workflow.findMany({
         take: limit ?? 2000000,
         skip: offset ?? 0,
-        where: session?.user?.role?.createEnterDeliverExit
+        where: _context?.session?.user?.role?.createEnterDeliverExit
           ? toNestedObject({
               ...filters,
               'passedStages.some.havaleh.is.corporation.is.id':
-                session?.user?.place?.id,
+                _context?.session?.user?.place?.id,
             })
           : filters,
         orderBy: { dateCreated: 'desc' },
@@ -443,14 +432,13 @@ const resolvers: Resolvers = {
     },
     async assetTransferWorkflowsCount(_, _args, _context): Promise<number> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
+
       if (
-        !session ||
-        (!(await canViewLicenses(session)) &&
-          !(await canCreateEnterDeliverExit(session)))
+        !_context?.session ||
+        (!(await canViewLicenses(_context?.session)) &&
+          !(await canCreateEnterDeliverExit(_context?.session)))
       ) {
-        throw new GraphQLYogaError('Unauthorized');
+        throw new GraphQLError('Not authenticated or authorized');
       }
       let { filters }: { filters?: any } = _args;
       if (filters?.nsn) {
@@ -460,21 +448,20 @@ const resolvers: Resolvers = {
         );
       }
       return (await prisma.workflow.count({
-        where: session?.user?.role?.createEnterDeliverExit
+        where: _context?.session?.user?.role?.createEnterDeliverExit
           ? toNestedObject({
               ...filters,
               'passedStages.some.havaleh.is.corporation.is.id':
-                session?.user?.place?.id,
+                _context?.session?.user?.place?.id,
             })
           : filters,
       })) as number;
     },
     async role(_parent: any, _args: any, _context: any): Promise<any> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canViewRoles(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canViewRoles(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
       return await prisma.role.findFirst({ where: { id: _args.roleId } });
     },
@@ -484,10 +471,9 @@ const resolvers: Resolvers = {
       _context
     ): Promise<any> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canViewRoles(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canViewRoles(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
       return await prisma.role.findMany({
         take: _args?.limit,
@@ -499,10 +485,9 @@ const resolvers: Resolvers = {
     },
     async hasNextRole(_parent, _args: any, _context): Promise<any> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canViewRoles(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canViewRoles(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
 
       const roles = await prisma.role.findMany({
@@ -527,20 +512,18 @@ const resolvers: Resolvers = {
     },
     async countAllRoles(_: any, __: any, _context: any): Promise<any> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canViewRoles(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canViewRoles(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
 
       return await prisma.role.count();
     },
     async getWorkflowNumber(_: any, __: any, _context: any): Promise<string> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canViewLicenses(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canViewLicenses(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
 
       const newNumber =
@@ -558,10 +541,9 @@ const resolvers: Resolvers = {
       _context: any
     ): Promise<any> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canViewAssets(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canViewAssets(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
       return await prisma.tag.findUnique({
         where: { id: tagId },
@@ -570,11 +552,10 @@ const resolvers: Resolvers = {
     },
     async getCurrentConfig(_, __, _context): Promise<Config | null> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
+
       // manager detection
-      if (!session || !isManager(session)) {
-        throw new GraphQLYogaError('Unauthorized');
+      if (!_context?.session || !isManager(_context?.session)) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
       return await prisma.config.findFirst({ where: { current: true } });
     },
@@ -584,10 +565,9 @@ const resolvers: Resolvers = {
       _context
     ): Promise<RfidCredentials | null> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canCreateTags(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canCreateTags(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
       return {
         host: process.env.NEXT_PUBLIC_MQTT_BROKER_URL,
@@ -603,10 +583,9 @@ const resolvers: Resolvers = {
   Mutation: {
     async createRole(_parent, _args, _context, _info): Promise<any> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canCreateRole(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canCreateRole(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
       // handle edit existing role
       if (_args.edit) {
@@ -631,10 +610,9 @@ const resolvers: Resolvers = {
     },
     async createPerson(_parent, _args, _context, _info): Promise<Person> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canCreatePerson(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canCreatePerson(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
       // hash salt
       // const bcrypt = (await import("bcrypt")).default
@@ -663,8 +641,8 @@ const resolvers: Resolvers = {
       }
 
       if (_args?.newPlace) {
-        if (!session || !(await canCreatePlace(session))) {
-          throw new GraphQLYogaError('Unauthorized');
+        if (!_context?.session || !(await canCreatePlace(_context?.session))) {
+          throw new GraphQLError('Not authenticated or authorized');
         }
         const createdPlace = prisma.place.create({
           data: {
@@ -733,10 +711,9 @@ const resolvers: Resolvers = {
     },
     async createCategory(_, { name, superPlaceId }, _context): Promise<any> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canCreatePlace(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canCreatePlace(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
       if (superPlaceId) {
         return await (
@@ -782,10 +759,9 @@ const resolvers: Resolvers = {
       _context
     ): Promise<Place> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canCreatePlace(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canCreatePlace(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
 
       if (edit) {
@@ -872,10 +848,12 @@ const resolvers: Resolvers = {
       _context: any
     ): Promise<any> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canCreateEquipment(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (
+        !_context?.session ||
+        !(await canCreateEquipment(_context?.session))
+      ) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
 
       if (edit) {
@@ -926,10 +904,9 @@ const resolvers: Resolvers = {
       _context: any
     ): Promise<any> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canCreateAsset(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canCreateAsset(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
 
       if (edit) {
@@ -961,10 +938,9 @@ const resolvers: Resolvers = {
     },
     async deleteRoles(_parent, _args, _context, _info): Promise<any> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canDeleteRols(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canDeleteRols(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
 
       // with two separate queries in a transaction (all queries must succeed)
@@ -988,10 +964,9 @@ const resolvers: Resolvers = {
       _context: any
     ): Promise<number> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canDeletePersons(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canDeletePersons(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
 
       const deletedPersons = await prisma.person.deleteMany({
@@ -1006,10 +981,9 @@ const resolvers: Resolvers = {
       _context: any
     ): Promise<number> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canDeletePlaces(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canDeletePlaces(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
 
       const deletedPlaces = await prisma.place.deleteMany({
@@ -1024,14 +998,13 @@ const resolvers: Resolvers = {
       _context: any
     ): Promise<number> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
+
       if (
-        !session ||
-        !(await canDeleteEquipments(session)) ||
+        !_context?.session ||
+        !(await canDeleteEquipments(_context?.session)) ||
         canNotDeleteThisEquipment()
       ) {
-        throw new GraphQLYogaError('Unauthorized');
+        throw new GraphQLError('Not authenticated or authorized');
       }
 
       const deletedEquipments = await prisma.equipment.deleteMany({
@@ -1062,10 +1035,9 @@ const resolvers: Resolvers = {
       _context: any
     ): Promise<number> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canDeleteAssets(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canDeleteAssets(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
 
       const deletedAssets = await prisma.asset.deleteMany({
@@ -1080,10 +1052,9 @@ const resolvers: Resolvers = {
       _context: any
     ): Promise<number> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canDeleteLicenses(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canDeleteLicenses(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
 
       const deletedWorkflows = await prisma.workflow.deleteMany({
@@ -1110,16 +1081,15 @@ const resolvers: Resolvers = {
       _context: any
     ): Promise<string> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
+
       if (
-        !session ||
-        (!(await canCreateEnterDeliverExit(session)) &&
-          !(await canCreateLicense(session)))
+        !_context?.session ||
+        (!(await canCreateEnterDeliverExit(_context?.session)) &&
+          !(await canCreateLicense(_context?.session)))
       ) {
-        throw new GraphQLYogaError('خطا');
+        throw new GraphQLError('خطا');
       } else if (await repetitiveHavalehId(havalehId)) {
-        throw new GraphQLYogaError('شماره حواله تکراری');
+        throw new GraphQLError('شماره حواله تکراری');
       }
       // // new assets that must be created
       // const factoryAssets = Object.entries(assets)
@@ -1144,20 +1114,20 @@ const resolvers: Resolvers = {
       //             ? [
       //                 ...existingEquipment?.state?.sendOrReceive?.trust.filter(
       //                   (t) =>
-      //                     t.debatorCorportionId !== session?.user?.place?.id
+      //                     t.debatorCorportionId !== _context?.session?.user?.place?.id
       //                 ),
       //                 {
-      //                   debatorCorportionId: session?.user?.place?.id,
+      //                   debatorCorportionId: _context?.session?.user?.place?.id,
       //                   sum:
       //                     (existingEquipment?.state?.sendOrReceive?.trust?.find(
       //                       (t) =>
-      //                         t.debatorCorportionId === session?.user?.place?.id
+      //                         t.debatorCorportionId === _context?.session?.user?.place?.id
       //                     )?.sum ?? 0) + (value as number),
       //                 },
       //               ]
       //             : [
       //                 {
-      //                   debatorCorportionId: session?.user?.place?.id,
+      //                   debatorCorportionId: _context?.session?.user?.place?.id,
       //                   sum: value,
       //                 },
       //               ],
@@ -1244,9 +1214,10 @@ const resolvers: Resolvers = {
               stageID: 1,
               stageName: 'ثبت خروج کپسول از شرکت',
               submittedByUser: {
-                id: session?.user?.id,
-                firstNameAndLastName: session?.user?.firstNameAndLastName,
-                role: session?.user?.role?.name,
+                id: _context?.session?.user?.id,
+                firstNameAndLastName:
+                  _context?.session?.user?.firstNameAndLastName,
+                role: _context?.session?.user?.role?.name,
               },
 
               havaleh: {
@@ -1259,8 +1230,8 @@ const resolvers: Resolvers = {
                 receiverTelephone,
                 description,
                 corporation: {
-                  id: session?.user?.place?.id ?? '',
-                  name: session?.user?.place?.name ?? '',
+                  id: _context?.session?.user?.place?.id ?? '',
+                  name: _context?.session?.user?.place?.name ?? '',
                 },
                 assets: { ...assets, ...aggregatedAssets },
               },
@@ -1291,12 +1262,14 @@ const resolvers: Resolvers = {
       _context: any
     ): Promise<any> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canCreateEquipment(session))) {
-        throw new GraphQLYogaError('خطا');
+
+      if (
+        !_context?.session ||
+        !(await canCreateEquipment(_context?.session))
+      ) {
+        throw new GraphQLError('خطا');
       } else if (await repetitiveHavalehId(havalehId)) {
-        throw new GraphQLYogaError('شماره حواله تکراری');
+        throw new GraphQLError('شماره حواله تکراری');
       }
       const aggregatedAssets: any = {};
       Object.entries(assets as any)
@@ -1338,9 +1311,10 @@ const resolvers: Resolvers = {
                 stageID: 1,
                 stageName: 'درخواست خروج از بیمارستان',
                 submittedByUser: {
-                  id: session?.user?.id,
-                  firstNameAndLastName: session?.user?.firstNameAndLastName,
-                  role: session?.user?.role?.name,
+                  id: _context?.session?.user?.id,
+                  firstNameAndLastName:
+                    _context?.session?.user?.firstNameAndLastName,
+                  role: _context?.session?.user?.role?.name,
                 },
                 havaleh: {
                   id: havalehId,
@@ -1423,9 +1397,10 @@ const resolvers: Resolvers = {
                 stageID: 1,
                 stageName: 'درخواست خروج از بیمارستان',
                 submittedByUser: {
-                  id: session?.user?.id,
-                  firstNameAndLastName: session?.user?.firstNameAndLastName,
-                  role: session?.user?.role?.name,
+                  id: _context?.session?.user?.id,
+                  firstNameAndLastName:
+                    _context?.session?.user?.firstNameAndLastName,
+                  role: _context?.session?.user?.role?.name,
                 },
                 havaleh: {
                   id: havalehId,
@@ -1481,9 +1456,10 @@ const resolvers: Resolvers = {
                 stageID: 1,
                 stageName: 'درخواست خروج از بیمارستان',
                 submittedByUser: {
-                  id: session?.user?.id,
-                  firstNameAndLastName: session?.user?.firstNameAndLastName,
-                  role: session?.user?.role?.name,
+                  id: _context?.session?.user?.id,
+                  firstNameAndLastName:
+                    _context?.session?.user?.firstNameAndLastName,
+                  role: _context?.session?.user?.role?.name,
                 },
                 havaleh: {
                   id: havalehId,
@@ -1539,10 +1515,9 @@ const resolvers: Resolvers = {
       _context: any
     ): Promise<any> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canCreateLicense(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canCreateLicense(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
       const existingWorkflow = await prisma.workflow.findUnique({
         where: { workflowNumber },
@@ -1581,9 +1556,10 @@ const resolvers: Resolvers = {
                 stageID: 2,
                 stageName: 'تایید تحویل کپسول به بیمارستان',
                 submittedByUser: {
-                  id: session?.user?.id,
-                  firstNameAndLastName: session?.user?.firstNameAndLastName,
-                  role: session?.user?.role?.name,
+                  id: _context?.session?.user?.id,
+                  firstNameAndLastName:
+                    _context?.session?.user?.firstNameAndLastName,
+                  role: _context?.session?.user?.role?.name,
                 },
 
                 havaleh: {
@@ -1619,9 +1595,10 @@ const resolvers: Resolvers = {
                 stageID: 2,
                 stageName: 'تایید تحویل کپسول به بیمارستان',
                 submittedByUser: {
-                  id: session?.user?.id,
-                  firstNameAndLastName: session?.user?.firstNameAndLastName,
-                  role: session?.user?.role?.name,
+                  id: _context?.session?.user?.id,
+                  firstNameAndLastName:
+                    _context?.session?.user?.firstNameAndLastName,
+                  role: _context?.session?.user?.role?.name,
                 },
                 havaleh: {
                   id: havalehId + 'edited',
@@ -1641,9 +1618,10 @@ const resolvers: Resolvers = {
                 stageID: 3,
                 stageName: 'RFID ثبت ورود کپسول به انبار توسط',
                 submittedByUser: {
-                  id: session?.user?.id,
-                  firstNameAndLastName: session?.user?.firstNameAndLastName,
-                  role: session?.user?.role?.name,
+                  id: _context?.session?.user?.id,
+                  firstNameAndLastName:
+                    _context?.session?.user?.firstNameAndLastName,
+                  role: _context?.session?.user?.role?.name,
                 },
                 havaleh: {
                   assets:
@@ -1669,9 +1647,10 @@ const resolvers: Resolvers = {
                 stageID: 2,
                 stageName: 'تایید تحویل کپسول به بیمارستان',
                 submittedByUser: {
-                  id: session?.user?.id,
-                  firstNameAndLastName: session?.user?.firstNameAndLastName,
-                  role: session?.user?.role?.name,
+                  id: _context?.session?.user?.id,
+                  firstNameAndLastName:
+                    _context?.session?.user?.firstNameAndLastName,
+                  role: _context?.session?.user?.role?.name,
                 },
                 havaleh: {
                   receivingDescription,
@@ -1695,9 +1674,10 @@ const resolvers: Resolvers = {
                 stageID: 2,
                 stageName: 'تایید تحویل کپسول به بیمارستان',
                 submittedByUser: {
-                  id: session?.user?.id,
-                  firstNameAndLastName: session?.user?.firstNameAndLastName,
-                  role: session?.user?.role?.name,
+                  id: _context?.session?.user?.id,
+                  firstNameAndLastName:
+                    _context?.session?.user?.firstNameAndLastName,
+                  role: _context?.session?.user?.role?.name,
                 },
                 havaleh: {
                   receivingDescription,
@@ -1707,9 +1687,10 @@ const resolvers: Resolvers = {
                 stageID: 3,
                 stageName: 'RFID ثبت ورود کپسول به انبار توسط',
                 submittedByUser: {
-                  id: session?.user?.id,
-                  firstNameAndLastName: session?.user?.firstNameAndLastName,
-                  role: session?.user?.role?.name,
+                  id: _context?.session?.user?.id,
+                  firstNameAndLastName:
+                    _context?.session?.user?.firstNameAndLastName,
+                  role: _context?.session?.user?.role?.name,
                 },
                 havaleh: {
                   assets: existingWorkflow?.passedStages?.[0]?.havaleh?.assets,
@@ -1738,10 +1719,12 @@ const resolvers: Resolvers = {
       _context: any
     ): Promise<any> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canCreateEnterDeliverExit(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (
+        !_context?.session ||
+        !(await canCreateEnterDeliverExit(_context?.session))
+      ) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
       const existingWorkflow = (await prisma.workflow.findUnique({
         where: { workflowNumber },
@@ -1777,9 +1760,10 @@ const resolvers: Resolvers = {
                 stageID: 4,
                 stageName: 'تایید تحویل به شرکت',
                 submittedByUser: {
-                  id: session?.user?.id,
-                  firstNameAndLastName: session?.user?.firstNameAndLastName,
-                  role: session?.user?.role?.name,
+                  id: _context?.session?.user?.id,
+                  firstNameAndLastName:
+                    _context?.session?.user?.firstNameAndLastName,
+                  role: _context?.session?.user?.role?.name,
                 },
                 havaleh: {
                   id: havalehId + 'edited',
@@ -1813,9 +1797,10 @@ const resolvers: Resolvers = {
                 stageID: 4,
                 stageName: 'تایید تحویل به شرکت',
                 submittedByUser: {
-                  id: session?.user?.id,
-                  firstNameAndLastName: session?.user?.firstNameAndLastName,
-                  role: session?.user?.role?.name,
+                  id: _context?.session?.user?.id,
+                  firstNameAndLastName:
+                    _context?.session?.user?.firstNameAndLastName,
+                  role: _context?.session?.user?.role?.name,
                 },
                 havaleh: {
                   receivingDescription,
@@ -1830,10 +1815,9 @@ const resolvers: Resolvers = {
     },
     async updateAssetsStates(_, { ids, status }, _context): Promise<any> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canEditAssets(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canEditAssets(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
       if (ids) {
         return (
@@ -1846,25 +1830,19 @@ const resolvers: Resolvers = {
         ).count;
       }
     },
-    async createTags(
-      _,
-      { tags },
-      _context
-    ): Promise<number> {
+    async createTags(_, { tags }, _context): Promise<number> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
+
       if (
-        !session ||
-        !(await canCreateAsset(session)) ||
-        !(await canCreateTags(session))
+        !_context?.session ||
+        !(await canCreateAsset(_context?.session)) ||
+        !(await canCreateTags(_context?.session))
       ) {
-        throw new GraphQLYogaError('Unauthorized');
+        throw new GraphQLError('Not authenticated or authorized');
       }
 
       let operations: any = [];
       tags.forEach(async (tag) => {
-
         if (tag?.newAsset) {
           let w = prisma.tag.create({
             data: {
@@ -1893,8 +1871,7 @@ const resolvers: Resolvers = {
         }
       });
       await prisma.$transaction(operations);
-      
-      
+
       return 2;
     },
     async rfidCheckWorkflows(
@@ -1903,10 +1880,9 @@ const resolvers: Resolvers = {
       _context
     ): Promise<any> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
-      if (!session || !(await canCreateLicense(session))) {
-        throw new GraphQLYogaError('Unauthorized');
+
+      if (!_context?.session || !(await canCreateLicense(_context?.session))) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
 
       const o: any = [];
@@ -1935,9 +1911,10 @@ const resolvers: Resolvers = {
                 stageID: 3,
                 stageName: 'RFID ثبت ورود کپسول به انبار توسط',
                 submittedByUser: {
-                  id: session?.user?.id,
-                  firstNameAndLastName: session?.user?.firstNameAndLastName,
-                  role: session?.user?.role?.name,
+                  id: _context?.session?.user?.id,
+                  firstNameAndLastName:
+                    _context?.session?.user?.firstNameAndLastName,
+                  role: _context?.session?.user?.role?.name,
                 },
                 havaleh: {
                   assets,
@@ -1981,9 +1958,10 @@ const resolvers: Resolvers = {
                 stageID: 3,
                 stageName: 'RFID ثبت خروج کپسول از انبار توسط',
                 submittedByUser: {
-                  id: session?.user?.id,
-                  firstNameAndLastName: session?.user?.firstNameAndLastName,
-                  role: session?.user?.role?.name,
+                  id: _context?.session?.user?.id,
+                  firstNameAndLastName:
+                    _context?.session?.user?.firstNameAndLastName,
+                  role: _context?.session?.user?.role?.name,
                 },
                 havaleh: {
                   assets,
@@ -2006,11 +1984,10 @@ const resolvers: Resolvers = {
       _context
     ) {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
+
       // manager recognition
-      if (!session || !isManager(session)) {
-        throw new GraphQLYogaError('Unauthorized');
+      if (!_context?.session || !isManager(_context?.session)) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
       return await prisma.config.update({
         where: { id },
@@ -2019,11 +1996,13 @@ const resolvers: Resolvers = {
     },
     async approveExitWorkflow(_, { workflowNumber }, _context): Promise<any> {
       // check authentication and permission
-      const { req } = _context;
-      const session = await getSession({ req });
+
       // manager recognition
-      if (!session || session?.user?.role?.name !== 'مدیریت') {
-        throw new GraphQLYogaError('Unauthorized');
+      if (
+        !_context?.session ||
+        _context?.session?.user?.role?.name !== 'مدیریت'
+      ) {
+        throw new GraphQLError('Not authenticated or authorized');
       }
       const currentConfig = await prisma.config.findFirst({
         where: { current: true },
@@ -2043,9 +2022,10 @@ const resolvers: Resolvers = {
                 stageID: 2,
                 stageName: 'قبول درخواست توسط مدیریت',
                 submittedByUser: {
-                  id: session?.user?.id,
-                  firstNameAndLastName: session?.user?.firstNameAndLastName,
-                  role: session?.user?.role?.name,
+                  id: _context?.session?.user?.id,
+                  firstNameAndLastName:
+                    _context?.session?.user?.firstNameAndLastName,
+                  role: _context?.session?.user?.role?.name,
                 },
               },
             },
@@ -2061,9 +2041,10 @@ const resolvers: Resolvers = {
                 stageID: 3,
                 stageName: 'RFID ثبت خروج کپسول از انبار توسط',
                 submittedByUser: {
-                  id: session?.user?.id,
-                  firstNameAndLastName: session?.user?.firstNameAndLastName,
-                  role: session?.user?.role?.name,
+                  id: _context?.session?.user?.id,
+                  firstNameAndLastName:
+                    _context?.session?.user?.firstNameAndLastName,
+                  role: _context?.session?.user?.role?.name,
                 },
                 havaleh: {
                   assets: { ...stage1?.passedStages?.[0]?.havaleh?.assets },
@@ -2099,9 +2080,10 @@ const resolvers: Resolvers = {
                   stageID: 2,
                   stageName: 'قبول درخواست توسط مدیریت',
                   submittedByUser: {
-                    id: session?.user?.id,
-                    firstNameAndLastName: session?.user?.firstNameAndLastName,
-                    role: session?.user?.role?.name,
+                    id: _context?.session?.user?.id,
+                    firstNameAndLastName:
+                      _context?.session?.user?.firstNameAndLastName,
+                    role: _context?.session?.user?.role?.name,
                   },
                 },
               },

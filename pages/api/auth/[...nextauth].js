@@ -5,6 +5,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import NextAuth from 'next-auth';
 import bcrypt from "bcrypt"
+import logger from '../../../src/logger'
 import prisma from '../../../prisma/client';
 
 export default NextAuth({
@@ -45,6 +46,10 @@ export default NextAuth({
           const match = await bcrypt.compare(credentials.password, potentialUser?.password);
           if (match) {
             await prisma.$disconnect();
+            logger.info({
+              name: potentialUser.firstNameAndLastName,
+              email: potentialUser.id,
+            }, 'successful login');
             return { name: potentialUser.firstNameAndLastName, email: potentialUser.id }
           }
           await prisma.$disconnect();

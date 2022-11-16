@@ -3,6 +3,7 @@ import { canCreatePerson, canCreatePlace } from 'lib/permissions';
 
 import bcrypt from 'bcrypt';
 import { getSession } from 'next-auth/react';
+import logger from 'src/logger';
 import prisma from '../../prisma/client';
 
 export default async function handler(
@@ -27,6 +28,7 @@ export default async function handler(
   if (!session || !(await canCreatePerson(session))) {
     return res.status(401);
   }
+  logger.info({ ...req?.body, ...session }, 'createPerson');
   // hash salt
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(mobileNumber as string, salt);
@@ -79,6 +81,7 @@ export default async function handler(
         createdPerson,
         connectedPlaceToPerson,
       ]);
+      logger.info({ ...transaction?.[1], ...session }, 'createPerson response');
       return res.status(201).json(transaction?.[1]);
     }
     const createdPerson = await prisma.person.create({
@@ -97,8 +100,10 @@ export default async function handler(
         website,
       },
     });
-    return res.status(201).json(createdPerson);
+    logger.info({ ...createdPerson, password: null, ...session }, 'createPerson response');
+    return res.status(201).json({...createdPerson, password: null});
   } catch (e: any) {
+    logger.info({ exception: e, ...session }, 'createPerson error response');
     return res.status(500).send(e?.message ?? 'database connection error');
   }
 }

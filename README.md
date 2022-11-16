@@ -60,3 +60,9 @@ docker exec mongo1 sh -c 'exec mongodump -d havas --archive'> ./db-backup.archiv
 ```sh
 mongoresotre --archive=./db-backup.archive
 ```
+
+## Save logs in a file
+
+```sh
+docker logs nextjs >> ./logs/logs.log
+```

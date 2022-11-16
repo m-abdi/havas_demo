@@ -49,6 +49,11 @@ services:
       - mongo1
     env_file:
       - .env.docker
+    logging:
+      driver: local
+      options:
+        max-file: "30"
+        max-size: "40m"
   emqx:
     image: emqx/emqx:latest
     container_name: havas-emqx-broker
