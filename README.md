@@ -64,5 +64,5 @@ mongoresotre --archive=./db-backup.archive
 ## Save logs in a file
 
 ```sh
-docker logs nextjs >> ./logs/logs.log
+docker logs nextjs > ./logs/logs.log
 ```

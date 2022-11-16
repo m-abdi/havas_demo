@@ -53,7 +53,7 @@ services:
       driver: local
       options:
         max-file: "30"
-        max-size: "40m"
+        max-size: "60m"
   emqx:
     image: emqx/emqx:latest
     container_name: havas-emqx-broker
