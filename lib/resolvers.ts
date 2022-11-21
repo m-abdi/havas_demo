@@ -41,6 +41,7 @@ import {
 
 import { GraphQLError } from 'graphql';
 import isManager from '../src/isManager';
+import logger from 'src/logger';
 import prisma from '../prisma/client';
 import toNestedObject from '../src/Logic/toNestedObject';
 
@@ -81,7 +82,15 @@ const resolvers: Resolvers = {
           },
           where: parsedFilters,
         });
-
+        logger.info(
+          {
+            type: 'response',
+            operation: 'persons',
+            session: _context.session,
+            response: personsDB,
+          },
+          'persons graphql response'
+        );
         return personsDB as any;
       }
       const personsDB = await prisma.person.findMany({
@@ -92,7 +101,15 @@ const resolvers: Resolvers = {
           place: true,
         },
       });
-
+      logger.info(
+        {
+          type: 'response',
+          operation: 'persons',
+          session: _context.session,
+          response: personsDB,
+        },
+        'persons graphql response'
+      );
       return personsDB as any;
     },
     async personsCount(_, _args, _context): Promise<number> {
@@ -112,9 +129,31 @@ const resolvers: Resolvers = {
             }
           })
         );
-        return (await prisma.person.count({ where: parsedFilters })) as number;
+        const result = (await prisma.person.count({
+          where: parsedFilters,
+        })) as number;
+        logger.info(
+          {
+            type: 'response',
+            operation: 'personsCount',
+            session: _context.session,
+            response: result,
+          },
+          'personsCount graphql response'
+        );
+        return result;
       }
-      return (await prisma.person.count()) as number;
+      const result = (await prisma.person.count()) as number;
+      logger.info(
+        {
+          type: 'response',
+          operation: 'personsCount',
+          session: _context.session,
+          response: result,
+        },
+        'personsCount graphql response'
+      );
+      return result;
     },
     async places(_, _args, _context): Promise<any> {
       // check authentication and permission
@@ -164,7 +203,15 @@ const resolvers: Resolvers = {
           },
           where: parsedFilters,
         });
-
+        logger.info(
+          {
+            type: 'response',
+            operation: 'places',
+            session: _context.session,
+            response: placesDB,
+          },
+          'places graphql response'
+        );
         return placesDB as any;
       }
       const placesDB = await prisma.place.findMany({
@@ -175,7 +222,15 @@ const resolvers: Resolvers = {
           representative: { include: { role: true } },
         },
       });
-
+      logger.info(
+        {
+          type: 'response',
+          operation: 'places',
+          session: _context.session,
+          response: placesDB,
+        },
+        'places graphql response'
+      );
       return placesDB as any;
     },
     async placesCount(_, _args, _context): Promise<number> {
@@ -218,11 +273,31 @@ const resolvers: Resolvers = {
           })
         );
 
-        return (await prisma.place.count({
+        const result = (await prisma.place.count({
           where: parsedFilters,
         })) as number;
+        logger.info(
+          {
+            type: 'response',
+            operation: 'placesCount',
+            session: _context.session,
+            response: result,
+          },
+          'placesCount graphql response'
+        );
+        return result;
       }
-      return (await prisma.place.count()) as number;
+      const result = (await prisma.place.count()) as number;
+      logger.info(
+        {
+          type: 'response',
+          operation: 'placesCount',
+          session: _context.session,
+          response: result,
+        },
+        'placesCount graphql response'
+      );
+      return result;
     },
     async equipments(_, _args, _context): Promise<any> {
       // check authentication and permission
@@ -267,10 +342,21 @@ const resolvers: Resolvers = {
           where: parsedFilters,
         });
 
-        return equipmentsDB?.map((e: any) => ({
+        const result = equipmentsDB?.map((e: any) => ({
           ...e,
           available: e?.assets?.length ?? 0,
         })) as any;
+
+        logger.info(
+          {
+            type: 'response',
+            operation: 'equipments',
+            session: _context.session,
+            response: result,
+          },
+          'equipments graphql response'
+        );
+        return result;
       }
       const equipmentsDB = await prisma.equipment.findMany({
         take: limit ?? 2000000,
@@ -284,10 +370,20 @@ const resolvers: Resolvers = {
         },
       });
 
-      return equipmentsDB?.map((e: any) => ({
+      const result = equipmentsDB?.map((e: any) => ({
         ...e,
-        // available: e?.assets?.length ?? 0,
       })) as any;
+
+      logger.info(
+        {
+          type: 'response',
+          operation: 'equipments',
+          session: _context.session,
+          response: result,
+        },
+        'equipments graphql response'
+      );
+      return result;
     },
     async equipmentsCount(_, _args, _context): Promise<number> {
       // check authentication and permission
@@ -320,11 +416,31 @@ const resolvers: Resolvers = {
           })
         );
 
-        return (await prisma.equipment.count({
+        const result = (await prisma.equipment.count({
           where: parsedFilters,
         })) as number;
+        logger.info(
+          {
+            type: 'response',
+            operation: 'equipmentsCount',
+            session: _context.session,
+            response: result,
+          },
+          'equipmentsCount graphql response'
+        );
+        return result;
       }
-      return (await prisma.equipment.count()) as number;
+      const result = (await prisma.equipment.count()) as number;
+      logger.info(
+        {
+          type: 'response',
+          operation: 'equipmentsCount',
+          session: _context.session,
+          response: result,
+        },
+        'equipmentsCount graphql response'
+      );
+      return result;
     },
     async assets(_, _args, _context): Promise<any> {
       // check authentication and permission
@@ -350,7 +466,15 @@ const resolvers: Resolvers = {
           include: { equipment: true, place: true, tag: true },
           where: parsedFilters,
         });
-
+        logger.info(
+          {
+            type: 'response',
+            operation: 'assets',
+            session: _context.session,
+            response: assetsDB,
+          },
+          'assets graphql response'
+        );
         return assetsDB as any;
       }
       const assetsDB = await prisma.asset.findMany({
@@ -358,7 +482,15 @@ const resolvers: Resolvers = {
         skip: offset ?? 0,
         include: { equipment: true, place: true, tag: true },
       });
-
+      logger.info(
+        {
+          type: 'response',
+          operation: 'assets',
+          session: _context.session,
+          response: assetsDB,
+        },
+        'assets graphql response'
+      );
       return assetsDB as any;
     },
     async assetsCount(_, _args, _context): Promise<number> {
@@ -380,11 +512,32 @@ const resolvers: Resolvers = {
           })
         );
 
-        return (await prisma.asset.count({
+        const result = (await prisma.asset.count({
           where: parsedFilters,
         })) as number;
+
+        logger.info(
+          {
+            type: 'response',
+            operation: 'assetsCount',
+            session: _context.session,
+            response: result,
+          },
+          'assetsCount graphql response'
+        );
+        return result;
       }
-      return (await prisma.asset.count()) as number;
+      const result = (await prisma.asset.count()) as number;
+      logger.info(
+        {
+          type: 'response',
+          operation: 'assetsCount',
+          session: _context.session,
+          response: result,
+        },
+        'assetsCount graphql response'
+      );
+      return result;
     },
     async assetTransferWorkflows(_, _args, _context): Promise<any> {
       // check authentication and permission
@@ -427,7 +580,15 @@ const resolvers: Resolvers = {
       //     w.passedStages[3].havaleh.contradiction = true
       //   }
       // });
-
+      logger.info(
+        {
+          type: 'response',
+          operation: 'assetTransferWorkflows',
+          session: _context.session,
+          response: workflows,
+        },
+        'assetTransferWorkflows graphql response'
+      );
       return workflows;
     },
     async assetTransferWorkflowsCount(_, _args, _context): Promise<number> {
@@ -447,7 +608,7 @@ const resolvers: Resolvers = {
           Object.entries(filters).filter(([key, value]) => key !== 'nsn')
         );
       }
-      return (await prisma.workflow.count({
+      const result = (await prisma.workflow.count({
         where: _context?.session?.user?.role?.createEnterDeliverExit
           ? toNestedObject({
               ...filters,
@@ -456,6 +617,17 @@ const resolvers: Resolvers = {
             })
           : filters,
       })) as number;
+
+      logger.info(
+        {
+          type: 'response',
+          operation: 'assetTransferWorkflowsCount',
+          session: _context.session,
+          response: result,
+        },
+        'assetTransferWorkflowsCount graphql response'
+      );
+      return result;
     },
     async role(_parent: any, _args: any, _context: any): Promise<any> {
       // check authentication and permission
@@ -463,7 +635,19 @@ const resolvers: Resolvers = {
       if (!_context?.session || !(await canViewRoles(_context?.session))) {
         throw new GraphQLError('Not authenticated or authorized');
       }
-      return await prisma.role.findFirst({ where: { id: _args.roleId } });
+      const result = await prisma.role.findFirst({
+        where: { id: _args.roleId },
+      });
+      logger.info(
+        {
+          type: 'response',
+          operation: 'role',
+          session: _context.session,
+          response: result,
+        },
+        'role graphql response'
+      );
+      return result;
     },
     async roles(
       _parent,
@@ -475,13 +659,23 @@ const resolvers: Resolvers = {
       if (!_context?.session || !(await canViewRoles(_context?.session))) {
         throw new GraphQLError('Not authenticated or authorized');
       }
-      return await prisma.role.findMany({
+      const result = await prisma.role.findMany({
         take: _args?.limit,
         skip: _args?.offset,
         orderBy: {
           createdAt: 'asc',
         },
       });
+      logger.info(
+        {
+          type: 'response',
+          operation: 'roles',
+          session: _context.session,
+          response: result,
+        },
+        'roles graphql response'
+      );
+      return result;
     },
     async hasNextRole(_parent, _args: any, _context): Promise<any> {
       // check authentication and permission
@@ -508,6 +702,15 @@ const resolvers: Resolvers = {
           createdAt: 'asc',
         },
       });
+      logger.info(
+        {
+          type: 'response',
+          operation: 'hasNextRole',
+          session: _context.session,
+          response: nextRole?.length > 0,
+        },
+        'hasNextRole graphql response'
+      );
       return nextRole?.length > 0;
     },
     async countAllRoles(_: any, __: any, _context: any): Promise<any> {
@@ -517,7 +720,17 @@ const resolvers: Resolvers = {
         throw new GraphQLError('Not authenticated or authorized');
       }
 
-      return await prisma.role.count();
+      const result = await prisma.role.count();
+      logger.info(
+        {
+          type: 'response',
+          operation: 'countAllRoles',
+          session: _context.session,
+          response: result,
+        },
+        'countAllRoles graphql response'
+      );
+      return result;
     },
     async getWorkflowNumber(_: any, __: any, _context: any): Promise<string> {
       // check authentication and permission
@@ -533,7 +746,17 @@ const resolvers: Resolvers = {
           ).shift()?.workflowNumber ?? '0'
         ) + 1;
 
-      return newNumber.toString();
+      const result = newNumber.toString();
+      logger.info(
+        {
+          type: 'response',
+          operation: 'getWorkflowNumber',
+          session: _context.session,
+          response: result,
+        },
+        'getWorkflowNumber graphql response'
+      );
+      return result;
     },
     async tagData(
       _: any,
@@ -545,10 +768,20 @@ const resolvers: Resolvers = {
       if (!_context?.session || !(await canViewAssets(_context?.session))) {
         throw new GraphQLError('Not authenticated or authorized');
       }
-      return await prisma.tag.findUnique({
+      const result = await prisma.tag.findUnique({
         where: { id: tagId },
         include: { asset: { include: { equipment: true } } },
       });
+      logger.info(
+        {
+          type: 'response',
+          operation: 'tagData',
+          session: _context.session,
+          response: result,
+        },
+        'tagData graphql response'
+      );
+      return result;
     },
     async getCurrentConfig(_, __, _context): Promise<Config | null> {
       // check authentication and permission
@@ -557,7 +790,19 @@ const resolvers: Resolvers = {
       if (!_context?.session || !isManager(_context?.session)) {
         throw new GraphQLError('Not authenticated or authorized');
       }
-      return await prisma.config.findFirst({ where: { current: true } });
+      const result = await prisma.config.findFirst({
+        where: { current: true },
+      });
+      logger.info(
+        {
+          type: 'response',
+          operation: 'getCurrentConfig',
+          session: _context.session,
+          response: result,
+        },
+        'getCurrentConfig graphql response'
+      );
+      return result;
     },
     async giveMeRFIDCredentials(
       _,
@@ -569,7 +814,7 @@ const resolvers: Resolvers = {
       if (!_context?.session || !(await canCreateTags(_context?.session))) {
         throw new GraphQLError('Not authenticated or authorized');
       }
-      return {
+      const credentials = {
         host: process.env.NEXT_PUBLIC_MQTT_BROKER_URL,
         port: process.env.NEXT_PUBLIC_MQTT_BROKER_PORT,
         username: process.env.NEXT_PUBLIC_MQTT_BROKER_USERNAME,
@@ -578,6 +823,16 @@ const resolvers: Resolvers = {
           parseInt(process.env.NEXT_PUBLIC_MQTT_BROKER_SSL ?? '0')
         ),
       };
+      logger.info(
+        {
+          type: 'response',
+          operation: 'giveMeRFIDCredentials',
+          session: _context.session,
+          response: credentials,
+        },
+        'giveMeRFIDCredentials graphql response'
+      );
+      return credentials;
     },
   },
   Mutation: {
@@ -598,6 +853,15 @@ const resolvers: Resolvers = {
             ..._args.permissions,
           },
         });
+        logger.info(
+          {
+            type: 'response',
+            operation: 'createRole',
+            session: _context.session,
+            response: editedRole,
+          },
+          'createRole graphql response'
+        );
         return editedRole;
       }
       const createdRole = await prisma.role.create({
@@ -606,6 +870,15 @@ const resolvers: Resolvers = {
           ..._args.permissions,
         },
       });
+      logger.info(
+        {
+          type: 'response',
+          operation: 'createRole',
+          session: _context.session,
+          response: createdRole,
+        },
+        'createRole graphql response'
+      );
       return createdRole;
     },
     async createPerson(_parent, _args, _context, _info): Promise<Person> {
@@ -637,6 +910,15 @@ const resolvers: Resolvers = {
             website: _args.website,
           },
         });
+        logger.info(
+          {
+            type: 'response',
+            operation: 'createPerson',
+            session: _context.session,
+            response: editedPerson,
+          },
+          'createPerson graphql response'
+        );
         return editedPerson as any;
       }
 
@@ -688,6 +970,15 @@ const resolvers: Resolvers = {
           createdPerson,
           connectedPlaceToPerson,
         ]);
+        logger.info(
+          {
+            type: 'response',
+            operation: 'createPerson',
+            session: _context.session,
+            response: transaction,
+          },
+          'createPerson graphql response'
+        );
         return transaction?.[1] as any;
       }
 
@@ -707,6 +998,15 @@ const resolvers: Resolvers = {
           website: _args.website,
         },
       });
+      logger.info(
+        {
+          type: 'response',
+          operation: 'createPerson',
+          session: _context.session,
+          response: createdPerson,
+        },
+        'createPerson graphql response'
+      );
       return createdPerson as any;
     },
     async createCategory(_, { name, superPlaceId }, _context): Promise<any> {
@@ -786,6 +1086,15 @@ const resolvers: Resolvers = {
             description,
           },
         });
+        logger.info(
+          {
+            type: 'response',
+            operation: 'createPlace',
+            session: _context.session,
+            response: editedPlace,
+          },
+          'createPlace graphql response'
+        );
         return editedPlace;
       }
       if (superPlaceId) {
@@ -807,6 +1116,15 @@ const resolvers: Resolvers = {
             description,
           },
         });
+        logger.info(
+          {
+            type: 'response',
+            operation: 'createPlace',
+            session: _context.session,
+            response: createdPlace,
+          },
+          'createPlace graphql response'
+        );
         return createdPlace;
       } else {
         const createdPlace = await prisma.place.create({
@@ -826,6 +1144,15 @@ const resolvers: Resolvers = {
             description,
           },
         });
+        logger.info(
+          {
+            type: 'response',
+            operation: 'createPlace',
+            session: _context.session,
+            response: createdPlace,
+          },
+          'createPlace graphql response'
+        );
         return createdPlace;
       }
     },
@@ -875,6 +1202,15 @@ const resolvers: Resolvers = {
             supportTelephone2,
           },
         });
+        logger.info(
+          {
+            type: 'response',
+            operation: 'createEquipment',
+            session: _context.session,
+            response: editedEquipment,
+          },
+          'createEquipment graphql response'
+        );
         return editedEquipment;
       }
       const createdEquipment = await prisma.equipment.create({
@@ -896,6 +1232,15 @@ const resolvers: Resolvers = {
           available: 0,
         },
       });
+      logger.info(
+        {
+          type: 'response',
+          operation: 'createEquipment',
+          session: _context.session,
+          response: createdEquipment,
+        },
+        'createEquipment graphql response'
+      );
       return createdEquipment;
     },
     async createAsset(
@@ -920,6 +1265,15 @@ const resolvers: Resolvers = {
             status: 'موجود در بیمارستان',
           },
         });
+        logger.info(
+          {
+            type: 'response',
+            operation: 'createAsset',
+            session: _context.session,
+            response: 1,
+          },
+          'createAsset graphql response'
+        );
         return 1;
       }
       count = count ?? 1;
@@ -934,6 +1288,15 @@ const resolvers: Resolvers = {
       const resp = await prisma.asset.createMany({
         data: a,
       });
+      logger.info(
+        {
+          type: 'response',
+          operation: 'createAsset',
+          session: _context.session,
+          response: resp,
+        },
+        'createAsset graphql response'
+      );
       return resp?.count;
     },
     async deleteRoles(_parent, _args, _context, _info): Promise<any> {
@@ -955,7 +1318,15 @@ const resolvers: Resolvers = {
         deletePersons,
         deleteRoles,
       ]);
-
+      logger.info(
+        {
+          type: 'response',
+          operation: 'deleteRoles',
+          session: _context.session,
+          response: transaction,
+        },
+        'deleteRoles graphql response'
+      );
       return _args.roleIds;
     },
     async deletePersons(
@@ -972,7 +1343,15 @@ const resolvers: Resolvers = {
       const deletedPersons = await prisma.person.deleteMany({
         where: { id: { in: personIds } },
       });
-
+      logger.info(
+        {
+          type: 'response',
+          operation: 'deletePersons',
+          session: _context.session,
+          response: deletedPersons,
+        },
+        'deletePersons graphql response'
+      );
       return deletedPersons?.count;
     },
     async deletePlaces(
@@ -989,7 +1368,15 @@ const resolvers: Resolvers = {
       const deletedPlaces = await prisma.place.deleteMany({
         where: { id: { in: placeIds } },
       });
-
+      logger.info(
+        {
+          type: 'response',
+          operation: 'deletePlaces',
+          session: _context.session,
+          response: deletedPlaces,
+        },
+        'deletePlaces graphql response'
+      );
       return deletedPlaces?.count;
     },
     async deleteEquipments(
@@ -1010,7 +1397,15 @@ const resolvers: Resolvers = {
       const deletedEquipments = await prisma.equipment.deleteMany({
         where: { terminologyCode: { in: equipmentIds } },
       });
-
+      logger.info(
+        {
+          type: 'response',
+          operation: 'deleteEquipments',
+          session: _context.session,
+          response: deletedEquipments,
+        },
+        'deleteEquipments graphql response'
+      );
       return deletedEquipments?.count;
 
       function canNotDeleteThisEquipment(): boolean {
@@ -1043,7 +1438,15 @@ const resolvers: Resolvers = {
       const deletedAssets = await prisma.asset.deleteMany({
         where: { id: { in: assetIds } },
       });
-
+      logger.info(
+        {
+          type: 'response',
+          operation: 'deleteAssets',
+          session: _context.session,
+          response: deletedAssets,
+        },
+        'deleteAssets graphql response'
+      );
       return deletedAssets?.count;
     },
     async deleteWorkflows(
@@ -1060,7 +1463,15 @@ const resolvers: Resolvers = {
       const deletedWorkflows = await prisma.workflow.deleteMany({
         where: { workflowNumber: { in: workflowIds } },
       });
-
+      logger.info(
+        {
+          type: 'response',
+          operation: 'deleteWorkflows',
+          session: _context.session,
+          response: deletedWorkflows,
+        },
+        'deleteWorkflows graphql response'
+      );
       return deletedWorkflows?.count;
     },
     async createEnterWorkflow(
@@ -1241,7 +1652,15 @@ const resolvers: Resolvers = {
       });
 
       const t = await prisma.$transaction([...o, createdWorkflow]);
-
+      logger.info(
+        {
+          type: 'response',
+          operation: 'createEnterWorkflow',
+          session: _context.session,
+          response: t,
+        },
+        'createEnterWorkflow graphql response'
+      );
       return t?.[1]?.id ?? '';
     },
     async createExitWorkflow(
@@ -1382,12 +1801,21 @@ const resolvers: Resolvers = {
           },
         });
         const t = await prisma.$transaction([w, ...o]);
+        logger.info(
+          {
+            type: 'response',
+            operation: 'createExitWorkflow',
+            session: _context.session,
+            response: t,
+          },
+          'createExitWorkflow graphql response'
+        );
         return t[0];
       } else if (
         currentConfig?.ignoreManagerApproval &&
         !currentConfig?.ignoreRFID
       ) {
-        return await prisma.workflow.create({
+        const t = await prisma.workflow.create({
           data: {
             workflowNumber: await autoIncrementId(),
             instanceOfProcess: { connect: { processNumber: 2 } },
@@ -1445,8 +1873,18 @@ const resolvers: Resolvers = {
             ],
           },
         });
+        logger.info(
+          {
+            type: 'response',
+            operation: 'createExitWorkflow',
+            session: _context.session,
+            response: t,
+          },
+          'createExitWorkflow graphql response'
+        );
+        return t;
       } else if (!currentConfig?.ignoreManagerApproval) {
-        return await prisma.workflow.create({
+        const t = await prisma.workflow.create({
           data: {
             workflowNumber: await autoIncrementId(),
             instanceOfProcess: { connect: { processNumber: 2 } },
@@ -1485,6 +1923,16 @@ const resolvers: Resolvers = {
             ],
           },
         });
+        logger.info(
+          {
+            type: 'response',
+            operation: 'createExitWorkflow',
+            session: _context.session,
+            response: t,
+          },
+          'createExitWorkflow graphql response'
+        );
+        return t;
       }
 
       async function autoIncrementId(): Promise<string> {
@@ -1580,7 +2028,15 @@ const resolvers: Resolvers = {
           },
         });
         const transaction = await prisma.$transaction([updatedWorkflow, ...o]);
-
+        logger.info(
+          {
+            type: 'response',
+            operation: 'confirmReceiptByHospital',
+            session: _context.session,
+            response: transaction,
+          },
+          'confirmReceiptByHospital graphql response'
+        );
         return transaction[0];
       } else if (havalehId && currentConfig?.ignoreRFID) {
         const updatedWorkflow = prisma.workflow.update({
@@ -1633,6 +2089,15 @@ const resolvers: Resolvers = {
           },
         });
         const transaction = await prisma.$transaction([updatedWorkflow, ...o]);
+        logger.info(
+          {
+            type: 'response',
+            operation: 'confirmReceiptByHospital',
+            session: _context.session,
+            response: transaction,
+          },
+          'confirmReceiptByHospital graphql response'
+        );
         return transaction[0];
       } else if (!havalehId && !currentConfig?.ignoreRFID) {
         const updatedWorkflow = prisma.workflow.update({
@@ -1660,6 +2125,15 @@ const resolvers: Resolvers = {
           },
         });
         const transaction = await prisma.$transaction([updatedWorkflow, ...o]);
+        logger.info(
+          {
+            type: 'response',
+            operation: 'confirmReceiptByHospital',
+            session: _context.session,
+            response: transaction,
+          },
+          'confirmReceiptByHospital graphql response'
+        );
         return transaction[0];
       } else if (!havalehId && currentConfig?.ignoreRFID) {
         const updatedWorkflow = prisma.workflow.update({
@@ -1700,6 +2174,15 @@ const resolvers: Resolvers = {
           },
         });
         const transaction = await prisma.$transaction([updatedWorkflow, ...o]);
+        logger.info(
+          {
+            type: 'response',
+            operation: 'confirmReceiptByHospital',
+            session: _context.session,
+            response: transaction,
+          },
+          'confirmReceiptByHospital graphql response'
+        );
         return transaction[0];
       }
     },
@@ -1783,6 +2266,15 @@ const resolvers: Resolvers = {
           },
         });
         const t = await prisma.$transaction([updatedWorkflow, ...o]);
+        logger.info(
+          {
+            type: 'response',
+            operation: 'confirmReceiptByCorporation',
+            session: _context.session,
+            response: t,
+          },
+          'confirmReceiptByCorporation graphql response'
+        );
         return t[0];
       } else {
         const updatedWorkflow = prisma.workflow.update({
@@ -1810,6 +2302,15 @@ const resolvers: Resolvers = {
           },
         });
         const t = await prisma.$transaction([updatedWorkflow, ...o]);
+        logger.info(
+          {
+            type: 'response',
+            operation: 'confirmReceiptByCorporation',
+            session: _context.session,
+            response: t,
+          },
+          'confirmReceiptByCorporation graphql response'
+        );
         return t[0];
       }
     },
@@ -1820,14 +2321,22 @@ const resolvers: Resolvers = {
         throw new GraphQLError('Not authenticated or authorized');
       }
       if (ids) {
-        return (
-          await prisma.asset.updateMany({
-            where: { id: { in: ids as string[] } },
-            data: {
-              status,
-            },
-          })
-        ).count;
+        const result = await prisma.asset.updateMany({
+          where: { id: { in: ids as string[] } },
+          data: {
+            status,
+          },
+        });
+        logger.info(
+          {
+            type: 'response',
+            operation: 'updateAssetsStates',
+            session: _context.session,
+            response: result,
+          },
+          'updateAssetsStates graphql response'
+        );
+        return result.count;
       }
     },
     async createTags(_, { tags }, _context): Promise<number> {
@@ -1870,8 +2379,16 @@ const resolvers: Resolvers = {
           operations.push(w);
         }
       });
-      await prisma.$transaction(operations);
-
+      const result = await prisma.$transaction(operations);
+      logger.info(
+        {
+          type: 'response',
+          operation: 'createTags',
+          session: _context.session,
+          response: result,
+        },
+        'createTags graphql response'
+      );
       return 2;
     },
     async rfidCheckWorkflows(
@@ -1928,6 +2445,15 @@ const resolvers: Resolvers = {
           updatedWorkflow,
           ...o,
         ]);
+        logger.info(
+          {
+            type: 'response',
+            operation: 'rfidCheckWorkflows',
+            session: _context.session,
+            response: t,
+          },
+          'rfidCheckWorkflows graphql response'
+        );
         return t[1];
       }
       // Exit Hospital Workflow
@@ -1975,6 +2501,15 @@ const resolvers: Resolvers = {
           updatedWorkflow,
           ...o,
         ]);
+        logger.info(
+          {
+            type: 'response',
+            operation: 'rfidCheckWorkflows',
+            session: _context.session,
+            response: t,
+          },
+          'rfidCheckWorkflows graphql response'
+        );
         return t[1];
       }
     },
@@ -1989,10 +2524,20 @@ const resolvers: Resolvers = {
       if (!_context?.session || !isManager(_context?.session)) {
         throw new GraphQLError('Not authenticated or authorized');
       }
-      return await prisma.config.update({
+      const result = await prisma.config.update({
         where: { id },
         data: { ignoreManagerApproval, ignoreRFID },
       });
+      logger.info(
+        {
+          type: 'response',
+          operation: 'updateCurrentConfig',
+          session: _context.session,
+          response: result,
+        },
+        'updateCurrentConfig graphql response'
+      );
+      return result;
     },
     async approveExitWorkflow(_, { workflowNumber }, _context): Promise<any> {
       // check authentication and permission
@@ -2068,28 +2613,45 @@ const resolvers: Resolvers = {
           );
         });
         const transaction = await prisma.$transaction([stage2, stage3, ...o]);
+        logger.info(
+          {
+            type: 'response',
+            operation: 'approveExitWorkflow',
+            session: _context.session,
+            response: transaction,
+          },
+          'approveExitWorkflow graphql response'
+        );
         return transaction?.[0]?.workflowNumber;
       } else {
-        return (
-          await prisma.workflow.update({
-            where: { workflowNumber },
-            data: {
-              nextStageName: 'RFID ثبت خروج کپسول از انبار توسط',
-              passedStages: {
-                push: {
-                  stageID: 2,
-                  stageName: 'قبول درخواست توسط مدیریت',
-                  submittedByUser: {
-                    id: _context?.session?.user?.id,
-                    firstNameAndLastName:
-                      _context?.session?.user?.firstNameAndLastName,
-                    role: _context?.session?.user?.role?.name,
-                  },
+        const result = await prisma.workflow.update({
+          where: { workflowNumber },
+          data: {
+            nextStageName: 'RFID ثبت خروج کپسول از انبار توسط',
+            passedStages: {
+              push: {
+                stageID: 2,
+                stageName: 'قبول درخواست توسط مدیریت',
+                submittedByUser: {
+                  id: _context?.session?.user?.id,
+                  firstNameAndLastName:
+                    _context?.session?.user?.firstNameAndLastName,
+                  role: _context?.session?.user?.role?.name,
                 },
               },
             },
-          })
-        )?.workflowNumber;
+          },
+        });
+        logger.info(
+          {
+            type: 'response',
+            operation: 'approveExitWorkflow',
+            session: _context.session,
+            response: result,
+          },
+          'approveExitWorkflow graphql response'
+        );
+        return result?.workflowNumber;
       }
     },
   },

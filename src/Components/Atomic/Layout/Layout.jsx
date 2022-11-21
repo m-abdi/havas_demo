@@ -179,12 +179,12 @@ function Layout({ children, pageName }) {
           roleName: 'createTag',
           id: 'newTag',
         },
-        {
-          text: 'مشاهده تگ ها',
-          icon: <RemoveRedEyeRoundedIcon />,
-          path: '/users/tags',
-          roleName: 'viewTag',
-        },
+        // {
+        //   text: 'مشاهده تگ ها',
+        //   icon: <RemoveRedEyeRoundedIcon />,
+        //   path: '/users/tags',
+        //   roleName: 'viewTag',
+        // },
       ],
     },
     {

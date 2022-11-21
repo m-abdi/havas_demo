@@ -100,7 +100,7 @@ const newTag: NextPage = () => {
             createTagHandler={async (tags: NewTagType[]) => {
               const resp = await createTagHandler(tags);
               if (resp) {
-                router.push('/users/tags');
+                router.push('/users/assets');
               }
             }}
           />
