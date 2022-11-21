@@ -23,30 +23,17 @@ export default createYoga<{
     resolvers,
   }) as any,
   graphqlEndpoint: '/api/graphql',
-  logging: {
-    debug(...args) {
-      logger.debug({...args});
-    },
-    info(...args) {
-      logger.info({...args});
-    },
-    warn(...args) {
-      logger.warn({...args});
-    },
-    error(...args) {
-      logger.error({...args});
-    },
-  },
   context: async ({ req, params }) => {
     const session = await getSession({ req });
     logger.info(
       {
         type: 'request',
+        operation: params.operationName,
         session,
         data: { ...params.variables },
         headers: req.headers,
       },
-      `${params.operationName} request`
+      `${params.operationName} graphql request`
     );
 
     return {
@@ -54,5 +41,4 @@ export default createYoga<{
     };
   },
 
-  // graphiql: false // uncomment to disable GraphiQL
 });
