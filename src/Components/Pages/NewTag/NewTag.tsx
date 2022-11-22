@@ -77,7 +77,7 @@ export default memo(function NewTag({
   // }, [newAsset]);
 
   useEffect(() => {
-    if (mqttMessage && (tags?.length === 0 || tags?.[0].tagId.length === 0)) {
+    if (mqttMessage && tags?.length === 0) {
       if (newAsset) {
         setTags([
           { tagId: mqttMessage, newAsset: { equipmentId: '', placeId: '' } },
@@ -85,7 +85,30 @@ export default memo(function NewTag({
       } else {
         setTags([{ tagId: mqttMessage, assetId: '' }]);
       }
-    } else if (mqttMessage && tags?.[0].tagId.length > 0) {
+    } else if (mqttMessage && tags?.[tags?.length - 1]?.tagId?.length === 0) {
+      const latestElement = tags?.[tags.length - 1];
+      const otherTags = tags?.filter((t) => t?.tagId !== latestElement?.tagId);
+
+      console.log(otherTags);
+      
+      if (newAsset) {
+        setTags([
+          ...otherTags,
+          {
+            tagId: mqttMessage,
+            newAsset: {
+              equipmentId: latestElement?.newAsset?.equipmentId as string,
+              placeId: latestElement?.newAsset?.placeId as string,
+            },
+          },
+        ]);
+      } else {
+        setTags([
+          ...otherTags,
+          { tagId: mqttMessage, assetId: latestElement?.assetId as string },
+        ]);
+      }
+    } else if (mqttMessage) {
       if (newAsset) {
         setTags([
           ...tags,
@@ -167,7 +190,7 @@ export default memo(function NewTag({
             >
               {index + 1}
             </Typography>
-            {tag.tagId.length === 0 ? (
+            {tag?.tagId?.length === 0 ? (
               <HeartBeat borderColor='info.main'>
                 <TextField
                   // label='مقدار تگ'
@@ -210,6 +233,7 @@ export default memo(function NewTag({
               submitOnChange={true}
               newTag={true}
               createHandler={async (equipmentId: string, placeId: string) => {
+
                 setTags([
                   ...tags.filter((t) => t?.tagId !== tag?.tagId),
                   {
