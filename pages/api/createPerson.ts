@@ -28,7 +28,15 @@ export default async function handler(
   if (!session || !(await canCreatePerson(session))) {
     return res.status(401);
   }
-  logger.info({ ...req?.body, ...session }, 'createPerson');
+  logger.info(
+    {
+      type: 'request',
+      operation: 'createPerson',
+      data: { ...req?.body },
+      session,
+    },
+    'createPerson api request'
+  );
   // hash salt
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(mobileNumber as string, salt);
@@ -81,7 +89,15 @@ export default async function handler(
         createdPerson,
         connectedPlaceToPerson,
       ]);
-      logger.info({ ...transaction?.[1], ...session }, 'createPerson response');
+      logger.info(
+        {
+          type: 'response',
+          operation: 'createPerson',
+          ...transaction?.[1],
+          ...session,
+        },
+        'createPerson response'
+      );
       return res.status(201).json(transaction?.[1]);
     }
     const createdPerson = await prisma.person.create({
@@ -100,10 +116,19 @@ export default async function handler(
         website,
       },
     });
-    logger.info({ ...createdPerson, password: null, ...session }, 'createPerson response');
-    return res.status(201).json({...createdPerson, password: null});
+    logger.info(
+      {
+        type: 'response',
+        operation: 'createPerson',
+        ...createdPerson,
+        password: null,
+        session,
+      },
+      'createPerson api response'
+    );
+    return res.status(201).json({ ...createdPerson, password: null });
   } catch (e: any) {
-    logger.info({ exception: e, ...session }, 'createPerson error response');
+    logger.info({ exception: e, session }, 'createPerson error response');
     return res.status(500).send(e?.message ?? 'database connection error');
   }
 }

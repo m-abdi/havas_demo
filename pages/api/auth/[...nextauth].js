@@ -4,8 +4,8 @@ import 'dotenv/config';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import NextAuth from 'next-auth';
-import bcrypt from "bcrypt"
-import logger from '../../../src/logger'
+import bcrypt from 'bcrypt';
+import logger from '../../../src/logger';
 import prisma from '../../../prisma/client';
 
 export default NextAuth({
@@ -21,7 +21,7 @@ export default NextAuth({
           },
           include: {
             role: true,
-            place: {include: {representative: true}}
+            place: { include: { representative: true } },
           },
         });
         session.user = { ...session.user, ...userData, password: undefined };
@@ -42,15 +42,28 @@ export default NextAuth({
           const potentialUser = await prisma.person.findFirst({
             where: { id: credentials.email },
           });
-          
-          const match = await bcrypt.compare(credentials.password, potentialUser?.password);
+
+          const match = await bcrypt.compare(
+            credentials.password,
+            potentialUser?.password
+          );
           if (match) {
             await prisma.$disconnect();
-            logger.info({
+            logger.info(
+              {
+                type: 'response',
+                operation: 'login',
+                response: {
+                  name: potentialUser.firstNameAndLastName,
+                  email: potentialUser.id,
+                },
+              },
+              'successful login'
+            );
+            return {
               name: potentialUser.firstNameAndLastName,
               email: potentialUser.id,
-            }, 'successful login');
-            return { name: potentialUser.firstNameAndLastName, email: potentialUser.id }
+            };
           }
           await prisma.$disconnect();
           return null;

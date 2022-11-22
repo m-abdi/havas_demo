@@ -34,5 +34,5 @@ client.on('message', function (topic, message) {
 client.subscribe('rfid');
 
 // publish message 'Hello' to topic 'my/test/topic'
-client.publish('rfid', 'xxxilo');
+client.publish('rfid', '۲۲');
 client.end();

@@ -39,7 +39,7 @@ services:
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs" ]
   nextjs:
     container_name: nextjs
-    image: abdimehdi/havas:latest
+    image: abdimehdi/havas:develop
     networks:
       havas_docker_network:
         ipv4_address: "172.18.200.7"
