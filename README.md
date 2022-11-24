@@ -21,7 +21,7 @@ docker login -p <ACCESS_TOKEN>
 ```
 2.
 ```cmd
-docker compose up
+docker compose --file docker-compose-local.yml up
 ```
 3. 
 ```cmd
@@ -61,8 +61,27 @@ docker exec mongo1 sh -c 'exec mongodump -d havas --archive'> ./db-backup.archiv
 mongoresotre --archive=./db-backup.archive
 ```
 
-## Save logs in a file
+## Saving logs in a file
 
 ```sh
 docker logs nextjs > ./logs/logs.log
+```
+
+## Saving docker images in an archive file
+
+```sh
+docker save mongo:5.0.9 \
+            abdimehdi/havas:latest \
+            emqx/emqx:latest \
+            havas-initialization-db:latest \
+            havas-rfid-python:latest \
+            python:3.10.6 \
+            node:16-alpine \
+            -o havas.tar
+```
+
+## Loading docker images locally
+
+```sh
+docker load -i havas.tar
 ```

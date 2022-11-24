@@ -1,0 +1,104 @@
+version: '3.9'
+
+services:
+  mongo1:
+    container_name: mongo1
+    image: mongo:5.0.9
+    volumes:
+      - ./scripts/rs-init.sh:/scripts/rs-init.sh
+      - mongoData:/data/db
+    networks:
+      havas_docker_network:
+        ipv4_address: "172.18.200.5"
+    ports:
+      - 27017:27017
+    depends_on:
+      - mongo2
+      - mongo3
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs" ]
+
+
+  mongo2:
+    container_name: mongo2
+    image: mongo:5.0.9
+    networks:
+      - havas_docker_network
+    ports:
+      - 27018:27017
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs" ]
+  mongo3:
+    container_name: mongo3
+    image: mongo:5.0.9
+    networks:
+      - havas_docker_network
+    ports:
+      - 27019:27017
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs" ]
+  nextjs:
+    container_name: nextjs
+    image: abdimehdi/havas:latest
+    networks:
+      havas_docker_network:
+        ipv4_address: "172.18.200.7"
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongo1
+    env_file:
+      - .env.docker
+    logging:
+      driver: local
+      options:
+        max-file: "30"
+        max-size: "100m"
+  emqx:
+    image: emqx/emqx:latest
+    container_name: havas-emqx-broker
+    networks:
+      havas_docker_network:
+        ipv4_address: "172.18.200.4"
+    ports:
+      - "18083:18083" #Admin Dashboard
+      - "1883:1883" #tcp
+      - "8083:8083" #ws
+      - "8084:8084" #wss
+    restart: always
+
+  rfid:
+    image: havas-rfid-python
+    container_name: havas-rfid-python
+    networks:
+      havas_docker_network:
+        ipv4_address: "172.18.200.18"
+    ports:
+      - "4002:4002"
+    depends_on:
+      - emqx
+  
+  initialization:
+    image: havas-initialization-db
+    container_name: havas-initialization
+    networks:
+      - havas_docker_network
+    depends_on:
+      - nextjs
+    env_file:
+      - .env.docker
+
+
+
+volumes:
+  mongoData:
+
+networks:
+  havas_docker_network:
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      driver: default
+      config:
+        - subnet : "172.18.200.0/24"
+          gateway : "172.18.200.1"
