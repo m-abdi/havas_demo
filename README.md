@@ -67,8 +67,17 @@ mongoresotre --archive=./db-backup.archive
 docker logs nextjs > ./logs/logs.log
 ```
 
-## Saving docker images in an archive file
+## Save docker images in an archive file
 
+
+```sh
+docker build -f Dockerfile_init -t havas-initialization-db .
+```
+---
+```sh
+docker build -f Dockerfile_RFID -t havas-rfid-python .
+```
+---
 ```sh
 docker save mongo:5.0.9 \
             abdimehdi/havas:latest \
@@ -80,7 +89,7 @@ docker save mongo:5.0.9 \
             -o havas.tar
 ```
 
-## Loading docker images locally
+## Load docker images locally
 
 ```sh
 docker load -i havas.tar
