@@ -6,7 +6,6 @@
 .pnp.js
 /venv
 /.venv
-logs/
 
 # testing
 /coverage
@@ -51,3 +50,6 @@ lib/graphql-operations.ts
 *.tsbuildinfo
 
 videos/
+ideas/
+logs/
+havas.tar
