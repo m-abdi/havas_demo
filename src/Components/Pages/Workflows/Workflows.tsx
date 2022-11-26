@@ -366,11 +366,11 @@ export default function Workflows({
   return (
     <Box sx={{ maxInlineSize: '100%', position: 'relative' }}>
       {/* <button onClick={resetResizing}>Reset Resizing</button> */}
-      <DeleteButton
+      {/* <DeleteButton
         selectedFlatRows={selectedFlatRows}
         session={session}
         setDeleteDialog={setDeleteDialog}
-      />
+      /> */}
       <Styles>
         <TableContainer sx={{ position: 'relative !important' }}>
           <div {...getTableProps()} className='table'>
@@ -640,8 +640,8 @@ export default function Workflows({
           }}
         />
       </Styles>
-      <DeleteDialog
-        text='با این کار تمامی تجهیزات انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
+      {/* <DeleteDialog
+        text='با این کار تمامی گردش کارهای انتخاب شده و اطلاعات مربوط به آنها پاک خواهند شد!'
         open={deleteDialog}
         closeDialog={() => setDeleteDialog(false)}
         confirmDelete={async () => {
@@ -650,7 +650,7 @@ export default function Workflows({
           );
           setDeleteDialog(false);
         }}
-      />
+      /> */}
       <Dialog
         sx={{ zIndex: 7000 }}
         open={detailsDialog}

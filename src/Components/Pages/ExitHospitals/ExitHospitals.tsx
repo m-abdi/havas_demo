@@ -187,12 +187,11 @@ export default memo(function ExitHospitals({
         Header: 'شماره تماس ترابری',
         accessor: (data: any) => {
           return (
-            <>
-              <div>{data?.passedStages[0].havaleh.transportationTelephone}</div>
-              <div>
-                {data?.passedStages[0].havaleh.transportationTelephone2}
-              </div>
-            </>
+            <div>
+              {data?.passedStages[0].havaleh.transportationTelephone}
+              <br></br>
+              {data?.passedStages[0].havaleh.transportationTelephone2}
+            </div>
           );
         },
         id: 'passedStages[0].havaleh.transportationTelephone',
