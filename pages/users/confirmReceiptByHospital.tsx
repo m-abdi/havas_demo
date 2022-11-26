@@ -33,17 +33,16 @@ export default function ConfirmReceiptByHospital() {
   //
 
   useEffect(() => {
-    console.log(router.query.workflow);
-
     if (router?.query?.workflow) {
       setExistingWorkflow(JSON.parse(router?.query?.workflow as string));
+      setEditable(true)
     }
   }, [router.isReady]);
 
   return (
     <Layout pageName={pageName}>
       <Container maxWidth='lg' sx={{ position: 'relative' }}>
-        <Box sx={{ my: 2, mx: 5 }}>
+        {/* <Box sx={{ my: 2, mx: 5 }}>
           <Stack
             direction='row'
             alignItems={'center'}
@@ -66,8 +65,8 @@ export default function ConfirmReceiptByHospital() {
             )}
           </Stack>
           <Divider sx={{ my: 1 }} />
-        </Box>
-
+        </Box> */}
+{/* 
         {allEnterWorkflows ? (
           <Autocomplete
             disablePortal
@@ -110,7 +109,7 @@ export default function ConfirmReceiptByHospital() {
               sx={{ borderRadius: '5px' }}
             />
           )
-        )}
+        )} */}
         {existingWorkflow && (
           <NewExitCorporation
             loading={loading}

@@ -123,8 +123,8 @@ export default memo(function Assets({
         accessor: 'equipment.name', // accessor is the "key" in the data
       },
       {
-        Header: 'کد بیت المال',
-        accessor: 'publicPropertyCode', // accessor is the "key" in the data
+        Header: 'کد موجودی',
+        accessor: 'id', // accessor is the "key" in the data
       },
       {
         Header: 'محل استقرار',

@@ -212,10 +212,11 @@ export default memo(function ConfirmReceiptByHospitals({
         width: 200,
         accessor: (d: any) => {
           return (
-            <>
-              <div>{d?.passedStages[0].havaleh.transportationTelephone}</div>
-              <div>{d?.passedStages[0].havaleh.transportationTelephone2}</div>
-            </>
+            <div>
+              {d?.passedStages[0].havaleh.transportationTelephone}
+              <br></br>
+              {d?.passedStages[0].havaleh.transportationTelephone2}
+            </div>
           );
         },
       },
