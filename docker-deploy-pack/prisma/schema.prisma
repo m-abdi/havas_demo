@@ -1,0 +1,306 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// datasource db {
+//   provider = "sqlite"
+//   url      = "file:./dev.db"
+// }
+
+model Config {
+  id                    String  @id @default(uuid()) @map("_id")
+  ignoreManagerApproval Boolean
+  current               Boolean @default(false)
+  ignoreRFID            Boolean @default(false)
+}
+
+model Person {
+  id                   String   @id @default(uuid()) @map("_id")
+  firstNameAndLastName String?
+  place                Place?   @relation(fields: [placeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  placeId              String?  @unique
+  state                String?
+  city                 String?
+  postalCode           String?
+  address              String?
+  telephone            String?
+  mobileNumber         String?
+  website              String?
+  role                 Role     @relation(fields: [roleId], references: [id])
+  roleId               String
+  createdAt            DateTime @default(now())
+  editedAt             DateTime @updatedAt
+  placeOfRespresentative  Place[] @relation("representativeOfPlace")
+  password String
+  // levels               Level     @relation("levelToPerson")
+
+  Stage Stage[]
+}
+
+model Place {
+  id               String  @id @default(uuid()) @map("_id")
+  name             String  @unique
+  superPlace       Place?  @relation("SuperPlaceSubset", fields: [superPlaceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  superPlaceId     String?
+  subset           Place[] @relation("SuperPlaceSubset")
+  isCategory       Boolean @default(false)
+  employees         Person[] 
+  representative   Person? @relation("representativeOfPlace", fields: [representativeId], references: [id])
+  representativeId String? 
+  typeOfWork       String?
+  state            String?
+  city             String?
+  postalCode       String?
+  address          String?
+  telephone        String?
+  mobileNumber     String?
+  website          String?
+  nationalId       String?
+  economicalCode   String?
+  registeredNumber String?
+  description      String?
+  createdAt        String?
+  editedAt         String?
+
+  assets            Asset[]     @relation("currentPlace")
+  Equipment         Equipment[]
+  corporationAssets Asset[]     @relation("corporationPlace")
+}
+
+type Trust {
+  debatorCorportionId String?
+  sum                 Int?
+}
+
+type TrustOrOwn {
+  trust Trust[]
+  own   Int?
+}
+
+model Equipment {
+  name              String   @unique
+  model             String?
+  factory           String?
+  serialNumber      String
+  productionYear    String?
+  installationYear  String?
+  terminologyCode   String   @id @map("_id")
+  hasInstructions   Boolean
+  instruction       String?
+  picture           String?
+  supportCompany    Place?   @relation(fields: [supportCompanyId], references: [id])
+  supportCompanyId  String?
+  supportTelephone1 String?
+  supportTelephone2 String?
+  createdAt         DateTime @default(now())
+  editedAt          DateTime @updatedAt
+  assets            Asset[]
+  receiving         Int
+  outsourced        Int
+  sending           Int
+  available         Int
+}
+
+model Asset {
+  id                 String    @id @default(uuid()) @map("_id")
+  equipment          Equipment @relation(fields: [equipmentId], references: [terminologyCode])
+  equipmentId        String
+  publicPropertyCode String?   @unique
+  place              Place     @relation("currentPlace", fields: [placeId], references: [id])
+  placeId            String
+  createdAt          DateTime  @default(now())
+  editedAt           DateTime  @updatedAt
+  tag                Tag?
+  corporation        Place?    @relation("corporationPlace", fields: [corporationId], references: [id])
+  corporationId      String?
+  deliverer          String?
+  status             String?   @default("موجود در بیمارستان")
+}
+
+model Tag {
+  id        String   @id @default(uuid()) @map("_id")
+  asset     Asset?   @relation(fields: [assetId], references: [id])
+  assetId   String?  @unique
+  createdAt DateTime @default(now())
+  editedAt  DateTime @updatedAt
+}
+
+model Role {
+  id                     String   @id @default(uuid()) @map("_id")
+  name                   String?  @unique
+  viewPerson             Boolean  @default(false)
+  createPerson           Boolean
+  editPerson             Boolean
+  deletePerson           Boolean
+  viewPlace              Boolean  @default(false)
+  createPlace            Boolean
+  editPlace              Boolean
+  deletePlace            Boolean
+  viewEquipment          Boolean  @default(false)
+  createEquipment        Boolean
+  editEquipment          Boolean
+  deleteEquipment        Boolean
+  viewAsset              Boolean  @default(false)
+  createAsset            Boolean
+  editAsset              Boolean
+  deleteAsset            Boolean
+  viewLicense            Boolean  @default(false)
+  createLicense          Boolean
+  editLicense            Boolean
+  deleteLicense          Boolean
+  viewTag                Boolean  @default(false)
+  createTag              Boolean
+  editTag                Boolean
+  deleteTag              Boolean
+  viewRole               Boolean  @default(false)
+  createRole             Boolean
+  editRole               Boolean
+  deleteRole             Boolean
+  createEnterDeliverExit Boolean  @default(false)
+  Person                 Person[]
+  createdAt              DateTime @default(now())
+}
+
+// model Level {
+//   stageID             String   @id @map("_id")
+//   stageName           String
+//   byUser              Person   @relation("levelToPerson", references: [id], fields: [byUserId])
+//   byUserId            String
+//   byUsersWithRoles    Role[]   @relation(references: [id], fields: [byUsersWithRolesIds])
+//   byUsersWithRolesIds String[]
+
+//   Process              Process? @relation(fields: [processProcessNumber], references: [processNumber])
+//   processProcessNumber String?
+// }
+type TransferedAssets {
+  oxygen_50l_factory        Int?
+  bihoshi_50l_factory       Int?
+  shaft_50l_factory         Int?
+  controlValve_50l_factory  Int?
+  co2_50l_factory           Int?
+  argon_50l_factory         Int?
+  azete_50l_factory         Int?
+  dryAir_50l_factory        Int?
+  entonox_50l_factory       Int?
+  acetylene_50l_factory     Int?
+  lpg_50l_factory           Int?
+  oxygen_50l_customer       Int?
+  bihoshi_50l_customer      Int?
+  shaft_50l_customer        Int?
+  controlValve_50l_customer Int?
+  co2_50l_customer          Int?
+  argon_50l_customer        Int?
+  azete_50l_customer        Int?
+  dryAir_50l_customer       Int?
+  entonox_50l_customer      Int?
+  acetylene_50l_customer    Int?
+  lpg_50l_customer          Int?
+  oxygen_40l_factory        Int?
+  bihoshi_40l_factory       Int?
+  shaft_40l_factory         Int?
+  controlValve_40l_factory  Int?
+  co2_40l_factory           Int?
+  argon_40l_factory         Int?
+  azete_40l_factory         Int?
+  dryAir_40l_factory        Int?
+  entonox_40l_factory       Int?
+  acetylene_40l_factory     Int?
+  lpg_40l_factory           Int?
+  oxygen_40l_customer       Int?
+  bihoshi_40l_customer      Int?
+  shaft_40l_customer        Int?
+  controlValve_40l_customer Int?
+  co2_40l_customer          Int?
+  argon_40l_customer        Int?
+  azete_40l_customer        Int?
+  dryAir_40l_customer       Int?
+  entonox_40l_customer      Int?
+  acetylene_40l_customer    Int?
+  lpg_40l_customer          Int?
+  oxygen_50l                Int?
+  bihoshi_50l               Int?
+  shaft_50l                 Int?
+  controlValve_50l          Int?
+  co2_50l                   Int?
+  argon_50l                 Int?
+  azete_50l                 Int?
+  dryAir_50l                Int?
+  entonox_50l               Int?
+  acetylene_50l             Int?
+  lpg_50l                   Int?
+  oxygen_40l                Int?
+  bihoshi_40l               Int?
+  shaft_40l                 Int?
+  controlValve_40l          Int?
+  co2_40l                   Int?
+  argon_40l                 Int?
+  azete_40l                 Int?
+  dryAir_40l                Int?
+  entonox_40l               Int?
+  acetylene_40l             Int?
+  lpg_40l                   Int?
+}
+
+type Corporation {
+  id   String
+  name String
+}
+
+type Havaleh {
+  id                       String?
+  deliverer                String?
+  receiver                String?
+  receiverTelephone                String?
+  transportationName       String?
+  transportationTelephone  String?
+  transportationTelephone2 String?
+  description              String?
+  receivingDescription     String?
+  corporation              Corporation?
+  assets                   TransferedAssets?
+  contradiction            Boolean?          @default(false)
+}
+
+type UserData {
+  id                   String
+  firstNameAndLastName String
+  role                 String?
+}
+
+type Stage {
+  stageID         Int
+  stageName       String
+  submittedByUser UserData
+  havaleh         Havaleh?
+  createdAt       DateTime? @default(now())
+}
+
+model Process {
+  processNumber Int        @id @map("_id")
+  processName   String
+  workflows     Workflow[]
+}
+
+model Workflow {
+  workflowNumber      String   @id @default(uuid()) @map("_id")
+  instanceOfProcess   Process  @relation(fields: [instanceOfProcessId], references: [processNumber])
+  instanceOfProcessId Int
+  nextStageName       String
+  passedStages        Stage[]
+  dateCreated         DateTime @default(now())
+  dateModified        DateTime @updatedAt
+}
+
+enum LicenseType {
+  ENTER
+  EXIT
+}
