@@ -1,0 +1,7 @@
+FROM node:16-bullseye
+WORKDIR /
+COPY yarn.lock .
+COPY package.json .
+COPY . .
+RUN yarn
+CMD [ "yarn", "run", "dev" ]
