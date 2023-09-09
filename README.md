@@ -1,3 +1,8 @@
+# Havas
+This warehouse management platform is designed for hospitals and their management departments.
+
+live demo: https://havas.mehdiabdi.com
+
 ## Start app with docker-compose ##
 
 ### Linux ###
